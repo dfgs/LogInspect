@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+namespace LogInspectLib
+{
+	[Serializable]
+	public class Rule
+	{
+		[XmlAttribute]
+		public string Name
+		{
+			get;
+			set;
+		}
+
+		[XmlArray]
+		public List<Token> Tokens
+		{
+			get;
+			set;
+		}
+
+		public Rule()
+		{
+			Tokens = new List<Token>();
+		}
+
+		public string GetPattern()
+		{
+			return String.Join("", Tokens.Select(item => item.Pattern));
+		}
+
+	}
+
+
+}
