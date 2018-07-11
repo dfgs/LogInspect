@@ -92,19 +92,27 @@ namespace LogInspectLib
 		{
 			Log log;
 			string line;
-			int index;
+			Match match;
 			Event ev;
 
 			log = ReadLog();
 			if (log == null) return null;
 
-			line = log.ToSingleLine();
-			index=ruleRegexes.FindIndex(item => item.Match(line).Success);
-
-			ev=new Event();
+			ev = new Event();
 			ev.Log = log;
 
-			if (index >= 0) ev.Rule = formatHandler.Rules[index];
+			line = log.ToSingleLine();
+			for(int index=0;index<ruleRegexes.Count;index++)
+			{
+				match = ruleRegexes[index].Match(line);
+				if (!match.Success) continue;
+
+				ev.Rule = formatHandler.Rules[index];
+
+				
+
+				break; 
+			}
 			
 			return ev;
 		}

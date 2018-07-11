@@ -31,7 +31,7 @@ namespace LogInspectLib
 
 		public string GetPattern()
 		{
-			return String.Join("", Tokens.Select(item => item.Pattern));
+			return String.Join("", Tokens.Select(item => item.GetPattern()));
 		}
 
 	}

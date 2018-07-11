@@ -31,7 +31,9 @@ namespace LogInspect
 			schema.Rules.Add(rule);
 
 			rule = new LogInspectLib.Rule() { Name = "Event" };
-			rule.Tokens.Add(new Token() { Pattern = @"^\d\d/\d\d/\d\d" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"^\d\d/\d\d/\d\d \d\d:\d\d:\d\d\.\d+" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"DEBUG" });
 			schema.Rules.Add(rule);
 
 

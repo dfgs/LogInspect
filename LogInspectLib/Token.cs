@@ -23,6 +23,11 @@ namespace LogInspectLib
 			set;
 		}
 
+		public string GetPattern()
+		{
+			if (Name==null) return $"({Pattern})";
+			else return $"(?<{Name}>{Pattern})";
+		}
 
 	}
 }
