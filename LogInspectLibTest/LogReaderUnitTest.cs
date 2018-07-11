@@ -16,10 +16,14 @@ namespace LogInspectLibTest
 		private static string line5 = " with comment 3";
 		private static string line6 = "12/12/1980 08:53:22 +";
 		private static string line7 = "Line 3#";
-		private static string logString = line1 + "\r\n" + line2 + "\r\n" + line3 + "\r\n" + line4 + "\r\n" + line5 + "\r\n" + line6 + "\r\n" + line7;
+		private static string logString1 = line1 + "\r\n" + line2 + "\r\n" + line3 + "\r\n" + line4 + "\r\n" + line5 + "\r\n" + line6 + "\r\n" + line7;
+
+		private static string log1 = "1|2|3|4";
+		private static string log2 = "1234";
+		private static string logString2 = log1 + "\r\n" + log2 ;
 
 		[TestMethod]
-		public void ShouldParseFileWithoutPatterns()
+		public void ShouldReadLogWithoutPatterns()
 		{
 			Log log;
 			MemoryStream stream;
@@ -28,7 +32,7 @@ namespace LogInspectLibTest
 
 
 			formatHandler = new FormatHandler();
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString));
+			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
 			reader = new LogReader(stream,formatHandler);
 
 			log = reader.ReadLog();
@@ -52,7 +56,7 @@ namespace LogInspectLibTest
 
 
 		[TestMethod]
-		public void ShouldParseFileWithAppendToPreviousPatterns()
+		public void ShouldReadLogWithAppendToPreviousPatterns()
 		{
 			Log log;
 			MemoryStream stream;
@@ -62,7 +66,7 @@ namespace LogInspectLibTest
 
 			formatHandler = new FormatHandler();
 			formatHandler.AppendToPreviousPatterns.Add("^ ");
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString));
+			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
 			reader = new LogReader(stream, formatHandler);
 
 			log = reader.ReadLog();
@@ -79,7 +83,7 @@ namespace LogInspectLibTest
 		}
 
 		[TestMethod]
-		public void ShouldParseFileWithAppendToNextPatterns()
+		public void ShouldReadLogWithAppendToNextPatterns()
 		{
 			Log log;
 			MemoryStream stream;
@@ -89,7 +93,7 @@ namespace LogInspectLibTest
 
 			formatHandler = new FormatHandler();
 			formatHandler.AppendToNextPatterns.Add(@"\+$");
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString));
+			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
 			reader = new LogReader(stream, formatHandler);
 
 			log = reader.ReadLog();
@@ -109,6 +113,46 @@ namespace LogInspectLibTest
 
 		}
 
+		[TestMethod]
+		public void ShouldReadEvent()
+		{
+			Event ev;
+			MemoryStream stream;
+			LogReader reader;
+			FormatHandler formatHandler;
+			Rule rule;
+
+
+			formatHandler = new FormatHandler();
+			rule = new Rule() { Name="UnitTest" };
+			rule.Tokens.Add(new Token() { Name = "C1", Pattern = @"\d" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
+			rule.Tokens.Add(new Token() { Name = "C2", Pattern = @"\d" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
+			rule.Tokens.Add(new Token() { Name = "C3", Pattern = @"\d" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
+			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
+			formatHandler.Rules.Add(rule);
+
+			stream = new MemoryStream(Encoding.Default.GetBytes(logString2));
+			reader = new LogReader(stream, formatHandler);
+
+			ev= reader.ReadEvent();
+			Assert.IsNotNull(ev.Log);
+			Assert.IsNotNull(ev.Rule);
+			Assert.AreEqual(4, ev.Properties.Count);
+			Assert.AreEqual("C1", ev.Properties[0].Name);
+			Assert.AreEqual("1", ev.Properties[0].Value);
+			Assert.AreEqual("C2", ev.Properties[1].Name);
+			Assert.AreEqual("2", ev.Properties[1].Value);
+			Assert.AreEqual("C3", ev.Properties[2].Name);
+			Assert.AreEqual("3", ev.Properties[2].Value);
+			Assert.AreEqual("C4", ev.Properties[3].Name);
+			Assert.AreEqual("4", ev.Properties[3].Value);
+
+
+
+		}
 
 	}
 }

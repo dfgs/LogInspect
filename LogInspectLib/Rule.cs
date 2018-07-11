@@ -29,6 +29,11 @@ namespace LogInspectLib
 			Tokens = new List<Token>();
 		}
 
+		public IEnumerable<string> GetColumns()
+		{
+			return Tokens.Where(item => item.Name != null).Select(item => item.Name);
+		}
+
 		public string GetPattern()
 		{
 			return String.Join("", Tokens.Select(item => item.GetPattern()));

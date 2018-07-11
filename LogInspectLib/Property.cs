@@ -6,30 +6,17 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public class Event
+	public class Property
 	{
-		public Log Log
+		public string Name
 		{
 			get;
 			set;
 		}
-
-		public Rule Rule
+		public object Value
 		{
 			get;
 			set;
 		}
-
-		public List<Property> Properties
-		{
-			get;
-			set;
-		}
-
-		public Event()
-		{
-			Properties = new List<Property>();
-		}
-
 	}
 }

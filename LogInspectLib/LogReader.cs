@@ -10,12 +10,16 @@ namespace LogInspectLib
     {
 		//private static string alwaysFail = "(?= a)[^ a]";
 		private FormatHandler formatHandler;
+		public FormatHandler FormatHandler
+		{
+			get { return formatHandler; }
+		}
 
 		private string line;
 
 		private List<Regex> appendToNextRegexes;
 		private List<Regex> appendToPreviousRegexes;
-		private List<Regex> ruleRegexes;
+		private List<LogParser> logParsers;
 
 		public LogReader(Stream Stream,FormatHandler FormatHandler):base(Stream)
         {
@@ -23,7 +27,7 @@ namespace LogInspectLib
 
 			this.appendToNextRegexes = new List<Regex>();
 			this.appendToPreviousRegexes = new List<Regex>();
-			this.ruleRegexes = new List<Regex>();
+			this.logParsers = new List<LogParser>();
 
 			foreach (string pattern in FormatHandler.AppendToPreviousPatterns)
 			{
@@ -35,7 +39,7 @@ namespace LogInspectLib
 			}
 			foreach(Rule rule in FormatHandler.Rules)
 			{
-				this.ruleRegexes.Add(new Regex(rule.GetPattern()));
+				this.logParsers.Add(new LogParser(rule));
 			}
 		}
 
@@ -91,29 +95,19 @@ namespace LogInspectLib
 		public Event ReadEvent()
 		{
 			Log log;
-			string line;
-			Match match;
 			Event ev;
 
 			log = ReadLog();
 			if (log == null) return null;
 
+			foreach(LogParser parser in logParsers)
+			{
+				ev = parser.Parse(log);
+				if (ev!=null) return ev;
+			}
+
 			ev = new Event();
 			ev.Log = log;
-
-			line = log.ToSingleLine();
-			for(int index=0;index<ruleRegexes.Count;index++)
-			{
-				match = ruleRegexes[index].Match(line);
-				if (!match.Success) continue;
-
-				ev.Rule = formatHandler.Rules[index];
-
-				
-
-				break; 
-			}
-			
 			return ev;
 		}
 
