@@ -3,10 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LogInspect"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        xmlns:local="clr-namespace:LogInspect" Closing="Window_Closing"
+		xmlns:views="clr-namespace:LogInspect.Views"
+        mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" 
+        Title="Log Inspect" Height="450" Width="800" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+
+	<Window.CommandBindings>
+		<CommandBinding Command="Open" CanExecute="OpenCommandBinding_CanExecute" Executed="OpenCommandBinding_Executed"/>
+	</Window.CommandBindings>
+	
+    <DockPanel>
+		<StatusBar DockPanel.Dock="Bottom">
+			<TextBlock/>
+		</StatusBar>
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+			<Button FontFamily="Segoe UI Symbol" Content="" Command="Open"/>
+		</StackPanel>
+		<TabControl ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedItem}">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+			<TabControl.ContentTemplate>
+				<DataTemplate>
+					<DockPanel>
+						<TextBlock DockPanel.Dock="Top" Text="{Binding Count}"/>
+						<views:EventView/>
+					</DockPanel>
+				</DataTemplate>
+			</TabControl.ContentTemplate>
+		</TabControl>
+	</DockPanel>
 </Window>

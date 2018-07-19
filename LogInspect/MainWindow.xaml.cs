@@ -1,5 +1,9 @@
-﻿using System;
+﻿using LogInspectLib;
+using LogLib;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,18 +24,21 @@ namespace LogInspect
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private ILogger logger;
+		private AppViewModel appViewModel;
+
 		public MainWindow()
 		{
 			InitializeComponent();
 
-			/*
-			 * FormatHandler schema = new FormatHandler();
+
+			FormatHandler schema = new FormatHandler();
 			schema.Name = "RCM";
 			schema.FileNamePattern = @"^RCM\.log(\.\d+)?$";
 			schema.AppendToNextPatterns.Add(@".*(?<!\u0003)$");
 			
 
-			rule = new LogInspectLib.Rule() { Name = "Event" };
+			Rule rule = new LogInspectLib.Rule() { Name = "Event" };
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"^\d\d/\d\d/\d\d \d\d:\d\d:\d\d\.\d+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
 			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^ ]+" });
@@ -47,13 +54,51 @@ namespace LogInspect
 			rule = new LogInspectLib.Rule() { Name = "Comment" };
 			rule.Tokens.Add(new Token() { Pattern = @"^//" });
 			schema.Rules.Add(rule);
+			
+			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "RCM.xml"));
 
+			logger = new ConsoleLogger(new DefaultLogFormatter());
 
-			schema.SaveToFile(@"FormatHandlers\RCM.xml");
-
-			schemaManager = new LogFileManager(logger);
-			schemaManager.LoadSchemas("FormatHandlers");
-			*/
+			appViewModel = new AppViewModel(logger,Properties.Settings.Default.FormatHandlersFolder);
+			DataContext = appViewModel;
 		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			appViewModel.Dispose();
+		}
+
+		private void ShowError(Exception ex)
+		{
+			ShowError(ex.Message);
+		}
+		private void ShowError(string Message)
+		{
+			MessageBox.Show(Message, "Unexpected error", MessageBoxButton.OK);
+		}
+
+		private void OpenCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true;e.Handled = true;
+		}
+
+		private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			OpenFileDialog dialog;
+
+			dialog = new OpenFileDialog();
+			dialog.Title = "Open log file";
+			dialog.Filter = "Log files|*.log|Text files|*.txt|All files|*.*";
+
+			if (dialog.ShowDialog(this)??false)
+			{
+				appViewModel.Open(dialog.FileName);
+			}
+		}
+
+
+		
+
+
 	}
 }

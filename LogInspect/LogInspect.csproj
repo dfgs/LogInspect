@@ -54,6 +54,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\IVirtualCollection.cs" />
+    <Compile Include="Modules\EventIndexedHandler.cs" />
+    <Compile Include="ViewModel.cs" />
+    <Compile Include="Views\EventPanel.cs" />
+    <Compile Include="Views\EventView.xaml.cs">
+      <DependentUpon>EventView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -62,10 +69,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppViewModel.cs" />
+    <Compile Include="LogFileViewModel.cs" />
+    <Compile Include="Modules\EventIndexerModule.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\EventView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -92,6 +106,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj">
+      <Project>{ef4b0001-2859-4a09-8f95-3e5bef4a5272}</Project>
+      <Name>LogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
+      <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
+      <Name>ModuleLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogInspectLib\LogInspectLib.csproj">
+      <Project>{1aa10f6a-888f-4125-8754-c14409739a1b}</Project>
+      <Name>LogInspectLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

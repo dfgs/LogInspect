@@ -2,33 +2,47 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LogInspectLib
 {
-    public class LogReader : StreamReader
+    public class LogReader : TextReader
     {
-		//private static string alwaysFail = "(?= a)[^ a]";
-		private FormatHandler formatHandler;
-		public FormatHandler FormatHandler
-		{
-			get { return formatHandler; }
-		}
+		private Stream stream;
+		private Encoding encoding;
+		private static int bufferSize = 32;
+		private char[] buffer;
+		private int bufferPos;
+		private long position;
 
 		private string line;
+		private long linePos;
+
+		public FormatHandler FormatHandler { get; }
+
 
 		private List<Regex> appendToNextRegexes;
 		private List<Regex> appendToPreviousRegexes;
 		private List<LogParser> logParsers;
 
-		public LogReader(Stream Stream,FormatHandler FormatHandler):base(Stream)
+		public bool EndOfStream
+		{
+			get { return position == stream.Length; }
+		}
+
+		public LogReader(Stream Stream, Encoding Encoding, FormatHandler FormatHandler):base()
         {
-			this.formatHandler = FormatHandler;
+			this.stream = Stream;
+			this.FormatHandler = FormatHandler;
+			this.encoding = Encoding;
+
+			this.position = 0;
 
 			this.appendToNextRegexes = new List<Regex>();
 			this.appendToPreviousRegexes = new List<Regex>();
 			this.logParsers = new List<LogParser>();
-
+			
 			foreach (string pattern in FormatHandler.AppendToPreviousPatterns)
 			{
 				this.appendToPreviousRegexes.Add(new Regex(pattern));
@@ -41,6 +55,51 @@ namespace LogInspectLib
 			{
 				this.logParsers.Add(new LogParser(rule));
 			}
+		}
+		private void LoadBuffer()
+		{
+			byte[] data;
+			int count;
+
+			data = new byte[bufferSize];
+			count=stream.Read(data, 0, bufferSize);
+			if (count <=0) throw (new EndOfStreamException());
+			else buffer = encoding.GetChars(data, 0, count);
+			bufferPos = 0;
+		}
+		private char ReadBuffer()
+		{
+			char c;
+			if ((buffer == null) || (bufferPos == buffer.Length)) LoadBuffer();
+			c=buffer[bufferPos];
+			bufferPos++;
+			return c;
+		}
+		public void Seek(long Position)
+		{
+			buffer = null;
+			position = Position;
+			stream.Seek(position, SeekOrigin.Begin);
+		}
+		
+		public override string ReadLine()
+		{
+			char? c;
+			StringBuilder sb;
+
+
+			sb = new StringBuilder(1024);
+
+			do
+			{
+				c = ReadBuffer();
+				position++;
+				if (c == '\n') break;
+				if (c == '\r') continue;
+				sb.Append(c);
+			} while (!EndOfStream);
+
+			return sb.ToString();
 		}
 
 
@@ -62,33 +121,58 @@ namespace LogInspectLib
 			}
 			return false;
 		}
+		
 
 		public Log ReadLog()
         {
   			List<string> lines;
  			bool mustAppend;
+			Log log;
+			long firstPos;
+
+
+			firstPos = linePos;
 
 			lines = new List<string>();
 
-			if (line == null) line = ReadLine();
-
-			while(line!=null)
+			if (line == null)
 			{
-				mustAppend = MustAppendToNextLine(line);
-				lines.Add(line);
+				linePos = position;
 				line = ReadLine();
-				if (!mustAppend) break;
 			}
-			while (line != null)
-			{
-				mustAppend = MustAppendToPreviousLine(line);
-				if (!mustAppend) break;
-				lines.Add(line);
-				line = ReadLine();
-			} 
 
-			if (lines.Count == 0) return null;
-			else return new Log(lines);
+			do
+			{
+				lines.Add(line);
+				mustAppend = MustAppendToNextLine(line);
+
+				if (EndOfStream)
+				{
+					line = null;
+					break;
+					}
+				linePos = position;
+				line = ReadLine();
+			} while (mustAppend);
+
+			mustAppend = MustAppendToPreviousLine(line);
+			while (mustAppend)
+			{
+				lines.Add(line);
+
+				if (EndOfStream)
+				{
+					line = null;
+					break;
+				}
+
+				linePos = position;
+				line = ReadLine();
+				mustAppend = MustAppendToPreviousLine(line);
+			}
+
+			log =new Log(lines, firstPos);
+			return log;
 			
         }
 

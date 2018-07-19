@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="LogInspect.Views.EventView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:LogInspect.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+		<views:EventPanel ItemsSource="{Binding}" ItemsCount="{Binding Count}" ItemHeight="32" />
+	</ScrollViewer>
+	<!--DockPanel>
+		<ScrollBar DockPanel.Dock="Right" Orientation="Vertical" Maximum="{Binding Count}"/>
+		<ListBox ItemsSource="{Binding}"/>
+	</-->
+</UserControl>

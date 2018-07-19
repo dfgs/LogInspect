@@ -23,6 +23,37 @@ namespace LogInspectLibTest
 		private static string logString2 = log1 + "\r\n" + log2 ;
 
 		[TestMethod]
+		public void ShouldReadLine()
+		{
+			string line;
+			MemoryStream stream;
+			LogReader reader;
+			FormatHandler formatHandler;
+
+
+			formatHandler = new FormatHandler();
+			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
+			reader = new LogReader(stream, Encoding.Default, formatHandler);
+
+			line = reader.ReadLine();
+			Assert.AreEqual(line1, line.ToString());
+			line = reader.ReadLine();
+			Assert.AreEqual(line2, line.ToString());
+			line = reader.ReadLine();
+			Assert.AreEqual(line3, line.ToString());
+			line = reader.ReadLine();
+			Assert.AreEqual(line4, line.ToString());
+			line = reader.ReadLine();
+			Assert.AreEqual(line5, line.ToString());
+			line = reader.ReadLine();
+			Assert.AreEqual(line6, line.ToString());
+			line = reader.ReadLine();
+			Assert.AreEqual(line7, line.ToString());
+			Assert.ThrowsException<EndOfStreamException>(reader.ReadLine);
+
+		}
+
+		[TestMethod]
 		public void ShouldReadLogWithoutPatterns()
 		{
 			Log log;
@@ -33,7 +64,7 @@ namespace LogInspectLibTest
 
 			formatHandler = new FormatHandler();
 			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
-			reader = new LogReader(stream,formatHandler);
+			reader = new LogReader(stream, Encoding.Default, formatHandler);
 
 			log = reader.ReadLog();
 			Assert.AreEqual(line1, log.ToString());
@@ -49,8 +80,7 @@ namespace LogInspectLibTest
 			Assert.AreEqual(line6, log.ToString());
 			log = reader.ReadLog();
 			Assert.AreEqual(line7, log.ToString());
-			log = reader.ReadLog();
-			Assert.AreEqual(null, log);
+			Assert.ThrowsException<EndOfStreamException>(reader.ReadLine);
 
 		}
 
@@ -67,7 +97,7 @@ namespace LogInspectLibTest
 			formatHandler = new FormatHandler();
 			formatHandler.AppendToPreviousPatterns.Add("^ ");
 			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
-			reader = new LogReader(stream, formatHandler);
+			reader = new LogReader(stream, Encoding.Default, formatHandler);
 
 			log = reader.ReadLog();
 			Assert.AreEqual(line1, log.ToString());
@@ -77,8 +107,7 @@ namespace LogInspectLibTest
 			Assert.AreEqual(line6, log.ToString());
 			log = reader.ReadLog();
 			Assert.AreEqual(line7, log.ToString());
-			log = reader.ReadLog();
-			Assert.AreEqual(null, log);
+			Assert.ThrowsException<EndOfStreamException>(reader.ReadLine);
 
 		}
 
@@ -94,7 +123,7 @@ namespace LogInspectLibTest
 			formatHandler = new FormatHandler();
 			formatHandler.AppendToNextPatterns.Add(@"\+$");
 			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
-			reader = new LogReader(stream, formatHandler);
+			reader = new LogReader(stream, Encoding.Default, formatHandler);
 
 			log = reader.ReadLog();
 			Assert.AreEqual(line1, log.ToString());
@@ -108,8 +137,7 @@ namespace LogInspectLibTest
 			Assert.AreEqual(line5, log.ToString());
 			log = reader.ReadLog();
 			Assert.AreEqual(line6+line7, log.ToString());
-			log = reader.ReadLog();
-			Assert.AreEqual(null, log);
+			Assert.ThrowsException<EndOfStreamException>(reader.ReadLine);
 
 		}
 
@@ -135,7 +163,7 @@ namespace LogInspectLibTest
 			formatHandler.Rules.Add(rule);
 
 			stream = new MemoryStream(Encoding.Default.GetBytes(logString2));
-			reader = new LogReader(stream, formatHandler);
+			reader = new LogReader(stream, Encoding.Default, formatHandler);
 
 			ev= reader.ReadEvent();
 			Assert.IsNotNull(ev.Log);
