@@ -4,27 +4,23 @@ using System.Text;
 
 namespace LogInspectLib
 {
-    public class Log
+    public struct Log
     {
-        public List<string> Lines
+        public Line[] Lines
         {
             get;
             private set;
         }
 		public long Position
 		{
-			get;
-			set;
+			get { return Lines[0].Position; }
 		}
 
-        public Log()
+        
+        public Log(params Line[] Lines)
         {
-            this.Lines = new List<string>();
-        }
-        public Log(IEnumerable<string> Lines,long Position)
-        {
-			this.Lines = new List<string>(Lines);
-			this.Position = Position;
+			if ((Lines == null) || (Lines.Length == 0)) throw (new ArgumentNullException("Lines"));
+			this.Lines = Lines;
         }
 
 		public string ToSingleLine()

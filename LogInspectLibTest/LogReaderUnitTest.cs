@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using LogInspectLib;
+using LogInspectLib.Readers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogInspectLibTest

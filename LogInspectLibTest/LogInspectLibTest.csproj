@@ -48,9 +48,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharReaderUnitTest.cs" />
+    <Compile Include="LineReaderUnitTest.cs" />
     <Compile Include="LogReaderUnitTest.cs" />
+    <Compile Include="LineUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormatHandlerUnitTest.cs" />
+    <Compile Include="LogUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

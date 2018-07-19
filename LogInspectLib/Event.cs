@@ -20,6 +20,11 @@ namespace LogInspectLib
 			set;
 		}
 
+		public long Position
+		{
+			get { return Log.Position; }
+		}
+
 		public List<Property> Properties
 		{
 			get;

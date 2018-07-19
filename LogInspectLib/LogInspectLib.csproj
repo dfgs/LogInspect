@@ -41,10 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseComponent.cs" />
+    <Compile Include="Readers\EventReader.cs" />
+    <Compile Include="Readers\Reader.cs" />
+    <Compile Include="Readers\CharReader.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="Line.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogParser.cs" />
-    <Compile Include="LogReader.cs" />
+    <Compile Include="Readers\LineReader.cs" />
+    <Compile Include="Readers\LogReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormatHandler.cs" />
     <Compile Include="Property.cs" />

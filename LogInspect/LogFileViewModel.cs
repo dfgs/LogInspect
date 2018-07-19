@@ -1,6 +1,7 @@
 ﻿using LogInspect.Models;
 using LogInspect.Modules;
 using LogInspectLib;
+using LogInspectLib.Readers;
 using LogLib;
 using System;
 using System.Collections;
@@ -15,7 +16,7 @@ using System.Windows;
 
 namespace LogInspect
 {
-	public class LogFileViewModel:ViewModel,IVirtualCollection//,IEnumerable<Event>,INotifyCollectionChanged
+	public class LogFileViewModel:ViewModel,IVirtualCollection
 	{
 
 		public string FileName
@@ -36,44 +37,16 @@ namespace LogInspect
 			private set { count = value; OnPropertyChanged(); }
 		}
 
-		/*private int position;
-		public int Position
-		{
-			get { return position; }
-			set { LoadItems(value);OnPropertyChanged(); }
-		}*/
-		
-
-		//private int currentPage;
-		/*private int pageSize;
-		private Event[] items;
-		public Event this[int index]
-		{
-			get
-			{
-				int t;
-				t = index - position;
-				if ((t < 0) || (t >= pageSize))
-				{
-					Log(LogLevels.Error, "Invalid event index used in indexer");
-					return null;
-				}
-				if (items == null) return null;
-				return items[t];
-
-			}
-		}*/
 		
 		private AppViewModel appViewModel;
 		private EventIndexerModule eventIndexerModule;
-		private LogReader logReader;
-
-		//public event NotifyCollectionChangedEventHandler CollectionChanged;
+		private EventReader eventReader;
 
 
-		public LogFileViewModel(ILogger Logger, AppViewModel AppViewModel, string FileName):base(Logger)
+
+		public LogFileViewModel(ILogger Logger, AppViewModel AppViewModel, string FileName,int BufferSize):base(Logger)
 		{
-			LogReader logReader;
+			EventReader eventReader;
 			
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
@@ -82,12 +55,12 @@ namespace LogInspect
 			//Count = 0;
 			Count = 0;
 			//pageSize = 10;
-			this.logReader = AppViewModel.CreateLogReader(FileName);
+			this.eventReader = AppViewModel.CreateEventReader(FileName,BufferSize);
 
-			logReader = AppViewModel.CreateLogReader(FileName);
-			if (logReader != null)
+			eventReader = AppViewModel.CreateEventReader(FileName,BufferSize);
+			if (eventReader != null)
 			{
-				eventIndexerModule = new EventIndexerModule(Logger, logReader);
+				eventIndexerModule = new EventIndexerModule(Logger, eventReader);
 				eventIndexerModule.EventIndexed += EventIndexerModule_EventIndexed;
 				Log(LogLevels.Debug, "Starting EventIndexer");
 				eventIndexerModule.Start();
@@ -160,10 +133,10 @@ namespace LogInspect
 				Log(LogLevels.Error, $"Failed to seek to position {StartIndex}");
 				yield break;
 			}
-			logReader.Seek(pos);
+			eventReader.Seek(pos);
 			for (int t = 0; t < Count; t++)
 			{
-				ev = logReader.ReadEvent();
+				ev = eventReader.ReadEvent();
 				if (ev == null) yield break;
 				yield return ev;
 			}

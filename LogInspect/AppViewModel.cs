@@ -1,4 +1,5 @@
 ﻿using LogInspectLib;
+using LogInspectLib.Readers;
 using LogLib;
 using System;
 using System.Collections.Generic;
@@ -101,19 +102,19 @@ namespace LogInspect
 			return formatHandler;
 		}
 
-		public LogReader CreateLogReader(string FileName)
+		public EventReader CreateEventReader(string FileName,int BufferSize)
 		{
 			Stream stream;
-			LogReader reader;
+			EventReader reader;
 			FormatHandler formatHandler;
 
 			formatHandler = GetFormatHandler(FileName);
 
-			Log(LogLevels.Information, "Creating log reader...");
+			Log(LogLevels.Information, "Creating event reader...");
 			try
 			{
 				stream = new FileStream(FileName, FileMode.Open,FileAccess.Read);
-				reader = new LogReader(stream, Encoding.Default, formatHandler);
+				reader = new EventReader(stream, Encoding.Default,BufferSize, formatHandler);
 			}
 			catch (Exception ex)
 			{

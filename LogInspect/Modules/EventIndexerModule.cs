@@ -1,4 +1,5 @@
 ﻿using LogInspectLib;
+using LogInspectLib.Readers;
 using LogLib;
 using ModuleLib;
 using System;
@@ -14,7 +15,7 @@ namespace LogInspect.Modules
 	public class EventIndexerModule : ThreadModule
 	{
 		private Dictionary<int,long> dictionary;
-		private LogReader logReader;
+		private EventReader eventReader;
 
 		public event EventIndexedHandler EventIndexed;
 
@@ -23,9 +24,9 @@ namespace LogInspect.Modules
 			get { return dictionary.Count; }
 		}
 
-		public EventIndexerModule(ILogger Logger, LogReader LogReader) : base("EventIndexer",Logger)
+		public EventIndexerModule(ILogger Logger, EventReader EventReader) : base("EventIndexer",Logger)
 		{
-			this.logReader = LogReader;
+			this.eventReader = EventReader;
 			dictionary = new Dictionary<int, long>();
 		}
 
@@ -37,12 +38,11 @@ namespace LogInspect.Modules
 			index = 0;
 			while(State==ModuleStates.Started)
 			{
-				while ((State == ModuleStates.Started) && (!logReader.EndOfStream))
+				while ((State == ModuleStates.Started) && (!eventReader.EndOfStream))
 				{
 					try
 					{
-						//pos = logReader.BaseStream.Position;
-						ev = logReader.ReadEvent();
+						ev = eventReader.Read();
 					}
 					catch (Exception ex)
 					{
@@ -51,7 +51,7 @@ namespace LogInspect.Modules
 					}
 					lock (dictionary)
 					{
-						dictionary.Add(index, ev.Log.Position);
+						dictionary.Add(index, ev.Position);
 					}
 					EventIndexed?.Invoke(ev, index);
 					index++;
