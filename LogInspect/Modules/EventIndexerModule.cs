@@ -55,7 +55,7 @@ namespace LogInspect.Modules
 					}
 					EventIndexed?.Invoke(ev, index);
 					index++;
-					Thread.Sleep(1000);
+					Thread.Sleep(500);
 				}
 
 			}

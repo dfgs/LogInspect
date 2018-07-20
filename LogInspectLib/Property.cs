@@ -8,6 +8,12 @@ namespace LogInspectLib
 {
 	public class Property
 	{
+		private static Property[] emptyProperties = new Property[0];
+		public static Property[] EmptyProperties
+		{
+			get { return emptyProperties; }
+		}
+
 		public string Name
 		{
 			get;

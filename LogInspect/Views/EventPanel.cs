@@ -109,7 +109,9 @@ namespace LogInspect.Views
 			FormattedText text;
 			IEnumerable<Event> events;
 			int y;
+			double dy;
 
+			dy = VerticalOffset % ItemHeight;
 			renderedCount = (int)(ViewportHeight / ItemHeight);
 			startIndex = (int)(VerticalOffset / ItemHeight);
 
@@ -120,11 +122,8 @@ namespace LogInspect.Views
 			y = 0;
 			foreach(Event ev in events)
 			{
-				if (ev != null)
-				{
-					text = new FormattedText(ev.Log.ToSingleLine(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 10, Brushes.Black);
-					drawingContext.DrawText(text, new Point(0, y * ItemHeight));
-				}
+				text = new FormattedText(ev.Log.ToSingleLine(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 10, Brushes.Black);
+				drawingContext.DrawText(text, new Point(0, y * ItemHeight-dy));
 				y++;
 
 			}
@@ -135,22 +134,22 @@ namespace LogInspect.Views
 
 		public void LineUp()
 		{
-			SetVerticalOffset(VerticalOffset - ItemHeight);
+			SetVerticalOffset(VerticalOffset - 1);
 		}
 
 		public void LineDown()
 		{
-			SetVerticalOffset(VerticalOffset + ItemHeight);
+			SetVerticalOffset(VerticalOffset + 1);
 		}
 
 		public void LineLeft()
 		{
-			SetHorizontalOffset(HorizontalOffset - 10);
+			SetHorizontalOffset(HorizontalOffset - 1);
 		}
 
 		public void LineRight()
 		{
-			SetHorizontalOffset(HorizontalOffset + 10);
+			SetHorizontalOffset(HorizontalOffset + 1);
 		}
 
 		public void PageUp()
@@ -175,12 +174,12 @@ namespace LogInspect.Views
 
 		public void MouseWheelUp()
 		{
-			SetVerticalOffset(VerticalOffset - ItemHeight);
+			SetVerticalOffset(VerticalOffset + ItemHeight);
 		}
 
 		public void MouseWheelDown()
 		{
-			SetVerticalOffset(VerticalOffset + ItemHeight);
+			SetVerticalOffset(VerticalOffset - ItemHeight);
 		}
 
 		public void MouseWheelLeft()

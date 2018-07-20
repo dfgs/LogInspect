@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public class Event
+	public struct Event
 	{
 		public Log Log
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public Rule Rule
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public long Position
@@ -25,15 +25,17 @@ namespace LogInspectLib
 			get { return Log.Position; }
 		}
 
-		public List<Property> Properties
+		public Property[] Properties
 		{
 			get;
-			set;
+			private set;
 		}
 
-		public Event()
+		public Event(Log Log,Rule Rule,params Property[] Properties)
 		{
-			Properties = new List<Property>();
+			//if (Rule == null) throw new ArgumentNullException("Rule");
+			if (Properties == null) throw new ArgumentNullException("Properties");
+			this.Log = Log;this.Rule = Rule;this.Properties = Properties;
 		}
 
 	}

@@ -55,7 +55,7 @@ namespace LogInspectLibTest
 			ev = reader.Read();
 			Assert.IsNotNull(ev.Log);
 			Assert.IsNotNull(ev.Rule);
-			Assert.AreEqual(4, ev.Properties.Count);
+			Assert.AreEqual(4, ev.Properties.Length);
 			Assert.AreEqual("C1", ev.Properties[0].Name);
 			Assert.AreEqual("1", ev.Properties[0].Value);
 			Assert.AreEqual("C2", ev.Properties[1].Name);

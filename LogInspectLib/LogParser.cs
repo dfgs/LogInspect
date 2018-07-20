@@ -20,26 +20,15 @@ namespace LogInspectLib
 			columns = Rule.GetColumns().ToArray();
 		}
 
-		public Event Parse(Log Log)
+		public Event? Parse(Log Log)
 		{
-			Property property;
 			Match match;
 			Event ev;
 
 			match = regex.Match(Log.ToSingleLine());
 			if (!match.Success) return null;
 
-			ev = new Event();
-			ev.Log = Log;
-			ev.Rule = rule;
-
-			foreach(string column in columns)
-			{
-				property = new Property();
-				property.Name = column;
-				property.Value = match.Groups[column].Value;
-				ev.Properties.Add(property);
-			}
+			ev = new Event(Log,rule, columns.Select(item=>new Property() { Name=item,Value=match.Groups[item].Value} ).ToArray() );
 
 			return ev;
 		}

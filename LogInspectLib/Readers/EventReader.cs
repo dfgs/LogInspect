@@ -56,18 +56,17 @@ namespace LogInspectLib.Readers
 		public override Event Read()
 		{
 			Log log;
-			Event ev;
+			Event? ev;
 
 			log = logReader.Read();
 			foreach(LogParser parser in logParsers)
 			{
 				ev = parser.Parse(log);
-				if (ev!=null) return ev;
+				if (ev.HasValue) return ev.Value;
 			}
 
-			ev = new Event();
-			ev.Log = log;
-			return ev;
+			return new Event(log,null,Property.EmptyProperties);
+			
 		}
 
 

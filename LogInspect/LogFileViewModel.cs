@@ -80,48 +80,9 @@ namespace LogInspect
 			}
 			
 		}
-		/*private void LoadPage(int Page)
-		{
-			long pos;
-			Event ev;
 
-			pos = eventIndexerModule.GetStreamPos(Page * pageSize);
-			if (pos==-1)
-			{
-				items = null;
-				return;
-			}
-			logReader.BaseStream.Seek(pos, SeekOrigin.Begin);
-			items = new Event[pageSize];
-			for(int t=0;t<pageSize;t++)
-			{
-				ev = logReader.ReadEvent();
-				items[t] = ev;
-			}
-			currentPage = Page;
-		}*/
+	
 
-		/*private void LoadItems(int Position)
-		{
-			long pos;
-			Event ev;
-
-			pos = eventIndexerModule?.GetStreamPos(Position)??-1;
-			if (pos==-1)
-			{
-				Log(LogLevels.Error, $"Failed to seek to position {Position}");
-				items = null;
-				return;
-			}
-			logReader.BaseStream.Seek(pos, SeekOrigin.Begin);
-			items = new Event[pageSize];
-			for(int t=0;t<pageSize;t++)
-			{
-				ev = logReader.ReadEvent();
-				items[t] = ev;
-			}
-			this.position=Position;
-		}*/
 		public IEnumerable<Event> GetEvents(int StartIndex, int Count)
 		{
 			long pos;
@@ -136,8 +97,15 @@ namespace LogInspect
 			eventReader.Seek(pos);
 			for (int t = 0; t < Count; t++)
 			{
-				ev = eventReader.Read();
-				if (ev == null) yield break;
+				try
+				{
+					ev = eventReader.Read();
+				}
+				catch(Exception ex)
+				{
+					Log(ex);
+					yield break;
+				}
 				yield return ev;
 			}
 		}
@@ -152,19 +120,7 @@ namespace LogInspect
 		}
 
 
-		/*protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-		{
-			CollectionChanged?.Invoke(this, e);
-		}
-		public IEnumerator<Event> GetEnumerator()
-		{
-			if (items == null) yield break;
-			foreach (Event item in items) yield return item;
-		}
+	
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}//*/
 	}
 }
