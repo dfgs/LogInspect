@@ -92,7 +92,7 @@ namespace LogInspect
 
 			if (dialog.ShowDialog(this)??false)
 			{
-				appViewModel.Open(dialog.FileName);
+				appViewModel.Open(dialog.FileName,Properties.Settings.Default.BufferSize);
 			}
 		}
 

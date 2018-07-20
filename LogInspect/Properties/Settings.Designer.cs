@@ -31,5 +31,14 @@ namespace LogInspect.Properties {
                 return ((string)(this["FormatHandlersFolder"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("65535")]
+        public int BufferSize {
+            get {
+                return ((int)(this["BufferSize"]));
+            }
+        }
     }
 }

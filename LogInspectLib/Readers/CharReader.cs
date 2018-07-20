@@ -56,9 +56,11 @@ namespace LogInspectLib.Readers
 		public override char Read()
 		{
 			char c;
-			if (bufferIndex == buffer.Length) Load();
+
+			if ((buffer==null) || (bufferIndex == buffer.Length)) Load();
 			c = buffer[bufferIndex];
-			bufferIndex+=encoding.GetByteCount(buffer,bufferIndex,1);
+			position += encoding.GetByteCount(buffer, bufferIndex, 1);
+			bufferIndex++;
 			return c;
 		}
 
@@ -71,7 +73,7 @@ namespace LogInspectLib.Readers
 			else
 			{
 				buffer = null;
-				stream.Seek(position, SeekOrigin.Begin);
+				stream.Seek(Position, SeekOrigin.Begin);
 			}
 			position = Position;
 		}

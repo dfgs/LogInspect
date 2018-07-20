@@ -43,11 +43,11 @@ namespace LogInspect
 			}
 		}
 
-		public void Open(string FileName)
+		public void Open(string FileName,int BufferSize)
 		{
 			LogFileViewModel logFile;
 
-			logFile = new LogFileViewModel(Logger, this,FileName);
+			logFile = new LogFileViewModel(Logger, this,FileName,BufferSize);
 			LogFiles.Add(logFile);
 			SelectedItem = logFile;
 		}

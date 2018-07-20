@@ -37,12 +37,13 @@ namespace LogInspectLibTest
 			stream = new MemoryStream(Encoding.Default.GetBytes(line));
 			reader = new LineReader(stream, Encoding.Default, 5);
 
-			Assert.AreEqual(line1, reader.Read());
-			Assert.AreEqual(line2, reader.Read());
-			Assert.AreEqual(line3, reader.Read());
-			Assert.AreEqual(line4, reader.Read());
-			Assert.AreEqual(line5, reader.Read());
-			Assert.AreEqual(line6, reader.Read());
+			Assert.AreEqual(line1, reader.Read().Value);
+			Assert.AreEqual(line2, reader.Read().Value);
+			Assert.AreEqual(line3, reader.Read().Value);
+			Assert.AreEqual(line4, reader.Read().Value);
+			Assert.AreEqual(line5, reader.Read().Value);
+			Assert.AreEqual(line6, reader.Read().Value);
+			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
 
 		}
@@ -55,15 +56,16 @@ namespace LogInspectLibTest
 			stream = new MemoryStream(Encoding.Default.GetBytes(line));
 			reader = new LineReader(stream, Encoding.Default, 4096);
 
-			Assert.AreEqual(line1, reader.Read());
-			Assert.AreEqual(line2, reader.Read());
-			Assert.AreEqual(line3, reader.Read());
+			Assert.AreEqual(line1, reader.Read().Value);
+			Assert.AreEqual(line2, reader.Read().Value);
+			Assert.AreEqual(line3, reader.Read().Value);
 			reader.Seek(Encoding.Default.GetByteCount(line1+"\r\n"));
-			Assert.AreEqual(line2, reader.Read());
-			Assert.AreEqual(line3, reader.Read());
-			Assert.AreEqual(line4, reader.Read());
-			Assert.AreEqual(line5, reader.Read());
-			Assert.AreEqual(line6, reader.Read());
+			Assert.AreEqual(line2, reader.Read().Value);
+			Assert.AreEqual(line3, reader.Read().Value);
+			Assert.AreEqual(line4, reader.Read().Value);
+			Assert.AreEqual(line5, reader.Read().Value);
+			Assert.AreEqual(line6, reader.Read().Value);
+			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
 		}
@@ -77,15 +79,16 @@ namespace LogInspectLibTest
 			stream = new MemoryStream(Encoding.Default.GetBytes(line));
 			reader = new LineReader(stream, Encoding.Default, 5);
 
-			Assert.AreEqual(line1, reader.Read());
-			Assert.AreEqual(line2, reader.Read());
-			Assert.AreEqual(line3, reader.Read());
+			Assert.AreEqual(line1, reader.Read().Value);
+			Assert.AreEqual(line2, reader.Read().Value);
+			Assert.AreEqual(line3, reader.Read().Value);
 			reader.Seek(Encoding.Default.GetByteCount(line1 + "\r\n"));
-			Assert.AreEqual(line2, reader.Read());
-			Assert.AreEqual(line3, reader.Read());
-			Assert.AreEqual(line4, reader.Read());
-			Assert.AreEqual(line5, reader.Read());
-			Assert.AreEqual(line6, reader.Read());
+			Assert.AreEqual(line2, reader.Read().Value);
+			Assert.AreEqual(line3, reader.Read().Value);
+			Assert.AreEqual(line4, reader.Read().Value);
+			Assert.AreEqual(line5, reader.Read().Value);
+			Assert.AreEqual(line6, reader.Read().Value);
+			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
 		}

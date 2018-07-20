@@ -136,7 +136,7 @@ namespace LogInspect
 			eventReader.Seek(pos);
 			for (int t = 0; t < Count; t++)
 			{
-				ev = eventReader.ReadEvent();
+				ev = eventReader.Read();
 				if (ev == null) yield break;
 				yield return ev;
 			}

@@ -41,6 +41,7 @@ namespace LogInspectLibTest
 			Assert.AreEqual('7', reader.Read());
 			Assert.AreEqual('8', reader.Read());
 			Assert.AreEqual('9', reader.Read());
+			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
 
 		}
@@ -68,6 +69,7 @@ namespace LogInspectLibTest
 			Assert.AreEqual('7', reader.Read());
 			Assert.AreEqual('8', reader.Read());
 			Assert.AreEqual('9', reader.Read());
+			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 		}
 
@@ -100,6 +102,7 @@ namespace LogInspectLibTest
 			Assert.AreEqual('7', reader.Read());
 			Assert.AreEqual('8', reader.Read());
 			Assert.AreEqual('9', reader.Read());
+			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 		}
 
