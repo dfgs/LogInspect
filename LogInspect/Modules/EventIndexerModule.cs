@@ -34,12 +34,15 @@ namespace LogInspect.Modules
 		{
 			Event ev ;
 			int index;
+			long previousTicks,newTicks;
 
+			previousTicks=Environment.TickCount;
 			index = 0;
 			while(State==ModuleStates.Started)
 			{
 				while ((State == ModuleStates.Started) && (!eventReader.EndOfStream))
 				{
+					
 					try
 					{
 						ev = eventReader.Read();
@@ -53,11 +56,16 @@ namespace LogInspect.Modules
 					{
 						dictionary.Add(index, ev.Position);
 					}
-					EventIndexed?.Invoke(ev, index);
+					newTicks = Environment.TickCount;
+					if (newTicks - previousTicks >= 500)	// prevent UI hangs because of too many updates
+					{
+						EventIndexed?.Invoke(ev, index);
+						previousTicks = newTicks;
+					}
 					index++;
-					Thread.Sleep(500);
+					Thread.Sleep(1); // limit cpu usage
 				}
-
+				if (State == ModuleStates.Started) WaitHandles(1000, QuitEvent);
 			}
 		}
 

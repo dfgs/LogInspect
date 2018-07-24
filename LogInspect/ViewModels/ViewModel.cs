@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace LogInspect
+namespace LogInspect.ViewModels
 {
 	public abstract class ViewModel:DependencyObject,INotifyPropertyChanged, IDisposable
 	{

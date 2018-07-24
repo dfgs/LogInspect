@@ -6,11 +6,10 @@
              xmlns:views="clr-namespace:LogInspect.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
-		<views:EventPanel ItemsSource="{Binding}" ItemsCount="{Binding Count}" ItemHeight="32" />
-	</ScrollViewer>
-	<!--DockPanel>
-		<ScrollBar DockPanel.Dock="Right" Orientation="Vertical" Maximum="{Binding Count}"/>
-		<ListBox ItemsSource="{Binding}"/>
-	</-->
+	<DockPanel>
+		<views:HeaderView DockPanel.Dock="Top"/>
+		<ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+			<views:EventPanel ItemsSource="{Binding}" ItemsCount="{Binding Count}" ItemHeight="32" />
+		</ScrollViewer>
+	</DockPanel>
 </UserControl>

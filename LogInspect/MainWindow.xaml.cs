@@ -1,4 +1,5 @@
-﻿using LogInspectLib;
+﻿using LogInspect.ViewModels;
+using LogInspectLib;
 using LogLib;
 using Microsoft.Win32;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,14 +33,16 @@ namespace LogInspect
 		{
 			InitializeComponent();
 
+			FormatHandler schema;
+			Rule rule;
 
-			FormatHandler schema = new FormatHandler();
-			schema.Name = "RCM";
+			#region rcm
+			schema = new FormatHandler();
+			schema.Name = "Nice.Perform.RCM";
 			schema.FileNamePattern = @"^RCM\.log(\.\d+)?$";
 			schema.AppendToNextPatterns.Add(@".*(?<!\u0003)$");
-			
 
-			Rule rule = new LogInspectLib.Rule() { Name = "Event" };
+			rule = new LogInspectLib.Rule() { Name = "Event" };
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"^\d\d/\d\d/\d\d \d\d:\d\d:\d\d\.\d+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
 			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^ ]+" });
@@ -55,7 +59,39 @@ namespace LogInspect
 			rule.Tokens.Add(new Token() { Pattern = @"^//" });
 			schema.Rules.Add(rule);
 			
-			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "RCM.xml"));
+			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.Perform.RCM.xml"));
+			#endregion
+
+			#region NTR
+			schema = new FormatHandler();
+			schema.Name = "Nice.NTR.Archiving";
+			schema.FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$";
+
+			//[2018-07-07 00:00:01.637 START] Starting new log-file or starting application.
+
+			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
+			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @": " });
+			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
+			schema.Rules.Add(rule);
+
+			rule = new LogInspectLib.Rule() { Name = "Event without thread" };
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
+			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
+			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
+			schema.Rules.Add(rule);
+
+			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
+			#endregion
+
 
 			logger = new ConsoleLogger(new DefaultLogFormatter());
 
@@ -65,6 +101,7 @@ namespace LogInspect
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
+			//Dispatcher.InvokeShutdown();
 			appViewModel.Dispose();
 		}
 

@@ -14,7 +14,8 @@
 	
     <DockPanel>
 		<StatusBar DockPanel.Dock="Bottom">
-			<TextBlock/>
+			<TextBlock Text="Events:"/>
+			<TextBlock Text="{Binding SelectedItem.Count,FallbackValue=NA}"/>
 		</StatusBar>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
 			<Button FontFamily="Segoe UI Symbol" Content="" Command="Open"/>
@@ -27,10 +28,7 @@
 			</TabControl.ItemTemplate>
 			<TabControl.ContentTemplate>
 				<DataTemplate>
-					<DockPanel>
-						<TextBlock DockPanel.Dock="Top" Text="{Binding Count}"/>
-						<views:EventView/>
-					</DockPanel>
+					<views:EventView/>
 				</DataTemplate>
 			</TabControl.ContentTemplate>
 		</TabControl>

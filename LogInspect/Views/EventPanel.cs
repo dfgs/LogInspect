@@ -110,6 +110,9 @@ namespace LogInspect.Views
 			IEnumerable<Event> events;
 			int y;
 			double dy;
+			Layout layout;
+			Point pos;
+			Rect rect;
 
 			dy = VerticalOffset % ItemHeight;
 			renderedCount = (int)(ViewportHeight / ItemHeight);
@@ -122,8 +125,23 @@ namespace LogInspect.Views
 			y = 0;
 			foreach(Event ev in events)
 			{
-				text = new FormattedText(ev.Log.ToSingleLine(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 10, Brushes.Black);
-				drawingContext.DrawText(text, new Point(0, y * ItemHeight-dy));
+				layout = new Layout(new Rect(0, y * ItemHeight - dy, this.RenderSize.Width, ItemHeight));
+				if (ev.Rule == null)
+				{
+					text = Layout.FormatText(ev.Log.ToSingleLine(), Brushes.Black);
+					pos = layout.GetTextPosition(text, HorizontalAlignment.Left, VerticalAlignment.Center);
+					drawingContext.DrawText(text, pos);
+				}
+				else
+				{
+					foreach(Property property in ev.Properties)
+					{
+						rect = layout.DockLeft(100);
+						text = Layout.FormatText(property.Value.ToString(), Brushes.Black,16,100);
+						pos = Layout.GetTextPosition(rect, text, HorizontalAlignment.Left, VerticalAlignment.Center);
+						drawingContext.DrawText(text, pos);
+					}
+				}
 				y++;
 
 			}
