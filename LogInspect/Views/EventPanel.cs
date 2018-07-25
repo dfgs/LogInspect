@@ -1,4 +1,4 @@
-﻿using LogInspect.Models;
+﻿using LogInspect.ViewModels;
 using LogInspectLib;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,34 @@ using System.Windows.Media;
 
 namespace LogInspect.Views
 {
-	public class EventPanel: FrameworkElement, IScrollInfo
+	public class EventPanel : VirtualizingStackPanel
+	{
+		public EventPanel()
+		{
+			DataContextChanged += EventPanel_DataContextChanged;
+		}
+
+		private void EventPanel_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			IVirtualCollection<Event> collection;
+			collection = e.OldValue as IVirtualCollection<Event>;
+			if (collection != null) collection.CountChanged -= Collection_CountChanged;
+			collection = e.NewValue as IVirtualCollection<Event>;
+			if (collection != null) collection.CountChanged += Collection_CountChanged;
+		}
+
+		private void Collection_CountChanged(object sender, EventArgs e)
+		{
+			ScrollOwner.InvalidateScrollInfo();
+			InvalidateMeasure();
+			
+		}
+
+
+
+	}
+
+	/*public class EventPanel: FrameworkElement, IScrollInfo
 	{
 		public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register("ItemHeight", typeof(double), typeof(EventPanel), new FrameworkPropertyMetadata(16.0d, FrameworkPropertyMetadataOptions.AffectsRender, LayoutPropertyChanged));
 		public double ItemHeight
@@ -256,5 +283,5 @@ namespace LogInspect.Views
 		#endregion
 
 
-	}
+	}*/
 }

@@ -1,5 +1,4 @@
-﻿using LogInspect.Models;
-using LogInspect.Modules;
+﻿using LogInspect.Modules;
 using LogInspectLib;
 using LogInspectLib.Readers;
 using LogLib;
@@ -16,7 +15,7 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-	public class LogFileViewModel:ViewModel,IVirtualCollection
+	public class LogFileViewModel:VirtualCollection<Event>
 	{
 
 		public string FileName
@@ -30,12 +29,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		private int count;
-		public int Count
-		{
-			get { return count; }
-			private set { count = value; OnPropertyChanged(); }
-		}
+		
 
 		public ColumnViewModel[] Columns
 		{
@@ -49,17 +43,15 @@ namespace LogInspect.ViewModels
 
 		private bool isDisposing;   // prevent hangs when closing application
 
-		public LogFileViewModel(ILogger Logger, AppViewModel AppViewModel, string FileName,int BufferSize):base(Logger)
+		public LogFileViewModel(ILogger Logger, AppViewModel AppViewModel, string FileName,int BufferSize):base(Logger,3,100)
 		{
 			EventReader indexerReader;
-			Rule rule;
 
 			isDisposing = false;
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
 			this.appViewModel = AppViewModel;
 
-			Count = 0;
 			this.eventReader = AppViewModel.CreateEventReader(FileName,BufferSize);
 
 			if (this.eventReader.FormatHandler.Rules.Count == 0) Columns = new ColumnViewModel[0];
@@ -90,21 +82,23 @@ namespace LogInspect.ViewModels
 			
 		}
 
-	
 
-		public IEnumerable<Event> GetEvents(int StartIndex, int Count)
+		protected override IEnumerable<Event> OnLoadPage(int PageIndex,int PageSize)
 		{
 			long pos;
 			Event ev;
+			int startIndex;
 
-			pos = eventIndexerModule?.GetStreamPos(StartIndex) ?? -1;
+			startIndex = PageIndex * PageSize;
+
+			pos = eventIndexerModule?.GetStreamPos(startIndex) ?? -1;
 			if (pos == -1)
 			{
-				Log(LogLevels.Error, $"Failed to seek to position {StartIndex}");
+				Log(LogLevels.Error, $"Failed to seek to position {startIndex}");
 				yield break;
 			}
 			eventReader.Seek(pos);
-			for (int t = 0; t < Count; t++)
+			for (int t = 0; t < PageSize; t++)
 			{
 				try
 				{
@@ -126,13 +120,12 @@ namespace LogInspect.ViewModels
 			{
 				Dispatcher.Invoke(() =>
 				{
-					Count = eventIndexerModule.Count;
+					SetCount(eventIndexerModule.Count);
+					OnPropertyChanged("Count");
 				});
 			}
 		}
 
-
-	
-
+		
 	}
 }

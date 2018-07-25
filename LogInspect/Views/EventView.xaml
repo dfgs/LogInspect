@@ -6,10 +6,19 @@
              xmlns:views="clr-namespace:LogInspect.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<DockPanel>
-		<views:HeaderView DockPanel.Dock="Top"/>
-		<ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
-			<views:EventPanel ItemsSource="{Binding}" ItemsCount="{Binding Count}" ItemHeight="32" />
-		</ScrollViewer>
-	</DockPanel>
+	<ListView ItemsSource="{Binding}" ScrollViewer.IsDeferredScrollingEnabled="True">
+		<ListView.View>
+			<GridView>
+				<GridView.Columns>
+					<GridViewColumn Header="test" Width="300" DisplayMemberBinding="{Binding Log}"/>
+				</GridView.Columns>
+			</GridView>
+		</ListView.View>
+		<ListView.ItemsPanel>
+			<ItemsPanelTemplate>
+				<views:EventPanel />
+			</ItemsPanelTemplate>
+		</ListView.ItemsPanel>
+	</ListView>
+	
 </UserControl>
