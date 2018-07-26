@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace LogInspect.ViewModels
 {
@@ -122,6 +123,9 @@ namespace LogInspect.ViewModels
 				{
 					SetCount(eventIndexerModule.Count);
 					OnPropertyChanged("Count");
+					OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Ev, Index));
+					//OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+					//CollectionViewSource.GetDefaultView(this).Refresh();
 				});
 			}
 		}

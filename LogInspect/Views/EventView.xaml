@@ -6,7 +6,7 @@
              xmlns:views="clr-namespace:LogInspect.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<ListView ItemsSource="{Binding}" ScrollViewer.IsDeferredScrollingEnabled="True">
+	<ListView ItemsSource="{Binding}" >
 		<ListView.View>
 			<GridView>
 				<GridView.Columns>
@@ -16,7 +16,7 @@
 		</ListView.View>
 		<ListView.ItemsPanel>
 			<ItemsPanelTemplate>
-				<views:EventPanel />
+				<VirtualizingStackPanel/>
 			</ItemsPanelTemplate>
 		</ListView.ItemsPanel>
 	</ListView>

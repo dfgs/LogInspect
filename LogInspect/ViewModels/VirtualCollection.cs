@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,7 @@ namespace LogInspect.ViewModels
 		public bool IsSynchronized => throw new NotImplementedException();
 
 		public event EventHandler CountChanged;
+		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
 		public VirtualCollection(ILogger Logger,int PageCount,int PageSize) : base(Logger)
 		{
@@ -97,6 +99,11 @@ namespace LogInspect.ViewModels
 		}
 		protected abstract IEnumerable<T> OnLoadPage(int PageIndex,int PageSize);
 
+		protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+		{
+			CollectionChanged?.Invoke(this, e);
+		}
+		
 		public void Add(T item)
 		{
 			throw new NotImplementedException();
@@ -114,12 +121,22 @@ namespace LogInspect.ViewModels
 
 		public bool Contains(T item)
 		{
-			throw new NotImplementedException();
+			return true;
+			foreach (Tuple<int, T[]> tuple in pages)
+			{
+				for (int t = 0; t < pageSize; t++)
+				{
+					if (item.Equals(tuple.Item2[t]))
+						return true;
+				}
+			}
+			return false;
 		}
 
 		public bool Contains(object value)
 		{
-			throw new NotImplementedException();
+			if (value == null) return false;
+			return Contains((T)value);
 		}
 
 		public void CopyTo(T[] array, int arrayIndex)
@@ -139,12 +156,21 @@ namespace LogInspect.ViewModels
 
 		public int IndexOf(T item)
 		{
-			throw new NotImplementedException();
+			return -1;
+			foreach(Tuple<int,T[]> tuple in pages)
+			{
+				for(int t=0;t<pageSize;t++)
+				{
+					if (item.Equals(tuple.Item2[t]))
+						return tuple.Item1 * pageSize + t;
+				}
+			}
+			return -1;
 		}
 
 		public int IndexOf(object value)
 		{
-			throw new NotImplementedException();
+			return IndexOf((T)value);
 		}
 
 		public void Insert(int index, T item)

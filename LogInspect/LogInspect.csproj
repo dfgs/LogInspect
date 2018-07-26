@@ -59,7 +59,6 @@
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\ColumnViewModel.cs" />
     <Compile Include="ViewModels\VirtualCollection.cs" />
-    <Compile Include="Views\EventPanel.cs" />
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
