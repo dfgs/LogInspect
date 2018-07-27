@@ -57,7 +57,7 @@ namespace LogInspect.Modules
 						dictionary.Add(index, ev.Position);
 					}
 					newTicks = Environment.TickCount;
-					//if (newTicks - previousTicks >= 500)	// prevent UI hangs because of too many updates
+					if (newTicks - previousTicks >= 500)	// prevent UI hangs because of too many updates
 					{
 						EventIndexed?.Invoke(ev, index);
 						previousTicks = newTicks;

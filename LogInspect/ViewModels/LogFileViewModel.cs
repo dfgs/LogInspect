@@ -16,8 +16,29 @@ using System.Windows.Data;
 
 namespace LogInspect.ViewModels
 {
-	public class LogFileViewModel:VirtualCollection<Event>
+	public class LogFileViewModel:ViewModel,IEnumerable<Event>,INotifyCollectionChanged
 	{
+
+		public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(LogFileViewModel), new PropertyMetadata(-1, PositionPropertyChanged));
+		public int Position
+		{
+			get { return (int)GetValue(PositionProperty); }
+			set { SetValue(PositionProperty, value); }
+		}
+
+		public static readonly DependencyProperty PageSizeProperty = DependencyProperty.Register("PageSize", typeof(int), typeof(LogFileViewModel), new PropertyMetadata(0, PageSizePropertyChanged));
+		public int PageSize
+		{
+			get { return (int)GetValue(PageSizeProperty); }
+			set { SetValue(PageSizeProperty, value); }
+		}
+
+
+		public int Count
+		{
+			get;
+			private set;
+		}
 
 		public string FileName
 		{
@@ -37,14 +58,17 @@ namespace LogInspect.ViewModels
 			get;
 			private set;
 		}
-		
+
+		private Event[] items;
 		private AppViewModel appViewModel;
 		private EventIndexerModule eventIndexerModule;
 		private EventReader eventReader;
 
 		private bool isDisposing;   // prevent hangs when closing application
 
-		public LogFileViewModel(ILogger Logger, AppViewModel AppViewModel, string FileName,int BufferSize):base(Logger,3,100)
+		public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+		public LogFileViewModel(ILogger Logger, AppViewModel AppViewModel, string FileName,int BufferSize):base(Logger)
 		{
 			EventReader indexerReader;
 
@@ -53,8 +77,10 @@ namespace LogInspect.ViewModels
 			this.Name = Path.GetFileName(FileName);
 			this.appViewModel = AppViewModel;
 
-			this.eventReader = AppViewModel.CreateEventReader(FileName,BufferSize);
+			this.items = new Event[PageSize];
 
+			this.eventReader = AppViewModel.CreateEventReader(FileName,BufferSize);
+			
 			if (this.eventReader.FormatHandler.Rules.Count == 0) Columns = new ColumnViewModel[0];
 			else Columns=this.eventReader.FormatHandler.Rules.First().GetColumns().Select(item=> new ColumnViewModel(Logger,item,150)).ToArray();
 
@@ -68,7 +94,7 @@ namespace LogInspect.ViewModels
 			}
 			else eventIndexerModule = null;
 
-			//LoadItems(0);
+			Position = 0;
 		}
 
 
@@ -83,20 +109,41 @@ namespace LogInspect.ViewModels
 			
 		}
 
+		protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+		{
+			CollectionChanged?.Invoke(this, e);
+		}
 
-		protected override IEnumerable<Event> OnLoadPage(int PageIndex,int PageSize)
+		private static void PageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((LogFileViewModel)d).OnPageSizeChanged((int)e.OldValue, (int)e.NewValue);
+		}
+		protected virtual void OnPageSizeChanged(int OldSize, int NewSize)
+		{
+			items = new Event[NewSize];
+			LoadItems(Position);
+		}
+
+		private static void PositionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((LogFileViewModel)d).OnPositionChanged((int)e.OldValue, (int)e.NewValue);
+		}
+		protected virtual void OnPositionChanged(int OldPosition,int NewPosition)
+		{
+			LoadItems(NewPosition);
+		}
+
+		private void LoadItems(int Position)
 		{
 			long pos;
 			Event ev;
-			int startIndex;
 
-			startIndex = PageIndex * PageSize;
 
-			pos = eventIndexerModule?.GetStreamPos(startIndex) ?? -1;
+			pos = eventIndexerModule?.GetStreamPos(Position) ?? -1;
 			if (pos == -1)
 			{
-				Log(LogLevels.Error, $"Failed to seek to position {startIndex}");
-				yield break;
+				Log(LogLevels.Error, $"Failed to seek to position {Position}");
+				return;
 			}
 			eventReader.Seek(pos);
 			for (int t = 0; t < PageSize; t++)
@@ -105,15 +152,15 @@ namespace LogInspect.ViewModels
 				{
 					ev = eventReader.Read();
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					Log(ex);
-					yield break;
+					return;
 				}
-				yield return ev;
+				items[t] = ev;
 			}
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
-
 
 		private void EventIndexerModule_EventIndexed(Event Ev, int Index)
 		{
@@ -121,15 +168,22 @@ namespace LogInspect.ViewModels
 			{
 				Dispatcher.Invoke(() =>
 				{
-					SetCount(eventIndexerModule.Count);
+					Count=eventIndexerModule.Count;
 					OnPropertyChanged("Count");
-					OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Ev, Index));
 					//OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 					//CollectionViewSource.GetDefaultView(this).Refresh();
 				});
 			}
 		}
 
-		
+		public IEnumerator<Event> GetEnumerator()
+		{
+			foreach (Event item in items) yield return item;
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
 	}
 }
