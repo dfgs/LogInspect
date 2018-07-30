@@ -9,6 +9,7 @@ namespace LogInspectLib.Readers
 {
     public class LogReader :Reader<Log>
     {
+		
 		public override bool EndOfStream
 		{
 			get { return lineReader.EndOfStream; }
@@ -52,12 +53,10 @@ namespace LogInspectLib.Readers
 			}
 			
 		}
-
-		public override void Seek(long Position)
+		protected override void OnSeek(long Position)
 		{
 			lineReader.Seek(Position);
 		}
-		
 
 
 		private bool MustAppendToNextLine(Line Line)
@@ -78,7 +77,7 @@ namespace LogInspectLib.Readers
 		}
 		
 
-		public override Log Read()
+		protected override Log OnRead()
         {
   			List<Line> lines;
 			Line line;

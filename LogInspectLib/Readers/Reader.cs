@@ -9,6 +9,12 @@ namespace LogInspectLib.Readers
 {
 	public abstract class Reader<T>
 	{
+		/*public int Index
+		{
+			get;
+			private set;
+		}*/
+
 
 		public abstract bool EndOfStream
 		{
@@ -19,9 +25,24 @@ namespace LogInspectLib.Readers
 			get;
 		}
 
-		public abstract T Read();
+		public Reader()
+		{
+		}
 
-		public abstract void Seek(long Position);
+		public T Read()
+		{
+			T item = OnRead();
+			return item;
+		}
+		protected abstract T OnRead();
+		protected abstract void OnSeek(long Position);
+		
+
+		public void Seek(long Position)
+		{
+			OnSeek(Position);
+		}
+		
 
 
 

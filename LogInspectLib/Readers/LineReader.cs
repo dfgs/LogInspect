@@ -9,6 +9,7 @@ namespace LogInspectLib.Readers
 {
     public class LineReader:Reader<Line>
     {
+
 		public override long Position
 		{
 			get { return charReader.Position; }
@@ -29,12 +30,13 @@ namespace LogInspectLib.Readers
 			this.charReader = new CharReader(Stream, Encoding, BufferSize);
 		}
 
-		public override void Seek(long Position)
+
+		protected override void OnSeek(long Position)
 		{
 			charReader.Seek(Position);
 		}
-		
-		public override Line Read()
+
+		protected override Line OnRead()
 		{
 			char c;
 			StringBuilder sb;
@@ -51,6 +53,7 @@ namespace LogInspectLib.Readers
 			} while (!charReader.EndOfStream);
 
 			return new Line(pos, sb.ToString());
+
 		}
 
 

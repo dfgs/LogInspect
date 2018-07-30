@@ -17,7 +17,7 @@ namespace LogInspect.Modules
 		private Dictionary<int,long> dictionary;
 		private EventReader eventReader;
 
-		public event EventIndexedHandler EventIndexed;
+		public event EventHandler Updated;
 
 		public int Count
 		{
@@ -59,14 +59,20 @@ namespace LogInspect.Modules
 					newTicks = Environment.TickCount;
 					if (newTicks - previousTicks >= 500)	// prevent UI hangs because of too many updates
 					{
-						EventIndexed?.Invoke(ev, index);
+						Updated?.Invoke(this, EventArgs.Empty);
 						previousTicks = newTicks;
 					}
 					index++;
 					Thread.Sleep(1); // limit cpu usage
 				}
-				if (State == ModuleStates.Started) WaitHandles(1000, QuitEvent);
+				if (State == ModuleStates.Started)
+				{
+					Updated?.Invoke(this,EventArgs.Empty);
+					WaitHandles(1000, QuitEvent);
+				}
 			}
+
+
 		}
 
 		public long GetStreamPos(int Index)

@@ -46,8 +46,22 @@ namespace LogInspect.ViewModels
 		public void Open(string FileName,int BufferSize)
 		{
 			LogFileViewModel logFile;
+			EventReader pageEventReader,indexerEventReader;
 
-			logFile = new LogFileViewModel(Logger, this,FileName,BufferSize);
+			pageEventReader = CreateEventReader(FileName, BufferSize);
+			if (pageEventReader == null) return;
+			indexerEventReader = CreateEventReader(FileName, BufferSize);
+			if (indexerEventReader == null) return;
+
+			try
+			{
+				logFile = new LogFileViewModel(Logger, pageEventReader,indexerEventReader);
+			}
+			catch(Exception ex)
+			{
+				Log(ex);
+				return;
+			}
 			LogFiles.Add(logFile);
 			SelectedItem = logFile;
 		}

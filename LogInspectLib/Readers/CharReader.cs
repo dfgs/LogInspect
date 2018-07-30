@@ -53,7 +53,7 @@ namespace LogInspectLib.Readers
 			else this.buffer = encoding.GetChars(bytes, 0, count);
 			bufferIndex = 0;
 		}
-		public override char Read()
+		protected override char OnRead()
 		{
 			char c;
 
@@ -64,9 +64,9 @@ namespace LogInspectLib.Readers
 			return c;
 		}
 
-		public override void Seek(long Position)
+		protected override void OnSeek(long Position)
 		{
-			if ((Position >= bufferPosition) && (Position<bufferPosition+bufferSize))
+			if ((Position >= bufferPosition) && (Position < bufferPosition + bufferSize))
 			{
 				bufferIndex = (int)(Position - bufferPosition);
 			}
@@ -77,6 +77,7 @@ namespace LogInspectLib.Readers
 			}
 			position = Position;
 		}
+		
 
 
 

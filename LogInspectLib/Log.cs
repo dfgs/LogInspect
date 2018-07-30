@@ -12,6 +12,11 @@ namespace LogInspectLib
             get;
             private set;
         }
+		/*public int Index
+		{
+			get;
+			private set;
+		}*/
 		public long Position
 		{
 			get { return Lines[0].Position; }
@@ -20,6 +25,7 @@ namespace LogInspectLib
         
         public Log(params Line[] Lines)
         {
+			//if (Index < 0) throw (new ArgumentException("Index"));
 			if ((Lines == null) || (Lines.Length == 0)) throw (new ArgumentNullException("Lines"));
 			this.Lines = Lines;
         }

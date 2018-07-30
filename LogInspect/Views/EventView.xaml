@@ -4,12 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
+			 xmlns:models="clr-namespace:LogInspectLib;assembly=LogInspectLib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+	<UserControl.Resources>
+		<DataTemplate DataType="{x:Type models:Property}">
+			<TextBlock Text="{Binding Value}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="propertyDataTemplate">
+			<TextBlock Text="{Binding Value}"/>
+		</DataTemplate>
+	</UserControl.Resources>
+	
+	
 	<DockPanel>
 		<ScrollBar DockPanel.Dock="Right" Value="{Binding Position}" Maximum="{Binding Count}" SmallChange="1" LargeChange="{Binding PageSize}" ViewportSize="{Binding PageSize}"/>
-		<ListView  ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Hidden"   >
+		<ListView  ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="ListView_MouseWheel" PreviewKeyDown="ListView_PreviewKeyDown" >
 			<ListView.ItemContainerStyle>
 				<Style TargetType="{x:Type ListViewItem}">
 					<Setter Property="Height" Value="24"/>
@@ -17,10 +28,8 @@
 				</Style>
 			</ListView.ItemContainerStyle>
 			<ListView.View>
-				<GridView>
-					<GridView.Columns>
-						<GridViewColumn Header="test" Width="300" DisplayMemberBinding="{Binding Log}"/>
-					</GridView.Columns>
+				<GridView views:GridViewColumns.ColumnsSource="{Binding Columns}" views:GridViewColumns.HeaderTextMember="Text" views:GridViewColumns.PropertyName="Text" >
+					
 				</GridView>
 			</ListView.View>
 			<ListView.ItemsPanel>

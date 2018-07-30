@@ -47,13 +47,13 @@ namespace LogInspectLib.Readers
 			
 		}
 
-		public override void Seek(long Position)
+		protected override void OnSeek(long Position)
 		{
 			logReader.Seek(Position);
 		}
-		
 
-		public override Event Read()
+
+		protected override Event OnRead()
 		{
 			Log log;
 			Event? ev;

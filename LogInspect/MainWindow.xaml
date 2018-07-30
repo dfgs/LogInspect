@@ -16,6 +16,8 @@
 		<StatusBar DockPanel.Dock="Bottom">
 			<TextBlock Text="Events:"/>
 			<TextBlock Text="{Binding SelectedItem.Count,FallbackValue=NA}"/>
+			<TextBlock Text="Position:"/>
+			<TextBlock Text="{Binding SelectedItem.Position,FallbackValue=NA}"/>
 		</StatusBar>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
 			<Button FontFamily="Segoe UI Symbol" Content="" Command="Open"/>

@@ -66,6 +66,7 @@ namespace LogInspect
 			schema = new FormatHandler();
 			schema.Name = "Nice.NTR.Archiving";
 			schema.FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$";
+			schema.AppendToPreviousPatterns.Add(@"^[^\[]");
 
 			//[2018-07-07 00:00:01.637 START] Starting new log-file or starting application.
 
@@ -75,7 +76,7 @@ namespace LogInspect
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
 			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
-			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]" });
+			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @": " });
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);

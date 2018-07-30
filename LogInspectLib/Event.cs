@@ -19,7 +19,10 @@ namespace LogInspectLib
 			get;
 			private set;
 		}
-
+		/*public int Index
+		{
+			get { return Log.Index; }
+		}*/
 		public long Position
 		{
 			get { return Log.Position; }
@@ -36,7 +39,15 @@ namespace LogInspectLib
 			//if (Rule == null) throw new ArgumentNullException("Rule");
 			if (Properties == null) throw new ArgumentNullException("Properties");
 			this.Log = Log;this.Rule = Rule;this.Properties = Properties;
+			
 		}
+
+		public Property GetProperty(string Name)
+		{
+			return Properties.FirstOrDefault(item => item.Name == Name);
+		}
+
+		
 
 	}
 }
