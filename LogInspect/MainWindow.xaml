@@ -6,22 +6,83 @@
         xmlns:local="clr-namespace:LogInspect" Closing="Window_Closing"
 		xmlns:views="clr-namespace:LogInspect.Views"
         mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" 
-        Title="Log Inspect" Height="450" Width="800" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-
+        Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	
+	<Window.Resources>
+		<views:IntPlusOneValueConverter x:Key="intPlusOneValueConverter"/>
+	</Window.Resources>
+	
 	<Window.CommandBindings>
 		<CommandBinding Command="Open" CanExecute="OpenCommandBinding_CanExecute" Executed="OpenCommandBinding_Executed"/>
 	</Window.CommandBindings>
 	
     <DockPanel>
 		<StatusBar DockPanel.Dock="Bottom">
-			<TextBlock Text="Events:"/>
-			<TextBlock Text="{Binding SelectedItem.Count,FallbackValue=NA}"/>
 			<TextBlock Text="Position:"/>
-			<TextBlock Text="{Binding SelectedItem.Position,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.Position,Converter={StaticResource intPlusOneValueConverter},FallbackValue=NA}"/>
+			<TextBlock Text="/"/>
+			<TextBlock Text="{Binding SelectedItem.Count,FallbackValue=NA}"/>
 		</StatusBar>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
 			<Button FontFamily="Segoe UI Symbol" Content="" Command="Open"/>
 		</StackPanel>
+
+		<Ribbon x:Name="RibbonWin"  SelectedIndex="0">
+			<!-- Help Pane, located at the right-hand side -->
+			<Ribbon.HelpPaneContent>
+				<RibbonButton SmallImageSource="Images\help.png" />
+			</Ribbon.HelpPaneContent>
+			<!-- Quick Access Toolbar - located at the upper-left corner -->
+			<Ribbon.QuickAccessToolBar>
+				<RibbonQuickAccessToolBar>
+					<RibbonButton x:Name ="Save" SmallImageSource="Images\save.png" />
+					<RibbonSplitButton x:Name ="Undo" SmallImageSource="Images\undo.png">
+						<RibbonSplitMenuItem Header="Undo 1" />
+						<RibbonSplitMenuItem Header="Undo 2" />
+						<RibbonSplitMenuItem Header="Undo 3" />
+					</RibbonSplitButton>
+					<RibbonSplitButton x:Name="Redo" SmallImageSource="Images\redo.png" >
+						<RibbonSplitMenuItem Header="Redo 1" />
+						<RibbonSplitMenuItem Header="Redo 2" />
+					</RibbonSplitButton>
+				</RibbonQuickAccessToolBar>
+			</Ribbon.QuickAccessToolBar>
+			<!-- Application Menu, located at the left-hand side (down arrow) -->
+			<Ribbon.ApplicationMenu>
+				<RibbonApplicationMenu KeyTip="F">
+					<RibbonApplicationMenuItem Header="Options" ImageSource="Images\options.png" />
+					<RibbonApplicationMenuItem Header="Exit" ImageSource="Images\quit.png" />
+				</RibbonApplicationMenu>
+			</Ribbon.ApplicationMenu>
+			<!-- Ribbon Tab #1: Home -->
+			<RibbonTab Header="Home" KeyTip="H" >
+				<!-- Home  group-->
+				<RibbonGroup x:Name="ClipboardGroup" Header="Home">
+					<RibbonMenuButton LargeImageSource="Images\paste.png" Label="Paste" KeyTip="V">
+						<RibbonMenuItem ImageSource="Images\paste.png" Header="Keep Text Only" KeyTip="T"/>
+						<RibbonMenuItem ImageSource="Images\paste.png" Header="Paste Special..." KeyTip="S"/>
+					</RibbonMenuButton>
+					<RibbonButton SmallImageSource="Images\cut.png" Label="Cut" KeyTip="X" />
+					<RibbonButton SmallImageSource="Images\copy.png" Label="Copy" KeyTip="C" />
+					<RibbonButton SmallImageSource="Images\format_painter.png" Label="Format Painter" KeyTip="FP" />
+				</RibbonGroup>
+				<!-- Employee And Payroll group-->
+				<RibbonGroup x:Name="Employee" Header="Employee And Payroll">
+					<RibbonMenuButton LargeImageSource="Images\personal.png" Label="Employee" KeyTip="V">
+						<RibbonMenuItem ImageSource="Images\paste.png" Header="Keep Text Only" KeyTip="T"/>
+						<RibbonMenuItem ImageSource="Images\paste.png" Header="Paste Special..." KeyTip="S"/>
+					</RibbonMenuButton>
+					<RibbonButton SmallImageSource="Images\save.png" Label="Save" KeyTip="X" />
+					<RibbonButton SmallImageSource="Images\add.png" Label="Add" KeyTip="C" />
+				</RibbonGroup>
+			</RibbonTab>
+			<!-- Ribbon Tab #2: -->
+			<RibbonTab Header="Insert" KeyTip="I">
+			</RibbonTab>
+			<!-- Ribbon Tab #3: -->
+			<RibbonTab Header="PageLayout" KeyTip="L">
+			</RibbonTab>
+		</Ribbon>
 		<TabControl ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedItem}">
 			<TabControl.ItemTemplate>
 				<DataTemplate>

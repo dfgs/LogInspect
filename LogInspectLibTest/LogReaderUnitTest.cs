@@ -10,20 +10,6 @@ namespace LogInspectLibTest
 	[TestClass]
 	public class LogReaderUnitTest
 	{
-		private static string line1 = "12/12/1980 08:53:22 Line 1#";
-		private static string line2 = "12/12/1980 08:53:22 Line 2#";
-		private static string line3 = " with comment 1";
-		private static string line4 = " with comment 2";
-		private static string line5 = " with comment 3";
-		private static string line6 = "12/12/1980 08:53:22 +";
-		private static string line7 = "Line 3#";
-		private static string logString1 = line1 + "\r\n" + line2 + "\r\n" + line3 + "\r\n" + line4 + "\r\n" + line5 + "\r\n" + line6 + "\r\n" + line7;
-
-		private static string log1 = "1|2|3|4";
-		private static string log2 = "1234";
-		private static string logString2 = log1 + "\r\n" + log2 ;
-
-
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
@@ -35,74 +21,158 @@ namespace LogInspectLibTest
 		}
 
 
-	
-
 		[TestMethod]
 		public void ShouldReadWithoutPatterns()
 		{
+			string[] items = new string[] {"item1", "item2", "item3","", "item4","" };
 			MemoryStream stream;
 			LogReader reader;
 			FormatHandler formatHandler;
 
-
 			formatHandler = new FormatHandler();
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items)+ "\r\n"));
 			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
 
-			
-			Assert.AreEqual(line1, reader.Read().ToSingleLine());
-			Assert.AreEqual(line2, reader.Read().ToSingleLine());
-			Assert.AreEqual(line3, reader.Read().ToSingleLine());
-			Assert.AreEqual(line4, reader.Read().ToSingleLine());
-			Assert.AreEqual(line5, reader.Read().ToSingleLine());
-			Assert.AreEqual(line6, reader.Read().ToSingleLine());
-			Assert.AreEqual(line7, reader.Read().ToSingleLine());
+			foreach (string item in items)
+			{
+				Assert.AreEqual(item, reader.Read().ToSingleLine());
+			}
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
-
 		}
 
+		[TestMethod]
+		public void ShouldDiscardBasedOnPatterns1()
+		{
+			string[] items = new string[] { "item1", "item2", "item3", "discard", "item4", "discard" };	// ending with discard
+			MemoryStream stream;
+			LogReader reader;
+			FormatHandler formatHandler;
+
+			formatHandler = new FormatHandler();
+			formatHandler.DiscardLinePatterns.Add("discard");
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
+			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+
+			Assert.IsTrue(reader.EndOfStream);
+			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
+		}
+		[TestMethod]
+		public void ShouldDiscardBasedOnPatterns2()
+		{
+			string[] items = new string[] {"discard", "item1", "item2", "item3", "discard", "item4" }; // starting with discard
+			MemoryStream stream;
+			LogReader reader;
+			FormatHandler formatHandler;
+
+			formatHandler = new FormatHandler();
+			formatHandler.DiscardLinePatterns.Add("discard");
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
+			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+
+			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
+
+			Assert.IsTrue(reader.EndOfStream);
+			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
+		}
 
 		[TestMethod]
 		public void ShouldReadLogWithAppendToPreviousPatterns()
 		{
+			string[] items = new string[] { "item1", "item2", " item3", " item4", "item5", "" };
 			MemoryStream stream;
 			LogReader reader;
 			FormatHandler formatHandler;
 
 
 			formatHandler = new FormatHandler();
-			formatHandler.AppendToPreviousPatterns.Add("^ ");
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
+			formatHandler.AppendLineToPreviousPatterns.Add("^ ");
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
 			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
 
-			Assert.AreEqual(line1, reader.Read().ToSingleLine());
-			Assert.AreEqual(line2+line3+line4+line5, reader.Read().ToSingleLine());
-			Assert.AreEqual(line6, reader.Read().ToSingleLine());
-			Assert.AreEqual(line7, reader.Read().ToSingleLine());
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1] + items[2] + items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
+
+			Assert.IsTrue(reader.EndOfStream);
+			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
+		}
+
+		[TestMethod]
+		public void ShouldReadLogWithAppendToNextPatterns()
+		{
+			string[] items = new string[] { "item1", "item2+", "item3+", "item4", "item5", "" };
+			MemoryStream stream;
+			LogReader reader;
+			FormatHandler formatHandler;
+
+			formatHandler = new FormatHandler();
+			formatHandler.AppendLineToNextPatterns.Add(@"\+$");
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
+			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
+
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1] + items[2] + items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
+
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
 		}
 
 		[TestMethod]
-		public void ShouldReadLogWithAppendToNextPatterns()
+		public void ShouldReadLogWithDiscardAndAppendToPreviousPatterns()
 		{
+			string[] items = new string[] { "item1", "item2", "discard", " item4", "item5", "" };
+			MemoryStream stream;
+			LogReader reader;
+			FormatHandler formatHandler;
+
+
+			formatHandler = new FormatHandler();
+			formatHandler.DiscardLinePatterns.Add("discard");
+			formatHandler.AppendLineToPreviousPatterns.Add("^ ");
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
+			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1] +  items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
+
+			Assert.IsTrue(reader.EndOfStream);
+			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
+		}
+
+		[TestMethod]
+		public void ShouldReadLogWithDiscardAndAppendToNextPatterns()
+		{
+			string[] items = new string[] { "item1", "item2+", "discard", "item4", "item5", "" };
 			MemoryStream stream;
 			LogReader reader;
 			FormatHandler formatHandler;
 
 			formatHandler = new FormatHandler();
-			formatHandler.AppendToNextPatterns.Add(@"\+$");
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
-			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
+			formatHandler.DiscardLinePatterns.Add("discard");
+			formatHandler.AppendLineToNextPatterns.Add(@"\+$");
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
+			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
 
-			Assert.AreEqual(line1, reader.Read().ToSingleLine());
-			Assert.AreEqual(line2, reader.Read().ToSingleLine());
-			Assert.AreEqual(line3, reader.Read().ToSingleLine());
-			Assert.AreEqual(line4, reader.Read().ToSingleLine());
-			Assert.AreEqual(line5, reader.Read().ToSingleLine());
-			Assert.AreEqual(line6+line7, reader.Read().ToSingleLine());
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1] + items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
+
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
@@ -111,24 +181,24 @@ namespace LogInspectLibTest
 		[TestMethod]
 		public void ShouldSeekWithoutLoad()
 		{
+			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 			MemoryStream stream;
 			LogReader reader;
 			FormatHandler formatHandler;
 
 			formatHandler = new FormatHandler();
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
 			reader = new LogReader(stream, Encoding.Default, 4096, formatHandler);
 
-			Assert.AreEqual(line1, reader.Read().ToSingleLine());
-			Assert.AreEqual(line2, reader.Read().ToSingleLine());
-			Assert.AreEqual(line3, reader.Read().ToSingleLine());
-			reader.Seek(Encoding.Default.GetByteCount(line1 + "\r\n"));
-			Assert.AreEqual(line2, reader.Read().ToSingleLine());
-			Assert.AreEqual(line3, reader.Read().ToSingleLine());
-			Assert.AreEqual(line4, reader.Read().ToSingleLine());
-			Assert.AreEqual(line5, reader.Read().ToSingleLine());
-			Assert.AreEqual(line6, reader.Read().ToSingleLine());
-			Assert.AreEqual(line7, reader.Read().ToSingleLine());
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
+			reader.Seek(Encoding.Default.GetByteCount(items[0]+ "\r\n"));
+			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
@@ -137,27 +207,26 @@ namespace LogInspectLibTest
 		[TestMethod]
 		public void ShouldSeekWithLoad()
 		{
+			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 			MemoryStream stream;
 			LogReader reader;
 			FormatHandler formatHandler;
 
 			formatHandler = new FormatHandler();
-			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
 			reader = new LogReader(stream, Encoding.Default, 5, formatHandler);
 
-			Assert.AreEqual(line1, reader.Read().ToSingleLine());
-			Assert.AreEqual(line2, reader.Read().ToSingleLine());
-			Assert.AreEqual(line3, reader.Read().ToSingleLine());
-			reader.Seek(Encoding.Default.GetByteCount(line1 + "\r\n"));
-			Assert.AreEqual(line2, reader.Read().ToSingleLine());
-			Assert.AreEqual(line3, reader.Read().ToSingleLine());
-			Assert.AreEqual(line4, reader.Read().ToSingleLine());
-			Assert.AreEqual(line5, reader.Read().ToSingleLine());
-			Assert.AreEqual(line6, reader.Read().ToSingleLine());
-			Assert.AreEqual(line7, reader.Read().ToSingleLine());
+			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
+			reader.Seek(Encoding.Default.GetByteCount(items[0] + "\r\n"));
+			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[3], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[4], reader.Read().ToSingleLine());
+			Assert.AreEqual(items[5], reader.Read().ToSingleLine());
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
-
 
 		}
 

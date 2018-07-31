@@ -27,7 +27,7 @@ namespace LogInspectLib.Readers
 
 		private List<Regex> appendToNextRegexes;
 		private List<Regex> appendToPreviousRegexes;
-
+		private List<Regex> discardRegexes;
 		
 		public LogReader(Stream Stream, Encoding Encoding,int BufferSize, FormatHandler FormatHandler):base()
         {
@@ -42,16 +42,21 @@ namespace LogInspectLib.Readers
 			
 			this.appendToNextRegexes = new List<Regex>();
 			this.appendToPreviousRegexes = new List<Regex>();
-			
-			foreach (string pattern in FormatHandler.AppendToPreviousPatterns)
+			this.discardRegexes = new List<Regex>();
+
+			foreach (string pattern in FormatHandler.AppendLineToPreviousPatterns)
 			{
 				this.appendToPreviousRegexes.Add(new Regex(pattern));
 			}
-			foreach (string pattern in FormatHandler.AppendToNextPatterns)
+			foreach (string pattern in FormatHandler.AppendLineToNextPatterns)
 			{
 				this.appendToNextRegexes.Add(new Regex(pattern));
 			}
-			
+			foreach (string pattern in FormatHandler.DiscardLinePatterns)
+			{
+				this.discardRegexes.Add(new Regex(pattern));
+			}
+
 		}
 		protected override void OnSeek(long Position)
 		{
@@ -75,7 +80,15 @@ namespace LogInspectLib.Readers
 			}
 			return false;
 		}
-		
+		private bool MustDiscardLine(Line Line)
+		{
+			foreach (Regex regex in discardRegexes)
+			{
+				if (regex.Match(Line.Value).Success) return true;
+			}
+			return false;
+		}
+
 
 		protected override Log OnRead()
         {
@@ -89,20 +102,30 @@ namespace LogInspectLib.Readers
 			do
 			{
 				line = lineReader.Read();
-				lines.Add(line);
-				mustAppend = MustAppendToNextLine(line);
+				if (MustDiscardLine(line))
+				{
+					mustAppend = true;
+				}
+				else
+				{
+					lines.Add(line);
+					mustAppend = MustAppendToNextLine(line);
+				}
 			} while ((mustAppend)&&(!EndOfStream));
 
 			while (!EndOfStream) 
 			{
 				pos = lineReader.Position;
 				line = lineReader.Read();
-				mustAppend = MustAppendToPreviousLine(line);
-				if (mustAppend) lines.Add(line);
-				else
+				if (!MustDiscardLine(line))
 				{
-					lineReader.Seek(pos);
-					break;
+					mustAppend = MustAppendToPreviousLine(line);
+					if (mustAppend) lines.Add(line);
+					else
+					{
+						lineReader.Seek(pos);
+						break;
+					}
 				}
 			}
 

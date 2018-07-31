@@ -26,7 +26,7 @@ namespace LogInspectLib
         public Log(params Line[] Lines)
         {
 			//if (Index < 0) throw (new ArgumentException("Index"));
-			if ((Lines == null) || (Lines.Length == 0)) throw (new ArgumentNullException("Lines"));
+			if (Lines == null)  throw (new ArgumentNullException("Lines"));
 			this.Lines = Lines;
         }
 

@@ -40,7 +40,7 @@ namespace LogInspect
 			schema = new FormatHandler();
 			schema.Name = "Nice.Perform.RCM";
 			schema.FileNamePattern = @"^RCM\.log(\.\d+)?$";
-			schema.AppendToNextPatterns.Add(@".*(?<!\u0003)$");
+			schema.AppendLineToNextPatterns.Add(@".*(?<!\u0003)$");
 
 			rule = new LogInspectLib.Rule() { Name = "Event" };
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"^\d\d/\d\d/\d\d \d\d:\d\d:\d\d\.\d+" });
@@ -66,8 +66,8 @@ namespace LogInspect
 			schema = new FormatHandler();
 			schema.Name = "Nice.NTR.Archiving";
 			schema.FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$";
-			schema.AppendToPreviousPatterns.Add(@"^[^\[]");
-
+			schema.AppendLineToPreviousPatterns.Add(@"^[^\[]");
+			schema.DiscardLinePatterns.Add(@"^$");
 			//[2018-07-07 00:00:01.637 START] Starting new log-file or starting application.
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
@@ -89,6 +89,7 @@ namespace LogInspect
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);
+
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion

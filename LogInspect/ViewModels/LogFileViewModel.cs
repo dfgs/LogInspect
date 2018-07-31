@@ -53,13 +53,6 @@ namespace LogInspect.ViewModels
 
 
 
-		
-
-		public ColumnViewModel[] Columns
-		{
-			get;
-			private set;
-		}
 
 		private List<EventViewModel> items;
 		private EventIndexerModule eventIndexerModule;
@@ -69,7 +62,7 @@ namespace LogInspect.ViewModels
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-		public LogFileViewModel(ILogger Logger, EventReader PageEventReader,EventReader IndexerEventReader ):base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader ):base(Logger)
 		{
 
 			isDisposing = false;
@@ -79,9 +72,6 @@ namespace LogInspect.ViewModels
 			this.items = new List<EventViewModel>();
 			this.pageEventReader = PageEventReader;
 			
-			if (this.pageEventReader.FormatHandler.Rules.Count == 0) Columns = new ColumnViewModel[0];
-			else Columns=this.pageEventReader.FormatHandler.Rules.First().GetColumns().Select(item=> new ColumnViewModel(Logger,item,150)).ToArray();
-
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader);
 			eventIndexerModule.Updated += EventIndexerModule_Updated;
 
@@ -124,8 +114,11 @@ namespace LogInspect.ViewModels
 			LogFileViewModel vm;
 
 			vm = (LogFileViewModel)d;
+			if (vm.Count == 0) return 0;
+
 			value = (int)baseValue;
-			if ((value < 0) || (value>=vm.Count)) return DependencyProperty.UnsetValue;
+			if (value < 0) return 0;
+			if (value>=vm.Count) return vm.Count-1;
 			return baseValue;
 		}
 
@@ -142,19 +135,27 @@ namespace LogInspect.ViewModels
 		{
 			long pos;
 			Event ev;
-
-			//if (Position == -1) return;
+			int eventIndex;
+			int lineIndex;
 
 			items.Clear();
 
-			pos = eventIndexerModule?.GetStreamPos(Index) ?? -1;
+			if (eventIndexerModule==null)
+			{
+				Log(LogLevels.Warning, $"Event indexer not yet ready");
+				return;
+			}
+			pos = eventIndexerModule.GetStreamPos(Index);
+			lineIndex = eventIndexerModule.GetLineIndex(Index) +1;
+
 			if (pos == -1)
 			{
 				Log(LogLevels.Error, $"Failed to seek to position {Index}");
 				return;
 			}
 			pageEventReader.Seek(pos);
-			for (int t = 0; (t < PageSize) && (!pageEventReader.EndOfStream); t++)
+			eventIndex = Index;
+			while ((items.Count < PageSize) && (!pageEventReader.EndOfStream))
 			{
 				try
 				{
@@ -165,7 +166,10 @@ namespace LogInspect.ViewModels
 					Log(ex);
 					return;
 				}
-				items.Add(new EventViewModel(Logger,ev,Index+t));
+				
+				if (!(ev.Rule?.Discard ?? false))  items.Add(new EventViewModel(Logger,ev,eventIndex,lineIndex));
+				eventIndex++;
+				lineIndex += ev.Log.Lines.Length;
 			}
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}

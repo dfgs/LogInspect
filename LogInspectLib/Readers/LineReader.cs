@@ -46,7 +46,7 @@ namespace LogInspectLib.Readers
 			sb = new StringBuilder(1024);
 			do
 			{
-				c = charReader.Read(); ;
+				c = charReader.Read();
 				if (c == '\n') break;
 				if (c == '\r') continue;
 				sb.Append(c);

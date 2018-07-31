@@ -10,13 +10,6 @@ namespace LogInspectLibTest
 	[TestClass]
 	public class LineReaderUnitTest
 	{
-		private static string line1 = "line1";
-		private static string line2 = "line2";
-		private static string line3 = "line3";
-		private static string line4 = "line4";
-		private static string line5 = "line5";
-		private static string line6 = "line6";
-		private static string line = line1 + "\r\n" + line2 + "\r\n" + line3 + "\r\n" + line4 + "\r\n" + line5 + "\r\n" + line6 ;
 
 
 		[TestMethod]
@@ -33,16 +26,15 @@ namespace LogInspectLibTest
 		{
 			MemoryStream stream;
 			LineReader reader;
+			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(line));
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items)+"\r\n"));
 			reader = new LineReader(stream, Encoding.Default, 5);
 
-			Assert.AreEqual(line1, reader.Read().Value);
-			Assert.AreEqual(line2, reader.Read().Value);
-			Assert.AreEqual(line3, reader.Read().Value);
-			Assert.AreEqual(line4, reader.Read().Value);
-			Assert.AreEqual(line5, reader.Read().Value);
-			Assert.AreEqual(line6, reader.Read().Value);
+			foreach (string item in items)
+			{
+				Assert.AreEqual(item, reader.Read().Value);
+			}
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
 
@@ -52,19 +44,20 @@ namespace LogInspectLibTest
 		{
 			MemoryStream stream;
 			LineReader reader;
+			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(line));
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
 			reader = new LineReader(stream, Encoding.Default, 4096);
 
-			Assert.AreEqual(line1, reader.Read().Value);
-			Assert.AreEqual(line2, reader.Read().Value);
-			Assert.AreEqual(line3, reader.Read().Value);
-			reader.Seek(Encoding.Default.GetByteCount(line1+"\r\n"));
-			Assert.AreEqual(line2, reader.Read().Value);
-			Assert.AreEqual(line3, reader.Read().Value);
-			Assert.AreEqual(line4, reader.Read().Value);
-			Assert.AreEqual(line5, reader.Read().Value);
-			Assert.AreEqual(line6, reader.Read().Value);
+			for(int t=0;t<3;t++)
+			{
+				Assert.AreEqual(items[t], reader.Read().Value);
+			}
+			reader.Seek(Encoding.Default.GetByteCount(items[0]+"\r\n"));
+			for (int t = 1; t < items.Length; t++)
+			{
+				Assert.AreEqual(items[t], reader.Read().Value);
+			}
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
@@ -75,19 +68,20 @@ namespace LogInspectLibTest
 		{
 			MemoryStream stream;
 			LineReader reader;
+			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(line));
+			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
 			reader = new LineReader(stream, Encoding.Default, 5);
 
-			Assert.AreEqual(line1, reader.Read().Value);
-			Assert.AreEqual(line2, reader.Read().Value);
-			Assert.AreEqual(line3, reader.Read().Value);
-			reader.Seek(Encoding.Default.GetByteCount(line1 + "\r\n"));
-			Assert.AreEqual(line2, reader.Read().Value);
-			Assert.AreEqual(line3, reader.Read().Value);
-			Assert.AreEqual(line4, reader.Read().Value);
-			Assert.AreEqual(line5, reader.Read().Value);
-			Assert.AreEqual(line6, reader.Read().Value);
+			for (int t = 0; t < 3; t++)
+			{
+				Assert.AreEqual(items[t], reader.Read().Value);
+			}
+			reader.Seek(Encoding.Default.GetByteCount(items[0] + "\r\n"));
+			for (int t = 1; t < items.Length; t++)
+			{
+				Assert.AreEqual(items[t], reader.Read().Value);
+			}
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 

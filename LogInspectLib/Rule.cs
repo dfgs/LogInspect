@@ -17,6 +17,12 @@ namespace LogInspectLib
 			set;
 		}
 
+		[XmlAttribute]
+		public bool Discard
+		{
+			get;
+			set;
+		}
 		[XmlArray]
 		public List<Token> Tokens
 		{

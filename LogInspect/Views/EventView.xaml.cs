@@ -53,6 +53,14 @@ namespace LogInspect.Views
 					e.Handled = true;
 					ViewModel.Position++;
 					break;
+				case Key.PageUp:
+					e.Handled = true;
+					ViewModel.Position -= ViewModel.PageSize;
+					break;
+				case Key.PageDown:
+					e.Handled = true;
+					ViewModel.Position += ViewModel.PageSize;
+					break;
 				default:
 					e.Handled = false;
 					break;

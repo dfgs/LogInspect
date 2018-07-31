@@ -11,7 +11,6 @@ namespace LogInspectLibTest
 		public void ShouldHaveCorrectConstructorParameters()
 		{
 			Assert.ThrowsException<ArgumentNullException>(() => { new Log(null); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new Log(new Line[0]); });
 		}
 	}
 }

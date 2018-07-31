@@ -24,20 +24,27 @@ namespace LogInspectLib
 		}
 
 		[XmlArray]
-		public List<string> AppendToPreviousPatterns
+		public List<string> AppendLineToPreviousPatterns
 		{
 			get;
 			set;
 		}
-		
+
 
 		[XmlArray]
-		public List<string> AppendToNextPatterns
+		public List<string> AppendLineToNextPatterns
 		{
 			get;
 			set;
 		}
-		
+
+		[XmlArray]
+		public List<string> DiscardLinePatterns
+		{
+			get;
+			set;
+		}
+
 
 		[XmlArray]
 		public List<Rule> Rules
@@ -50,8 +57,9 @@ namespace LogInspectLib
 
 		public FormatHandler()
 		{
-			AppendToNextPatterns = new List<string>();
-			AppendToPreviousPatterns = new List<string>();
+			AppendLineToNextPatterns = new List<string>();
+			AppendLineToPreviousPatterns = new List<string>();
+			DiscardLinePatterns = new List<string>();
 			Rules = new List<Rule>();
 		}
 

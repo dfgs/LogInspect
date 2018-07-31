@@ -10,7 +10,6 @@ namespace LogInspectLibTest
 	[TestClass]
 	public class CharReaderUnitTest
 	{
-		private static string line = "0123456789";
 
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
@@ -26,21 +25,15 @@ namespace LogInspectLibTest
 		{
 			MemoryStream stream;
 			CharReader reader;
+			string items = "0123456789";
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(line));
-			reader = new CharReader(stream, Encoding.Default,5);
+			stream = new MemoryStream(Encoding.Default.GetBytes(items));
+			reader = new CharReader(stream, Encoding.Default, 5);
 
-
-			Assert.AreEqual('0', reader.Read());
-			Assert.AreEqual('1', reader.Read());
-			Assert.AreEqual('2', reader.Read());
-			Assert.AreEqual('3', reader.Read());
-			Assert.AreEqual('4', reader.Read());
-			Assert.AreEqual('5', reader.Read());
-			Assert.AreEqual('6', reader.Read());
-			Assert.AreEqual('7', reader.Read());
-			Assert.AreEqual('8', reader.Read());
-			Assert.AreEqual('9', reader.Read());
+			foreach (char item in items)
+			{ 
+				Assert.AreEqual(item, reader.Read());
+			}
 			Assert.IsTrue(reader.EndOfStream);
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
 
@@ -51,8 +44,9 @@ namespace LogInspectLibTest
 		{
 			MemoryStream stream;
 			CharReader reader;
+			string items = "0123456789";
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(line));
+			stream = new MemoryStream(Encoding.Default.GetBytes(items));
 			reader = new CharReader(stream, Encoding.Default, 5);
 
 
@@ -78,8 +72,9 @@ namespace LogInspectLibTest
 		{
 			MemoryStream stream;
 			CharReader reader;
+			string items = "0123456789";
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(line));
+			stream = new MemoryStream(Encoding.Default.GetBytes(items));
 			reader = new CharReader(stream, Encoding.Default, 5);
 
 
