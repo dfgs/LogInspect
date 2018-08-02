@@ -1,5 +1,4 @@
-﻿using LogInspect.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,22 +15,14 @@ using System.Windows.Shapes;
 
 namespace LogInspect.Views
 {
-	/// <summary>
-	/// Logique d'interaction pour EventView.xaml
-	/// </summary>
-	public partial class EventView : UserControl
-	{
-
-		public EventView()
-		{
-			InitializeComponent();
-		}
-
-
-		
-
-		
-
-
-	}
+    /// <summary>
+    /// Logique d'interaction pour ColumnsView.xaml
+    /// </summary>
+    public partial class ColumnsView : UserControl
+    {
+        public ColumnsView()
+        {
+            InitializeComponent();
+        }
+    }
 }

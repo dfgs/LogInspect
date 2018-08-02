@@ -55,7 +55,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader);
+				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader,100,3);
 			}
 			catch(Exception ex)
 			{

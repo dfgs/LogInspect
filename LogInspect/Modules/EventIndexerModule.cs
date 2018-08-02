@@ -1,4 +1,5 @@
-﻿using LogInspectLib;
+﻿using LogInspect.Models;
+using LogInspectLib;
 using LogInspectLib.Readers;
 using LogLib;
 using ModuleLib;
@@ -14,8 +15,7 @@ namespace LogInspect.Modules
 
 	public class EventIndexerModule : ThreadModule
 	{
-		//TODO download value tuple
-		private Dictionary<int,Tuple<long, int>> dictionary;
+		private Dictionary<int,FileIndex> dictionary;
 		private EventReader eventReader;
 
 		public event EventHandler Updated;
@@ -28,23 +28,22 @@ namespace LogInspect.Modules
 		public EventIndexerModule(ILogger Logger, EventReader EventReader) : base("EventIndexer",Logger)
 		{
 			this.eventReader = EventReader;
-			dictionary = new Dictionary<int, Tuple<long,int> >();
+			dictionary = new Dictionary<int, FileIndex >();
 		}
 
 		protected override void ThreadLoop()
 		{
 			Event ev ;
-			int index;
+			int eventIndex;
 			int lineIndex;
 			long previousTicks,newTicks;
 
 			previousTicks=Environment.TickCount;
-			index = 0;lineIndex = 0;
+			eventIndex = 0;lineIndex = 0;
 			while(State==ModuleStates.Started)
 			{
 				while ((State == ModuleStates.Started) && (!eventReader.EndOfStream))
 				{
-					
 					try
 					{
 						ev = eventReader.Read();
@@ -56,7 +55,7 @@ namespace LogInspect.Modules
 					}
 					lock (dictionary)
 					{
-						dictionary.Add(index, new Tuple<long, int>( ev.Position, lineIndex));
+						dictionary.Add(eventIndex, new FileIndex(eventReader.Position,lineIndex, eventIndex));
 					}
 					newTicks = Environment.TickCount;
 					if (newTicks - previousTicks >= 500)	// prevent UI hangs because of too many updates
@@ -64,7 +63,7 @@ namespace LogInspect.Modules
 						Updated?.Invoke(this, EventArgs.Empty);
 						previousTicks = newTicks;
 					}
-					index++;lineIndex += ev.Log.Lines.Length;
+					eventIndex++;lineIndex += ev.Log.Lines.Length;
 					Thread.Sleep(1); // limit cpu usage
 				}
 				if (State == ModuleStates.Started)
@@ -77,44 +76,20 @@ namespace LogInspect.Modules
 
 		}
 
-		public long GetStreamPos(int EventIndex)
+		public bool GetFileIndex(int EventIndex,out FileIndex FileIndex)
 		{
-			long result;
-
-			if (EventIndex == 0) return 0; // we return valid result even if thread is not yet started
+			if (EventIndex == 0)
+			{
+				// we return valid result even if thread is not yet started
+				FileIndex = new FileIndex(0, 0, 0);
+				return true;
+			}
 			lock(dictionary)
 			{
-				try
-				{
-					result = dictionary[EventIndex].Item1;
-				}
-				catch(Exception ex)
-				{
-					Log(ex);
-					return -1;
-				}
+				return dictionary.TryGetValue(EventIndex, out FileIndex);
 			}
-			return result;
 		}
-		public int GetLineIndex(int EventIndex)
-		{
-			int result;
-
-			if (EventIndex == 0) return 0; // we return valid result even if thread is not yet started
-			lock (dictionary)
-			{
-				try
-				{
-					result = dictionary[EventIndex].Item2;
-				}
-				catch (Exception ex)
-				{
-					Log(ex);
-					return -1;
-				}
-			}
-			return result;
-		}
+		
 
 
 

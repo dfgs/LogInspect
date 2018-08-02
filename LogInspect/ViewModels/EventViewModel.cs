@@ -50,6 +50,10 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
+		public Rule Rule
+		{
+			get { return ev.Rule; }
+		}
 		public IEnumerable<string> Lines
 		{
 			get
@@ -64,12 +68,6 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(EventViewModel));
-		public bool IsSelected
-		{
-			get { return (bool)GetValue(IsSelectedProperty); }
-			set { SetValue(IsSelectedProperty, value); }
-		}
 
 
 		public EventViewModel(ILogger Logger, Event Event, int EventIndex, int LineIndex) : base(Logger)
@@ -92,6 +90,14 @@ namespace LogInspect.ViewModels
 				if (severity.Contains("ERR")) Background = Brushes.OrangeRed;
 				if (severity.Contains("FAT")) Background = Brushes.Red;
 			}
+		}
+
+		public string GetPropertyValue(string PropertyName)
+		{
+			object value;
+			value = ev.GetProperty(PropertyName)?.Value;
+			if (value == null) return null;
+			return value.ToString();
 		}
 
 	}

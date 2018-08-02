@@ -1,4 +1,5 @@
-﻿using LogInspect.Modules;
+﻿using LogInspect.Models;
+using LogInspect.Modules;
 using LogInspectLib;
 using LogInspectLib.Readers;
 using LogLib;
@@ -16,21 +17,20 @@ using System.Windows.Data;
 
 namespace LogInspect.ViewModels
 {
-	public class LogFileViewModel:ViewModel,IEnumerable<EventViewModel>,INotifyCollectionChanged
+	public class LogFileViewModel:ViewModel//,IEnumerable<EventViewModel>//,INotifyCollectionChanged
 	{
 
-		public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(LogFileViewModel), new PropertyMetadata(0, PositionPropertyChanged,PositionPropertyCoerced));
+		public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(LogFileViewModel));
 		public int Position
 		{
 			get { return (int)GetValue(PositionProperty); }
 			set { SetValue(PositionProperty, value); }
 		}
 
-		public static readonly DependencyProperty PageSizeProperty = DependencyProperty.Register("PageSize", typeof(int), typeof(LogFileViewModel), new PropertyMetadata(0, PageSizePropertyChanged));
-		public int PageSize
+		public List<ColumnViewModel> Columns
 		{
-			get { return (int)GetValue(PageSizeProperty); }
-			set { SetValue(PageSizeProperty, value); }
+			get;
+			private set;
 		}
 
 
@@ -52,30 +52,42 @@ namespace LogInspect.ViewModels
 		}
 
 
+		private int pageSize;
+		//private int pageCount;
+		private Cache<int,Page> pages;
 
-
-		private List<EventViewModel> items;
 		private EventIndexerModule eventIndexerModule;
 		private EventReader pageEventReader;
 
 		private bool isDisposing;   // prevent hangs when closing application
 
-		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader ):base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount ):base(Logger)
 		{
 
 			isDisposing = false;
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
 
-			this.items = new List<EventViewModel>();
+			this.pageSize = PageSize;
+			//this.pageCount = PageCount;
+			pages = new Cache<int, Page>(PageCount);
+
 			this.pageEventReader = PageEventReader;
+
+			Columns = new List<ColumnViewModel>();
 			
+			if (pageEventReader.FormatHandler.Rules.Count > 0)
+			{
+				foreach(string property in pageEventReader.FormatHandler.Rules[0].GetColumns())
+				{
+					Columns.Add(new ColumnViewModel(Logger, property));
+				}
+			}
+
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader);
 			eventIndexerModule.Updated += EventIndexerModule_Updated;
 
-			LoadItems(0);
 
 			Log(LogLevels.Debug, "Starting EventIndexer");
 			eventIndexerModule.Start();
@@ -91,71 +103,42 @@ namespace LogInspect.ViewModels
 				Log(LogLevels.Debug, "Stopping EventIndexer");
 				eventIndexerModule.Stop();
 			}
-			
+			pages.Clear();
+			pages = null;
 		}
 
-		protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+		private Page GetPage(int PageIndex)
 		{
-			CollectionChanged?.Invoke(this, e);
-		}
+			Page page;
 
-		private static void PageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((LogFileViewModel)d).OnPageSizeChanged((int)e.OldValue, (int)e.NewValue);
+			if (!pages.TryGetValue(PageIndex,out page))
+			{
+				page = new Page(PageIndex, pageSize);
+				if (!LoadPage(page)) return null;
+				pages.Add(PageIndex, page);
+			}
+			else
+			{
+				if (!page.IsComplete) LoadPage(page);
+			}
+			return page;
 		}
-		protected virtual void OnPageSizeChanged(int OldSize, int NewSize)
+		private bool LoadPage(Page Page)
 		{
-			LoadItems(Position);
-		}
-
-		private static object PositionPropertyCoerced(DependencyObject d, object baseValue)
-		{
-			int value;
-			LogFileViewModel vm;
-
-			vm = (LogFileViewModel)d;
-			if (vm.Count == 0) return 0;
-
-			value = (int)baseValue;
-			if (value < 0) return 0;
-			if (value>=vm.Count) return vm.Count-1;
-			return baseValue;
-		}
-
-		private static void PositionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((LogFileViewModel)d).OnPositionChanged((int)e.OldValue, (int)e.NewValue);
-		}
-		protected virtual void OnPositionChanged(int OldPosition,int NewPosition)
-		{
-			LoadItems(NewPosition);
-		}
-
-		private void LoadItems(int Index)
-		{
-			long pos;
 			Event ev;
 			int eventIndex;
-			int lineIndex;
+			FileIndex fileIndex;
 
-			items.Clear();
+			eventIndex = Page.Index * pageSize;
 
-			if (eventIndexerModule==null)
+			if (!eventIndexerModule.GetFileIndex(eventIndex,out fileIndex))
 			{
-				Log(LogLevels.Warning, $"Event indexer not yet ready");
-				return;
+				Log(LogLevels.Error, $"Failed to seek to position {eventIndex}");
+				return false;
 			}
-			pos = eventIndexerModule.GetStreamPos(Index);
-			lineIndex = eventIndexerModule.GetLineIndex(Index) +1;
+			pageEventReader.Seek(fileIndex.Position);
 
-			if (pos == -1)
-			{
-				Log(LogLevels.Error, $"Failed to seek to position {Index}");
-				return;
-			}
-			pageEventReader.Seek(pos);
-			eventIndex = Index;
-			while ((items.Count < PageSize) && (!pageEventReader.EndOfStream))
+			for (int t = 0; (t < pageSize) && (!pageEventReader.EndOfStream); t++)
 			{
 				try
 				{
@@ -164,14 +147,28 @@ namespace LogInspect.ViewModels
 				catch (Exception ex)
 				{
 					Log(ex);
-					return;
+					return false;
 				}
-				
-				if (!(ev.Rule?.Discard ?? false))  items.Add(new EventViewModel(Logger,ev,eventIndex,lineIndex));
-				eventIndex++;
-				lineIndex += ev.Log.Lines.Length;
+				Page[t] = new EventViewModel(Logger, ev, fileIndex.EventIndex, fileIndex.LineIndex);
 			}
-			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+			Page.IsComplete = true;
+			return true;
+		}
+
+		public IEnumerable<EventViewModel> GetEvents(int StartIndex, int Count)
+		{
+			Page page;
+			EventViewModel ev;
+			
+			for(int t=StartIndex;t<StartIndex+Count;t++)
+			{
+				page = GetPage(t/pageSize );
+				if (page == null) yield break;
+				ev= page[t % pageSize];
+				if (ev == null) yield break;
+				yield return ev;
+			}
+
 		}
 
 		private void EventIndexerModule_Updated(object sender,EventArgs e)
@@ -186,14 +183,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public IEnumerator<EventViewModel> GetEnumerator()
-		{
-			return items.GetEnumerator();
-		}
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+
 	}
 }

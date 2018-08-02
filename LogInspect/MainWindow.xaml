@@ -27,12 +27,10 @@
 			<Button FontFamily="Segoe UI Symbol" Content="" Command="Open"/>
 		</StackPanel>
 
-		<Ribbon x:Name="RibbonWin"  SelectedIndex="0">
-			<!-- Help Pane, located at the right-hand side -->
+		<!--Ribbon x:Name="RibbonWin"  SelectedIndex="0">
 			<Ribbon.HelpPaneContent>
 				<RibbonButton SmallImageSource="Images\help.png" />
 			</Ribbon.HelpPaneContent>
-			<!-- Quick Access Toolbar - located at the upper-left corner -->
 			<Ribbon.QuickAccessToolBar>
 				<RibbonQuickAccessToolBar>
 					<RibbonButton x:Name ="Save" SmallImageSource="Images\save.png" />
@@ -47,16 +45,13 @@
 					</RibbonSplitButton>
 				</RibbonQuickAccessToolBar>
 			</Ribbon.QuickAccessToolBar>
-			<!-- Application Menu, located at the left-hand side (down arrow) -->
 			<Ribbon.ApplicationMenu>
 				<RibbonApplicationMenu KeyTip="F">
 					<RibbonApplicationMenuItem Header="Options" ImageSource="Images\options.png" />
 					<RibbonApplicationMenuItem Header="Exit" ImageSource="Images\quit.png" />
 				</RibbonApplicationMenu>
 			</Ribbon.ApplicationMenu>
-			<!-- Ribbon Tab #1: Home -->
 			<RibbonTab Header="Home" KeyTip="H" >
-				<!-- Home  group-->
 				<RibbonGroup x:Name="ClipboardGroup" Header="Home">
 					<RibbonMenuButton LargeImageSource="Images\paste.png" Label="Paste" KeyTip="V">
 						<RibbonMenuItem ImageSource="Images\paste.png" Header="Keep Text Only" KeyTip="T"/>
@@ -66,7 +61,6 @@
 					<RibbonButton SmallImageSource="Images\copy.png" Label="Copy" KeyTip="C" />
 					<RibbonButton SmallImageSource="Images\format_painter.png" Label="Format Painter" KeyTip="FP" />
 				</RibbonGroup>
-				<!-- Employee And Payroll group-->
 				<RibbonGroup x:Name="Employee" Header="Employee And Payroll">
 					<RibbonMenuButton LargeImageSource="Images\personal.png" Label="Employee" KeyTip="V">
 						<RibbonMenuItem ImageSource="Images\paste.png" Header="Keep Text Only" KeyTip="T"/>
@@ -76,13 +70,11 @@
 					<RibbonButton SmallImageSource="Images\add.png" Label="Add" KeyTip="C" />
 				</RibbonGroup>
 			</RibbonTab>
-			<!-- Ribbon Tab #2: -->
 			<RibbonTab Header="Insert" KeyTip="I">
 			</RibbonTab>
-			<!-- Ribbon Tab #3: -->
 			<RibbonTab Header="PageLayout" KeyTip="L">
 			</RibbonTab>
-		</Ribbon>
+		</-->
 		<TabControl ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedItem}">
 			<TabControl.ItemTemplate>
 				<DataTemplate>

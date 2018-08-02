@@ -55,13 +55,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Cache.cs" />
+    <Compile Include="Models\FileIndex.cs" />
+    <Compile Include="ViewModels\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
+    <Compile Include="ViewModels\Page.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="Views\ColumnsView.xaml.cs">
+      <DependentUpon>ColumnsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventPanel.cs" />
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
-    <Compile Include="Views\ItemsEvaluator.cs" />
+    <Compile Include="Views\Layout.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -77,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ColumnsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -127,8 +139,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
