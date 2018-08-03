@@ -3,19 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LogInspect.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="800">
-    <ItemsControl ItemsSource="{Binding}">
-		<ItemsControl.ItemsPanel>
-			<ItemsPanelTemplate>
-				<StackPanel Orientation="Horizontal"/>
-			</ItemsPanelTemplate>
-		</ItemsControl.ItemsPanel>
-		<ItemsControl.ItemTemplate>
-			<DataTemplate>
-				<TextBlock Text="{Binding Name}" Width="{Binding Width}"/>
-			</DataTemplate>
-		</ItemsControl.ItemTemplate>
-    </ItemsControl>
+             xmlns:views="clr-namespace:LogInspect.Views"
+             mc:Ignorable="d"  x:Name="root"
+              d:DesignWidth="800" Background="WhiteSmoke" BorderThickness="0,1,0,1" BorderBrush="#55000000" >
+	<UserControl.Resources>
+		<views:OffsetInverterConverter x:Key="offsetInverterConverter"/>
+	</UserControl.Resources>
+
+	<StackPanel Orientation="Horizontal">
+
+		<ItemsControl ItemsSource="{Binding TargetNullValue={x:Static views:ColumnsView.TestColumns}}" ClipToBounds="True" >
+			<ItemsControl.RenderTransform>
+				<TranslateTransform X="{Binding ElementName=root,Path=HorizontalOffset,Converter={StaticResource offsetInverterConverter}}"/>
+			</ItemsControl.RenderTransform>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" ClipToBounds="True"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<DockPanel Width="{Binding Width,Mode=TwoWay}" >
+						<Thumb DockPanel.Dock="Right" DragDelta="Thumb_DragDelta" Cursor="SizeWE" Background="Transparent" Width="4" BorderBrush="#55000000" BorderThickness="0,0,1,0">
+							<Thumb.Template>
+								<ControlTemplate TargetType="{x:Type Thumb}">
+									<Border BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" />
+								</ControlTemplate>
+							</Thumb.Template>
+						</Thumb>
+						<TextBlock Margin="2" Text="{Binding Name}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</DockPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</StackPanel>
+
 </UserControl>

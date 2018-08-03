@@ -72,20 +72,20 @@ namespace LogInspect
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+",Width=200,Alignment="Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+", Width = 100, Alignment = "Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
-			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]+" });
+			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]+", Width = 300 });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @": " });
-			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
+			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+", Width = 600 });
 			schema.Rules.Add(rule);
 
 			rule = new LogInspectLib.Rule() { Name = "Event without thread" };
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+", Alignment = "Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+", Alignment = "Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);

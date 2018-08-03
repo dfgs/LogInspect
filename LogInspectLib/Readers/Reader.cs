@@ -9,17 +9,16 @@ namespace LogInspectLib.Readers
 {
 	public abstract class Reader<T>
 	{
+		
+		public abstract bool EndOfStream
+		{
+			get;
+		}
 		/*public int Index
 		{
 			get;
 			private set;
 		}*/
-
-
-		public abstract bool EndOfStream
-		{
-			get;
-		}
 		public abstract long Position
 		{
 			get;

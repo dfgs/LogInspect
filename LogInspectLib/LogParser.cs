@@ -17,7 +17,7 @@ namespace LogInspectLib
 		{
 			this.rule = Rule;
 			regex = new Regex(Rule.GetPattern());
-			columns = Rule.GetColumns().ToArray();
+			columns = Rule.Tokens.Where(item=>item.Name!=null).Select(item=>item.Name).ToArray();
 		}
 
 		public Event? Parse(Log Log)

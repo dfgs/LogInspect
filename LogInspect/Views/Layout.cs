@@ -11,8 +11,6 @@ namespace LogInspect.Views
 {
 	public class Layout
 	{
-		public static FlowDirection FlowDirection = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
-		public static Typeface Typeface = new Typeface("Segoe UI");
 
 
 		public Rect FreeRect
@@ -27,58 +25,12 @@ namespace LogInspect.Views
 
 		}
 
-		public static FormattedText FormatText(string Text, Brush Foreground, double Size = 16, double? MaxWidth = null)
+		
+	
+		/*public Point GetTextPosition(FormattedText Text, HorizontalAlignment HorizontalAlignment, VerticalAlignment VerticalAlignment)
 		{
-			FormattedText text;
-
-			text = new FormattedText(Text, CultureInfo.CurrentCulture, FlowDirection, Typeface, Size, Foreground);
-			text.Trimming = TextTrimming.CharacterEllipsis; text.MaxLineCount = 1;
-			if (MaxWidth.HasValue) text.SetMaxTextWidths(new double[] { MaxWidth.Value });
-
-			return text;
-		}
-		public static Point GetTextPosition(Rect Rect, FormattedText Text, HorizontalAlignment HorizontalAlignment, VerticalAlignment VerticalAlignment)
-		{
-			double x, y;
-
-			switch (HorizontalAlignment)
-			{
-				case HorizontalAlignment.Left:
-					x = Rect.Left;
-					break;
-				case HorizontalAlignment.Right:
-					x = Rect.Right - Text.WidthIncludingTrailingWhitespace;
-					break;
-				case HorizontalAlignment.Center:
-					x = Rect.Left + (Rect.Width - Text.WidthIncludingTrailingWhitespace) / 2;
-					break;
-				default:
-					x = Rect.Left;
-					break;
-			}
-			switch (VerticalAlignment)
-			{
-				case VerticalAlignment.Top:
-					y = Rect.Top;
-					break;
-				case VerticalAlignment.Bottom:
-					y = Rect.Bottom - Text.Height;
-					break;
-				case VerticalAlignment.Center:
-					y = Rect.Top + (Rect.Height - Text.Height) / 2;
-					break;
-				default:
-					y = Rect.Top;
-					break;
-			}
-
-
-			return new Point(x, y);
-		}
-		public Point GetTextPosition(FormattedText Text, HorizontalAlignment HorizontalAlignment, VerticalAlignment VerticalAlignment)
-		{
-			return Layout.GetTextPosition(FreeRect, Text, HorizontalAlignment, VerticalAlignment);
-		}
+			return Drawing.GetTextPosition(FreeRect, Text, HorizontalAlignment, VerticalAlignment);
+		}*/
 
 
 

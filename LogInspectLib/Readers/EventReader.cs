@@ -52,7 +52,10 @@ namespace LogInspectLib.Readers
 			logReader.Seek(Position);
 		}
 
-
+		public int GetReadLines()
+		{
+			return logReader.GetReadLines();
+		}
 		protected override Event OnRead()
 		{
 			Log log;

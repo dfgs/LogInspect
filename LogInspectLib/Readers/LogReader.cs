@@ -9,7 +9,8 @@ namespace LogInspectLib.Readers
 {
     public class LogReader :Reader<Log>
     {
-		
+		private int readLines;
+
 		public override bool EndOfStream
 		{
 			get { return lineReader.EndOfStream; }
@@ -89,6 +90,10 @@ namespace LogInspectLib.Readers
 			return false;
 		}
 
+		public int GetReadLines()
+		{
+			return readLines;
+		}
 
 		protected override Log OnRead()
         {
@@ -98,10 +103,11 @@ namespace LogInspectLib.Readers
 			Log log;
 			long pos;
 
+			readLines = 0;
 			lines = new List<Line>();
 			do
 			{
-				line = lineReader.Read();
+				line = lineReader.Read();readLines++;
 				if (MustDiscardLine(line))
 				{
 					mustAppend = true;
@@ -116,14 +122,18 @@ namespace LogInspectLib.Readers
 			while (!EndOfStream) 
 			{
 				pos = lineReader.Position;
-				line = lineReader.Read();
+				line = lineReader.Read(); readLines++;
 				if (!MustDiscardLine(line))
 				{
 					mustAppend = MustAppendToPreviousLine(line);
-					if (mustAppend) lines.Add(line);
+					if (mustAppend)
+					{
+						lines.Add(line);
+					}
 					else
 					{
 						lineReader.Seek(pos);
+						readLines--;
 						break;
 					}
 				}

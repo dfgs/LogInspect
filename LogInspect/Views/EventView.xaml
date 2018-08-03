@@ -19,18 +19,20 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="7"/>
 			<RowDefinition Height="150"/>
 		</Grid.RowDefinitions>
-		<DockPanel Grid.Row="0">
-			<views:ColumnsView DockPanel.Dock="Top" DataContext="{Binding Columns}"/>
-			<ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
-				<views:EventPanel ItemsSource="{Binding}" ItemsCount="{Binding Count}" Columns="{Binding Columns}" VerticalOffset="{Binding Position,Mode=OneWayToSource}"/>
-			</ScrollViewer>
+		
 
-		</DockPanel>
-		<GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<ListBox Grid.Row="2" ItemsSource="{Binding ElementName=listView,Path=SelectedItem.Lines}"/>
+		<views:ColumnsView Grid.Row="0"  DataContext="{Binding Columns}" HorizontalOffset="{Binding ElementName=eventPanel,Path=HorizontalOffset}" />
+
+
+		<ScrollViewer  Grid.Row="1" CanContentScroll="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+				<views:EventPanel x:Name="eventPanel" ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding Count}" Columns="{Binding Columns}" Position="{Binding Position,Mode=OneWayToSource}" ExtentWidth="{Binding TotalWidth}"/>
+		</ScrollViewer>
+		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+		<ListBox  Grid.Row="3"  ItemsSource="{Binding ElementName=listView,Path=SelectedItem.Lines}"/>
 	</Grid>
 </UserControl>

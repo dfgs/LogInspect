@@ -37,6 +37,7 @@ namespace LogInspect.Modules
 			int eventIndex;
 			int lineIndex;
 			long previousTicks,newTicks;
+			long pos;
 
 			previousTicks=Environment.TickCount;
 			eventIndex = 0;lineIndex = 0;
@@ -46,6 +47,7 @@ namespace LogInspect.Modules
 				{
 					try
 					{
+						pos = eventReader.Position;
 						ev = eventReader.Read();
 					}
 					catch (Exception ex)
@@ -55,15 +57,15 @@ namespace LogInspect.Modules
 					}
 					lock (dictionary)
 					{
-						dictionary.Add(eventIndex, new FileIndex(eventReader.Position,lineIndex, eventIndex));
+						dictionary.Add(eventIndex, new FileIndex(pos,lineIndex, eventIndex));
 					}
 					newTicks = Environment.TickCount;
-					if (newTicks - previousTicks >= 500)	// prevent UI hangs because of too many updates
+					if ((newTicks - previousTicks >= 500) || (eventReader.EndOfStream))	// prevent UI hangs because of too many updates
 					{
 						Updated?.Invoke(this, EventArgs.Empty);
 						previousTicks = newTicks;
 					}
-					eventIndex++;lineIndex += ev.Log.Lines.Length;
+					eventIndex++;lineIndex += eventReader.GetReadLines();
 					Thread.Sleep(1); // limit cpu usage
 				}
 				if (State == ModuleStates.Started)

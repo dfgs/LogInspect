@@ -22,6 +22,18 @@ namespace LogInspectLib
 			get;
 			set;
 		}
+		[XmlAttribute]
+		public double Width
+		{
+			get;
+			set;
+		}
+		[XmlAttribute]
+		public string Alignment
+		{
+			get;
+			set;
+		}
 
 		public string GetPattern()
 		{

@@ -27,6 +27,13 @@ namespace LogInspect.ViewModels
 			set { SetValue(PositionProperty, value); }
 		}
 
+
+		public double TotalWidth
+		{
+			get { return Columns.Sum(item => item.Width); }
+		}
+
+
 		public List<ColumnViewModel> Columns
 		{
 			get;
@@ -64,6 +71,7 @@ namespace LogInspect.ViewModels
 
 		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount ):base(Logger)
 		{
+			ColumnViewModel column;
 
 			isDisposing = false;
 			this.FileName = FileName;
@@ -75,15 +83,22 @@ namespace LogInspect.ViewModels
 
 			this.pageEventReader = PageEventReader;
 
+			#region create columns
 			Columns = new List<ColumnViewModel>();
-			
+
+			column = new LineColumnViewModel(Logger, "#") { Width = 50};
+			column.WidthChanged += Column_WidthChanged;
+			Columns.Add(column);
 			if (pageEventReader.FormatHandler.Rules.Count > 0)
 			{
-				foreach(string property in pageEventReader.FormatHandler.Rules[0].GetColumns())
+				foreach(Token property in pageEventReader.FormatHandler.Rules[0].Tokens.Where(item=>item.Name!=null))
 				{
-					Columns.Add(new ColumnViewModel(Logger, property));
+					column=new PropertyColumnViewModel(Logger, property.Name,property.Alignment) {Width=property.Width };
+					column.WidthChanged += Column_WidthChanged;
+					Columns.Add(column);
 				}
 			}
+			#endregion
 
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader);
 			eventIndexerModule.Updated += EventIndexerModule_Updated;
@@ -107,6 +122,12 @@ namespace LogInspect.ViewModels
 			pages = null;
 		}
 
+		private void Column_WidthChanged(object sender, EventArgs e)
+		{
+			OnPropertyChanged("TotalWidth");
+		}
+
+
 		private Page GetPage(int PageIndex)
 		{
 			Page page;
@@ -126,7 +147,7 @@ namespace LogInspect.ViewModels
 		private bool LoadPage(Page Page)
 		{
 			Event ev;
-			int eventIndex;
+			int eventIndex,lineIndex;
 			FileIndex fileIndex;
 
 			eventIndex = Page.Index * pageSize;
@@ -137,9 +158,10 @@ namespace LogInspect.ViewModels
 				return false;
 			}
 			pageEventReader.Seek(fileIndex.Position);
-
+			lineIndex = fileIndex.LineIndex;
 			for (int t = 0; (t < pageSize) && (!pageEventReader.EndOfStream); t++)
 			{
+				
 				try
 				{
 					ev = pageEventReader.Read();
@@ -149,7 +171,8 @@ namespace LogInspect.ViewModels
 					Log(ex);
 					return false;
 				}
-				Page[t] = new EventViewModel(Logger, ev, fileIndex.EventIndex, fileIndex.LineIndex);
+				Page[t] = new EventViewModel(Logger, ev, t+eventIndex ,lineIndex);
+				lineIndex += pageEventReader.GetReadLines();
 			}
 			Page.IsComplete = true;
 			return true;
