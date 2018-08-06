@@ -90,6 +90,8 @@ namespace LogInspect
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);
 
+			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"INFO", Severity = "Info" });
+			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"ERROR", Severity = "Error" });
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion

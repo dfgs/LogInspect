@@ -41,7 +41,7 @@ namespace LogInspectLib.Readers
 			logParsers = new List<LogParser>();			
 			foreach (Rule rule in FormatHandler.Rules)
 			{
-				this.logParsers.Add(new LogParser(rule));
+				this.logParsers.Add(new LogParser(rule,FormatHandler.SeverityMapping));
 			}
 			
 			
@@ -68,7 +68,7 @@ namespace LogInspectLib.Readers
 				if (ev.HasValue) return ev.Value;
 			}
 
-			return new Event(log,null,Property.EmptyProperties);
+			return new Event(log,null,Severity.Debug, Property.EmptyProperties);
 			
 		}
 

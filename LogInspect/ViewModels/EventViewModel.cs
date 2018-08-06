@@ -28,26 +28,15 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public object Date
-		{
-			get;
-			private set;
-		}
+		
 		public object Severity
 		{
-			get;
-			private set;
+			get { return ev.Severity; }
 		}
-		public object Thread
+		
+		public string RawLog
 		{
-			get;
-			private set;
-		}
-
-		public object Message
-		{
-			get;
-			private set;
+			get { return ev.Log.ToSingleLine(); }
 		}
 
 		public Rule Rule
@@ -62,11 +51,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public Brush Background
-		{
-			get;
-			private set;
-		}
+		
 
 
 
@@ -77,19 +62,8 @@ namespace LogInspect.ViewModels
 			this.ev = Event;
 			this.EventIndex = EventIndex;
 			this.LineIndex = LineIndex;
-			this.Date = ev.GetProperty("Date")?.Value;
-			this.Severity = ev.GetProperty("Severity")?.Value;
-			this.Thread = ev.GetProperty("Thread")?.Value;
-			if (ev.Rule == null) this.Message = ev.Log.ToSingleLine();
-			else this.Message = ev.GetProperty("Message")?.Value;
 
-			if (Severity!=null)
-			{
-				severity = Severity.ToString().ToUpper();
-				if (severity.Contains("WARN")) Background = Brushes.Orange;
-				if (severity.Contains("ERR")) Background = Brushes.OrangeRed;
-				if (severity.Contains("FAT")) Background = Brushes.Red;
-			}
+			
 		}
 
 		public string GetPropertyValue(string PropertyName)

@@ -34,11 +34,16 @@ namespace LogInspectLib
 			private set;
 		}
 
-		public Event(Log Log,Rule Rule,params Property[] Properties)
+		public Severity Severity
 		{
-			//if (Rule == null) throw new ArgumentNullException("Rule");
+			get;
+			private set;
+		}
+
+		public Event(Log Log,Rule Rule, Severity Severity,params Property[] Properties)
+		{
 			if (Properties == null) throw new ArgumentNullException("Properties");
-			this.Log = Log;this.Rule = Rule;this.Properties = Properties;
+			this.Log = Log;this.Rule = Rule;this.Severity = Severity; this.Properties = Properties;
 			
 		}
 
@@ -46,7 +51,10 @@ namespace LogInspectLib
 		{
 			return Properties.FirstOrDefault(item => item.Name == Name);
 		}
-
+		public object GetValue(string Name)
+		{
+			return Properties.FirstOrDefault(item => item.Name == Name)?.Value;
+		}
 		
 
 	}

@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -40,6 +41,11 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
+		public ObservableCollection<SeverityViewModel> Severities
+		{
+			get;
+			private set;
+		}
 
 		public int Count
 		{
@@ -64,24 +70,25 @@ namespace LogInspect.ViewModels
 		private Cache<int,Page> pages;
 
 		private EventIndexerModule eventIndexerModule;
+		private EventFiltererModule eventFiltererModule;
 		private EventReader pageEventReader;
 
-		private bool isDisposing;   // prevent hangs when closing application
 
+		private Timer timer;
 
 		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount ):base(Logger)
 		{
 			ColumnViewModel column;
 
-			isDisposing = false;
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
 
 			this.pageSize = PageSize;
-			//this.pageCount = PageCount;
 			pages = new Cache<int, Page>(PageCount);
 
 			this.pageEventReader = PageEventReader;
+
+			Severities = new ObservableCollection<SeverityViewModel>();
 
 			#region create columns
 			Columns = new List<ColumnViewModel>();
@@ -101,21 +108,29 @@ namespace LogInspect.ViewModels
 			#endregion
 
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader);
-			eventIndexerModule.Updated += EventIndexerModule_Updated;
-
-
-			Log(LogLevels.Debug, "Starting EventIndexer");
+			eventIndexerModule.SeverityAdded += EventIndexerModule_SeverityAdded;
+			Log(LogLevels.Information, "Starting EventIndexer");
 			eventIndexerModule.Start();
-			
+
+
+			eventFiltererModule = new EventFiltererModule(Logger, eventIndexerModule);
+			Log(LogLevels.Information, "Starting EventFilterer");
+			eventFiltererModule.Start();
+
+			timer = new Timer(timerCallBack, null, 0, 500);
+		
 		}
 
 
 		public override void Dispose()
 		{
-			isDisposing = true;
+			timer.Dispose();
+
 			if (eventIndexerModule != null)
 			{
-				Log(LogLevels.Debug, "Stopping EventIndexer");
+				Log(LogLevels.Information, "Stopping EventFilterer");
+				eventFiltererModule.Stop();
+				Log(LogLevels.Information, "Stopping EventIndexer");
 				eventIndexerModule.Stop();
 			}
 			pages.Clear();
@@ -194,16 +209,19 @@ namespace LogInspect.ViewModels
 
 		}
 
-		private void EventIndexerModule_Updated(object sender,EventArgs e)
+		private void timerCallBack(object state)
 		{
-			if (!isDisposing)	// prevent hangs when closing application
+			Count = eventFiltererModule.Count;
+			OnPropertyChanged("Count");
+		}
+
+		
+		private void EventIndexerModule_SeverityAdded(object sender, SeverityAddedEventArgs e)
+		{
+			Dispatcher.Invoke(() =>
 			{
-				Dispatcher.Invoke(() =>
-				{
-					Count=eventIndexerModule.Count;
-					OnPropertyChanged("Count");
-				});
-			}
+				Severities.Add(new SeverityViewModel(Logger, e.Severity));
+			});
 		}
 
 

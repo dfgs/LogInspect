@@ -29,7 +29,7 @@ namespace LogInspect.ViewModels
 			//DrawingContext.DrawLine(pen, Rect.BottomLeft, Rect.BottomRight);
 
 			Rect.Inflate(-10, 0);
-			text = DrawUtils.FormatText((Event.LineIndex+1).ToString(), Brushes.Gray, 16, Rect.Width);
+			text = DrawUtils.FormatText((Event.LineIndex+1).ToString(), Options.LineIndexForeground, 16, Rect.Width);
 			pos = DrawUtils.GetTextPosition(Rect, text, Alignment, VerticalAlignment.Center);
 			DrawingContext.DrawText(text, pos);
 

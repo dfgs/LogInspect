@@ -31,7 +31,7 @@ namespace LogInspect.ViewModels
 
 			value = Event.GetPropertyValue(Name);
 			if (value == null) return;
-			text = DrawUtils.FormatText(value.ToString(), Brushes.Black, 16, Rect.Width);
+			text = DrawUtils.FormatText(value.ToString(), Options.EventForeground, 16, Rect.Width);
 			pos = DrawUtils.GetTextPosition(Rect, text, Alignment, VerticalAlignment.Center);
 			DrawingContext.DrawText(text, pos);
 		}

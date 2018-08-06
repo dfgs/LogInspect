@@ -17,18 +17,26 @@ namespace LogInspect.Modules
 	{
 		private Dictionary<int,FileIndex> dictionary;
 		private EventReader eventReader;
+		private List<string> severities;
 
-		public event EventHandler Updated;
+		public event SeverityAddedEventHandler SeverityAdded;
 
 		public int Count
 		{
-			get { return dictionary.Count; }
+			get
+			{
+				lock (dictionary)
+				{
+					return dictionary.Count;
+				}
+			}
 		}
 
 		public EventIndexerModule(ILogger Logger, EventReader EventReader) : base("EventIndexer",Logger)
 		{
 			this.eventReader = EventReader;
 			dictionary = new Dictionary<int, FileIndex >();
+			severities = new List<string>();
 		}
 
 		protected override void ThreadLoop()
@@ -36,10 +44,9 @@ namespace LogInspect.Modules
 			Event ev ;
 			int eventIndex;
 			int lineIndex;
-			long previousTicks,newTicks;
 			long pos;
+			string severity;
 
-			previousTicks=Environment.TickCount;
 			eventIndex = 0;lineIndex = 0;
 			while(State==ModuleStates.Started)
 			{
@@ -55,24 +62,24 @@ namespace LogInspect.Modules
 						Log(ex);
 						return;
 					}
+					severity = ev.GetValue("Severity")?.ToString();
+
 					lock (dictionary)
 					{
-						dictionary.Add(eventIndex, new FileIndex(pos,lineIndex, eventIndex));
+						dictionary.Add(eventIndex, new FileIndex(pos,lineIndex, eventIndex,severity));
 					}
-					newTicks = Environment.TickCount;
-					if ((newTicks - previousTicks >= 500) || (eventReader.EndOfStream))	// prevent UI hangs because of too many updates
+					lock(severities)
 					{
-						Updated?.Invoke(this, EventArgs.Empty);
-						previousTicks = newTicks;
+						if (!severities.Contains(severity))
+						{
+							severities.Add(severity);
+							SeverityAdded?.Invoke(this, new SeverityAddedEventArgs(severity));
+						}
 					}
 					eventIndex++;lineIndex += eventReader.GetReadLines();
 					Thread.Sleep(1); // limit cpu usage
 				}
-				if (State == ModuleStates.Started)
-				{
-					Updated?.Invoke(this,EventArgs.Empty);
-					WaitHandles(1000, QuitEvent);
-				}
+				if (State == ModuleStates.Started) WaitHandles(1000, QuitEvent);
 			}
 
 
@@ -80,12 +87,12 @@ namespace LogInspect.Modules
 
 		public bool GetFileIndex(int EventIndex,out FileIndex FileIndex)
 		{
-			if (EventIndex == 0)
+			/*if (EventIndex == 0)
 			{
 				// we return valid result even if thread is not yet started
 				FileIndex = new FileIndex(0, 0, 0);
 				return true;
-			}
+			}*/
 			lock(dictionary)
 			{
 				return dictionary.TryGetValue(EventIndex, out FileIndex);

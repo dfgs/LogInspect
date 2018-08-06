@@ -23,10 +23,14 @@ namespace LogInspect.Models
 			get;
 			private set;
 		}
-
-		public FileIndex(long Position,int LineIndex,int EventIndex)
+		public string Severity
 		{
-			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;
+			get;
+			private set;
+		}
+		public FileIndex(long Position,int LineIndex,int EventIndex,string Severity)
+		{
+			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;this.Severity = Severity;
 		}
 
 	}

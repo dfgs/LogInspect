@@ -54,6 +54,8 @@
     <Compile Include="FormatHandler.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="Rule.cs" />
+    <Compile Include="Severity.cs" />
+    <Compile Include="SeverityMapping.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>

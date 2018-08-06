@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
              mc:Ignorable="d"  x:Name="root"
-              d:DesignWidth="800" Background="WhiteSmoke" BorderThickness="0,1,0,1" BorderBrush="#55000000" >
+              d:DesignWidth="800" BorderThickness="0,1,0,1" Background="{x:Static views:Options.ColumnHeaderBackground}" BorderBrush="{x:Static views:Options.BorderBrush}" >
 	<UserControl.Resources>
 		<views:OffsetInverterConverter x:Key="offsetInverterConverter"/>
 	</UserControl.Resources>
@@ -24,7 +24,7 @@
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<DockPanel Width="{Binding Width,Mode=TwoWay}" >
-						<Thumb DockPanel.Dock="Right" DragDelta="Thumb_DragDelta" Cursor="SizeWE" Background="Transparent" Width="4" BorderBrush="#55000000" BorderThickness="0,0,1,0">
+						<Thumb DockPanel.Dock="Right" DragDelta="Thumb_DragDelta" Cursor="SizeWE" Background="Transparent" Width="4" BorderBrush="{x:Static views:Options.BorderBrush}" BorderThickness="0,0,1,0">
 							<Thumb.Template>
 								<ControlTemplate TargetType="{x:Type Thumb}">
 									<Border BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" />

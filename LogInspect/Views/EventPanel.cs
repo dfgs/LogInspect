@@ -39,7 +39,7 @@ namespace LogInspect.Views
 			FormattedText text;
 			Point pos;
 
-			text = DrawUtils.FormatText(Event.Message.ToString(), Brushes.Black);
+			text = DrawUtils.FormatText(Event.RawLog, Brushes.White);
 			pos = DrawUtils.GetTextPosition(Rect, text, HorizontalAlignment.Left, VerticalAlignment.Center);
 			DrawingContext.DrawText(text, pos);
 		}

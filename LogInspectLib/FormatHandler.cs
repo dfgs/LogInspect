@@ -52,8 +52,13 @@ namespace LogInspectLib
 			get;
 			set;
 		}
-		
 
+		[XmlArray]
+		public List<SeverityMapping> SeverityMapping
+		{
+			get;
+			set;
+		}
 
 		public FormatHandler()
 		{
@@ -61,6 +66,7 @@ namespace LogInspectLib
 			AppendLineToPreviousPatterns = new List<string>();
 			DiscardLinePatterns = new List<string>();
 			Rules = new List<Rule>();
+			SeverityMapping = new List<SeverityMapping>();
 		}
 
 		public void SaveToFile(string FileName)

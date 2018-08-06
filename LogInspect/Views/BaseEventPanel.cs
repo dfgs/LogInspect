@@ -1,5 +1,6 @@
 ﻿using LogInspect.Models;
 using LogInspect.ViewModels;
+using LogInspectLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,6 +155,22 @@ namespace LogInspect.Views
 			DrawingContext DrawingContext = drawingVisual.RenderOpen();
 
 			layout = new Layout(new Rect(new Size(ExtentWidth, ItemHeight)));
+
+			switch(Event.Severity)
+			{
+				/*case Severity.Info:
+					DrawingContext.DrawRectangle(Brushes.Yellow, null, layout.FreeRect);
+					break;*/
+				case Severity.Warning:
+					DrawingContext.DrawRectangle(Brushes.Orange, null, layout.FreeRect);
+					break;
+				case Severity.Error:
+					DrawingContext.DrawRectangle(Brushes.OrangeRed, null, layout.FreeRect);
+					break;
+				case Severity.Critical:
+					DrawingContext.DrawRectangle(Brushes.Red, null, layout.FreeRect);
+					break;
+			}
 
 			if (Event.Rule == null)
 			{

@@ -57,11 +57,14 @@
     </ApplicationDefinition>
     <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\FileIndex.cs" />
+    <Compile Include="Modules\EventFiltererModule.cs" />
+    <Compile Include="Modules\SeverityAddedEventHandler.cs" />
     <Compile Include="ViewModels\LineColumnViewModel.cs" />
     <Compile Include="ViewModels\PropertyColumnViewModel.cs" />
     <Compile Include="ViewModels\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\Page.cs" />
+    <Compile Include="ViewModels\SeverityViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BaseEventPanel.cs" />
     <Compile Include="Views\ColumnsView.xaml.cs">
@@ -75,6 +78,7 @@
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
+    <Compile Include="Views\Options.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,6 +148,26 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Question_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Undo_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Redo_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Exit_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\F1Help_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OpenFile_16x.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
