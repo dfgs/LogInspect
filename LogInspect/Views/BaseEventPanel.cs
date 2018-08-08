@@ -54,6 +54,14 @@ namespace LogInspect.Views
 		}
 
 
+		public static readonly DependencyProperty MaxRenderedItemsProperty = DependencyProperty.Register("MaxRenderedItems", typeof(int), typeof(BaseEventPanel));
+		public int MaxRenderedItems
+		{
+			get { return (int)GetValue(MaxRenderedItemsProperty); }
+			private set { SetValue(MaxRenderedItemsProperty, value); }
+		}
+
+
 		#region IScrollInfo
 		public bool CanVerticallyScroll { get; set; }
 		public bool CanHorizontallyScroll { get; set; }
@@ -134,6 +142,7 @@ namespace LogInspect.Views
 		protected virtual void OnLayoutPropertyChanged()
 		{
 			ScrollOwner?.InvalidateScrollInfo();
+			if (ItemsCount < Position + MaxRenderedItems) InvalidateVisual() ;
 		}
 
 		protected virtual int GetFirstItemIndex()
@@ -194,10 +203,16 @@ namespace LogInspect.Views
 
 			return bitmap;
 		}
+
+		protected override Size MeasureOverride(Size availableSize)
+		{
+			MaxRenderedItems = (int)Math.Ceiling(ViewportHeight / ItemHeight);
+			return base.MeasureOverride(availableSize);
+		}
+
 		protected override void OnRender(DrawingContext drawingContext)
 		{
-			int startEventIndex, eventIndex, y;
-			int renderedCount;
+			int eventIndex, y;
 			IEnumerable<EventViewModel> events;
 			double dy;
 			Size rowSize;
@@ -205,16 +220,14 @@ namespace LogInspect.Views
 
 
 			dy = VerticalOffset % ItemHeight;
-			renderedCount = (int)Math.Ceiling(ViewportHeight / ItemHeight);
-			startEventIndex = (int)(VerticalOffset / ItemHeight);
-			this.Position = startEventIndex;
+			Position = (int)(VerticalOffset / ItemHeight);
 
 			if (ItemsSource == null) return;
 
-			events = ItemsSource.GetEvents(startEventIndex, renderedCount);
+			events = ItemsSource.GetEvents(Position, MaxRenderedItems);
 
 			rowSize = new Size(ExtentWidth, ItemHeight);
-			y = 0; eventIndex = startEventIndex;
+			y = 0; eventIndex = Position;
 			foreach (EventViewModel ev in events)
 			{
 				if (!rowCache.TryGetValue(eventIndex, out img))

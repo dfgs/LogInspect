@@ -19,10 +19,15 @@
 	
     <DockPanel>
 		<StatusBar DockPanel.Dock="Bottom">
-			<TextBlock Text="Position:"/>
-			<TextBlock Text="{Binding SelectedItem.Position,Converter={StaticResource intPlusOneValueConverter},FallbackValue=NA}"/>
+			<TextBlock Text="File indexing:"/>
+			<TextBlock Text="{Binding SelectedItem.EventIndexer.Position,FallbackValue=NA}"/>
 			<TextBlock Text="/"/>
-			<TextBlock Text="{Binding SelectedItem.Count,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.EventIndexer.Target,FallbackValue=NA}"/>
+			<Separator/>
+			<TextBlock Text="Event filtering:"/>
+			<TextBlock Text="{Binding SelectedItem.EventFilterer.Position,FallbackValue=NA}"/>
+			<TextBlock Text="/"/>
+			<TextBlock Text="{Binding SelectedItem.EventFilterer.Target,FallbackValue=NA}"/>
 		</StatusBar>
 
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" DataContext="{Binding SelectedItem}">

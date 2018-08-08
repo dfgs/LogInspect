@@ -20,6 +20,11 @@ namespace LogInspectLib.Readers
 		{
 			get { return lineReader.Position; }
 		}
+		public override long Length
+		{
+			get { return lineReader.Length; }
+		}
+
 
 		private LineReader lineReader;
 

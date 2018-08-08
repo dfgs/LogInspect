@@ -41,17 +41,6 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public ObservableCollection<SeverityViewModel> Severities
-		{
-			get;
-			private set;
-		}
-
-		public int Count
-		{
-			get;
-			private set;
-		}
 
 		public string FileName
 		{
@@ -69,14 +58,30 @@ namespace LogInspect.ViewModels
 		//private int pageCount;
 		private Cache<int,Page> pages;
 
-		private EventIndexerModule eventIndexerModule;
-		private EventFiltererModule eventFiltererModule;
 		private EventReader pageEventReader;
 
 
-		private Timer timer;
+		private EventIndexerModule eventIndexerModule;
+		public IndexerModuleViewModel<EventIndexerModule,FileIndex> EventIndexer
+		{
+			get;
+			private set;
+		}
+		private EventFiltererModule eventFiltererModule;
+		public IndexerModuleViewModel<EventFiltererModule, FileIndex> EventFilterer
+		{
+			get;
+			private set;
+		}
 
-		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount ):base(Logger)
+		private SeverityIndexerModule severityIndexerModule;
+		public SeverityIndexerViewModel Severities
+		{
+			get;
+			private set;
+		}
+
+		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
 		{
 			ColumnViewModel column;
 
@@ -88,7 +93,6 @@ namespace LogInspect.ViewModels
 
 			this.pageEventReader = PageEventReader;
 
-			Severities = new ObservableCollection<SeverityViewModel>();
 
 			#region create columns
 			Columns = new List<ColumnViewModel>();
@@ -107,32 +111,37 @@ namespace LogInspect.ViewModels
 			}
 			#endregion
 
-			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader);
-			eventIndexerModule.SeverityAdded += EventIndexerModule_SeverityAdded;
+			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
 			Log(LogLevels.Information, "Starting EventIndexer");
 			eventIndexerModule.Start();
+			EventIndexer = new IndexerModuleViewModel<EventIndexerModule,FileIndex>(Logger, eventIndexerModule, 300);
 
-
-			eventFiltererModule = new EventFiltererModule(Logger, eventIndexerModule);
+			eventFiltererModule = new EventFiltererModule(Logger, eventIndexerModule,FiltererLookupRetryDelay);
 			Log(LogLevels.Information, "Starting EventFilterer");
 			eventFiltererModule.Start();
+			EventFilterer = new IndexerModuleViewModel<EventFiltererModule, FileIndex>(Logger, eventFiltererModule, 300);
 
-			timer = new Timer(timerCallBack, null, 0, 500);
+			severityIndexerModule = new SeverityIndexerModule(Logger, eventIndexerModule, FiltererLookupRetryDelay);
+			Log(LogLevels.Information, "Starting SeverityIndexer");
+			severityIndexerModule.Start();
+			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, 300);
 		
 		}
 
 
 		public override void Dispose()
 		{
-			timer.Dispose();
+			EventIndexer.Dispose();
+			EventFilterer.Dispose();
+			Severities.Dispose();
 
-			if (eventIndexerModule != null)
-			{
-				Log(LogLevels.Information, "Stopping EventFilterer");
-				eventFiltererModule.Stop();
-				Log(LogLevels.Information, "Stopping EventIndexer");
-				eventIndexerModule.Stop();
-			}
+			Log(LogLevels.Information, "Stopping SeverityIndexer");
+			severityIndexerModule.Stop();
+			Log(LogLevels.Information, "Stopping EventFilterer");
+			eventFiltererModule.Stop();
+			Log(LogLevels.Information, "Stopping EventIndexer");
+			eventIndexerModule.Stop();
+			
 			pages.Clear();
 			pages = null;
 		}
@@ -162,21 +171,16 @@ namespace LogInspect.ViewModels
 		private bool LoadPage(Page Page)
 		{
 			Event ev;
-			int eventIndex,lineIndex;
 			FileIndex fileIndex;
+			int eventIndex, t;
 
 			eventIndex = Page.Index * pageSize;
 
-			if (!eventIndexerModule.GetFileIndex(eventIndex,out fileIndex))
+			for (t = 0; (t < pageSize) && (!pageEventReader.EndOfStream) && (eventIndex < eventFiltererModule.IndexedEvents); t++, eventIndex++)
 			{
-				Log(LogLevels.Error, $"Failed to seek to position {eventIndex}");
-				return false;
-			}
-			pageEventReader.Seek(fileIndex.Position);
-			lineIndex = fileIndex.LineIndex;
-			for (int t = 0; (t < pageSize) && (!pageEventReader.EndOfStream); t++)
-			{
-				
+				fileIndex = eventFiltererModule[eventIndex];
+				pageEventReader.Seek(fileIndex.Position);
+
 				try
 				{
 					ev = pageEventReader.Read();
@@ -186,10 +190,10 @@ namespace LogInspect.ViewModels
 					Log(ex);
 					return false;
 				}
-				Page[t] = new EventViewModel(Logger, ev, t+eventIndex ,lineIndex);
-				lineIndex += pageEventReader.GetReadLines();
+				Page[t] = new EventViewModel(Logger, ev, eventIndex ,fileIndex.LineIndex);
 			}
-			Page.IsComplete = true;
+
+			Page.IsComplete = (t==pageSize);
 			return true;
 		}
 
@@ -209,21 +213,9 @@ namespace LogInspect.ViewModels
 
 		}
 
-		private void timerCallBack(object state)
-		{
-			Count = eventFiltererModule.Count;
-			OnPropertyChanged("Count");
-		}
 
 		
-		private void EventIndexerModule_SeverityAdded(object sender, SeverityAddedEventArgs e)
-		{
-			Dispatcher.Invoke(() =>
-			{
-				Severities.Add(new SeverityViewModel(Logger, e.Severity));
-			});
-		}
-
+	
 
 
 	}

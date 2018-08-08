@@ -28,8 +28,20 @@ namespace LogInspect.ViewModels
 			set { SetValue(SelectedItemProperty, value); }
 		}
 
-		public AppViewModel(ILogger Logger,string Path) : base(Logger)
+		private int bufferSize;
+		private int pageSize;
+		private int pageCount;
+		private int indexerLookupRetryDelay;
+		private int filtererLookupRetryDelay;
+
+		public AppViewModel(ILogger Logger,string Path, int BufferSize, int PageSize, int PageCount, int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) : base(Logger)
 		{
+			this.bufferSize = BufferSize;
+			this.pageSize = PageSize;
+			this.pageCount = PageCount;
+			this.indexerLookupRetryDelay = IndexerLookupRetryDelay;
+			this.filtererLookupRetryDelay = FiltererLookupRetryDelay;
+
 			LogFiles = new ObservableCollection<LogFileViewModel>();
 			formatHandlers = new List<FormatHandler>();
 			LoadSchemas(Path);
@@ -43,19 +55,21 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public void Open(string FileName,int BufferSize)
+		public void Open(string FileName)
 		{
 			LogFileViewModel logFile;
 			EventReader pageEventReader,indexerEventReader;
 
-			pageEventReader = CreateEventReader(FileName, BufferSize);
+			pageEventReader = CreateEventReader(FileName, bufferSize);
 			if (pageEventReader == null) return;
-			indexerEventReader = CreateEventReader(FileName, BufferSize);
+			indexerEventReader = CreateEventReader(FileName, bufferSize);
 			if (indexerEventReader == null) return;
+
+			
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader,100,3);
+				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader,pageSize,pageCount,indexerLookupRetryDelay,filtererLookupRetryDelay);
 			}
 			catch(Exception ex)
 			{

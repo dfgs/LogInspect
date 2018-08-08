@@ -14,6 +14,11 @@ namespace LogInspectLib.Readers
 		{
 			get { return charReader.Position; }
 		}
+		public override long Length
+		{
+			get { return charReader.Length; }
+		}
+
 		public override bool EndOfStream
 		{
 			get { return charReader.EndOfStream; }

@@ -57,7 +57,7 @@ namespace LogInspect.ViewModels
 
 		public EventViewModel(ILogger Logger, Event Event, int EventIndex, int LineIndex) : base(Logger)
 		{
-			string severity;
+			//string severity;
 
 			this.ev = Event;
 			this.EventIndex = EventIndex;

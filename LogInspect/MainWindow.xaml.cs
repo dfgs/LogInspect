@@ -92,6 +92,7 @@ namespace LogInspect
 
 			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"INFO", Severity = "Info" });
 			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"ERROR", Severity = "Error" });
+			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"WARN", Severity = "Warning" });
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion
@@ -99,7 +100,8 @@ namespace LogInspect
 
 			logger = new ConsoleLogger(new DefaultLogFormatter());
 
-			appViewModel = new AppViewModel(logger,Properties.Settings.Default.FormatHandlersFolder);
+			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize,Properties.Settings.Default.PageSize,Properties.Settings.Default.PageCount,Properties.Settings.Default.IndexerLookupRetryDelay,Properties.Settings.Default.FiltererLookupRetryDelay);
+
 			DataContext = appViewModel;
 		}
 
@@ -133,7 +135,7 @@ namespace LogInspect
 
 			if (dialog.ShowDialog(this)??false)
 			{
-				appViewModel.Open(dialog.FileName,Properties.Settings.Default.BufferSize);
+				appViewModel.Open(dialog.FileName);
 			}
 		}
 

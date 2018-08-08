@@ -23,7 +23,10 @@ namespace LogInspectLib.Readers
 		{
 			get;
 		}
-
+		public abstract long Length
+		{
+			get;
+		}
 		public Reader()
 		{
 		}
