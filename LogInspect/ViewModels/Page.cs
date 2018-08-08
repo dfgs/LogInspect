@@ -24,21 +24,26 @@ namespace LogInspect.ViewModels
 		public EventViewModel this[int Index]
 		{
 			get { return items[Index]; }
-			set { items[Index] = value; }
+			set { items[Index] = value;LastFilledIndex = Index; }
 		}
 
-		public bool IsComplete
+		public int LastFilledIndex
 		{
 			get;
-			set;
+			private set;
+		}
+		
+		public bool IsComplete
+		{
+			get { return LastFilledIndex == Size - 1; }
 		}
 
 		public Page(int Index,int Size)
 		{
+			LastFilledIndex = -1;
 			this.Index = Index;
 			this.Size = Size;
 			items = new EventViewModel[Size];
-			IsComplete = false;
 		}
 
 

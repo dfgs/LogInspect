@@ -26,7 +26,7 @@ namespace LogInspectLibTest
 			rule.Tokens.Add(new Token() { Name = "C3", Pattern = @"\d" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
 			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
-			parser = new LogParser(rule,new SeverityMapping[0]);
+			parser = new LogParser(rule);
 
 			log = new Log(new Line(0, log1));
 			ev=parser.Parse(log);

@@ -71,6 +71,7 @@ namespace LogInspect
 			//[2018-07-07 00:00:01.637 START] Starting new log-file or starting application.
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
+			rule.SeverityToken = "Severity";
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+",Width=200,Alignment="Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
@@ -82,6 +83,7 @@ namespace LogInspect
 			schema.Rules.Add(rule);
 
 			rule = new LogInspectLib.Rule() { Name = "Event without thread" };
+			rule.SeverityToken = "Severity";
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+", Alignment = "Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
@@ -90,9 +92,9 @@ namespace LogInspect
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);
 
-			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"INFO", Severity = "Info" });
-			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"ERROR", Severity = "Error" });
-			schema.SeverityMapping.Add(new SeverityMapping() { Token = "Severity", Pattern = @"WARN", Severity = "Warning" });
+			schema.SeverityMapping.Add(new SeverityMapping() {  Pattern = @"INFO", Severity = "Info" });
+			schema.SeverityMapping.Add(new SeverityMapping() {  Pattern = @"ERROR", Severity = "Error" });
+			schema.SeverityMapping.Add(new SeverityMapping() {  Pattern = @"WARN", Severity = "Warning" });
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion

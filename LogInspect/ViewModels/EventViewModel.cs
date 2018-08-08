@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -29,11 +30,17 @@ namespace LogInspect.ViewModels
 		}
 
 		
-		public object Severity
+		public string Severity
 		{
 			get { return ev.Severity; }
 		}
 		
+		public Brush Background
+		{
+			get;
+			private set;
+		}
+
 		public string RawLog
 		{
 			get { return ev.Log.ToSingleLine(); }
@@ -51,11 +58,11 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		
 
 
 
-		public EventViewModel(ILogger Logger, Event Event, int EventIndex, int LineIndex) : base(Logger)
+
+		public EventViewModel(ILogger Logger, IEnumerable<SeverityMapping> SeverityMapping, Event Event, int EventIndex, int LineIndex) : base(Logger)
 		{
 			//string severity;
 
@@ -63,7 +70,29 @@ namespace LogInspect.ViewModels
 			this.EventIndex = EventIndex;
 			this.LineIndex = LineIndex;
 
-			
+			//public enum Severity {Debug,Info,Warning,Error,Critical};
+
+			Background = Brushes.Transparent;
+			foreach (SeverityMapping mapping in SeverityMapping)
+			{
+				if (Regex.Match(Event.Severity, mapping.Pattern).Success)
+				{
+					switch(mapping.Severity)
+					{
+						case "Warning":
+							Background = Brushes.Orange;
+							break;
+						case "Error":
+							Background = Brushes.OrangeRed;
+							break;
+						case "Critical":
+							Background = Brushes.Red;
+							break;
+					}
+					break;
+				}
+			}
+
 		}
 
 		public string GetPropertyValue(string PropertyName)

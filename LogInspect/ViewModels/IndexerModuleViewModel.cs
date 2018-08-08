@@ -26,6 +26,7 @@ namespace LogInspect.ViewModels
 			get { return position; }
 			private set { position = value; OnPropertyChanged(); }
 		}
+
 		private long target;
 		public long Target
 		{
@@ -33,6 +34,12 @@ namespace LogInspect.ViewModels
 			private set { target = value;OnPropertyChanged(); }
 		}
 
+		private int indexedEventsCount;
+		public int IndexedEventsCount
+		{
+			get { return indexedEventsCount; }
+			private set { indexedEventsCount = value;OnPropertyChanged(); }
+		}
 		public IndexerModuleViewModel(ILogger Logger, TIndexerModule IndexerModule,int RefreshInterval) : base(Logger)
 		{
 			this.indexerModule = IndexerModule;
@@ -50,9 +57,12 @@ namespace LogInspect.ViewModels
 		}
 		private void timerCallBack(object state)
 		{
-			Position = indexerModule.Position;
-			Target = indexerModule.Target;
-			Dispatcher.Invoke(()=>OnRefresh());
+			Dispatcher.Invoke(() => {
+				Position = indexerModule.Position;
+				Target = indexerModule.Target;
+				IndexedEventsCount = indexerModule.IndexedEventsCount;
+				OnRefresh();
+			});
 		}
 
 

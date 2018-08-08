@@ -19,7 +19,7 @@ namespace LogInspectLib
 			get;
 			set;
 		}
-		public object Value
+		public string Value
 		{
 			get;
 			set;

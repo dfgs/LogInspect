@@ -10,7 +10,7 @@ namespace LogInspectLibTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new Event(new Log(new Line(0,"test")),new Rule(),Severity.Debug,null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new Event(new Log(new Line(0,"test")),new Rule(),null); });
 		}
 	}
 }

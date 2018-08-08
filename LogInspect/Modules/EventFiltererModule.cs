@@ -14,6 +14,8 @@ namespace LogInspect.Modules
 	{
 		private EventIndexerModule indexerModule;
 
+		private IEnumerable<string> severities;
+
 		private int position;
 		public override long Position
 		{
@@ -22,7 +24,7 @@ namespace LogInspect.Modules
 
 		public override long Target
 		{
-			get { return indexerModule.IndexedEvents; }
+			get { return indexerModule.IndexedEventsCount; }
 		}
 
 		public EventFiltererModule( ILogger Logger,EventIndexerModule IndexerModule,int LookupRetryDelay) : base("EventFilterer", Logger,ThreadPriority.Lowest,LookupRetryDelay)
@@ -33,7 +35,9 @@ namespace LogInspect.Modules
 
 		protected override bool MustIndexItem(FileIndex Item)
 		{
-			return (Item.Severity == "WARN") || (Item.Severity == "ERROR");
+			if (severities == null) return true;
+			if (severities.Contains(Item.Severity)) return false;
+			return true;
 		}
 		protected override FileIndex OnReadItem()
 		{
@@ -43,8 +47,17 @@ namespace LogInspect.Modules
 			position++;
 			return fileIndex;
 		}
+		protected override void OnReset()
+		{
+			position = 0;
+		}
 
-	
+		public void SetFilter(IEnumerable<string> Severities)
+		{
+			this.severities = Severities;
+			this.Reset();
+		}
+
 
 	}
 }

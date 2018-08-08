@@ -21,7 +21,7 @@ namespace LogInspect.Modules
 
 		public override long Target
 		{
-			get { return indexerModule.IndexedEvents; }
+			get { return indexerModule.IndexedEventsCount; }
 		}
 
 		public SeverityIndexerModule(ILogger Logger, EventIndexerModule IndexerModule, int LookupRetryDelay) : base("SeverityIndexer", Logger, ThreadPriority.Lowest, LookupRetryDelay)
@@ -41,5 +41,9 @@ namespace LogInspect.Modules
 		{
 			return !Contains(Item);
 		}
+
+		
+
+
 	}
 }

@@ -19,10 +19,13 @@ namespace LogInspectLib
 			get;
 			private set;
 		}
-		/*public int Index
+
+		public string Severity
 		{
-			get { return Log.Index; }
-		}*/
+			get;
+			private set;
+		}
+
 		public long Position
 		{
 			get { return Log.Position; }
@@ -34,24 +37,21 @@ namespace LogInspectLib
 			private set;
 		}
 
-		public Severity Severity
-		{
-			get;
-			private set;
-		}
+		
 
-		public Event(Log Log,Rule Rule, Severity Severity,params Property[] Properties)
+		public Event(Log Log,Rule Rule, params Property[] Properties)
 		{
 			if (Properties == null) throw new ArgumentNullException("Properties");
-			this.Log = Log;this.Rule = Rule;this.Severity = Severity; this.Properties = Properties;
-			
+			this.Log = Log;this.Rule = Rule;this.Properties = Properties;
+			Severity = null;
+			if (this.Rule.SeverityToken != null) Severity = GetValue(Rule.SeverityToken);
 		}
 
 		public Property GetProperty(string Name)
 		{
 			return Properties.FirstOrDefault(item => item.Name == Name);
 		}
-		public object GetValue(string Name)
+		public string GetValue(string Name)
 		{
 			return Properties.FirstOrDefault(item => item.Name == Name)?.Value;
 		}

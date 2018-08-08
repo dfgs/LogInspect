@@ -10,12 +10,7 @@ namespace LogInspectLib
 	[Serializable]
 	public class SeverityMapping
 	{
-		[XmlAttribute]
-		public string Token
-		{
-			get;
-			set;
-		}
+		
 		[XmlAttribute]
 		public string Pattern
 		{

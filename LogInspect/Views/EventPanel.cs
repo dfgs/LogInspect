@@ -19,18 +19,7 @@ namespace LogInspect.Views
 {
 	public class EventPanel : BaseEventPanel
 	{
-		/*protected override void OnRenderColumn(DrawingContext DrawingContext, Rect Rect,EventViewModel Event,ColumnViewModel Column)
-		{
-			object value;
-			FormattedText text;
-			Point pos;
-
-			value = Column.GetValue(Event);
-			if (value == null) return;
-			text = DrawUtils.FormatText(value.ToString(), Brushes.Black, 16, Rect.Width);
-			pos = DrawUtils.GetTextPosition(Rect, text, HorizontalAlignment.Left, VerticalAlignment.Center);
-			DrawingContext.DrawText(text, pos);
-		}*/
+		
 
 	
 

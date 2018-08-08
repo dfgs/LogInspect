@@ -81,7 +81,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public LogFileViewModel(ILogger Logger,string FileName, EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
 		{
 			ColumnViewModel column;
 
@@ -92,7 +92,6 @@ namespace LogInspect.ViewModels
 			pages = new Cache<int, Page>(PageCount);
 
 			this.pageEventReader = PageEventReader;
-
 
 			#region create columns
 			Columns = new List<ColumnViewModel>();
@@ -124,10 +123,10 @@ namespace LogInspect.ViewModels
 			severityIndexerModule = new SeverityIndexerModule(Logger, eventIndexerModule, FiltererLookupRetryDelay);
 			Log(LogLevels.Information, "Starting SeverityIndexer");
 			severityIndexerModule.Start();
-			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, 300);
-		
+			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, eventFiltererModule, 300);
 		}
 
+		
 
 		public override void Dispose()
 		{
@@ -173,10 +172,10 @@ namespace LogInspect.ViewModels
 			Event ev;
 			FileIndex fileIndex;
 			int eventIndex, t;
+			
+			eventIndex = Page.Index * pageSize + Page.LastFilledIndex+1;
 
-			eventIndex = Page.Index * pageSize;
-
-			for (t = 0; (t < pageSize) && (!pageEventReader.EndOfStream) && (eventIndex < eventFiltererModule.IndexedEvents); t++, eventIndex++)
+			for (t = Page.LastFilledIndex+1; (t < pageSize) && (!pageEventReader.EndOfStream) && (eventIndex < eventFiltererModule.IndexedEventsCount); t++, eventIndex++)
 			{
 				fileIndex = eventFiltererModule[eventIndex];
 				pageEventReader.Seek(fileIndex.Position);
@@ -190,10 +189,9 @@ namespace LogInspect.ViewModels
 					Log(ex);
 					return false;
 				}
-				Page[t] = new EventViewModel(Logger, ev, eventIndex ,fileIndex.LineIndex);
+				Page[t] = new EventViewModel(Logger,pageEventReader.FormatHandler.SeverityMapping,  ev, eventIndex ,fileIndex.LineIndex);
 			}
 
-			Page.IsComplete = (t==pageSize);
 			return true;
 		}
 

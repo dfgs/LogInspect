@@ -165,21 +165,7 @@ namespace LogInspect.Views
 
 			layout = new Layout(new Rect(new Size(ExtentWidth, ItemHeight)));
 
-			switch(Event.Severity)
-			{
-				/*case Severity.Info:
-					DrawingContext.DrawRectangle(Brushes.Yellow, null, layout.FreeRect);
-					break;*/
-				case Severity.Warning:
-					DrawingContext.DrawRectangle(Brushes.Orange, null, layout.FreeRect);
-					break;
-				case Severity.Error:
-					DrawingContext.DrawRectangle(Brushes.OrangeRed, null, layout.FreeRect);
-					break;
-				case Severity.Critical:
-					DrawingContext.DrawRectangle(Brushes.Red, null, layout.FreeRect);
-					break;
-			}
+			DrawingContext.DrawRectangle(Event.Background, null, layout.FreeRect);
 
 			if (Event.Rule == null)
 			{

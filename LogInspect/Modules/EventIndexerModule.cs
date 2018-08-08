@@ -44,13 +44,11 @@ namespace LogInspect.Modules
 			Event ev;
 			long pos;
 			FileIndex fileIndex;
-			string severity;
 
 			pos = eventReader.Position;
 			ev = eventReader.Read();
 
-			severity = ev.GetValue("Severity")?.ToString();
-			fileIndex=new FileIndex(pos, lineIndex, IndexedEvents, severity);
+			fileIndex=new FileIndex(pos, lineIndex, IndexedEventsCount, ev.Severity);
 			lineIndex++;
 
 			return fileIndex;

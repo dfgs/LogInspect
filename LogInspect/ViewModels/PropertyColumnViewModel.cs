@@ -25,13 +25,13 @@ namespace LogInspect.ViewModels
 
 		public override void RenderEvent(DrawingContext DrawingContext, Rect Rect, EventViewModel Event)
 		{
-			object value;
+			string value;
 			FormattedText text;
 			Point pos;
 
 			value = Event.GetPropertyValue(Name);
 			if (value == null) return;
-			text = DrawUtils.FormatText(value.ToString(), Options.EventForeground, 16, Rect.Width);
+			text = DrawUtils.FormatText(value, Options.EventForeground, 16, Rect.Width);
 			pos = DrawUtils.GetTextPosition(Rect, text, Alignment, VerticalAlignment.Center);
 			DrawingContext.DrawText(text, pos);
 		}

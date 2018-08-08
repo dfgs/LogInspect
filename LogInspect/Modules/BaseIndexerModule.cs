@@ -27,7 +27,7 @@ namespace LogInspect.Modules
 			get;
 		}
 
-		public int IndexedEvents
+		public int IndexedEventsCount
 		{
 			get
 			{
@@ -50,6 +50,19 @@ namespace LogInspect.Modules
 			lock (items)
 			{
 				return items.Contains(Item);
+			}
+		}
+
+		protected virtual void OnReset()
+		{
+			throw new NotImplementedException("OnReset");
+		}
+		public void Reset()
+		{
+			lock(items)
+			{
+				items.Clear();
+				OnReset();
 			}
 		}
 

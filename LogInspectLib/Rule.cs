@@ -18,6 +18,13 @@ namespace LogInspectLib
 		}
 
 		[XmlAttribute]
+		public string SeverityToken
+		{
+			get;
+			set;
+		}
+
+		[XmlAttribute]
 		public bool Discard
 		{
 			get;
