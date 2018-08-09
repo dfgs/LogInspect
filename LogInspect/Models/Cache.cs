@@ -35,6 +35,13 @@ namespace LogInspect.Models
 			keys.Add(Key);
 			dictionary.Add(Key, Value);
 		}
+		public void Remove(TKey Key)
+		{
+
+			keys.Remove(Key);
+			dictionary.Remove(Key);
+			
+		}
 
 		public bool TryGetValue(TKey Key,out TValue Value)
 		{

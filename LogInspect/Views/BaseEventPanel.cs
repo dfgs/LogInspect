@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -30,11 +31,19 @@ namespace LogInspect.Views
 			set { SetValue(ItemsCountProperty, value); }
 		}
 
-		public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(LogFileViewModel), typeof(BaseEventPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, LayoutPropertyChanged));
+		public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(LogFileViewModel), typeof(BaseEventPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, ItemsSourcePropertyChanged));
 		public LogFileViewModel ItemsSource
 		{
 			get { return (LogFileViewModel)GetValue(ItemsSourceProperty); }
 			set { SetValue(ItemsSourceProperty, value); }
+		}
+
+		//private int selectedItemIndex;
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(EventViewModel), typeof(BaseEventPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender,SelectedItemPropertyChanged));
+		public EventViewModel SelectedItem
+		{
+			get { return (EventViewModel)GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
 		}
 
 
@@ -61,6 +70,8 @@ namespace LogInspect.Views
 			private set { SetValue(MaxRenderedItemsProperty, value); }
 		}
 
+
+		
 
 		#region IScrollInfo
 		public bool CanVerticallyScroll { get; set; }
@@ -112,7 +123,7 @@ namespace LogInspect.Views
 		public BaseEventPanel()
 		{
 			rowCache = new Cache<int, RenderTargetBitmap>(cacheSize);
-
+			Focusable = true;
 		}
 
 
@@ -134,12 +145,29 @@ namespace LogInspect.Views
 		}
 
 
+		private static void ItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((BaseEventPanel)d).OnItemsSourceChanged((LogFileViewModel)e.OldValue, (LogFileViewModel)e.NewValue);
+		}
+		protected virtual void OnItemsSourceChanged(LogFileViewModel OldValue,LogFileViewModel NewValue)
+		{
+			if (OldValue!=null) OldValue.PagesCleared-= ItemsSource_PagesCleared;
+			if (NewValue != null) NewValue.PagesCleared += ItemsSource_PagesCleared;
+			//OnLayoutChanged();
+		}
+
+		private void ItemsSource_PagesCleared(object sender, EventArgs e)
+		{
+			rowCache.Clear();
+			InvalidateVisual();
+			//SelectedItem = null;
+		}
 
 		private static void LayoutPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			((BaseEventPanel)d).OnLayoutPropertyChanged();
+			((BaseEventPanel)d).OnLayoutChanged();
 		}
-		protected virtual void OnLayoutPropertyChanged()
+		protected virtual void OnLayoutChanged()
 		{
 			ScrollOwner?.InvalidateScrollInfo();
 			if (ItemsCount < Position + MaxRenderedItems) InvalidateVisual() ;
@@ -150,7 +178,13 @@ namespace LogInspect.Views
 			return (int)(VerticalOffset / ItemHeight);
 		}
 
-		//protected abstract void OnRenderColumn(DrawingContext DrawingContext, Rect Rect, EventViewModel Event,ColumnViewModel Column);
+		protected override Size MeasureOverride(Size availableSize)
+		{
+			MaxRenderedItems = (int)Math.Floor(ViewportHeight / ItemHeight);
+			return base.MeasureOverride(availableSize);
+		}
+
+
 		protected abstract void OnRenderUndecodedLog(DrawingContext DrawingContext, Rect Rect, EventViewModel Event);
 
 		private RenderTargetBitmap OnRenderRow(Size Size, EventViewModel Event)
@@ -165,7 +199,14 @@ namespace LogInspect.Views
 
 			layout = new Layout(new Rect(new Size(ExtentWidth, ItemHeight)));
 
-			DrawingContext.DrawRectangle(Event.Background, null, layout.FreeRect);
+			if (SelectedItem == Event)
+			{
+				DrawingContext.DrawRectangle(Brushes.LightSteelBlue, null, layout.FreeRect);
+			}
+			else
+			{
+				DrawingContext.DrawRectangle(Event.Background, null, layout.FreeRect);
+			}
 
 			if (Event.Rule == null)
 			{
@@ -190,11 +231,6 @@ namespace LogInspect.Views
 			return bitmap;
 		}
 
-		protected override Size MeasureOverride(Size availableSize)
-		{
-			MaxRenderedItems = (int)Math.Ceiling(ViewportHeight / ItemHeight);
-			return base.MeasureOverride(availableSize);
-		}
 
 		protected override void OnRender(DrawingContext drawingContext)
 		{
@@ -203,10 +239,9 @@ namespace LogInspect.Views
 			double dy;
 			Size rowSize;
 			RenderTargetBitmap img;
-
+			Rect rowRect;
 
 			dy = VerticalOffset % ItemHeight;
-			Position = (int)(VerticalOffset / ItemHeight);
 
 			if (ItemsSource == null) return;
 
@@ -222,10 +257,91 @@ namespace LogInspect.Views
 					rowCache.Add(eventIndex, img);
 				}
 
-				drawingContext.DrawImage(img, new Rect(-HorizontalOffset, y * ItemHeight - dy, rowSize.Width, rowSize.Height));
+				rowRect = new Rect(-HorizontalOffset, y * ItemHeight - dy, rowSize.Width, rowSize.Height);
+				drawingContext.DrawImage(img, rowRect);
+				
+
 				eventIndex++; y++;
 
 			}
+		}
+
+
+
+		private static void SelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((BaseEventPanel)d).OnSelectedItemChanged((EventViewModel)e.OldValue,(EventViewModel)e.NewValue);
+		}
+
+		protected virtual void OnSelectedItemChanged(EventViewModel OldValue, EventViewModel NewValue)
+		{
+			if (OldValue!=null) rowCache.Remove(OldValue.EventIndex);
+			if (NewValue!=null) rowCache.Remove(NewValue.EventIndex);
+
+			// auto scroll to selected event
+			if ((NewValue.EventIndex< Position) || (NewValue.EventIndex > Position + MaxRenderedItems ))
+			{
+				SetVerticalOffset(NewValue.EventIndex * ItemHeight);
+			}
+		}
+
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			double dy;
+			Point position;
+			int index;
+
+			e.Handled = true;
+
+			position = Mouse.GetPosition(this);
+
+			dy = VerticalOffset % ItemHeight;
+			index = (int)(Position + (position.Y + dy) / ItemHeight);
+
+			Focus();
+			if (e.LeftButton != MouseButtonState.Pressed) return;
+			SelectedItem = ItemsSource.GetEvent(index);
+		}
+
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			int newIndex;
+
+			if (SelectedItem == null) return;
+
+			e.Handled = true;
+			switch(e.Key)
+			{
+				case Key.PageUp:
+					newIndex = SelectedItem.EventIndex - MaxRenderedItems;
+					if (newIndex <0) newIndex = 0;
+					SetVerticalOffset(VerticalOffset - MaxRenderedItems * ItemHeight);
+					SelectedItem = ItemsSource.GetEvent(newIndex);
+					break;
+				case Key.Up:
+					newIndex = SelectedItem.EventIndex - 1;
+					if (newIndex < 0) newIndex = 0;
+					if (newIndex < Position) SetVerticalOffset(newIndex * ItemHeight);
+					SelectedItem = ItemsSource.GetEvent(newIndex);
+					break;
+				case Key.PageDown:
+					newIndex = SelectedItem.EventIndex + MaxRenderedItems;
+					if (newIndex > ItemsCount - 1) newIndex = ItemsCount - 1;
+					SetVerticalOffset(VerticalOffset + MaxRenderedItems * ItemHeight);
+					SelectedItem = ItemsSource.GetEvent(newIndex);
+					break;
+				case Key.Down:
+					newIndex = SelectedItem.EventIndex + 1;
+					if (newIndex > ItemsCount - 1) newIndex = ItemsCount - 1;
+					if (newIndex > Position + MaxRenderedItems - 1) SetVerticalOffset((newIndex - MaxRenderedItems + 1) * ItemHeight);
+					SelectedItem = ItemsSource.GetEvent(newIndex);
+					break;
+				default:
+					e.Handled = false;
+					return;
+			}
+
+
 		}
 
 
@@ -325,6 +441,7 @@ namespace LogInspect.Views
 			}
 
 			VerticalOffset = (int)offset;
+			Position = (int)(VerticalOffset / ItemHeight);
 
 			ScrollOwner?.InvalidateScrollInfo();
 		}

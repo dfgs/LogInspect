@@ -21,12 +21,12 @@ namespace LogInspect.ViewModels
 	public class LogFileViewModel:ViewModel//,IEnumerable<EventViewModel>//,INotifyCollectionChanged
 	{
 
-		public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(LogFileViewModel));
+		/*public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(LogFileViewModel));
 		public int Position
 		{
 			get { return (int)GetValue(PositionProperty); }
 			set { SetValue(PositionProperty, value); }
-		}
+		}*/
 
 
 		public double TotalWidth
@@ -55,10 +55,17 @@ namespace LogInspect.ViewModels
 
 
 		private int pageSize;
-		//private int pageCount;
 		private Cache<int,Page> pages;
 
 		private EventReader pageEventReader;
+
+
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(EventViewModel), typeof(LogFileViewModel));
+		public EventViewModel SelectedItem
+		{
+			get { return (EventViewModel)GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
+		}
 
 
 		private EventIndexerModule eventIndexerModule;
@@ -80,6 +87,8 @@ namespace LogInspect.ViewModels
 			get;
 			private set;
 		}
+
+		public event EventHandler PagesCleared;
 
 		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
 		{
@@ -123,10 +132,10 @@ namespace LogInspect.ViewModels
 			severityIndexerModule = new SeverityIndexerModule(Logger, eventIndexerModule, FiltererLookupRetryDelay);
 			Log(LogLevels.Information, "Starting SeverityIndexer");
 			severityIndexerModule.Start();
-			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, eventFiltererModule, 300);
+			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, 300);
+			Severities.IsCheckedChanged += Severities_IsCheckedChanged;
 		}
 
-		
 
 		public override void Dispose()
 		{
@@ -143,6 +152,13 @@ namespace LogInspect.ViewModels
 			
 			pages.Clear();
 			pages = null;
+		}
+
+		private void Severities_IsCheckedChanged(object sender, EventArgs e)
+		{
+			pages.Clear();
+			PagesCleared?.Invoke(this, EventArgs.Empty);
+			eventFiltererModule.SetFilter(Severities.Where(item => !item.IsChecked).Select(item => item.Name).ToArray());
 		}
 
 		private void Column_WidthChanged(object sender, EventArgs e)
@@ -175,7 +191,7 @@ namespace LogInspect.ViewModels
 			
 			eventIndex = Page.Index * pageSize + Page.LastFilledIndex+1;
 
-			for (t = Page.LastFilledIndex+1; (t < pageSize) && (!pageEventReader.EndOfStream) && (eventIndex < eventFiltererModule.IndexedEventsCount); t++, eventIndex++)
+			for (t = Page.LastFilledIndex+1; (t < pageSize) && (eventIndex < eventFiltererModule.IndexedEventsCount); t++, eventIndex++)
 			{
 				fileIndex = eventFiltererModule[eventIndex];
 				pageEventReader.Seek(fileIndex.Position);
@@ -190,6 +206,8 @@ namespace LogInspect.ViewModels
 					return false;
 				}
 				Page[t] = new EventViewModel(Logger,pageEventReader.FormatHandler.SeverityMapping,  ev, eventIndex ,fileIndex.LineIndex);
+
+				//if (pageEventReader.EndOfStream) break;
 			}
 
 			return true;
@@ -199,21 +217,29 @@ namespace LogInspect.ViewModels
 		{
 			Page page;
 			EventViewModel ev;
-			
-			for(int t=StartIndex;t<StartIndex+Count;t++)
+
+			for (int t = StartIndex; t < StartIndex + Count; t++)
 			{
-				page = GetPage(t/pageSize );
+				page = GetPage(t / pageSize);
 				if (page == null) yield break;
-				ev= page[t % pageSize];
+				ev = page[t % pageSize];
 				if (ev == null) yield break;
 				yield return ev;
 			}
 
 		}
+		public EventViewModel GetEvent(int Index)
+		{
+			Page page;
+
+			page = GetPage(Index / pageSize);
+			if (page == null) return null;
+			return page[Index % pageSize];
+		}
 
 
-		
-	
+
+
 
 
 	}

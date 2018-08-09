@@ -16,12 +16,11 @@ namespace LogInspect.ViewModels
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-		private EventFiltererModule filtererModule;
+		public event EventHandler IsCheckedChanged;
 
-		public SeverityIndexerViewModel(ILogger Logger, SeverityIndexerModule IndexerModule, EventFiltererModule FiltererModule, int RefreshInterval) : base(Logger, IndexerModule, RefreshInterval)
+		public SeverityIndexerViewModel(ILogger Logger, SeverityIndexerModule IndexerModule,  int RefreshInterval) : base(Logger, IndexerModule, RefreshInterval)
 		{
 			items = new List<SeverityViewModel>();
-			this.filtererModule = FiltererModule;
 		}
 
 		protected override void OnRefresh()
@@ -41,7 +40,7 @@ namespace LogInspect.ViewModels
 
 		private void Item_IsCheckedChanged(object sender, EventArgs e)
 		{
-			filtererModule.SetFilter(items.Where(item => !item.IsChecked).Select(item => item.Name).ToArray());
+			IsCheckedChanged?.Invoke(this, e);
 		}
 
 		public IEnumerator<SeverityViewModel> GetEnumerator()

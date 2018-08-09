@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInspect" Closing="Window_Closing"
 		xmlns:views="clr-namespace:LogInspect.Views"
-		xmlns:primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon"
+		xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
 		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" 
         Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	
@@ -28,6 +28,9 @@
 			<TextBlock Text="{Binding SelectedItem.EventFilterer.Position,FallbackValue=NA}"/>
 			<TextBlock Text="/"/>
 			<TextBlock Text="{Binding SelectedItem.EventFilterer.Target,FallbackValue=NA}"/>
+			<Separator/>
+			<TextBlock Text="Events:"/>
+			<TextBlock Text="{Binding SelectedItem.EventFilterer.IndexedEventsCount,FallbackValue=NA}"/>
 		</StatusBar>
 
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" DataContext="{Binding SelectedItem}">
@@ -35,16 +38,8 @@
 				<Image Source="Images\OpenFile_16x.png" Stretch="None"  />
 			</Button>
 			<TextBlock Text="Filters " VerticalAlignment="Center"/>
-			<ComboBox Width="100" ItemsSource="{Binding Severities}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<CheckBox IsChecked="{Binding IsChecked}"/>
-							<TextBlock Text="{Binding Name}"/>
-						</StackPanel>
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
+			
+			<xctk:CheckComboBox Width="100" ItemsSource="{Binding Severities}" SelectedMemberPath="IsChecked" DisplayMemberPath="Name"/>
 		</StackPanel>
 
 		<TabControl ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedItem}">

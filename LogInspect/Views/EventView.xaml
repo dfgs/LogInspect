@@ -30,9 +30,10 @@
 
 
 		<ScrollViewer  Grid.Row="1" CanContentScroll="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Static views:Options.EventBackground}">
-			<views:EventPanel x:Name="eventPanel"  ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding EventFilterer.IndexedEventsCount}" Columns="{Binding Columns}"  ExtentWidth="{Binding TotalWidth}"/>
+			<views:EventPanel x:Name="eventPanel"  ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding EventFilterer.IndexedEventsCount}" Columns="{Binding Columns}"  ExtentWidth="{Binding TotalWidth}" 
+							  SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
 		</ScrollViewer>
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<ListBox  Grid.Row="3"  ItemsSource="{Binding ElementName=listView,Path=SelectedItem.Lines}"/>
+		<ListBox  Grid.Row="3"  ItemsSource="{Binding SelectedItem.Lines}"/>
 	</Grid>
 </UserControl>
