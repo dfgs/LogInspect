@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using LogInspect.Views;
+using LogInspectLib;
 using LogLib;
 
 namespace LogInspect.ViewModels
@@ -19,21 +20,12 @@ namespace LogInspect.ViewModels
 		{
 		}
 
-		public override void RenderEvent(DrawingContext DrawingContext, Rect Rect, EventViewModel Event)
+		public override object GetValue(EventViewModel Event)
 		{
-			FormattedText text;
-			Point pos;
-
-
-			DrawingContext.DrawRectangle(brush, null, Rect);
-			//DrawingContext.DrawLine(pen, Rect.BottomLeft, Rect.BottomRight);
-
-			Rect.Inflate(-10, 0);
-			text = DrawUtils.FormatText((Event.LineIndex+1).ToString(), Options.LineIndexForeground, 16, Rect.Width);
-			pos = DrawUtils.GetTextPosition(Rect, text, Alignment, VerticalAlignment.Center);
-			DrawingContext.DrawText(text, pos);
-
+			return Event.LineIndex + 1;
 		}
+		
+
 
 	}
 }

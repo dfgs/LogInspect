@@ -16,6 +16,11 @@ namespace LogInspect.ViewModels
 
 		private Event ev;
 
+		public IEnumerable<PropertyViewModel> Properties
+		{
+			get;
+			private set;
+		}
 
 		public int EventIndex
 		{
@@ -62,15 +67,16 @@ namespace LogInspect.ViewModels
 
 
 
-		public EventViewModel(ILogger Logger, IEnumerable<SeverityMapping> SeverityMapping, Event Event, int EventIndex, int LineIndex) : base(Logger)
+		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<SeverityMapping> SeverityMapping, Event Event, int EventIndex, int LineIndex) : base(Logger)
 		{
 			//string severity;
-
+			
 			this.ev = Event;
 			this.EventIndex = EventIndex;
 			this.LineIndex = LineIndex;
 
 			//public enum Severity {Debug,Info,Warning,Error,Critical};
+
 
 			Background = Brushes.Transparent;
 			foreach (SeverityMapping mapping in SeverityMapping)
@@ -92,6 +98,8 @@ namespace LogInspect.ViewModels
 					break;
 				}
 			}
+
+			Properties = Columns.Select(item => new PropertyViewModel(Logger, item, this)).ToArray();
 
 		}
 

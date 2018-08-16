@@ -86,23 +86,19 @@
     <Compile Include="ViewModels\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\Page.cs" />
+    <Compile Include="ViewModels\PropertyViewModel.cs" />
     <Compile Include="ViewModels\SeverityIndexerViewModel.cs" />
     <Compile Include="ViewModels\SeverityViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
-    <Compile Include="Views\BaseEventPanel.cs" />
     <Compile Include="Views\ColumnsView.xaml.cs">
       <DependentUpon>ColumnsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawUtils.cs" />
-    <Compile Include="Views\EventPanel.cs" />
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
-    <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
-    <Compile Include="Views\Options.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

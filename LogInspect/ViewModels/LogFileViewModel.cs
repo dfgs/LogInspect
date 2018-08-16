@@ -15,16 +15,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using VirtualListBoxLib;
 
 namespace LogInspect.ViewModels
 {
-	public class LogFileViewModel:ViewModel//,IEnumerable<EventViewModel>//,INotifyCollectionChanged
+	public class LogFileViewModel:ViewModel,IVirtualCollection //,IEnumerable<EventViewModel>//,INotifyCollectionChanged
 	{
-
-		
-
-
-		
 
 
 		public string FileName
@@ -183,7 +179,7 @@ namespace LogInspect.ViewModels
 					Log(ex);
 					return false;
 				}
-				Page[t] = new EventViewModel(Logger,pageEventReader.FormatHandler.SeverityMapping,  ev, eventIndex ,fileIndex.LineIndex);
+				Page[t] = new EventViewModel(Logger,Columns ,pageEventReader.FormatHandler.SeverityMapping,  ev, eventIndex ,fileIndex.LineIndex);
 
 				//if (pageEventReader.EndOfStream) break;
 			}
@@ -205,6 +201,10 @@ namespace LogInspect.ViewModels
 				yield return ev;
 			}
 
+		}
+		object IVirtualCollection.GetItem(int Index)
+		{
+			return GetEvent(Index);
 		}
 
 		public EventViewModel GetEvent(int Index)

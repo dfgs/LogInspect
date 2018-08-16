@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspectLib;
 using LogLib;
 
 namespace LogInspect.ViewModels
@@ -27,7 +28,7 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public HorizontalAlignment Alignment
+		public TextAlignment Alignment
 		{
 			get;
 			private set;
@@ -35,10 +36,10 @@ namespace LogInspect.ViewModels
 
 		public ColumnViewModel(ILogger Logger,string Name,string Alignment) : base(Logger)
 		{
-			HorizontalAlignment alignment;
+			TextAlignment alignment;
 			this.Name = Name;
-			if (Enum.TryParse<HorizontalAlignment>(Alignment, out alignment)) this.Alignment = alignment;
-			else this.Alignment = HorizontalAlignment.Left;
+			if (Enum.TryParse<TextAlignment>(Alignment, out alignment)) this.Alignment = alignment;
+			else this.Alignment = TextAlignment.Left;
 		}
 
 
@@ -51,7 +52,8 @@ namespace LogInspect.ViewModels
 			WidthChanged?.Invoke(this, EventArgs.Empty);
 		}
 
-		public abstract void RenderEvent(DrawingContext DrawingContext,Rect Rect,EventViewModel Event);
+
+		public abstract object GetValue(EventViewModel Event);
 
 	}
 }
