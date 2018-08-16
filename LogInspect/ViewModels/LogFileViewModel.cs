@@ -21,25 +21,10 @@ namespace LogInspect.ViewModels
 	public class LogFileViewModel:ViewModel//,IEnumerable<EventViewModel>//,INotifyCollectionChanged
 	{
 
-		/*public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(LogFileViewModel));
-		public int Position
-		{
-			get { return (int)GetValue(PositionProperty); }
-			set { SetValue(PositionProperty, value); }
-		}*/
+		
 
 
-		public double TotalWidth
-		{
-			get { return Columns.Sum(item => item.Width); }
-		}
-
-
-		public List<ColumnViewModel> Columns
-		{
-			get;
-			private set;
-		}
+		
 
 
 		public string FileName
@@ -60,6 +45,14 @@ namespace LogInspect.ViewModels
 		private EventReader pageEventReader;
 
 
+		public static readonly DependencyProperty IsWorkingProperty = DependencyProperty.Register("IsWorking", typeof(bool), typeof(LogFileViewModel));
+		public bool IsWorking
+		{
+			get { return (bool)GetValue(IsWorkingProperty); }
+			set { SetValue(IsWorkingProperty, value); }
+		}
+
+
 		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(EventViewModel), typeof(LogFileViewModel));
 		public EventViewModel SelectedItem
 		{
@@ -67,6 +60,11 @@ namespace LogInspect.ViewModels
 			set { SetValue(SelectedItemProperty, value); }
 		}
 
+		public ColumnsViewModel Columns
+		{
+			get;
+			private set;
+		}
 
 		private EventIndexerModule eventIndexerModule;
 		public IndexerModuleViewModel<EventIndexerModule,FileIndex> EventIndexer
@@ -92,7 +90,6 @@ namespace LogInspect.ViewModels
 
 		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
 		{
-			ColumnViewModel column;
 
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
@@ -102,22 +99,7 @@ namespace LogInspect.ViewModels
 
 			this.pageEventReader = PageEventReader;
 
-			#region create columns
-			Columns = new List<ColumnViewModel>();
-
-			column = new LineColumnViewModel(Logger, "#") { Width = 50};
-			column.WidthChanged += Column_WidthChanged;
-			Columns.Add(column);
-			if (pageEventReader.FormatHandler.Rules.Count > 0)
-			{
-				foreach(Token property in pageEventReader.FormatHandler.Rules[0].Tokens.Where(item=>item.Name!=null))
-				{
-					column=new PropertyColumnViewModel(Logger, property.Name,property.Alignment) {Width=property.Width };
-					column.WidthChanged += Column_WidthChanged;
-					Columns.Add(column);
-				}
-			}
-			#endregion
+			Columns = new ColumnsViewModel(Logger,PageEventReader.FormatHandler.Rules.FirstOrDefault());
 
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
 			Log(LogLevels.Information, "Starting EventIndexer");
@@ -161,11 +143,7 @@ namespace LogInspect.ViewModels
 			eventFiltererModule.SetFilter(Severities.Where(item => !item.IsChecked).Select(item => item.Name).ToArray());
 		}
 
-		private void Column_WidthChanged(object sender, EventArgs e)
-		{
-			OnPropertyChanged("TotalWidth");
-		}
-
+		
 
 		private Page GetPage(int PageIndex)
 		{
@@ -228,6 +206,7 @@ namespace LogInspect.ViewModels
 			}
 
 		}
+
 		public EventViewModel GetEvent(int Index)
 		{
 			Page page;
@@ -236,6 +215,78 @@ namespace LogInspect.ViewModels
 			if (page == null) return null;
 			return page[Index % pageSize];
 		}
+
+		#region severities
+		public async Task FindPreviousAsync(string Severity)
+		{
+			int index;
+			EventViewModel foundEvent;
+
+
+			IsWorking = true;
+			index= SelectedItem?.EventIndex??0;
+			foundEvent= await Task.Run<EventViewModel>(() =>
+			{
+				EventViewModel ev;
+				while (index > 0)
+				{
+					index--;
+					ev = GetEvent(index);
+					if (ev.Severity == Severity)
+					{
+						return ev;
+					}
+				}
+				return null;
+		    }
+			);
+			if (foundEvent != null) SelectedItem = foundEvent;
+			IsWorking = false;
+		}
+		public async Task FindNextAsync(string Severity)
+		{
+			int index;
+			EventViewModel foundEvent;
+
+
+			IsWorking = true;
+			index = SelectedItem?.EventIndex ?? 0;
+			foundEvent = await Task.Run<EventViewModel>(() =>
+			{
+				EventViewModel ev;
+				while (index < EventFilterer.IndexedEventsCount - 1)
+				{
+					index++;
+					ev = GetEvent(index);
+					if (ev.Severity == Severity)
+					{
+						return ev;
+					}
+				}
+				return null;
+			}
+			);
+			if (foundEvent != null) SelectedItem = foundEvent;
+			IsWorking = false;
+		}
+		#endregion
+
+		#region bookmark
+		public async Task ToogleBookMarkAsync()
+		{
+
+
+			IsWorking = true;
+
+			await Task.Yield();
+			IsWorking = false;
+		}
+
+
+
+
+		#endregion
+
 
 
 

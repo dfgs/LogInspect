@@ -11,10 +11,37 @@
 	
 	<Window.Resources>
 		<views:IntPlusOneValueConverter x:Key="intPlusOneValueConverter"/>
+
+		<Style TargetType="{x:Type Image}">
+			<Style.Triggers>
+				<Trigger Property="IsEnabled" Value="false">
+					<Setter Property="Opacity" Value="0.5"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+		<RoutedUICommand x:Key="findPreviousSeverity"/>
+		<RoutedUICommand x:Key="findNextSeverity"/>
+		
+		<RoutedUICommand x:Key="toogleBookMark"/>
+		<RoutedUICommand x:Key="findPreviousBookMark"/>
+		<RoutedUICommand x:Key="findNextBookMark"/>
+	
 	</Window.Resources>
 	
+	
+	<Window.InputBindings>
+		<KeyBinding Command="{StaticResource findPreviousSeverity}" Key="Left" Modifiers="Ctrl"/>
+		<KeyBinding Command="{StaticResource findNextSeverity}" Key="Right" Modifiers="Ctrl"/>
+	</Window.InputBindings>
 	<Window.CommandBindings>
 		<CommandBinding Command="Open" CanExecute="OpenCommandBinding_CanExecute" Executed="OpenCommandBinding_Executed"/>
+
+		<CommandBinding Command="{StaticResource findPreviousSeverity}" CanExecute="FindPreviousSeverityCommandBinding_CanExecute" Executed="FindPreviousSeverityCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource findNextSeverity}" CanExecute="FindNextSeverityCommandBinding_CanExecute" Executed="FindNextSeverityCommandBinding_Executed"/>
+
+		<CommandBinding Command="{StaticResource toogleBookMark}" CanExecute="SetBookMarkCommandBinding_CanExecute" Executed="ToogleBookMarkCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource findPreviousBookMark}" CanExecute="FindPreviousBookMarkCommandBinding_CanExecute" Executed="FindPreviousBookMarkCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource findNextBookMark}" CanExecute="FindNextBookMarkCommandBinding_CanExecute" Executed="FindNextBookMarkCommandBinding_Executed"/>
 	</Window.CommandBindings>
 	
     <DockPanel>
@@ -31,16 +58,43 @@
 			<Separator/>
 			<TextBlock Text="Events:"/>
 			<TextBlock Text="{Binding SelectedItem.EventFilterer.IndexedEventsCount,FallbackValue=NA}"/>
+			<Separator/>
+			<TextBlock Text="Status:"/>
+			<TextBlock Text="{Binding SelectedItem.IsWorking,FallbackValue=Idle}"/>
 		</StatusBar>
 
-		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" DataContext="{Binding SelectedItem}">
-			<Button Command="Open">
-				<Image Source="Images\OpenFile_16x.png" Stretch="None"  />
-			</Button>
-			<TextBlock Text="Filters " VerticalAlignment="Center"/>
-			
-			<xctk:CheckComboBox Width="100" ItemsSource="{Binding Severities}" SelectedMemberPath="IsChecked" DisplayMemberPath="Name"/>
-		</StackPanel>
+		<ToolBarTray DockPanel.Dock="Top"  DataContext="{Binding SelectedItem}">
+			<ToolBar >
+				<Button Command="Open" >
+					<Image Source="Images\OpenFile_16x.png" Stretch="None"  />
+				</Button>
+			</ToolBar>
+			<ToolBar>
+				<Image Source="Images\Filter_16x.png" Stretch="None"  />
+				<xctk:CheckComboBox Width="100" ItemsSource="{Binding Severities}" SelectedMemberPath="IsChecked" DisplayMemberPath="Name"/>
+			</ToolBar>
+			<ToolBar>
+				<Button Command="{StaticResource findPreviousSeverity}">
+					<Image Source="Images\FindPrevious_16x.png" Stretch="None"  />
+				</Button>
+				<ComboBox Width="100" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}" DisplayMemberPath="Name"/>
+				<Button Command="{StaticResource findNextSeverity}">
+					<Image Source="Images\FindNext_16x.png" Stretch="None"  />
+				</Button>
+			</ToolBar>
+			<ToolBar>
+				<Button Command="{StaticResource toogleBookMark}">
+					<Image Source="Images\BookMark_16x.png" Stretch="None"  />
+				</Button>
+				<Button Command="{StaticResource findPreviousBookMark}">
+					<Image Source="Images\PreviousBookMark_16x.png" Stretch="None"  />
+				</Button>
+				<Button Command="{StaticResource findNextBookMark}">
+					<Image Source="Images\NextBookMark_16x.png" Stretch="None"  />
+				</Button>
+			</ToolBar>
+		</ToolBarTray>
+
 
 		<TabControl ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedItem}">
 			<TabControl.ItemTemplate>

@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace LogInspect.ViewModels
 {
@@ -14,9 +15,20 @@ namespace LogInspect.ViewModels
 	{
 		private List<SeverityViewModel> items;
 
-		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(SeverityViewModel), typeof(SeverityIndexerViewModel));
+		public SeverityViewModel SelectedItem
+		{
+			get { return (SeverityViewModel)GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
+		}
+
+
+
+		public event NotifyCollectionChangedEventHandler CollectionChanged;
 		public event EventHandler IsCheckedChanged;
+
+
 
 		public SeverityIndexerViewModel(ILogger Logger, SeverityIndexerModule IndexerModule,  int RefreshInterval) : base(Logger, IndexerModule, RefreshInterval)
 		{
@@ -35,6 +47,7 @@ namespace LogInspect.ViewModels
 				item.IsCheckedChanged += Item_IsCheckedChanged;
 				items.Add(item);
 				CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
+				if (items.Count == 1) SelectedItem = item;
 			}
 		}
 

@@ -50,11 +50,11 @@ namespace LogInspect.ViewModels
 		{
 			get { return ev.Rule; }
 		}
-		public IEnumerable<string> Lines
+		public string Lines
 		{
 			get
 			{
-				return ev.Log.Lines.Select(item=>item.Value);
+				return string.Join("\r\n", ev.Log.Lines.Select(item=>item.Value));
 			}
 		}
 

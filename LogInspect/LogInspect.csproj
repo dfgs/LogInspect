@@ -79,6 +79,7 @@
     <Compile Include="Modules\SeverityAddedEventHandler.cs" />
     <Compile Include="Modules\SeverityIndexerModule.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
+    <Compile Include="ViewModels\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\IndexerModuleViewModel.cs" />
     <Compile Include="ViewModels\LineColumnViewModel.cs" />
     <Compile Include="ViewModels\PropertyColumnViewModel.cs" />
@@ -99,6 +100,7 @@
     </Compile>
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
+    <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Compile Include="Views\Options.cs" />
     <Page Include="MainWindow.xaml">
@@ -161,6 +163,10 @@
       <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
       <Name>ModuleLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\VirtualListBoxLib\VirtualListBoxLib\VirtualListBoxLib.csproj">
+      <Project>{4527ad6c-524e-4d94-9c06-55988f0c8580}</Project>
+      <Name>VirtualListBoxLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogInspectLib\LogInspectLib.csproj">
       <Project>{1aa10f6a-888f-4125-8754-c14409739a1b}</Project>
       <Name>LogInspectLib</Name>
@@ -191,6 +197,22 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\OpenFile_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FindNext_16x.png" />
+    <Resource Include="Images\FindPrevious_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Filter_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Bookmark_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NextBookmark_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PreviousBookmark_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

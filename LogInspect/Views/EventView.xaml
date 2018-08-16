@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
 	<UserControl.Resources>
+		<views:NotValueConverter x:Key="notValueConverter"/>
 		<DataTemplate DataType="{x:Type models:Property}">
 			<TextBlock Text="{Binding Value}"/>
 		</DataTemplate>
@@ -29,11 +30,11 @@
 		<views:ColumnsView Grid.Row="0"  DataContext="{Binding Columns}" HorizontalOffset="{Binding ElementName=eventPanel,Path=HorizontalOffset}" />
 
 
-		<ScrollViewer  Grid.Row="1" CanContentScroll="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Static views:Options.EventBackground}">
-			<views:EventPanel x:Name="eventPanel"  ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding EventFilterer.IndexedEventsCount}" Columns="{Binding Columns}"  ExtentWidth="{Binding TotalWidth}" 
+		<ScrollViewer  Grid.Row="1" CanContentScroll="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Static views:Options.EventBackground}" IsEnabled="{Binding IsWorking,Converter={StaticResource notValueConverter}}">
+			<views:EventPanel x:Name="eventPanel"  ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding EventFilterer.IndexedEventsCount}" Columns="{Binding Columns}"  ExtentWidth="{Binding Columns.TotalWidth}" 
 							  SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
 		</ScrollViewer>
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<ListBox  Grid.Row="3"  ItemsSource="{Binding SelectedItem.Lines}"/>
+		<TextBox  Grid.Row="3" IsReadOnly="True"  AcceptsReturn="True" Text="{Binding SelectedItem.Lines,Mode=OneWay}" FontFamily="Helvetica" FontSize="16"/>
 	</Grid>
 </UserControl>
