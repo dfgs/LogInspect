@@ -141,6 +141,19 @@ namespace LogInspect
 			}
 		}
 
+		#region Filter events
+		private void FilterEventsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
+		}
+
+		private async void FilterEventsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			await appViewModel.SelectedItem.FilterEventsAsync();
+		}
+
+		#endregion
+
 		#region severities
 		private void FindPreviousSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{

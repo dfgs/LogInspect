@@ -26,7 +26,7 @@ namespace LogInspect.ViewModels
 
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
-		public event EventHandler IsCheckedChanged;
+		//public event EventHandler IsCheckedChanged;
 
 
 
@@ -44,17 +44,17 @@ namespace LogInspect.ViewModels
 			{
 				index = items.Count;
 				item = new SeverityViewModel(Logger, IndexerModule[items.Count]);
-				item.IsCheckedChanged += Item_IsCheckedChanged;
+				//item.IsCheckedChanged += Item_IsCheckedChanged;
 				items.Add(item);
 				CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
 				if (items.Count == 1) SelectedItem = item;
 			}
 		}
 
-		private void Item_IsCheckedChanged(object sender, EventArgs e)
+		/*private void Item_IsCheckedChanged(object sender, EventArgs e)
 		{
 			IsCheckedChanged?.Invoke(this, e);
-		}
+		}*/
 
 		public IEnumerator<SeverityViewModel> GetEnumerator()
 		{

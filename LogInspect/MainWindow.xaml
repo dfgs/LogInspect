@@ -19,6 +19,9 @@
 				</Trigger>
 			</Style.Triggers>
 		</Style>
+
+		<RoutedUICommand x:Key="filterEvents"/>
+
 		<RoutedUICommand x:Key="findPreviousSeverity"/>
 		<RoutedUICommand x:Key="findNextSeverity"/>
 		
@@ -30,11 +33,15 @@
 	
 	
 	<Window.InputBindings>
+		<KeyBinding Command="{StaticResource filterEvents}" Key="F5" />
 		<KeyBinding Command="{StaticResource findPreviousSeverity}" Key="Left" Modifiers="Ctrl"/>
 		<KeyBinding Command="{StaticResource findNextSeverity}" Key="Right" Modifiers="Ctrl"/>
 	</Window.InputBindings>
+
 	<Window.CommandBindings>
 		<CommandBinding Command="Open" CanExecute="OpenCommandBinding_CanExecute" Executed="OpenCommandBinding_Executed"/>
+
+		<CommandBinding Command="{StaticResource filterEvents}" CanExecute="FilterEventsCommandBinding_CanExecute" Executed="FilterEventsCommandBinding_Executed"/>
 
 		<CommandBinding Command="{StaticResource findPreviousSeverity}" CanExecute="FindPreviousSeverityCommandBinding_CanExecute" Executed="FindPreviousSeverityCommandBinding_Executed"/>
 		<CommandBinding Command="{StaticResource findNextSeverity}" CanExecute="FindNextSeverityCommandBinding_CanExecute" Executed="FindNextSeverityCommandBinding_Executed"/>
@@ -70,8 +77,10 @@
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<Image Source="Images\Filter_16x.png" Stretch="None"  />
 				<xctk:CheckComboBox Width="100" ItemsSource="{Binding Severities}" SelectedMemberPath="IsChecked" DisplayMemberPath="Name"/>
+				<Button Command="{StaticResource filterEvents}">
+					<Image Source="Images\Filter_16x.png" Stretch="None"  />
+				</Button>
 			</ToolBar>
 			<ToolBar>
 				<Button Command="{StaticResource findPreviousSeverity}">

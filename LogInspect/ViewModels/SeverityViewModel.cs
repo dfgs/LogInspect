@@ -16,14 +16,14 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(SeverityViewModel),new PropertyMetadata(true,IsCheckedPropertyChanged));
+		public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(SeverityViewModel),new PropertyMetadata(true));
 		public bool IsChecked
 		{
 			get { return (bool)GetValue(IsCheckedProperty); }
 			set { SetValue(IsCheckedProperty, value); }
 		}
 
-		public event EventHandler IsCheckedChanged;
+		//public event EventHandler IsCheckedChanged;
 
 		public SeverityViewModel(ILogger Logger,string Name):base(Logger)
 		{
@@ -31,10 +31,10 @@ namespace LogInspect.ViewModels
 		}
 
 
-		private static void IsCheckedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		/*private static void IsCheckedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			((SeverityViewModel)d).IsCheckedChanged?.Invoke(d, EventArgs.Empty);
-		}
+		}*/
 
 
 

@@ -21,7 +21,7 @@
 		</DataTemplate>
 
 		<DataTemplate x:Key="eventDataTemplate">
-			<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyDataTemplate}">
+			<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyDataTemplate}" Background="{Binding Background}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<StackPanel Orientation="Horizontal"/>
@@ -30,9 +30,9 @@
 			</ItemsControl>
 		</DataTemplate>
 
-		<Style TargetType="{x:Type vlbLib:VirtualListBoxItem}">
+		<!--Style TargetType="{x:Type vlbLib:VirtualListBoxItem}" BasedOn="{StaticResource ResourceKey={x:Type vlbLib:VirtualListBoxItem}}">
 			<Setter Property="Background" Value="{Binding Background}"/>
-		</Style>
+		</-->
 	</UserControl.Resources>
 
 	<Grid>
@@ -46,12 +46,15 @@
 
 		<views:ColumnsView Grid.Row="0"  DataContext="{Binding Columns}" HorizontalOffset="{Binding ElementName=eventPanel,Path=HorizontalOffset}" />
 
-		<vlbLib:VirtualListBox Grid.Row="1" VirtualCollection="{Binding}" ItemsCount="{Binding  EventFilterer.IndexedEventsCount}"  ExtentWidth="{Binding Columns.TotalWidth}" ItemTemplate="{StaticResource eventDataTemplate}"/>
+		<vlbLib:VirtualListBox Grid.Row="1" 
+			VirtualCollection="{Binding}" ItemsCount="{Binding  EventFilterer.IndexedEventsCount}"  
+			ExtentWidth="{Binding Columns.TotalWidth}" ItemTemplate="{StaticResource eventDataTemplate}"
+			SelectedItemIndex="{Binding SelectedItemIndex,Mode=TwoWay}"/>
 		<!--ScrollViewer  Grid.Row="1" CanContentScroll="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Static views:Options.EventBackground}" IsEnabled="{Binding IsWorking,Converter={StaticResource notValueConverter}}">
 			<views:EventPanel x:Name="eventPanel"  ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding EventFilterer.IndexedEventsCount}" Columns="{Binding Columns}"  ExtentWidth="{Binding Columns.TotalWidth}" 
 							  SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
 		</-->
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<TextBox  Grid.Row="3" IsReadOnly="True"  AcceptsReturn="True" Text="{Binding SelectedItem.Lines,Mode=OneWay}" FontFamily="Helvetica" FontSize="16"/>
+		<TextBox  Grid.Row="3" IsReadOnly="True"  AcceptsReturn="True" Text="{Binding SelectedItem.Lines,Mode=OneWay}"/>
 	</Grid>
 </UserControl>

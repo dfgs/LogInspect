@@ -49,12 +49,22 @@ namespace LogInspect.ViewModels
 		}
 
 
+		public static readonly DependencyProperty SelectedItemIndexProperty = DependencyProperty.Register("SelectedItemIndex", typeof(int), typeof(LogFileViewModel),new PropertyMetadata(SelectedItemIndexPropertyChanged));
+		public int SelectedItemIndex
+		{
+			get { return (int)GetValue(SelectedItemIndexProperty); }
+			set { SetValue(SelectedItemIndexProperty, value); }
+		}
+
+
 		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(EventViewModel), typeof(LogFileViewModel));
 		public EventViewModel SelectedItem
 		{
 			get { return (EventViewModel)GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
+			private set { SetValue(SelectedItemProperty, value); }
 		}
+
+
 
 		public ColumnsViewModel Columns
 		{
@@ -82,7 +92,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public event EventHandler PagesCleared;
+		//public event EventHandler PagesCleared;
 
 		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
 		{
@@ -111,7 +121,6 @@ namespace LogInspect.ViewModels
 			Log(LogLevels.Information, "Starting SeverityIndexer");
 			severityIndexerModule.Start();
 			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, 300);
-			Severities.IsCheckedChanged += Severities_IsCheckedChanged;
 		}
 
 
@@ -132,14 +141,20 @@ namespace LogInspect.ViewModels
 			pages = null;
 		}
 
-		private void Severities_IsCheckedChanged(object sender, EventArgs e)
+
+
+		private static void SelectedItemIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			pages.Clear();
-			PagesCleared?.Invoke(this, EventArgs.Empty);
-			eventFiltererModule.SetFilter(Severities.Where(item => !item.IsChecked).Select(item => item.Name).ToArray());
+			((LogFileViewModel)d).OnSelectedItemIndexChanged();
+		}
+		protected virtual void OnSelectedItemIndexChanged()
+		{
+			if ((SelectedItemIndex < 0) || (SelectedItemIndex >= EventFilterer.IndexedEventsCount)) SelectedItem = null;
+			else SelectedItem = GetEvent(SelectedItemIndex);
 		}
 
-		
+
+
 
 		private Page GetPage(int PageIndex)
 		{
@@ -216,7 +231,21 @@ namespace LogInspect.ViewModels
 			return page[Index % pageSize];
 		}
 
-		#region severities
+
+		#region filter events
+		public async Task FilterEventsAsync()
+		{
+			IsWorking = true;
+			pages.Clear();
+			//PagesCleared?.Invoke(this, EventArgs.Empty);
+			eventFiltererModule.SetFilter(Severities.Where(item => !item.IsChecked).Select(item => item.Name).ToArray());
+			await Task.Yield();
+			IsWorking = false;
+		}
+
+		#endregion
+
+		#region find severities
 		public async Task FindPreviousAsync(string Severity)
 		{
 			int index;
@@ -240,7 +269,7 @@ namespace LogInspect.ViewModels
 				return null;
 		    }
 			);
-			if (foundEvent != null) SelectedItem = foundEvent;
+			if (foundEvent != null) SelectedItemIndex = foundEvent.EventIndex;
 			IsWorking = false;
 		}
 		public async Task FindNextAsync(string Severity)
@@ -266,7 +295,7 @@ namespace LogInspect.ViewModels
 				return null;
 			}
 			);
-			if (foundEvent != null) SelectedItem = foundEvent;
+			if (foundEvent != null) SelectedItemIndex = foundEvent.EventIndex;
 			IsWorking = false;
 		}
 		#endregion
