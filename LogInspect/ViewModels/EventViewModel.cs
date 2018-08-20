@@ -42,6 +42,10 @@ namespace LogInspect.ViewModels
 			get { return ev.Severity; }
 		}
 		
+		public string TimeStamp
+		{
+			get { return ev.HasValidTimeStamp?ev.TimeStamp.ToString():ev.GetValue(ev.Rule.TimeStampToken); }
+		}
 		public Brush Background
 		{
 			get;
@@ -114,10 +118,7 @@ namespace LogInspect.ViewModels
 
 		public string GetPropertyValue(string PropertyName)
 		{
-			object value;
-			value = ev.GetProperty(PropertyName)?.Value;
-			if (value == null) return null;
-			return value.ToString();
+			return ev.GetValue(PropertyName);
 		}
 
 	}

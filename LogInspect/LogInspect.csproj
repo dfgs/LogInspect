@@ -81,6 +81,7 @@
     <Compile Include="Modules\SeverityIndexerModule.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
+    <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\IndexerModuleViewModel.cs" />
     <Compile Include="ViewModels\Columns\BookMarkColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\LineColumnViewModel.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\Page.cs" />
+    <Compile Include="ViewModels\Properties\TimeStampPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TextPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\BookMarkPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\LinePropertyViewModel.cs" />

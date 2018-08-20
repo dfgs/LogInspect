@@ -72,6 +72,8 @@ namespace LogInspect
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
 			rule.SeverityToken = "Severity";
+			rule.TimeStampToken = "Date";
+			rule.TimeStampFormat = "yyyy-MM-dd HH:mm:ss.fff";
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+",Width=200,Alignment="Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
@@ -84,6 +86,8 @@ namespace LogInspect
 
 			rule = new LogInspectLib.Rule() { Name = "Event without thread" };
 			rule.SeverityToken = "Severity";
+			rule.TimeStampToken = "Date";
+			rule.TimeStampFormat = "yyyy-MM-dd HH:mm:ss.fff";
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
 			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+", Alignment = "Center" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });

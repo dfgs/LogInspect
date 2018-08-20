@@ -23,6 +23,7 @@ namespace LogInspect.ViewModels.Columns
 		public ColumnsViewModel(ILogger Logger,Rule Rule) : base(Logger)
 		{
 			ColumnViewModel column;
+			string timeStampColumnName=null;
 
 			items = new List<ColumnViewModel>();
 
@@ -34,7 +35,14 @@ namespace LogInspect.ViewModels.Columns
 			items.Add(column);
 			if (Rule!=null) 
 			{
-				foreach (Token property in Rule.Tokens.Where(item => item.Name != null))
+				if ((Rule.TimeStampToken != null) && (Rule.TimeStampFormat != null))
+				{
+					column = new TimeStampColumnViewModel(Logger, "Date") { Width = 150 };
+					column.WidthChanged += Column_WidthChanged;
+					items.Add(column);
+					timeStampColumnName = Rule.TimeStampToken;
+				}
+				foreach (Token property in Rule.Tokens.Where(item => (item.Name != null) && (item.Name!= timeStampColumnName) ))
 				{
 					column = new TextPropertyColumnViewModel(Logger, property.Name, property.Alignment) { Width = property.Width };
 					column.WidthChanged += Column_WidthChanged;

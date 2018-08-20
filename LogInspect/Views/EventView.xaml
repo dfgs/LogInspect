@@ -34,10 +34,13 @@
 			<TextBlock  Width="{Binding Column.Width}" Text="{Binding Value}" FontWeight="Bold" TextAlignment="Right" Foreground="SteelBlue" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
 		</DataTemplate>
 
+		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
+			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="Center"/>
+		</DataTemplate>
+
 		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
 			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="{Binding Alignment}"/>
 		</DataTemplate>
-
 		
 		<DataTemplate x:Key="eventDataTemplate">
 			<ItemsControl ItemsSource="{Binding Properties}" Background="{Binding Background}">

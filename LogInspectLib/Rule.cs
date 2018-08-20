@@ -25,6 +25,20 @@ namespace LogInspectLib
 		}
 
 		[XmlAttribute]
+		public string TimeStampToken
+		{
+			get;
+			set;
+		}
+
+		[XmlAttribute]
+		public string TimeStampFormat
+		{
+			get;
+			set;
+		}
+
+		[XmlAttribute]
 		public bool Discard
 		{
 			get;
