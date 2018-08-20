@@ -73,20 +73,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Cache.cs" />
+    <Compile Include="Models\BookMarkIndex.cs" />
     <Compile Include="Models\FileIndex.cs" />
-    <Compile Include="Modules\BaseIndexerModule.cs" />
+    <Compile Include="Modules\BaseEventModule.cs" />
     <Compile Include="Modules\EventFiltererModule.cs" />
     <Compile Include="Modules\SeverityAddedEventHandler.cs" />
     <Compile Include="Modules\SeverityIndexerModule.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
-    <Compile Include="ViewModels\ColumnsViewModel.cs" />
+    <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\IndexerModuleViewModel.cs" />
-    <Compile Include="ViewModels\LineColumnViewModel.cs" />
-    <Compile Include="ViewModels\PropertyColumnViewModel.cs" />
-    <Compile Include="ViewModels\ColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\BookMarkColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\LineColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\Page.cs" />
-    <Compile Include="ViewModels\PropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\TextPropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\BookMarkPropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\LinePropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\PropertyViewModel.cs" />
     <Compile Include="ViewModels\SeverityIndexerViewModel.cs" />
     <Compile Include="ViewModels\SeverityViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
@@ -98,6 +103,7 @@
     </Compile>
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
+    <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

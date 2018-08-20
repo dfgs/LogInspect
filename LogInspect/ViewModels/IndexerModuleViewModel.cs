@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LogInspect.ViewModels
 {
 	public class IndexerModuleViewModel<TIndexerModule,T> : ViewModel
-		where TIndexerModule : BaseIndexerModule<T>
+		where TIndexerModule : BaseEventModule<T>
 	{
 		private TIndexerModule indexerModule;
 		public TIndexerModule IndexerModule

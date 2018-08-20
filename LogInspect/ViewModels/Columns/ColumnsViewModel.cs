@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LogInspectLib;
 using LogLib;
 
-namespace LogInspect.ViewModels
+namespace LogInspect.ViewModels.Columns
 {
 	public class ColumnsViewModel : ViewModel,IEnumerable<ColumnViewModel>
 	{
@@ -26,6 +26,9 @@ namespace LogInspect.ViewModels
 
 			items = new List<ColumnViewModel>();
 
+			column = new BookMarkColumnViewModel(Logger, " ") { Width = 20 };
+			column.WidthChanged += Column_WidthChanged;
+			items.Add(column);
 			column = new LineColumnViewModel(Logger, "#") { Width = 50 };
 			column.WidthChanged += Column_WidthChanged;
 			items.Add(column);
@@ -33,7 +36,7 @@ namespace LogInspect.ViewModels
 			{
 				foreach (Token property in Rule.Tokens.Where(item => item.Name != null))
 				{
-					column = new PropertyColumnViewModel(Logger, property.Name, property.Alignment) { Width = property.Width };
+					column = new TextPropertyColumnViewModel(Logger, property.Name, property.Alignment) { Width = property.Width };
 					column.WidthChanged += Column_WidthChanged;
 					items.Add(column);
 				}

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogLib;
 
-namespace LogInspect.ViewModels
+namespace LogInspect.ViewModels.Properties
 {
-	public class PropertyViewModel : ViewModel
+	public abstract class PropertyViewModel : ViewModel
 	{
 
 
@@ -19,7 +20,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public EventViewModel Event
+		/*public EventViewModel Event
 		{
 			get;
 			private set;
@@ -29,12 +30,13 @@ namespace LogInspect.ViewModels
 		{
 			get;
 			private set;
-		}
-		public PropertyViewModel(ILogger Logger,ColumnViewModel Column,EventViewModel Event) : base(Logger)
+		}*/
+
+		public PropertyViewModel(ILogger Logger,ColumnViewModel Column) : base(Logger)
 		{
 			this.Column = Column;
-			this.Event = Event;
-			this.Value = Column.GetValue(Event);
+			/*this.Event = Event;
+			this.Value = Column.GetValue(Event);*/
 		}
 
 

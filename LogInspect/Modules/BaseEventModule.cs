@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public abstract class BaseIndexerModule<T> : ThreadModule
+	public abstract class BaseEventModule<T> : ThreadModule
 	{
 		private List<T> items;
 
@@ -40,7 +40,7 @@ namespace LogInspect.Modules
 
 		private int lookupRetryDelay;
 
-		public BaseIndexerModule(string Name, ILogger Logger, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
+		public BaseEventModule(string Name, ILogger Logger, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
 		{
 			this.lookupRetryDelay = LookupRetryDelay;
 			items = new List<T>();

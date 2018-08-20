@@ -1,4 +1,5 @@
 ﻿using LogInspect.ViewModels;
+using LogInspect.ViewModels.Columns;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace LogInspect.Views
     /// </summary>
     public partial class ColumnsView : UserControl
     {
-		public static readonly ColumnViewModel[] TestColumns = new ColumnViewModel[] { new PropertyColumnViewModel(null, "Column 1",null), new PropertyColumnViewModel(null, "Column 2", null), new PropertyColumnViewModel(null, "Column 3", null), new PropertyColumnViewModel(null, "Column 4", null), new PropertyColumnViewModel(null, "Column 5", null) };
+		public static readonly ColumnViewModel[] TestColumns = new ColumnViewModel[] { new TextPropertyColumnViewModel(null, "Column 1",null), new TextPropertyColumnViewModel(null, "Column 2", null), new TextPropertyColumnViewModel(null, "Column 3", null), new TextPropertyColumnViewModel(null, "Column 4", null), new TextPropertyColumnViewModel(null, "Column 5", null) };
 
 
 		public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(ColumnsView));

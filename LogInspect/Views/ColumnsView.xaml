@@ -24,7 +24,7 @@
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<DockPanel Width="{Binding Width,Mode=TwoWay}" >
-						<Thumb DockPanel.Dock="Right" DragDelta="Thumb_DragDelta" Cursor="SizeWE" Background="Transparent" Width="4" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="0,0,1,0">
+						<Thumb DockPanel.Dock="Right" DragDelta="Thumb_DragDelta" Cursor="SizeWE" Background="Transparent" Width="4" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="0,0,1,0" IsEnabled="{Binding AllowResize}" >
 							<Thumb.Template>
 								<ControlTemplate TargetType="{x:Type Thumb}">
 									<Border BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" />

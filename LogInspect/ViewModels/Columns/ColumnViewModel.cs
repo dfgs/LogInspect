@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspect.ViewModels.Properties;
 using LogInspectLib;
 using LogLib;
 
-namespace LogInspect.ViewModels
+namespace LogInspect.ViewModels.Columns
 {
 	public abstract class ColumnViewModel : ViewModel
 	{
@@ -20,6 +21,11 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
+		public abstract bool AllowResize
+		{
+			get;
+		}
+
 		public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(ColumnViewModel),new PropertyMetadata(100d,WidthPropertyChanged));
 		public double Width
 		{
@@ -28,18 +34,12 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public TextAlignment Alignment
-		{
-			get;
-			private set;
-		}
+		
 
-		public ColumnViewModel(ILogger Logger,string Name,string Alignment) : base(Logger)
+		public ColumnViewModel(ILogger Logger,string Name) : base(Logger)
 		{
-			TextAlignment alignment;
+
 			this.Name = Name;
-			if (Enum.TryParse<TextAlignment>(Alignment, out alignment)) this.Alignment = alignment;
-			else this.Alignment = TextAlignment.Left;
 		}
 
 
@@ -52,8 +52,9 @@ namespace LogInspect.ViewModels
 			WidthChanged?.Invoke(this, EventArgs.Empty);
 		}
 
+		public abstract PropertyViewModel CreatePropertyViewModel(EventViewModel Event);
 
-		public abstract object GetValue(EventViewModel Event);
+		//public abstract object GetValue(EventViewModel Event);
 
 	}
 }

@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspect.ViewModels.Columns;
+using LogInspect.ViewModels.Properties;
 using LogInspectLib;
 using LogLib;
 
@@ -65,6 +67,13 @@ namespace LogInspect.ViewModels
 
 
 
+		public static readonly DependencyProperty IsBookMarkedProperty = DependencyProperty.Register("IsBookMarked", typeof(bool), typeof(EventViewModel));
+		public bool IsBookMarked
+		{
+			get { return (bool)GetValue(IsBookMarkedProperty); }
+			set { SetValue(IsBookMarkedProperty, value); }
+		}
+
 
 
 		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<SeverityMapping> SeverityMapping, Event Event, int EventIndex, int LineIndex) : base(Logger)
@@ -99,7 +108,7 @@ namespace LogInspect.ViewModels
 				}
 			}
 
-			Properties = Columns.Select(item => new PropertyViewModel(Logger, item, this)).ToArray();
+			Properties = Columns.Select(item => item.CreatePropertyViewModel(this)).ToArray();
 
 		}
 

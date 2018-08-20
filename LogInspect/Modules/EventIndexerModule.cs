@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace LogInspect.Modules
 {
 
-	public class EventIndexerModule : BaseIndexerModule<FileIndex>
+	public class EventIndexerModule : BaseEventModule<FileIndex>
 	{
 		private EventReader eventReader;
 

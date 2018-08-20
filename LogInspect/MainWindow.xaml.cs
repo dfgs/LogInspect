@@ -142,9 +142,10 @@ namespace LogInspect
 		}
 
 		#region Filter events
-		private void FilterEventsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private async void FilterEventsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
+			await Task.Yield();
 		}
 
 		private async void FilterEventsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -188,22 +189,22 @@ namespace LogInspect
 		}
 		private void FindPreviousBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = false;// (appViewModel.SelectedItem?.IsWorking == false); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
 		}
 
 		private async void FindPreviousBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindPreviousAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
+			await appViewModel.SelectedItem.FindPreviousBookMarkAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
 		}
 
 		private void FindNextBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = false;// (appViewModel.SelectedItem?.IsWorking == false); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
 		}
 
 		private async void FindNextBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindNextAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
+			await appViewModel.SelectedItem.FindNextBookMarkAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
 		}
 		#endregion
 

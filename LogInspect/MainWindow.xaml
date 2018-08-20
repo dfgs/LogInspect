@@ -36,6 +36,7 @@
 		<KeyBinding Command="{StaticResource filterEvents}" Key="F5" />
 		<KeyBinding Command="{StaticResource findPreviousSeverity}" Key="Left" Modifiers="Ctrl"/>
 		<KeyBinding Command="{StaticResource findNextSeverity}" Key="Right" Modifiers="Ctrl"/>
+		<KeyBinding Command="{StaticResource toogleBookMark}" Key="B" Modifiers="Ctrl" />
 	</Window.InputBindings>
 
 	<Window.CommandBindings>
@@ -72,33 +73,33 @@
 
 		<ToolBarTray DockPanel.Dock="Top"  DataContext="{Binding SelectedItem}">
 			<ToolBar >
-				<Button Command="Open" >
-					<Image Source="Images\OpenFile_16x.png" Stretch="None"  />
+				<Button Command="Open" ToolTip="Open file">
+					<Image Source="Images\OpenFile_16x.png" Stretch="None"   />
 				</Button>
 			</ToolBar>
 			<ToolBar>
 				<xctk:CheckComboBox Width="100" ItemsSource="{Binding Severities}" SelectedMemberPath="IsChecked" DisplayMemberPath="Name"/>
-				<Button Command="{StaticResource filterEvents}">
+				<Button Command="{StaticResource filterEvents}" ToolTip="Filter/Refresh">
 					<Image Source="Images\Filter_16x.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<Button Command="{StaticResource findPreviousSeverity}">
+				<Button Command="{StaticResource findPreviousSeverity}" ToolTip="Find previous">
 					<Image Source="Images\FindPrevious_16x.png" Stretch="None"  />
 				</Button>
 				<ComboBox Width="100" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}" DisplayMemberPath="Name"/>
-				<Button Command="{StaticResource findNextSeverity}">
+				<Button Command="{StaticResource findNextSeverity}" ToolTip="Find next">
 					<Image Source="Images\FindNext_16x.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<Button Command="{StaticResource toogleBookMark}">
+				<Button Command="{StaticResource toogleBookMark}" ToolTip="Toogle bookmark">
 					<Image Source="Images\BookMark_16x.png" Stretch="None"  />
 				</Button>
-				<Button Command="{StaticResource findPreviousBookMark}">
+				<Button Command="{StaticResource findPreviousBookMark}" ToolTip="Find previous">
 					<Image Source="Images\PreviousBookMark_16x.png" Stretch="None"  />
 				</Button>
-				<Button Command="{StaticResource findNextBookMark}">
+				<Button Command="{StaticResource findNextBookMark}" ToolTip="Find next">
 					<Image Source="Images\NextBookMark_16x.png" Stretch="None"  />
 				</Button>
 			</ToolBar>

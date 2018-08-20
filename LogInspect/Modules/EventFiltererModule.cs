@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public class EventFiltererModule : BaseIndexerModule<FileIndex>
+	public class EventFiltererModule : BaseEventModule<FileIndex>
 	{
 		private EventIndexerModule indexerModule;
 
@@ -56,6 +56,31 @@ namespace LogInspect.Modules
 		{
 			this.severities = Severities;
 			this.Reset();
+		}
+
+		public bool FindPrevious(ref int Index, Func<FileIndex, bool> Predicate)
+		{
+			FileIndex fileIndex;
+
+			while (Index > 0)
+			{
+				Index--;
+				fileIndex = this[Index];
+				if (Predicate(fileIndex)) return true;
+			}
+			return false;
+		}
+		public bool FindNext(ref int Index, Func<FileIndex, bool> Predicate)
+		{
+			FileIndex fileIndex;
+
+			while (Index < IndexedEventsCount - 1)
+			{
+				Index++;
+				fileIndex = this[Index];
+				if (Predicate(fileIndex)) return true;
+			}
+			return false;
 		}
 
 

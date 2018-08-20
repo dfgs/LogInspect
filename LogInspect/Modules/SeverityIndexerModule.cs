@@ -9,7 +9,7 @@ using LogLib;
 
 namespace LogInspect.Modules
 {
-	public class SeverityIndexerModule : BaseIndexerModule<string>
+	public class SeverityIndexerModule : BaseEventModule<string>
 	{
 		private EventIndexerModule indexerModule;
 

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Models
 {
-	public struct FileIndex
+	// must be a class in order to use same ref in all indexers
+	public class FileIndex
 	{
 		public long Position
 		{
@@ -28,9 +29,14 @@ namespace LogInspect.Models
 			get;
 			private set;
 		}
+		public bool IsBookMarked
+		{
+			get;
+			set;
+		}
 		public FileIndex(long Position,int LineIndex,int EventIndex,string Severity)
 		{
-			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;this.Severity = Severity;
+			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;this.Severity = Severity;IsBookMarked = false;
 		}
 
 	}

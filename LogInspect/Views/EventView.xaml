@@ -5,23 +5,42 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
 			 xmlns:vlbLib="clr-namespace:VirtualListBoxLib;assembly=VirtualListBoxLib"
+			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties"
 			 xmlns:models="clr-namespace:LogInspectLib;assembly=LogInspectLib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
 	<UserControl.Resources>
-		<!--views:NotValueConverter x:Key="notValueConverter"/-->
+		<views:NotValueConverter x:Key="notValueConverter"/>
+
+		<BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+		
 		<DataTemplate DataType="{x:Type models:Property}">
 			<TextBlock Text="{Binding Value}"/>
 		</DataTemplate>
 		
 		
-		<DataTemplate x:Key="propertyDataTemplate">
+		<!--DataTemplate x:Key="propertyDataTemplate">
 			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="{Binding Column.Alignment}" />
+		</-->
+
+		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
+			<Border Width="{Binding Column.Width}" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+				<Image Source="/LogInspect;component/Images/Bookmark_16x.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Event.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
+			</Border>
 		</DataTemplate>
 
+		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
+			<TextBlock  Width="{Binding Column.Width}" Text="{Binding Value}" FontWeight="Bold" TextAlignment="Right" Foreground="SteelBlue" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
+			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="{Binding Alignment}"/>
+		</DataTemplate>
+
+		
 		<DataTemplate x:Key="eventDataTemplate">
-			<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyDataTemplate}" Background="{Binding Background}">
+			<ItemsControl ItemsSource="{Binding Properties}" Background="{Binding Background}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<StackPanel Orientation="Horizontal"/>
@@ -29,10 +48,7 @@
 				</ItemsControl.ItemsPanel>
 			</ItemsControl>
 		</DataTemplate>
-
-		<!--Style TargetType="{x:Type vlbLib:VirtualListBoxItem}" BasedOn="{StaticResource ResourceKey={x:Type vlbLib:VirtualListBoxItem}}">
-			<Setter Property="Background" Value="{Binding Background}"/>
-		</-->
+		
 	</UserControl.Resources>
 
 	<Grid>
@@ -42,18 +58,15 @@
 			<RowDefinition Height="7"/>
 			<RowDefinition Height="150"/>
 		</Grid.RowDefinitions>
-		
 
-		<views:ColumnsView Grid.Row="0"  DataContext="{Binding Columns}" HorizontalOffset="{Binding ElementName=eventPanel,Path=HorizontalOffset}" />
 
-		<vlbLib:VirtualListBox Grid.Row="1" 
+		<views:ColumnsView Grid.Row="0"  DataContext="{Binding Columns}" HorizontalOffset="{Binding ElementName=listBox,Path=HorizontalOffset}" />
+
+		<vlbLib:VirtualListBox Grid.Row="1" x:Name="listBox" IsEnabled="{Binding IsWorking,Converter={StaticResource notValueConverter}}"
 			VirtualCollection="{Binding}" ItemsCount="{Binding  EventFilterer.IndexedEventsCount}"  
 			ExtentWidth="{Binding Columns.TotalWidth}" ItemTemplate="{StaticResource eventDataTemplate}"
-			SelectedItemIndex="{Binding SelectedItemIndex,Mode=TwoWay}"/>
-		<!--ScrollViewer  Grid.Row="1" CanContentScroll="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{x:Static views:Options.EventBackground}" IsEnabled="{Binding IsWorking,Converter={StaticResource notValueConverter}}">
-			<views:EventPanel x:Name="eventPanel"  ItemHeight="20" ItemsSource="{Binding}" ItemsCount="{Binding EventFilterer.IndexedEventsCount}" Columns="{Binding Columns}"  ExtentWidth="{Binding Columns.TotalWidth}" 
-							  SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
-		</-->
+			SelectedItemIndex="{Binding SelectedItemIndex,Mode=TwoWay}" />
+		
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 		<TextBox  Grid.Row="3" IsReadOnly="True"  AcceptsReturn="True" Text="{Binding SelectedItem.Lines,Mode=OneWay}"/>
 	</Grid>
