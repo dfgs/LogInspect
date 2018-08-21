@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspect.Models.Filters;
+using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspectLib;
 using LogLib;
@@ -14,6 +16,7 @@ namespace LogInspect.ViewModels.Columns
 	public abstract class ColumnViewModel : ViewModel
 	{
 		public event EventHandler WidthChanged;
+		public event EventHandler FilterChanged;
 
 		public string Name
 		{
@@ -21,9 +24,31 @@ namespace LogInspect.ViewModels.Columns
 			private set;
 		}
 
-		public abstract bool AllowResize
+		public abstract bool AllowsFilter
 		{
 			get;
+		}
+		public abstract bool AllowsResize
+		{
+			get;
+		}
+
+		private Filter filter;
+		public Filter Filter
+		{
+			get { return filter; }
+			set
+			{
+				if (filter == value) return;
+				filter = value;
+				FilterChanged?.Invoke(this, EventArgs.Empty);
+				OnPropertyChanged("HasFilter");
+			}
+		}
+
+		public bool HasFilter
+		{
+			get { return Filter != null; }
 		}
 
 		public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(ColumnViewModel),new PropertyMetadata(100d,WidthPropertyChanged));
@@ -32,9 +57,9 @@ namespace LogInspect.ViewModels.Columns
 			get { return (double)GetValue(WidthProperty); }
 			set { SetValue(WidthProperty, value); }
 		}
-
-
 		
+
+
 
 		public ColumnViewModel(ILogger Logger,string Name) : base(Logger)
 		{
@@ -53,8 +78,8 @@ namespace LogInspect.ViewModels.Columns
 		}
 
 		public abstract PropertyViewModel CreatePropertyViewModel(EventViewModel Event);
+		public abstract FilterViewModel CreateFilterViewModel();
 
-		//public abstract object GetValue(EventViewModel Event);
-
+		
 	}
 }

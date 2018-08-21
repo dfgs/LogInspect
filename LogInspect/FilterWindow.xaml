@@ -1,0 +1,35 @@
+﻿<Window x:Class="LogInspect.FilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LogInspect"
+		xmlns:filters="clr-namespace:LogInspect.ViewModels.Filters"
+        mc:Ignorable="d" x:Name="root"
+        Title="Set filter" Height="240" Width="320" WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type filters:TextFilterViewModel}">
+			<StackPanel>
+				<TextBlock Text="Value:" FontWeight="Bold"/>
+				<TextBox Text="{Binding Value}"/>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type filters:TimeStampFilterViewModel}">
+			<StackPanel>
+				<TextBlock Text="Start date:" FontWeight="Bold"/>
+				<DatePicker Text="{Binding StartDate}"/>
+				<TextBlock Text="End date:" FontWeight="Bold"/>
+				<DatePicker Text="{Binding EndDate}"/>
+			</StackPanel>
+		</DataTemplate>
+	</Window.Resources>
+    <DockPanel>
+		<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Content="OK" Width="75" Margin="4" Click="ButtonOK_Click"/>
+			<Button Content="Remove" Width="75" Margin="4" Click="ButtonRemove_Click"/>
+			<Button Content="Cancel" Width="75" Margin="4" Click="ButtonCancel_Click"/>
+		</StackPanel>
+		<ContentPresenter Content="{Binding ElementName=root,Path=Filter}"/>
+	</DockPanel>
+</Window>

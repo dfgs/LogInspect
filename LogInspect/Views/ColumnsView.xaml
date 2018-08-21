@@ -8,6 +8,41 @@
               d:DesignWidth="800" BorderThickness="0,1,0,0" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" >
 	<UserControl.Resources>
 		<views:OffsetInverterConverter x:Key="offsetInverterConverter"/>
+
+		<Style x:Key="filterButtonStyle" TargetType="{x:Type Button}">
+			<Setter Property="Visibility" Value="Collapsed"/>
+			<Setter Property="Padding" Value="1"/>
+			<Setter Property="Margin" Value="0"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+			<Setter Property="Background" Value="Transparent"/>
+			
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}" Padding="{TemplateBinding Padding}">
+							<ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Content}"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Style.Triggers>
+				<MultiDataTrigger>
+					<MultiDataTrigger.Conditions>
+						<Condition Binding="{Binding ElementName=headerCell,Path=IsMouseOver}" Value="true"/>
+						<Condition Binding="{Binding Path=AllowsFilter}" Value="true"/>
+					</MultiDataTrigger.Conditions>
+					<Setter Property="Visibility" Value="Visible"/>
+				</MultiDataTrigger>
+				<DataTrigger Binding="{Binding HasFilter}" Value="true">
+					<Setter Property="Visibility" Value="Visible"/>
+				</DataTrigger>
+				<Trigger Property="IsMouseOver" Value="true">
+					<Setter Property="Background" Value="#330078D7"/>
+					<Setter Property="BorderBrush" Value="#880078D7"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
 	</UserControl.Resources>
 
 	<StackPanel Orientation="Horizontal">
@@ -31,7 +66,12 @@
 								</ControlTemplate>
 							</Thumb.Template>
 						</Thumb>
-						<TextBlock Margin="2" Text="{Binding Name}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<Grid x:Name="headerCell" Background="Transparent">
+							<TextBlock Margin="2" Text="{Binding Name}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+							<Button HorizontalAlignment="Right"  Width="12" Height="12" Style="{StaticResource filterButtonStyle}" Click="Button_Click">
+								<Image Source="/LogInspect;component/Images/Filter_16x.png" Stretch="Uniform" />
+							</Button>
+						</Grid>
 					</DockPanel>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>

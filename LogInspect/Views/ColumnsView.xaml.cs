@@ -55,5 +55,27 @@ namespace LogInspect.Views
 			if (newWidth < 1) newWidth = 1;
 			parent.Width = newWidth ;
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			Button button;
+			ColumnViewModel column;
+			FilterWindow window;
+			bool? result;
+
+			button = sender as Button;
+			if (button == null) return;
+			column = button.DataContext as ColumnViewModel;
+			if (column == null) return;
+
+			window = new FilterWindow();window.Owner = Application.Current.MainWindow;window.Filter = column.CreateFilterViewModel();
+			result = window.ShowDialog();
+			if (result == true) column.Filter = window.Filter.CreateFilter();
+			else column.Filter = null;
+
+			
+		}
+
+
 	}
 }

@@ -93,6 +93,12 @@
 				</Button>
 			</ToolBar>
 			<ToolBar>
+				<xctk:DateTimePicker Width="150" Format="ShortDate"/>
+				<Button Command="{StaticResource filterEvents}" ToolTip="Filter/Refresh">
+					<Image Source="Images\Filter_16x.png" Stretch="None"  />
+				</Button>
+			</ToolBar>
+			<ToolBar>
 				<Button Command="{StaticResource toogleBookMark}" ToolTip="Toogle bookmark">
 					<Image Source="Images\BookMark_16x.png" Stretch="None"  />
 				</Button>

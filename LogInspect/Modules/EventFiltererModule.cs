@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogInspect.Models.Filters;
 using LogLib;
 using ModuleLib;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace LogInspect.Modules
 {
@@ -14,7 +16,7 @@ namespace LogInspect.Modules
 	{
 		private EventIndexerModule indexerModule;
 
-		private IEnumerable<string> severities;
+		private Filter[] filters;
 
 		private int position;
 		public override long Position
@@ -35,8 +37,14 @@ namespace LogInspect.Modules
 
 		protected override bool MustIndexItem(FileIndex Item)
 		{
-			if (severities == null) return true;
-			if (severities.Contains(Item.Severity)) return false;
+			if (filters == null) return true;
+			foreach (Filter filter in filters)
+			{
+				if ( filter.MustDiscard(Item))
+				{
+					return false;
+				}
+			}
 			return true;
 		}
 		protected override FileIndex OnReadItem()
@@ -52,9 +60,9 @@ namespace LogInspect.Modules
 			position = 0;
 		}
 
-		public void SetFilter(IEnumerable<string> Severities)
+		public void SetFilters(IEnumerable<Filter> Filters)
 		{
-			this.severities = Severities;
+			this.filters = Filters.Select(item=>item).ToArray();
 			this.Reset();
 		}
 

@@ -69,10 +69,15 @@ namespace LogInspect.Modules
 		protected abstract T OnReadItem();
 		protected abstract bool MustIndexItem(T Item);
 
+		/*protected virtual void OnInitialze()
+		{
+
+		}*/
 		protected override sealed void ThreadLoop()
 		{
 			T item;
 
+			//OnInitialze();
 			while(State == ModuleStates.Started)
 			{
 				while((State == ModuleStates.Started) && (Position < Target))

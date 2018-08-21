@@ -146,15 +146,14 @@ namespace LogInspect
 		}
 
 		#region Filter events
-		private async void FilterEventsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private void FilterEventsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
-			await Task.Yield();
 		}
 
-		private async void FilterEventsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void FilterEventsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FilterEventsAsync();
+			appViewModel.SelectedItem.Refresh();
 		}
 
 		#endregion

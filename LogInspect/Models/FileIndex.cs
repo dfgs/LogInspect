@@ -34,9 +34,14 @@ namespace LogInspect.Models
 			get;
 			set;
 		}
-		public FileIndex(long Position,int LineIndex,int EventIndex,string Severity)
+		public DateTime TimeStamp
 		{
-			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;this.Severity = Severity;IsBookMarked = false;
+			get;
+			set;
+		}
+		public FileIndex(long Position,int LineIndex,int EventIndex,string Severity,DateTime TimeStamp)
+		{
+			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;this.Severity = Severity;this.TimeStamp = TimeStamp; IsBookMarked = false;
 		}
 
 	}

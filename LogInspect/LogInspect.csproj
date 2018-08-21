@@ -72,9 +72,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FilterWindow.xaml.cs">
+      <DependentUpon>FilterWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Cache.cs" />
-    <Compile Include="Models\BookMarkIndex.cs" />
     <Compile Include="Models\FileIndex.cs" />
+    <Compile Include="Models\Filters\Filter.cs" />
+    <Compile Include="Models\Filters\TextFilter.cs" />
+    <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Modules\BaseEventModule.cs" />
     <Compile Include="Modules\EventFiltererModule.cs" />
     <Compile Include="Modules\SeverityAddedEventHandler.cs" />
@@ -82,6 +87,9 @@
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
+    <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
+    <Compile Include="ViewModels\Filters\TextFilterViewModel.cs" />
+    <Compile Include="ViewModels\Filters\TimeStampFilterViewModel.cs" />
     <Compile Include="ViewModels\IndexerModuleViewModel.cs" />
     <Compile Include="ViewModels\Columns\BookMarkColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\LineColumnViewModel.cs" />
@@ -107,6 +115,10 @@
     <Compile Include="Views\Layout.cs" />
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
+    <Page Include="FilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

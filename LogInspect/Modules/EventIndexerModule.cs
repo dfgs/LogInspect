@@ -48,7 +48,7 @@ namespace LogInspect.Modules
 			pos = eventReader.Position;
 			ev = eventReader.Read();
 
-			fileIndex=new FileIndex(pos, lineIndex, IndexedEventsCount, ev.Severity);
+			fileIndex=new FileIndex(pos, lineIndex, IndexedEventsCount, ev.Severity,ev.TimeStamp);
 			lineIndex++;
 
 			return fileIndex;

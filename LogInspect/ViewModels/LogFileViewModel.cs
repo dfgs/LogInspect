@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
@@ -108,6 +109,7 @@ namespace LogInspect.ViewModels
 
 
 			Columns = new ColumnsViewModel(Logger,PageEventReader.FormatHandler.Rules.FirstOrDefault());
+			Columns.FilterChanged += Columns_FilterChanged;
 
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
 			Log(LogLevels.Information, "Starting EventIndexer");
@@ -249,13 +251,19 @@ namespace LogInspect.ViewModels
 		}
 
 		#region filter events
-		public async Task FilterEventsAsync()
+		private void Columns_FilterChanged(object sender, EventArgs e)
 		{
+			Refresh();
+		}
+		public void Refresh()
+		{
+			IEnumerable<Filter> filters;
+
 			BeginWork();
 			pages.Clear();
 			SelectedItemIndex = -1;
-			eventFiltererModule.SetFilter(Severities.Where(item => !item.IsChecked).Select(item => item.Name).ToArray());
-			await Task.Yield();
+			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter);
+			eventFiltererModule.SetFilters(filters  );
 			EndWork();
 		}
 

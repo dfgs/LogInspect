@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspect.Models;
+using LogInspect.Models.Filters;
+using LogInspect.Modules;
+using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
 using LogInspectLib;
@@ -14,11 +18,13 @@ namespace LogInspect.ViewModels.Columns
 {
 	public class TimeStampColumnViewModel : ColumnViewModel
 	{
-		public override bool AllowResize => true;
+		public override bool AllowsResize => true;
+		public override bool AllowsFilter => true;
+
+
 
 		public TimeStampColumnViewModel(ILogger Logger,string Name) : base(Logger,Name)
 		{
-			
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
@@ -26,7 +32,10 @@ namespace LogInspect.ViewModels.Columns
 			return new TimeStampPropertyViewModel(Logger, this, Event);
 		}
 
-
+		public override FilterViewModel CreateFilterViewModel()
+		{
+			return new TimeStampFilterViewModel(Logger,(TimeStampFilter)Filter);
+		}
 
 
 	}

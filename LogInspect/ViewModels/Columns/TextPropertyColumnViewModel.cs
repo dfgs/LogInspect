@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspect.Models.Filters;
+using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
 using LogLib;
@@ -13,7 +15,9 @@ namespace LogInspect.ViewModels.Columns
 {
 	public class TextPropertyColumnViewModel : ColumnViewModel
 	{
-		public override bool AllowResize => true;
+		public override bool AllowsResize => true;
+		public override bool AllowsFilter => true;
+
 
 		public TextAlignment Alignment
 		{
@@ -34,7 +38,10 @@ namespace LogInspect.ViewModels.Columns
 			return new TextPropertyViewModel(Logger, this, Event,Alignment);
 		}
 
-
+		public override FilterViewModel CreateFilterViewModel()
+		{
+			return new TextFilterViewModel(Logger,(TextFilter)Filter);
+		}
 
 	}
 }
