@@ -17,26 +17,8 @@ namespace LogInspectLib
 			set;
 		}
 
-		[XmlAttribute]
-		public string SeverityToken
-		{
-			get;
-			set;
-		}
 
-		[XmlAttribute]
-		public string TimeStampToken
-		{
-			get;
-			set;
-		}
 
-		[XmlAttribute]
-		public string TimeStampFormat
-		{
-			get;
-			set;
-		}
 
 		[XmlAttribute]
 		public bool Discard

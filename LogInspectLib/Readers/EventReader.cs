@@ -45,7 +45,7 @@ namespace LogInspectLib.Readers
 			logParsers = new List<LogParser>();			
 			foreach (Rule rule in FormatHandler.Rules)
 			{
-				this.logParsers.Add(new LogParser(rule));
+				this.logParsers.Add(new LogParser(rule,FormatHandler.Columns));
 			}
 			
 			

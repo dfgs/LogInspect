@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogInspectLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,6 @@ namespace LogInspect.Models.Filters
     {
 		//public abstract Filter Clone();
 
-		public abstract bool MustDiscard(FileIndex Item);
+		public abstract bool MustDiscard(Event Item);
 	}
 }

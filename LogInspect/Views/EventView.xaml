@@ -31,15 +31,15 @@
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
-			<TextBlock  Width="{Binding Column.Width}" Text="{Binding Value}" FontWeight="Bold" TextAlignment="Right" Foreground="SteelBlue" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+			<TextBlock  Width="{Binding Column.Width}" Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Column.Alignment}" Foreground="SteelBlue" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
-			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="Center"/>
+			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="{Binding Column.Alignment}" TextTrimming="CharacterEllipsis"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="{Binding Alignment}"/>
+			<TextBlock Width="{Binding Column.Width}" Text="{Binding Value}" TextAlignment="{Binding Column.Alignment}" TextTrimming="CharacterEllipsis"/>
 		</DataTemplate>
 		
 		<DataTemplate x:Key="eventDataTemplate">
@@ -66,7 +66,7 @@
 		<views:ColumnsView Grid.Row="0"  DataContext="{Binding Columns}" HorizontalOffset="{Binding ElementName=listBox,Path=HorizontalOffset}" />
 
 		<vlbLib:VirtualListBox Grid.Row="1" x:Name="listBox" IsEnabled="{Binding IsWorking,Converter={StaticResource notValueConverter}}"
-			VirtualCollection="{Binding}" ItemsCount="{Binding  EventFilterer.IndexedEventsCount}"  
+			VirtualCollection="{Binding}" ItemsCount="{Binding  EventIndexer.IndexedEventsCount}"  
 			ExtentWidth="{Binding Columns.TotalWidth}" ItemTemplate="{StaticResource eventDataTemplate}"
 			SelectedItemIndex="{Binding SelectedItemIndex,Mode=TwoWay}" />
 		

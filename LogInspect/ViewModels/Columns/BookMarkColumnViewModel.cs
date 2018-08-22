@@ -20,7 +20,7 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => false;
 
 
-		public BookMarkColumnViewModel(ILogger Logger,string Name) : base(Logger,Name)
+		public BookMarkColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"Center")
 		{
 		}
 

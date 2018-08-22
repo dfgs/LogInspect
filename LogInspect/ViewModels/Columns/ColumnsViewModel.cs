@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogInspect.Modules;
 using LogInspectLib;
 using LogLib;
 
@@ -21,26 +22,24 @@ namespace LogInspect.ViewModels.Columns
 			private set;
 		}
 
-		public ColumnsViewModel(ILogger Logger,Rule Rule) : base(Logger)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, SelectionFiltersIndexerModule SelectionFiltersIndexerModule) : base(Logger)
 		{
-			string timeStampColumnName=null;
 
 			items = new List<ColumnViewModel>();
 
 			AddColumn(new BookMarkColumnViewModel(Logger, " ") { Width = 20 });
 			AddColumn(new LineColumnViewModel(Logger, "#") { Width = 50 });
-			if (Rule!=null) 
+
+			foreach (Column column in FormatHandler.Columns)
 			{
-				if ((Rule.TimeStampToken != null) && (Rule.TimeStampFormat != null))
+				if (column.Name == FormatHandler.TimeStampColumn )
 				{
-					AddColumn(new TimeStampColumnViewModel(Logger, "Date") { Width = 150 });
-					timeStampColumnName = Rule.TimeStampToken;
+					AddColumn(new TimeStampColumnViewModel(Logger, column.Name,column.Alignment) { Width = column.Width });
 				}
-				foreach (Token property in Rule.Tokens.Where(item => (item.Name != null) && (item.Name!= timeStampColumnName) ))
-				{
-					AddColumn(new TextPropertyColumnViewModel(Logger, property.Name, property.Alignment) { Width = property.Width });
-				}
+				else if (column.IsFilterItemSource) AddColumn(new SelectionPropertyColumnViewModel(Logger, column.Name, column.Alignment,SelectionFiltersIndexerModule) { Width = column.Width });
+				else AddColumn(new TextPropertyColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
 			}
+			
 			TotalWidth = items.Sum(item => item.Width);
 		}
 

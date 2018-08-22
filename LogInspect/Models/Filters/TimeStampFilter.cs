@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogInspectLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,9 +27,9 @@ namespace LogInspect.Models.Filters
 
 
 		
-		public override bool MustDiscard(FileIndex Item)
+		public override bool MustDiscard(Event Item)
 		{
-			return (Item.TimeStamp < StartDate) || (Item.TimeStamp > EndDate);
+			return false;// (Item.TimeStamp < StartDate) || (Item.TimeStamp > EndDate);
 		}
 
 	}

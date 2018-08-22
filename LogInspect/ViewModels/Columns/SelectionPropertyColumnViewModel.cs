@@ -14,17 +14,20 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class TextPropertyColumnViewModel : ColumnViewModel
+	public class SelectionPropertyColumnViewModel : ColumnViewModel
 	{
 		public override bool AllowsResize => true;
 		public override bool AllowsFilter => true;
 
 
-	
 
-		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Alignment)
+		private SelectionFiltersIndexerModule selectionFiltersIndexerModule;
+
+		public SelectionPropertyColumnViewModel(ILogger Logger, string Name,string Alignment,SelectionFiltersIndexerModule SelectionFiltersIndexerModule) : base(Logger,Name,Alignment)
 		{
-		
+
+			this.selectionFiltersIndexerModule = SelectionFiltersIndexerModule;
+
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
@@ -34,8 +37,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			
-			return new TextFilterViewModel(Logger,(TextFilter)Filter);
+			return new SelectionFilterViewModel(Logger,Name, selectionFiltersIndexerModule.GetItemsSource(Name),(SelectionFilter)Filter);
 		}
 
 	}

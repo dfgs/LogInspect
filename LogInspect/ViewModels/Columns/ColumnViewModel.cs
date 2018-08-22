@@ -18,6 +18,12 @@ namespace LogInspect.ViewModels.Columns
 		public event EventHandler WidthChanged;
 		public event EventHandler FilterChanged;
 
+		public TextAlignment Alignment
+		{
+			get;
+			private set;
+		}
+
 		public string Name
 		{
 			get;
@@ -61,8 +67,13 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		public ColumnViewModel(ILogger Logger,string Name) : base(Logger)
+		public ColumnViewModel(ILogger Logger,string Name, string Alignment) : base(Logger)
 		{
+			TextAlignment alignment;
+
+
+			if (Enum.TryParse<TextAlignment>(Alignment, out alignment)) this.Alignment = alignment;
+			else this.Alignment = TextAlignment.Left;
 
 			this.Name = Name;
 		}

@@ -68,37 +68,36 @@ namespace LogInspect
 			schema.FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$";
 			schema.AppendLineToPreviousPatterns.Add(@"^[^\[]");
 			schema.DiscardLinePatterns.Add(@"^$");
-			//[2018-07-07 00:00:01.637 START] Starting new log-file or starting application.
+			schema.SeverityColumn = "Severity";
+			schema.TimeStampColumn = "Date";
+			schema.Columns.Add(new Column() { Name = "Date",  Width = 200, Alignment = "Center",Format = "yyyy-MM-dd HH:mm:ss.fff",Type="DateTime" });
+			schema.Columns.Add(new Column() { Name = "Severity", Width = 100, Alignment = "Center", IsFilterItemSource = true });
+			schema.Columns.Add(new Column() { Name = "Thread", Width = 300, IsFilterItemSource = true });
+			schema.Columns.Add(new Column() { Name = "Message", Width = 600 });
+
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
-			rule.SeverityToken = "Severity";
-			rule.TimeStampToken = "Date";
-			rule.TimeStampFormat = "yyyy-MM-dd HH:mm:ss.fff";
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+",Width=200,Alignment="Center" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+", Width = 100, Alignment = "Center" });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
-			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]+", Width = 300 });
+			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]+"});
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @": " });
-			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+", Width = 600 });
+			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+"});
 			schema.Rules.Add(rule);
 
 			rule = new LogInspectLib.Rule() { Name = "Event without thread" };
-			rule.SeverityToken = "Severity";
-			rule.TimeStampToken = "Date";
-			rule.TimeStampFormat = "yyyy-MM-dd HH:mm:ss.fff";
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+", Alignment = "Center" });
+			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+", Alignment = "Center" });
+			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);
 
-			schema.SeverityMapping.Add(new SeverityMapping() {  Pattern = @"INFO", Severity = "Info" });
-			schema.SeverityMapping.Add(new SeverityMapping() {  Pattern = @"ERROR", Severity = "Error" });
-			schema.SeverityMapping.Add(new SeverityMapping() {  Pattern = @"WARN", Severity = "Warning" });
+			schema.ColoringRules.Add(new ColoringRule() { Column = "Severity", Pattern = @"ERROR", Background="OrangeRed" });
+			schema.ColoringRules.Add(new ColoringRule() { Column = "Severity", Pattern = @"WARN", Background="Orange" });
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion
@@ -166,7 +165,7 @@ namespace LogInspect
 
 		private async void FindPreviousSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindPreviousAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
+			await appViewModel.SelectedItem.FindPreviousAsync(appViewModel.SelectedItem.Severities.SelectedItem);
 		}
 
 		private void FindNextSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -176,7 +175,7 @@ namespace LogInspect
 
 		private async void FindNextSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindNextAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
+			await appViewModel.SelectedItem.FindNextAsync(appViewModel.SelectedItem.Severities.SelectedItem);
 		}
 		#endregion
 
@@ -197,7 +196,7 @@ namespace LogInspect
 
 		private async void FindPreviousBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindPreviousBookMarkAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
+			await appViewModel.SelectedItem.FindPreviousBookMarkAsync();
 		}
 
 		private void FindNextBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -207,7 +206,7 @@ namespace LogInspect
 
 		private async void FindNextBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindNextBookMarkAsync(appViewModel.SelectedItem.Severities.SelectedItem.Name);
+			await appViewModel.SelectedItem.FindNextBookMarkAsync();
 		}
 		#endregion
 

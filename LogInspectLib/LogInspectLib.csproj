@@ -54,7 +54,8 @@
     <Compile Include="FormatHandler.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="Rule.cs" />
-    <Compile Include="SeverityMapping.cs" />
+    <Compile Include="ColoringRule.cs" />
+    <Compile Include="Column.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -75,20 +75,15 @@ namespace LogInspect.ViewModels
 		}
 
 		private EventIndexerModule eventIndexerModule;
-		public IndexerModuleViewModel<EventIndexerModule,FileIndex> EventIndexer
+		public IndexerModuleViewModel<EventIndexerModule,Event, FileIndex> EventIndexer
 		{
 			get;
 			private set;
 		}
-		private EventFiltererModule eventFiltererModule;
-		public IndexerModuleViewModel<EventFiltererModule, FileIndex> EventFilterer
-		{
-			get;
-			private set;
-		}
+		
 
-		private SeverityIndexerModule severityIndexerModule;
-		public SeverityIndexerViewModel Severities
+		private SelectionFiltersIndexerModule selectionFiltersIndexerModule;
+		public SeveritiesViewModel Severities
 		{
 			get;
 			private set;
@@ -107,40 +102,29 @@ namespace LogInspect.ViewModels
 
 			this.pageEventReader = PageEventReader;
 
+			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
+			EventIndexer = new IndexerModuleViewModel<EventIndexerModule,Event,FileIndex>(Logger, eventIndexerModule, 300);
+			
+			selectionFiltersIndexerModule = new SelectionFiltersIndexerModule(Logger, eventIndexerModule,pageEventReader.FormatHandler);
+			Severities = new SeveritiesViewModel(Logger, PageEventReader.FormatHandler.SeverityColumn, selectionFiltersIndexerModule);
 
-			Columns = new ColumnsViewModel(Logger,PageEventReader.FormatHandler.Rules.FirstOrDefault());
+			Columns = new ColumnsViewModel(Logger, PageEventReader.FormatHandler,selectionFiltersIndexerModule);
 			Columns.FilterChanged += Columns_FilterChanged;
 
-			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
 			Log(LogLevels.Information, "Starting EventIndexer");
 			eventIndexerModule.Start();
-			EventIndexer = new IndexerModuleViewModel<EventIndexerModule,FileIndex>(Logger, eventIndexerModule, 300);
-
-			eventFiltererModule = new EventFiltererModule(Logger, eventIndexerModule,FiltererLookupRetryDelay);
-			Log(LogLevels.Information, "Starting EventFilterer");
-			eventFiltererModule.Start();
-			EventFilterer = new IndexerModuleViewModel<EventFiltererModule, FileIndex>(Logger, eventFiltererModule, 300);
-
-			severityIndexerModule = new SeverityIndexerModule(Logger, eventIndexerModule, FiltererLookupRetryDelay);
-			Log(LogLevels.Information, "Starting SeverityIndexer");
-			severityIndexerModule.Start();
-			Severities = new SeverityIndexerViewModel(Logger, severityIndexerModule, 300);
 		}
 
 
 		public override void Dispose()
 		{
-			EventIndexer.Dispose();
-			EventFilterer.Dispose();
-			Severities.Dispose();
 
-			Log(LogLevels.Information, "Stopping SeverityIndexer");
-			severityIndexerModule.Stop();
-			Log(LogLevels.Information, "Stopping EventFilterer");
-			eventFiltererModule.Stop();
 			Log(LogLevels.Information, "Stopping EventIndexer");
 			eventIndexerModule.Stop();
-			
+
+			EventIndexer.Dispose();
+			selectionFiltersIndexerModule.Dispose();
+
 			pages.Clear();
 			pages = null;
 		}
@@ -155,7 +139,7 @@ namespace LogInspect.ViewModels
 		{
 			//Dispatcher.Invoke(() =>
 			//{
-				if ((SelectedItemIndex < 0) || (SelectedItemIndex >= EventFilterer.IndexedEventsCount)) SelectedItem = null;
+				if ((SelectedItemIndex < 0) || (SelectedItemIndex >= EventIndexer.IndexedEventsCount)) SelectedItem = null;
 				else SelectedItem = GetEvent(SelectedItemIndex);
 			//});
 		}
@@ -188,9 +172,9 @@ namespace LogInspect.ViewModels
 
 			eventIndex = Page.Index * pageSize + Page.LastFilledIndex+1;
 			
-			for (t = Page.LastFilledIndex+1; (t < pageSize) && (eventIndex < EventFilterer.IndexedEventsCount); t++, eventIndex++)
+			for (t = Page.LastFilledIndex+1; (t < pageSize) && (eventIndex < EventIndexer.IndexedEventsCount); t++, eventIndex++)
 			{
-				fileIndex = eventFiltererModule[eventIndex];
+				fileIndex = eventIndexerModule[eventIndex];
 				pageEventReader.Seek(fileIndex.Position);
 
 				try
@@ -203,7 +187,7 @@ namespace LogInspect.ViewModels
 					return false;
 				}
 
-				vm= new EventViewModel(Logger, Columns, pageEventReader.FormatHandler.SeverityMapping, ev, eventIndex, fileIndex.LineIndex);
+				vm= new EventViewModel(Logger, Columns, pageEventReader.FormatHandler.ColoringRules, ev, eventIndex, fileIndex.LineIndex);
 				vm.IsBookMarked = fileIndex.IsBookMarked;
 				Page[t] = vm;
 				//if (pageEventReader.EndOfStream) break;
@@ -263,32 +247,33 @@ namespace LogInspect.ViewModels
 			pages.Clear();
 			SelectedItemIndex = -1;
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter);
-			eventFiltererModule.SetFilters(filters  );
+			eventIndexerModule.SetFilters(filters  );
 			EndWork();
 		}
 
 		#endregion
 
 		#region find severities
-		public async Task FindPreviousAsync(string Severity)
+		public async Task FindPreviousAsync(object Severity)
 		{
 			int index=0;
 			bool result;
 
 			index = SelectedItemIndex;  // cannot access SelectedItemIndex inside Task.Run (Thread sync)
 			BeginWork();
-			result = await Task.Run<bool>(()=> { return eventFiltererModule.FindPrevious(ref index, (item) => item.Severity == Severity); } );
+			result = await Task.FromResult(false);// await Task.Run<bool>(()=> { return eventIndexerModule.FindPrevious(ref index, (item) => item.Severity == Severity); } );
+			
 			if (result) SelectedItemIndex = index;
 			EndWork();
 		}
-		public async Task FindNextAsync(string Severity)
+		public async Task FindNextAsync(object Severity)
 		{
 			int index = 0;
 			bool result;
 
 			index = SelectedItemIndex;	// cannot access SelectedItemIndex inside Task.Run (Thread sync)
 			BeginWork();
-			result = await Task.Run<bool>(() => { return eventFiltererModule.FindNext(ref index, (item) => item.Severity == Severity); });
+			result = await Task.FromResult(false);//await Task.Run<bool>(() => { return eventIndexerModule.FindNext(ref index, (item) => item.Severity == Severity); });
 			if (result) SelectedItemIndex = index;
 			EndWork();
 		}
@@ -302,7 +287,7 @@ namespace LogInspect.ViewModels
 			if (SelectedItem == null) return;
 			BeginWork();
 			SelectedItem.IsBookMarked = !SelectedItem.IsBookMarked;
-			fileIndex = eventFiltererModule[SelectedItemIndex];
+			fileIndex = eventIndexerModule[SelectedItemIndex];
 			fileIndex.IsBookMarked = SelectedItem.IsBookMarked;
 			await Task.Yield();
 			EndWork();
@@ -312,25 +297,25 @@ namespace LogInspect.ViewModels
 			return bookMarks.Count > 0;
 		}*/
 
-		public async Task FindPreviousBookMarkAsync(string Severity)
+		public async Task FindPreviousBookMarkAsync()
 		{
 			int index = 0;
 			bool result;
 
 			index = SelectedItemIndex;  // cannot access SelectedItemIndex inside Task.Run (Thread sync)
 			BeginWork();
-			result = await Task.Run<bool>(() => { return eventFiltererModule.FindPrevious(ref index, (item) => item.IsBookMarked); });
+			result = await Task.Run<bool>(() => { return eventIndexerModule.FindPrevious(ref index, (item) => item.IsBookMarked); });
 			if (result) SelectedItemIndex = index;
 			EndWork();
 		}
-		public async Task FindNextBookMarkAsync(string Severity)
+		public async Task FindNextBookMarkAsync()
 		{
 			int index = 0;
 			bool result;
 
 			index = SelectedItemIndex;  // cannot access SelectedItemIndex inside Task.Run (Thread sync)
 			BeginWork();
-			result = await Task.Run<bool>(() => { return eventFiltererModule.FindNext(ref index, (item) => item.IsBookMarked); });
+			result = await Task.Run<bool>(() => { return eventIndexerModule.FindNext(ref index, (item) => item.IsBookMarked); });
 			if (result) SelectedItemIndex = index;
 			EndWork();
 		}

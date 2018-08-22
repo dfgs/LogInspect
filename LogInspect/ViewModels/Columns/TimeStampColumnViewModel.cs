@@ -22,9 +22,12 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => true;
 
 
+		
 
-		public TimeStampColumnViewModel(ILogger Logger,string Name) : base(Logger,Name)
+
+		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment) : base(Logger,Name,Alignment)
 		{
+		
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)

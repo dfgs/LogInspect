@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace LogInspect.ViewModels
 {
-	public class IndexerModuleViewModel<TIndexerModule,T> : ViewModel
-		where TIndexerModule : BaseEventModule<T>
+	public class IndexerModuleViewModel<TIndexerModule,TInput,TIndexed> : ViewModel
+		where TIndexerModule : BaseEventModule<TInput,TIndexed>
 	{
 		private TIndexerModule indexerModule;
 		public TIndexerModule IndexerModule

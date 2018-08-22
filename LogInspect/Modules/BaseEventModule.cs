@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public abstract class BaseEventModule<T> : ThreadModule
+	public abstract class BaseEventModule<TInput, TIndexed> : ThreadModule
 	{
-		private List<T> items;
+		private List<TIndexed> items;
 
-		public T this[int Index]
+		public TIndexed this[int Index]
 		{
 			get { return items[Index]; }
 		}
@@ -40,12 +40,16 @@ namespace LogInspect.Modules
 
 		private int lookupRetryDelay;
 
+		public event ReadEventHandler<TInput> Read;
+		public event IndexedEventHandler<TInput, TIndexed> Indexed;
+
+
 		public BaseEventModule(string Name, ILogger Logger, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
 		{
 			this.lookupRetryDelay = LookupRetryDelay;
-			items = new List<T>();
+			items = new List<TIndexed>();
 		}
-		public bool Contains(T Item)
+		public bool Contains(TIndexed Item)
 		{
 			lock (items)
 			{
@@ -66,36 +70,36 @@ namespace LogInspect.Modules
 			}
 		}
 
-		protected abstract T OnReadItem();
-		protected abstract bool MustIndexItem(T Item);
-
-		/*protected virtual void OnInitialze()
-		{
-
-		}*/
+		protected abstract TInput OnReadInput();
+		protected abstract bool MustIndexInput(TInput Input);
+		protected abstract TIndexed OnCreateIndexItem(TInput Input);
+		
 		protected override sealed void ThreadLoop()
 		{
-			T item;
+			TIndexed item;
+			TInput input;
 
-			//OnInitialze();
 			while(State == ModuleStates.Started)
 			{
 				while((State == ModuleStates.Started) && (Position < Target))
 				{
 					try
 					{
-						item = OnReadItem();
+						input = OnReadInput();
+						Read?.Invoke(this, new ReadEventArgs<TInput>(input));
 					}
 					catch(Exception ex)
 					{
 						Log(ex);
 						return;
 					}
-					if (MustIndexItem(item))
+					if (MustIndexInput(input))
 					{
+						item= OnCreateIndexItem(input);
 						lock (items)
 						{
 							items.Add(item);
+							Indexed?.Invoke(this,new IndexedEventArgs<TInput, TIndexed>(input, item));
 						}
 					}
 				}

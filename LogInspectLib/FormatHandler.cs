@@ -54,7 +54,27 @@ namespace LogInspectLib
 		}
 
 		[XmlArray]
-		public List<SeverityMapping> SeverityMapping
+		public List<Column> Columns
+		{
+			get;
+			set;
+		}
+		[XmlAttribute]
+		public string SeverityColumn
+		{
+			get;
+			set;
+		}
+
+		[XmlAttribute]
+		public string TimeStampColumn
+		{
+			get;
+			set;
+		}
+
+		[XmlArray]
+		public List<ColoringRule> ColoringRules
 		{
 			get;
 			set;
@@ -66,7 +86,8 @@ namespace LogInspectLib
 			AppendLineToPreviousPatterns = new List<string>();
 			DiscardLinePatterns = new List<string>();
 			Rules = new List<Rule>();
-			SeverityMapping = new List<SeverityMapping>();
+			Columns = new List<Column>();
+			ColoringRules = new List<ColoringRule>();
 		}
 
 		public void SaveToFile(string FileName)

@@ -18,7 +18,7 @@ namespace LogInspect.ViewModels.Properties
 
 		public TimeStampPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event) : base(Logger, Column)
 		{
-			this.Value = Event.TimeStamp;
+			this.Value = Event.GetPropertyValue(Column.Name)?.ToString();
 		}
 	}
 }

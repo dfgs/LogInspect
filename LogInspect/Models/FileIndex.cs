@@ -24,24 +24,24 @@ namespace LogInspect.Models
 			get;
 			private set;
 		}
-		public string Severity
+		/*public string Severity
 		{
 			get;
 			private set;
-		}
+		}*/
 		public bool IsBookMarked
 		{
 			get;
 			set;
 		}
-		public DateTime TimeStamp
+		/*public DateTime TimeStamp
 		{
 			get;
 			set;
-		}
-		public FileIndex(long Position,int LineIndex,int EventIndex,string Severity,DateTime TimeStamp)
+		}*/
+		public FileIndex(long Position,int LineIndex,int EventIndex)
 		{
-			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex;this.Severity = Severity;this.TimeStamp = TimeStamp; IsBookMarked = false;
+			this.Position = Position;this.LineIndex = LineIndex;this.EventIndex = EventIndex; IsBookMarked = false;
 		}
 
 	}

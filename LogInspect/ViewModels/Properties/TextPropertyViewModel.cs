@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels.Properties
 		}
 		public TextPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event,TextAlignment Alignment) : base(Logger, Column)
 		{
-			this.Value = Event.GetPropertyValue(Column.Name);this.Alignment = Alignment;
+			this.Value = Event.GetPropertyValue(Column.Name)?.ToString();this.Alignment = Alignment;
 		}
 	}
 }

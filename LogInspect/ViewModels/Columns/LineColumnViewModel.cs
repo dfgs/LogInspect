@@ -20,7 +20,7 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => false;
 
 
-		public LineColumnViewModel(ILogger Logger,string Name) : base(Logger,Name)
+		public LineColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"Right")
 		{
 		}
 

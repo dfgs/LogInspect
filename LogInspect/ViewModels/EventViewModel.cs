@@ -37,7 +37,7 @@ namespace LogInspect.ViewModels
 		}
 
 		
-		public string Severity
+		/*public string Severity
 		{
 			get { return ev.Severity; }
 		}
@@ -45,7 +45,7 @@ namespace LogInspect.ViewModels
 		public string TimeStamp
 		{
 			get { return ev.HasValidTimeStamp?ev.TimeStamp.ToString():ev.GetValue(ev.Rule.TimeStampToken); }
-		}
+		}*/
 		public Brush Background
 		{
 			get;
@@ -80,7 +80,7 @@ namespace LogInspect.ViewModels
 
 
 
-		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<SeverityMapping> SeverityMapping, Event Event, int EventIndex, int LineIndex) : base(Logger)
+		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<ColoringRule> ColoringRules, Event Event, int EventIndex, int LineIndex) : base(Logger)
 		{
 			//string severity;
 			
@@ -92,23 +92,21 @@ namespace LogInspect.ViewModels
 
 
 			Background = Brushes.Transparent;
-			foreach (SeverityMapping mapping in SeverityMapping)
+			foreach (ColoringRule coloringRule in ColoringRules)
 			{
-				if (Regex.Match(Event.Severity, mapping.Pattern).Success)
+
+				if (Regex.Match(Event.GetValue(coloringRule.Column) as string, coloringRule.Pattern).Success)
 				{
-					switch(mapping.Severity)
+					try
 					{
-						case "Warning":
-							Background = Brushes.Orange;
-							break;
-						case "Error":
-							Background = Brushes.OrangeRed;
-							break;
-						case "Critical":
-							Background = Brushes.Red;
-							break;
+						Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
+						break;
 					}
-					break;
+					catch(Exception ex)
+					{
+						Log(ex);
+					}
+					
 				}
 			}
 
@@ -116,7 +114,7 @@ namespace LogInspect.ViewModels
 
 		}
 
-		public string GetPropertyValue(string PropertyName)
+		public object GetPropertyValue(string PropertyName)
 		{
 			return ev.GetValue(PropertyName);
 		}

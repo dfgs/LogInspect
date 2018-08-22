@@ -59,13 +59,8 @@
 			<TextBlock Text="/"/>
 			<TextBlock Text="{Binding SelectedItem.EventIndexer.Target,FallbackValue=NA}"/>
 			<Separator/>
-			<TextBlock Text="Event filtering:"/>
-			<TextBlock Text="{Binding SelectedItem.EventFilterer.Position,FallbackValue=NA}"/>
-			<TextBlock Text="/"/>
-			<TextBlock Text="{Binding SelectedItem.EventFilterer.Target,FallbackValue=NA}"/>
-			<Separator/>
 			<TextBlock Text="Events:"/>
-			<TextBlock Text="{Binding SelectedItem.EventFilterer.IndexedEventsCount,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.EventIndexer.IndexedEventsCount,FallbackValue=NA}"/>
 			<Separator/>
 			<TextBlock Text="Status:"/>
 			<TextBlock Text="{Binding SelectedItem.IsWorking,FallbackValue=Idle}"/>
@@ -78,24 +73,12 @@
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<xctk:CheckComboBox Width="100" ItemsSource="{Binding Severities}" SelectedMemberPath="IsChecked" DisplayMemberPath="Name"/>
-				<Button Command="{StaticResource filterEvents}" ToolTip="Filter/Refresh">
-					<Image Source="Images\Filter_16x.png" Stretch="None"  />
-				</Button>
-			</ToolBar>
-			<ToolBar>
 				<Button Command="{StaticResource findPreviousSeverity}" ToolTip="Find previous">
 					<Image Source="Images\FindPrevious_16x.png" Stretch="None"  />
 				</Button>
-				<ComboBox Width="100" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}" DisplayMemberPath="Name"/>
+				<ComboBox Width="100" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}"/>
 				<Button Command="{StaticResource findNextSeverity}" ToolTip="Find next">
 					<Image Source="Images\FindNext_16x.png" Stretch="None"  />
-				</Button>
-			</ToolBar>
-			<ToolBar>
-				<xctk:DateTimePicker Width="150" Format="ShortDate"/>
-				<Button Command="{StaticResource filterEvents}" ToolTip="Filter/Refresh">
-					<Image Source="Images\Filter_16x.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 			<ToolBar>

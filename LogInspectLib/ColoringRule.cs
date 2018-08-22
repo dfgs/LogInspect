@@ -8,9 +8,15 @@ using System.Xml.Serialization;
 namespace LogInspectLib
 {
 	[Serializable]
-	public class SeverityMapping
+	public class ColoringRule
 	{
-		
+		[XmlAttribute]
+		public string Column
+		{
+			get;
+			set;
+		}
+
 		[XmlAttribute]
 		public string Pattern
 		{
@@ -19,7 +25,7 @@ namespace LogInspectLib
 		}
 
 		[XmlAttribute]
-		public string Severity
+		public string Background
 		{
 			get;
 			set;
