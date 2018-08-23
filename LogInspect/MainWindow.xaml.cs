@@ -165,7 +165,9 @@ namespace LogInspect
 
 		private async void FindPreviousSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindPreviousAsync(appViewModel.SelectedItem.Severities.SelectedItem);
+			int index;
+			index=await appViewModel.SelectedItem.FindPreviousSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem);
+			if (index >= 0) appViewModel.SelectedItem.SelectedItemIndex = index;
 		}
 
 		private void FindNextSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -175,7 +177,9 @@ namespace LogInspect
 
 		private async void FindNextSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindNextAsync(appViewModel.SelectedItem.Severities.SelectedItem);
+			int index;
+			index = await appViewModel.SelectedItem.FindNextSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem);
+			if (index >= 0) Dispatcher.Invoke(() => appViewModel.SelectedItem.SelectedItemIndex = index);
 		}
 		#endregion
 

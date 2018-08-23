@@ -17,7 +17,9 @@ namespace LogInspectLibTest
 			Rule rule;
 			Log log;
 			Event? ev;
+			Column[] columns;
 
+			columns = new Column[] { new Column() { Name = "C1" }, new Column() { Name = "C2" }, new Column() { Name = "C3" }, new Column() { Name = "C4" } };
 			rule = new Rule() { Name = "UnitTest" };
 			rule.Tokens.Add(new Token() { Name = "C1", Pattern = @"\d" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
@@ -26,7 +28,7 @@ namespace LogInspectLibTest
 			rule.Tokens.Add(new Token() { Name = "C3", Pattern = @"\d" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
 			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
-			parser = new LogParser(rule);
+			parser = new LogParser(rule,columns);
 
 			log = new Log(new Line(0, log1));
 			ev=parser.Parse(log);

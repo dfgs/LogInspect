@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using LogInspectLib;
 using LogInspectLib.Readers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,7 +39,24 @@ namespace LogInspectLibTest
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
 
 		}
+		[TestMethod]
+		public async Task ShouldReadAsync()
+		{
+			MemoryStream stream;
+			CharReader reader;
+			string items = "0123456789";
 
+			stream = new MemoryStream(Encoding.Default.GetBytes(items));
+			reader = new CharReader(stream, Encoding.Default, 5);
+
+			foreach (char item in items)
+			{
+				Assert.AreEqual(item, await reader.ReadAsync());
+			}
+			Assert.IsTrue(reader.EndOfStream);
+			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
+
+		}
 		[TestMethod]
 		public void ShouldSeekWithoutLoad()
 		{

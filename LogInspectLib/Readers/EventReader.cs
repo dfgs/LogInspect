@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
@@ -75,8 +76,21 @@ namespace LogInspectLib.Readers
 			return new Event(log,null, Property.EmptyProperties);
 			
 		}
+		protected override async Task<Event> OnReadAsync()
+		{
+			Log log;
+			Event? ev;
+
+			log = await logReader.ReadAsync();
+			foreach (LogParser parser in logParsers)
+			{
+				ev = parser.Parse(log);
+				if (ev.HasValue) return ev.Value;
+			}
+
+			return new Event(log, null, Property.EmptyProperties);
+		}
 
 
-
-    }
+	}
 }

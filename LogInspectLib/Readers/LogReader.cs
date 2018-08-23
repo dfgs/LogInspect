@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
@@ -149,8 +150,55 @@ namespace LogInspectLib.Readers
 			
         }
 
-	
+		protected override async Task<Log> OnReadAsync()
+		{
+			List<Line> lines;
+			Line line;
+			bool mustAppend;
+			Log log;
+			long pos;
+
+			readLines = 0;
+			lines = new List<Line>();
+			do
+			{
+				line = await lineReader.ReadAsync(); readLines++;
+				if (MustDiscardLine(line))
+				{
+					mustAppend = true;
+				}
+				else
+				{
+					lines.Add(line);
+					mustAppend = MustAppendToNextLine(line);
+				}
+			} while ((mustAppend) && (!EndOfStream));
+
+			while (!EndOfStream)
+			{
+				pos = lineReader.Position;
+				line = await lineReader.ReadAsync(); readLines++;
+				if (!MustDiscardLine(line))
+				{
+					mustAppend = MustAppendToPreviousLine(line);
+					if (mustAppend)
+					{
+						lines.Add(line);
+					}
+					else
+					{
+						lineReader.Seek(pos);
+						readLines--;
+						break;
+					}
+				}
+			}
+
+			log = new Log(lines.ToArray());
+			return log;
+		}
 
 
-    }
+
+	}
 }

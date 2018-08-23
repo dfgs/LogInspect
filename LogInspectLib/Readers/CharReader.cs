@@ -57,6 +57,19 @@ namespace LogInspectLib.Readers
 			else this.buffer = encoding.GetChars(bytes, 0, count);
 			bufferIndex = 0;
 		}
+		private async Task LoadAsync()
+		{
+			int count;
+			byte[] bytes;
+
+			bufferPosition = position;
+
+			bytes = new byte[bufferSize];
+			count = await stream.ReadAsync(bytes, 0, bufferSize);
+			if (count <= 0) throw (new EndOfStreamException());
+			else this.buffer = encoding.GetChars(bytes, 0, count);
+			bufferIndex = 0;
+		}
 		protected override char OnRead()
 		{
 			char c;
@@ -67,7 +80,16 @@ namespace LogInspectLib.Readers
 			bufferIndex++;
 			return c;
 		}
+		protected override async Task<char> OnReadAsync()
+		{
+			char c;
 
+			if ((buffer == null) || (bufferIndex == buffer.Length)) await LoadAsync();
+			c = buffer[bufferIndex];
+			position += encoding.GetByteCount(buffer, bufferIndex, 1);
+			bufferIndex++;
+			return c;
+		}
 		protected override void OnSeek(long Position)
 		{
 			if ((Position >= bufferPosition) && (Position < bufferPosition + bufferSize))

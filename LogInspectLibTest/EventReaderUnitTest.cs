@@ -39,6 +39,11 @@ namespace LogInspectLibTest
 
 
 			formatHandler = new FormatHandler();
+			formatHandler.Columns.Add(new Column() { Name = "C1" });
+			formatHandler.Columns.Add(new Column() { Name = "C2" });
+			formatHandler.Columns.Add(new Column() { Name = "C3" });
+			formatHandler.Columns.Add(new Column() { Name = "C4" });//*/
+
 			rule = new Rule() { Name = "UnitTest" };
 			rule.Tokens.Add(new Token() { Name = "C1", Pattern = @"\d" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });

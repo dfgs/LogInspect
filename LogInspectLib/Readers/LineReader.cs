@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
@@ -61,9 +62,26 @@ namespace LogInspectLib.Readers
 
 		}
 
+		protected override async Task<Line> OnReadAsync()
+		{
+			char c;
+			StringBuilder sb;
+			long pos;
 
-		
+			pos = Position;
+			sb = new StringBuilder(1024);
+			do
+			{
+				c = await charReader.ReadAsync();
+				if (c == '\n') break;
+				if (c == '\r') continue;
+				sb.Append(c);
+			} while (!charReader.EndOfStream);
+
+			return new Line(pos, sb.ToString());
+		}
 
 
-    }
+
+	}
 }

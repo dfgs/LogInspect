@@ -36,7 +36,15 @@ namespace LogInspectLib.Readers
 			T item = OnRead();
 			return item;
 		}
+		public async Task<T> ReadAsync()
+		{
+			T item = await OnReadAsync();
+			return item;
+		}
+
 		protected abstract T OnRead();
+		protected abstract Task<T> OnReadAsync();
+
 		protected abstract void OnSeek(long Position);
 		
 
