@@ -16,36 +16,33 @@ namespace LogInspect.ViewModels.Columns
 
 		public event EventHandler FilterChanged;
 		
-		public double TotalWidth
-		{
-			get;
-			private set;
-		}
+		
 
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, SelectionFiltersIndexerModule SelectionFiltersIndexerModule) : base(Logger)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger)
 		{
 
 			items = new List<ColumnViewModel>();
 
-			AddColumn(new BookMarkColumnViewModel(Logger, " ") { Width = 20 });
+			AddColumn(new BookMarkColumnViewModel(Logger, "BookMark") { Width = 20 });
 			AddColumn(new LineColumnViewModel(Logger, "#") { Width = 50 });
 
 			foreach (Column column in FormatHandler.Columns)
 			{
-				if (column.Name == FormatHandler.TimeStampColumn )
+				if (column.Name == FormatHandler.TimeStampColumn)
 				{
-					AddColumn(new TimeStampColumnViewModel(Logger, column.Name,column.Alignment) { Width = column.Width });
+					AddColumn(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
 				}
-				else if (column.IsFilterItemSource) AddColumn(new SelectionPropertyColumnViewModel(Logger, column.Name, column.Alignment,SelectionFiltersIndexerModule) { Width = column.Width });
+				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment, FilterChoicesViewModel) { Width = column.Width });
+				else if (column.IsFilterItemSource) AddColumn(new SelectionPropertyColumnViewModel(Logger, column.Name, column.Alignment, FilterChoicesViewModel) { Width = column.Width });
 				else AddColumn(new TextPropertyColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
 			}
 			
-			TotalWidth = items.Sum(item => item.Width);
+			
 		}
 
 		private void AddColumn(ColumnViewModel Column)
 		{
-			Column.WidthChanged += Column_WidthChanged;
+			//Column.WidthChanged += Column_WidthChanged;
 			Column.FilterChanged += Column_FilterChanged;
 			items.Add(Column);
 		}
@@ -55,11 +52,7 @@ namespace LogInspect.ViewModels.Columns
 			FilterChanged?.Invoke(this, e);
 		}
 
-		private void Column_WidthChanged(object sender, EventArgs e)
-		{
-			TotalWidth= items.Sum(item => item.Width);
-			OnPropertyChanged("TotalWidth");
-		}
+		
 
 
 		public IEnumerator<ColumnViewModel> GetEnumerator()

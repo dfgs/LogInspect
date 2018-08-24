@@ -36,22 +36,22 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		
-		/*public string Severity
+		public PropertyViewModel this[string PropertyName]
 		{
-			get { return ev.Severity; }
+			get { return Properties.FirstOrDefault(item=>item.Column.Name==PropertyName); }
 		}
 		
-		public string TimeStamp
-		{
-			get { return ev.HasValidTimeStamp?ev.TimeStamp.ToString():ev.GetValue(ev.Rule.TimeStampToken); }
-		}*/
+
 		public Brush Background
 		{
 			get;
 			private set;
 		}
-
+		public Brush Foreground
+		{
+			get;
+			private set;
+		}
 		public string RawLog
 		{
 			get { return ev.Log.ToSingleLine(); }
@@ -91,7 +91,9 @@ namespace LogInspect.ViewModels
 			//public enum Severity {Debug,Info,Warning,Error,Critical};
 
 
-			Background = Brushes.Transparent;
+			Background = Brushes.LightGray;
+			Foreground = Brushes.Black;
+
 			foreach (ColoringRule coloringRule in ColoringRules)
 			{
 
@@ -100,6 +102,7 @@ namespace LogInspect.ViewModels
 					try
 					{
 						Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
+						Foreground = Background;
 						break;
 					}
 					catch(Exception ex)

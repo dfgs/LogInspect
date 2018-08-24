@@ -14,14 +14,11 @@ using System.Threading.Tasks;
 namespace LogInspect.Modules
 {
 
-	public class EventIndexerModule : BaseEventModule<Event,FileIndex>
+	public class EventIndexerModule : BaseEventModule
 	{
 		private EventReader eventReader;
 
 		private Filter[] filters;
-
-		private int lineIndex;
-		private long pos;
 
 		public override long Position
 		{
@@ -35,11 +32,10 @@ namespace LogInspect.Modules
 
 		public EventIndexerModule(ILogger Logger, EventReader EventReader,int LookupRetryDelay) : base("EventIndexer",Logger,ThreadPriority.Lowest,LookupRetryDelay)
 		{
-			lineIndex = 0;pos = 0;
 			this.eventReader = EventReader;
 		}
 
-		protected override bool MustIndexInput(Event Input)
+		protected override bool MustIndexEvent(Event Input)
 		{
 			if (filters == null) return true;
 			foreach (Filter filter in filters)
@@ -51,22 +47,12 @@ namespace LogInspect.Modules
 			}
 			return true;
 		}
-		protected override Event OnReadInput()
+		protected override Event OnReadEvent()
 		{
-
-			pos = eventReader.Position;
 			return eventReader.Read();
 
 		}
-		protected override FileIndex OnCreateIndexItem(Event Input)
-		{
-			FileIndex fileIndex;
 
-			fileIndex = new FileIndex(pos, lineIndex, IndexedEventsCount);
-			lineIndex+=Input.Log.Lines.Length;
-
-			return fileIndex;
-		}
 		protected override void OnReset()
 		{
 			eventReader.Seek(0);

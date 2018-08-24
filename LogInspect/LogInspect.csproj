@@ -76,18 +76,20 @@
       <DependentUpon>FilterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Cache.cs" />
-    <Compile Include="Models\FileIndex.cs" />
     <Compile Include="Models\Filters\Filter.cs" />
     <Compile Include="Models\Filters\SelectionFilter.cs" />
     <Compile Include="Models\Filters\TextFilter.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Modules\BaseEventModule.cs" />
-    <Compile Include="Modules\ReadEventHandler.cs" />
-    <Compile Include="Modules\IndexedEventHandler.cs" />
-    <Compile Include="Modules\SelectionFiltersIndexerModule.cs" />
+    <Compile Include="Modules\EventReadEventHandler.cs" />
+    <Compile Include="Modules\EventIndexedEventHandler.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\SelectionPropertyColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
+    <Compile Include="ViewModels\BaseCollectionViewModel.cs" />
+    <Compile Include="ViewModels\FilterChoiceAddedEventHandler.cs" />
+    <Compile Include="ViewModels\FilterChoicesViewModel .cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\SelectionFilterItem.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\Page.cs" />
+    <Compile Include="ViewModels\Properties\SeverityPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TimeStampPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TextPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\BookMarkPropertyViewModel.cs" />
@@ -108,9 +111,7 @@
     <Compile Include="ViewModels\Properties\PropertyViewModel.cs" />
     <Compile Include="ViewModels\SeveritiesViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
-    <Compile Include="Views\ColumnsView.xaml.cs">
-      <DependentUpon>ColumnsView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
@@ -120,6 +121,7 @@
     <Compile Include="Views\Filters\TextFilterView.xaml.cs">
       <DependentUpon>TextFilterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GridViewColumns.cs" />
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
     <Compile Include="Views\NotValueConverter.cs" />
@@ -143,10 +145,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ColumnsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\EventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -195,10 +193,6 @@
     <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
       <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
       <Name>ModuleLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VirtualListBoxLib\VirtualListBoxLib\VirtualListBoxLib.csproj">
-      <Project>{4527ad6c-524e-4d94-9c06-55988f0c8580}</Project>
-      <Name>VirtualListBoxLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogInspectLib\LogInspectLib.csproj">
       <Project>{1aa10f6a-888f-4125-8754-c14409739a1b}</Project>

@@ -37,9 +37,7 @@ namespace LogInspect
 			Rule rule;
 
 			#region rcm
-			schema = new FormatHandler();
-			schema.Name = "Nice.Perform.RCM";
-			schema.FileNamePattern = @"^RCM\.log(\.\d+)?$";
+			schema = new FormatHandler() { Name = "Nice.Perform.RCM", FileNamePattern = @"^RCM\.log(\.\d+)?$"};
 			schema.AppendLineToNextPatterns.Add(@".*(?<!\u0003)$");
 
 			rule = new LogInspectLib.Rule() { Name = "Event" };
@@ -63,9 +61,7 @@ namespace LogInspect
 			#endregion
 
 			#region NTR
-			schema = new FormatHandler();
-			schema.Name = "Nice.NTR.Archiving";
-			schema.FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$";
+			schema = new FormatHandler() { Name = "Nice.NTR.Archiving", FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$" };
 			schema.AppendLineToPreviousPatterns.Add(@"^[^\[]");
 			schema.DiscardLinePatterns.Add(@"^$");
 			schema.SeverityColumn = "Severity";
@@ -104,7 +100,8 @@ namespace LogInspect
 
 
 			logger = new ConsoleLogger(new DefaultLogFormatter());
-			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize, Properties.Settings.Default.PageSize, Properties.Settings.Default.PageCount, Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.FiltererLookupRetryDelay);
+			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize, Properties.Settings.Default.PageSize, 
+				Properties.Settings.Default.PageCount, Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.FiltererLookupRetryDelay);
 
 			InitializeComponent();
 			DataContext = appViewModel;
@@ -114,6 +111,7 @@ namespace LogInspect
 		{
 			//Dispatcher.InvokeShutdown();
 			appViewModel.Dispose();
+			
 		}
 
 		private void ShowError(Exception ex)
@@ -160,33 +158,33 @@ namespace LogInspect
 		#region severities
 		private void FindPreviousSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem?.IsWorking==false) ; e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem!=null) && (appViewModel.SelectedItem.IsWorking==false) && (appViewModel.SelectedItem.Events.SelectedItem!=null) ; e.Handled = true;
 		}
 
 		private async void FindPreviousSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			int index;
-			index=await appViewModel.SelectedItem.FindPreviousSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem);
-			if (index >= 0) appViewModel.SelectedItem.SelectedItemIndex = index;
+			index=await appViewModel.SelectedItem.FindPreviousSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem,appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 
 		private void FindNextSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.IsWorking == false) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
 		}
 
 		private async void FindNextSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			int index;
-			index = await appViewModel.SelectedItem.FindNextSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem);
-			if (index >= 0) Dispatcher.Invoke(() => appViewModel.SelectedItem.SelectedItemIndex = index);
+			index = await appViewModel.SelectedItem.FindNextSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem, appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 		#endregion
 
 		#region bookmarks
 		private void SetBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) && (appViewModel.SelectedItem.SelectedItem!=null); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.IsWorking == false) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
 		}
 
 		private async void ToogleBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -195,22 +193,26 @@ namespace LogInspect
 		}
 		private void FindPreviousBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.IsWorking == false) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
 		}
 
 		private async void FindPreviousBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindPreviousBookMarkAsync();
+			int index;
+			index = await appViewModel.SelectedItem.FindPreviousBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 
 		private void FindNextBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem?.IsWorking == false) ; e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.IsWorking == false) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
 		}
 
 		private async void FindNextBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await appViewModel.SelectedItem.FindNextBookMarkAsync();
+			int index;
+			index=await appViewModel.SelectedItem.FindNextBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 		#endregion
 

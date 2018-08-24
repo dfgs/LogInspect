@@ -27,11 +27,14 @@ namespace LogInspect.Views
 			InitializeComponent();
 		}
 
+		private void ListView_Selected(object sender, SelectionChangedEventArgs e)
+		{
+			ListView listView;
+			listView = sender as ListView;
+			if (listView == null) return;
+			listView.ScrollIntoView(listView.SelectedItem);
+		}
 
 		
-
-		
-
-
 	}
 }

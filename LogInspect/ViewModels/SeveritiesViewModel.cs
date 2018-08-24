@@ -11,58 +11,27 @@ using LogLib;
 
 namespace LogInspect.ViewModels
 {
-	public class SeveritiesViewModel : ViewModel,IEnumerable<object>,INotifyCollectionChanged
+	public class SeveritiesViewModel : BaseCollectionViewModel<object>
 	{
-		private List<object> items;
 		private string severityProperty;
 
-
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(object), typeof(SeveritiesViewModel));
-		public object SelectedItem
+		
+		public SeveritiesViewModel(ILogger Logger,string SeverityProperty, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger)
 		{
-			get { return GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
-		}
-
-
-		public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-		public SeveritiesViewModel(ILogger Logger,string SeverityProperty, SelectionFiltersIndexerModule SelectionFiltersIndexerModule) : base(Logger)
-		{
-			items = new List<object>();
+			
 			this.severityProperty = SeverityProperty;
-			SelectionFiltersIndexerModule.Indexed += SelectionFiltersIndexerModule_Indexed;
+
+			FilterChoicesViewModel.FilterChoiceAdded += FilterChoicesViewModel_FilterChoiceAdded;
 		}
 
-		private void SelectionFiltersIndexerModule_Indexed(object sender, IndexedEventArgs<string, object> e)
+		private void FilterChoicesViewModel_FilterChoiceAdded(object sender, FilterChoiceAddedEventArgs e)
 		{
-			Dispatcher.Invoke(() => OnEventIndexed(e.Input, e.IndexedItem));
-		}
-
-		protected void OnEventIndexed(string Property,object Value)
-		{
-			if (Property != severityProperty) return;
-			items.Add(Value);
-			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Value));
-			if (items.Count == 1) SelectedItem = Value;
+			if (e.Property != severityProperty) return;
+			Add(e.Value);
+			if (Count == 1) SelectedItem = e.Value;
 			
 		}
 
-		protected void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-		{
-			Dispatcher.Invoke(() => CollectionChanged?.Invoke(this, e));
-
-		}
-
-		public IEnumerator<object> GetEnumerator()
-		{
-			return items.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return items.GetEnumerator();
-		}
 
 
 	}

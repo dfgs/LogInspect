@@ -34,7 +34,7 @@ namespace LogInspect.ViewModels
 		private int indexerLookupRetryDelay;
 		private int filtererLookupRetryDelay;
 
-		public AppViewModel(ILogger Logger,string Path, int BufferSize, int PageSize, int PageCount, int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) : base(Logger)
+		public AppViewModel(ILogger Logger,string Path, int BufferSize, int PageSize, int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) : base(Logger)
 		{
 			this.bufferSize = BufferSize;
 			this.pageSize = PageSize;
@@ -69,7 +69,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader,pageSize,pageCount,indexerLookupRetryDelay,filtererLookupRetryDelay);
+				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader,pageSize,pageCount, indexerLookupRetryDelay,filtererLookupRetryDelay);
 			}
 			catch(Exception ex)
 			{

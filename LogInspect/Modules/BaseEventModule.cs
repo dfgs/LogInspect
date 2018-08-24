@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogInspectLib;
 using LogLib;
 using ModuleLib;
 using System;
@@ -10,14 +11,10 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public abstract class BaseEventModule<TInput, TIndexed> : ThreadModule
+	public abstract class BaseEventModule: ThreadModule
 	{
-		private List<TIndexed> items;
+		private int lineIndex;
 
-		public TIndexed this[int Index]
-		{
-			get { return items[Index]; }
-		}
 		public abstract long Position
 		{
 			get;
@@ -27,57 +24,39 @@ namespace LogInspect.Modules
 			get;
 		}
 
+		// lock cause issue here
 		public int IndexedEventsCount
 		{
-			get
-			{
-				lock (items)
-				{
-					return items.Count;
-				}
-			}
+			get;
+			private set;
 		}
 
 		private int lookupRetryDelay;
 
-		public event ReadEventHandler<TInput> Read;
-		public event IndexedEventHandler<TInput, TIndexed> Indexed;
+		public event EventReadEventHandler Read;
+		public event EventIndexedEventHandler Indexed;
 
 
 		public BaseEventModule(string Name, ILogger Logger, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
 		{
 			this.lookupRetryDelay = LookupRetryDelay;
-			items = new List<TIndexed>();
-		}
-		public bool Contains(TIndexed Item)
-		{
-			lock (items)
-			{
-				return items.Contains(Item);
-			}
 		}
 
-		protected virtual void OnReset()
-		{
-			throw new NotImplementedException("OnReset");
-		}
+
+		protected abstract void OnReset();
+
 		public void Reset()
 		{
-			lock(items)
-			{
-				items.Clear();
-				OnReset();
-			}
+			IndexedEventsCount = 0;lineIndex = 0;
+			OnReset();
 		}
 
-		protected abstract TInput OnReadInput();
-		protected abstract bool MustIndexInput(TInput Input);
-		protected abstract TIndexed OnCreateIndexItem(TInput Input);
+		protected abstract Event OnReadEvent();
+		protected abstract bool MustIndexEvent(Event Event);
 		
 		protected override sealed void ThreadLoop()
 		{
-			TIndexed item;
-			TInput input;
+			Event item;
 
 			while(State == ModuleStates.Started)
 			{
@@ -85,23 +64,21 @@ namespace LogInspect.Modules
 				{
 					try
 					{
-						input = OnReadInput();
-						Read?.Invoke(this, new ReadEventArgs<TInput>(input));
+						item = OnReadEvent();
 					}
 					catch(Exception ex)
 					{
 						Log(ex);
 						return;
 					}
-					if (MustIndexInput(input))
+					Read?.Invoke(this, new EventReadEventArgs(item));
+
+					if (MustIndexEvent(item))
 					{
-						item= OnCreateIndexItem(input);
-						lock (items)
-						{
-							items.Add(item);
-							Indexed?.Invoke(this,new IndexedEventArgs<TInput, TIndexed>(input, item));
-						}
+						Indexed?.Invoke(this, new EventIndexedEventArgs(item, IndexedEventsCount,lineIndex));
+						IndexedEventsCount++;
 					}
+					lineIndex += item.Log.Lines.Count();
 				}
 				WaitHandles(lookupRetryDelay, QuitEvent);
 			}

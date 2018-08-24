@@ -21,12 +21,12 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		private SelectionFiltersIndexerModule selectionFiltersIndexerModule;
+		private FilterChoicesViewModel filterChoicesViewModel;
 
-		public SelectionPropertyColumnViewModel(ILogger Logger, string Name,string Alignment,SelectionFiltersIndexerModule SelectionFiltersIndexerModule) : base(Logger,Name,Alignment)
+		public SelectionPropertyColumnViewModel(ILogger Logger, string Name,string Alignment, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment)
 		{
 
-			this.selectionFiltersIndexerModule = SelectionFiltersIndexerModule;
+			this.filterChoicesViewModel = FilterChoicesViewModel;
 
 		}
 
@@ -37,7 +37,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			return new SelectionFilterViewModel(Logger,Name, selectionFiltersIndexerModule.GetItemsSource(Name),(SelectionFilter)Filter);
+			return new SelectionFilterViewModel(Logger,Name, filterChoicesViewModel.GetFilterChoices(Name),(SelectionFilter)Filter);
 		}
 
 	}

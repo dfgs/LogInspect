@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public delegate void ReadEventHandler<TInput>(object sender, ReadEventArgs<TInput> e);
+	public delegate void EventReadEventHandler(object sender, EventReadEventArgs e);
 
-	public class ReadEventArgs<TInput>:EventArgs
+	public class EventReadEventArgs:EventArgs
 	{
-		public TInput Input
+		public Event Event
 		{
 			get;
 			private set;
 		}
 
-		public ReadEventArgs(TInput Input)
+		public EventReadEventArgs(Event Event)
 		{
-			this.Input=Input;
+			this.Event=Event;
 		}
 	}
 

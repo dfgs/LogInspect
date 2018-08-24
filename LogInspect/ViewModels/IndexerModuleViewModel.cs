@@ -9,14 +9,10 @@ using System.Threading.Tasks;
 
 namespace LogInspect.ViewModels
 {
-	public class IndexerModuleViewModel<TIndexerModule,TInput,TIndexed> : ViewModel
-		where TIndexerModule : BaseEventModule<TInput,TIndexed>
+	public class IndexerModuleViewModel<TIndexerModule> : ViewModel
+		where TIndexerModule : BaseEventModule
 	{
-		private TIndexerModule indexerModule;
-		public TIndexerModule IndexerModule
-		{
-			get { return indexerModule; }
-		}
+		public TIndexerModule IndexerModule { get; }
 
 		private Timer timer;
 
@@ -40,9 +36,12 @@ namespace LogInspect.ViewModels
 			get { return indexedEventsCount; }
 			private set { indexedEventsCount = value;OnPropertyChanged(); }
 		}
+
+		//public event EventHandler Refreshed;
+
 		public IndexerModuleViewModel(ILogger Logger, TIndexerModule IndexerModule,int RefreshInterval) : base(Logger)
 		{
-			this.indexerModule = IndexerModule;
+			this.IndexerModule = IndexerModule;
 			timer = new Timer(timerCallBack, null, 0, RefreshInterval);
 		}
 		public override void Dispose()
@@ -51,17 +50,18 @@ namespace LogInspect.ViewModels
 			timer.Dispose();
 
 		}
-		protected virtual void OnRefresh()
+		/*protected virtual void OnRefresh()
 		{
 
-		}
+		}*/
 		private void timerCallBack(object state)
 		{
 			Dispatcher.Invoke(() => {
-				Position = indexerModule.Position;
-				Target = indexerModule.Target;
-				IndexedEventsCount = indexerModule.IndexedEventsCount;
-				OnRefresh();
+				Position = IndexerModule.Position;
+				Target = IndexerModule.Target;
+				IndexedEventsCount = IndexerModule.IndexedEventsCount;
+
+				//OnRefresh();
 			});
 		}
 

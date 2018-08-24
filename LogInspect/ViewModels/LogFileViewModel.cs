@@ -17,11 +17,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using VirtualListBoxLib;
 
 namespace LogInspect.ViewModels
 {
-	public class LogFileViewModel:ViewModel,IVirtualCollection //,IEnumerable<EventViewModel>//,INotifyCollectionChanged
+	public class LogFileViewModel:ViewModel
 	{
 
 
@@ -51,23 +50,6 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public static readonly DependencyProperty SelectedItemIndexProperty = DependencyProperty.Register("SelectedItemIndex", typeof(int), typeof(LogFileViewModel),new PropertyMetadata(SelectedItemIndexPropertyChanged));
-		public int SelectedItemIndex
-		{
-			get { return (int)GetValue(SelectedItemIndexProperty); }
-			set { SetValue(SelectedItemIndexProperty, value); }
-		}
-
-
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(EventViewModel), typeof(LogFileViewModel));
-		public EventViewModel SelectedItem
-		{
-			get { return (EventViewModel)GetValue(SelectedItemProperty); }
-			private set { SetValue(SelectedItemProperty, value); }
-		}
-
-
-
 		public ColumnsViewModel Columns
 		{
 			get;
@@ -75,23 +57,27 @@ namespace LogInspect.ViewModels
 		}
 
 		private EventIndexerModule eventIndexerModule;
-		public IndexerModuleViewModel<EventIndexerModule,Event, FileIndex> EventIndexer
+		public IndexerModuleViewModel<EventIndexerModule> EventIndexer
 		{
 			get;
 			private set;
 		}
 		
 
-		private SelectionFiltersIndexerModule selectionFiltersIndexerModule;
+		private FilterChoicesViewModel filterChoices;
 		public SeveritiesViewModel Severities
 		{
 			get;
 			private set;
 		}
 
-		//public event EventHandler PagesCleared;
+		public EventsViewModel Events
+		{
+			get;
+			private set;
+		}
 
-		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount, int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
 		{
 
 			this.FileName = FileName;
@@ -103,13 +89,15 @@ namespace LogInspect.ViewModels
 			this.pageEventReader = PageEventReader;
 
 			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
-			EventIndexer = new IndexerModuleViewModel<EventIndexerModule,Event,FileIndex>(Logger, eventIndexerModule, 300);
-			
-			selectionFiltersIndexerModule = new SelectionFiltersIndexerModule(Logger, eventIndexerModule,pageEventReader.FormatHandler);
-			Severities = new SeveritiesViewModel(Logger, PageEventReader.FormatHandler.SeverityColumn, selectionFiltersIndexerModule);
+			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, 300);
 
-			Columns = new ColumnsViewModel(Logger, PageEventReader.FormatHandler,selectionFiltersIndexerModule);
+			filterChoices = new FilterChoicesViewModel(Logger, eventIndexerModule, pageEventReader.FormatHandler.Columns);
+			Severities = new SeveritiesViewModel(Logger, PageEventReader.FormatHandler.SeverityColumn, filterChoices);
+
+			Columns = new ColumnsViewModel(Logger, PageEventReader.FormatHandler,filterChoices);
 			Columns.FilterChanged += Columns_FilterChanged;
+
+			Events = new EventsViewModel(Logger, eventIndexerModule,Columns,pageEventReader.FormatHandler.ColoringRules);
 
 			Log(LogLevels.Information, "Starting EventIndexer");
 			eventIndexerModule.Start();
@@ -123,107 +111,13 @@ namespace LogInspect.ViewModels
 			eventIndexerModule.Stop();
 
 			EventIndexer.Dispose();
-			selectionFiltersIndexerModule.Dispose();
+			filterChoices.Dispose();
 
 			pages.Clear();
 			pages = null;
 		}
 
-
-
-		private static async void SelectedItemIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			await ((LogFileViewModel)d).OnSelectedItemIndexChanged();
-		}
-		private async Task OnSelectedItemIndexChanged()
-		{
-			if ((SelectedItemIndex < 0) || (SelectedItemIndex >= EventIndexer.IndexedEventsCount)) SelectedItem = null;
-			else SelectedItem = await GetEventAsync(SelectedItemIndex);
-		}
-
-
-
-
-		private async Task<Page> GetPageAsync(int PageIndex)
-		{
-			Page page;
-
-			if (!pages.TryGetValue(PageIndex,out page))
-			{
-				page = new Page(PageIndex, pageSize);
-				if (!await LoadPageAsync(page)) return null;
-				pages.Add(PageIndex, page);
-			}
-			else
-			{
-				if (!page.IsComplete) await LoadPageAsync(page);
-			}
-			return page;
-		}
-		private async Task<bool> LoadPageAsync(Page Page)
-		{
-			Event ev;
-			FileIndex fileIndex;
-			int eventIndex, t;
-			EventViewModel vm;
-
-			eventIndex = Page.Index * pageSize + Page.LastFilledIndex + 1;
-
-			for (t = Page.LastFilledIndex + 1; (t < pageSize) && (eventIndex < EventIndexer.IndexedEventsCount); t++, eventIndex++)
-			{
-				fileIndex = eventIndexerModule[eventIndex];
-				pageEventReader.Seek(fileIndex.Position);
-
-				try
-				{
-					ev = await pageEventReader.ReadAsync();
-				}
-				catch (Exception ex)
-				{
-					Log(ex);
-					return false;
-				}
-
-				vm = new EventViewModel(Logger, Columns, pageEventReader.FormatHandler.ColoringRules, ev, eventIndex, fileIndex.LineIndex);
-				vm.IsBookMarked = fileIndex.IsBookMarked;
-				Page[t] = vm;
-				//if (pageEventReader.EndOfStream) break;
-			}
-			return true;
-		}
-
-		/*public async Task<IEnumerable<EventViewModel>> GetEventsAsync(int StartIndex, int Count)
-		{
-			Page page;
-			EventViewModel ev;
-			
-			for (int t = StartIndex; t < StartIndex + Count; t++)
-			{
-				page = await GetPageAsync(t / pageSize);
-				if (page == null) yield break;
-				ev = page[t % pageSize];
-				if (ev == null) yield break;
-				yield return ev;
-			}
-
-		}*/
-
-		object IVirtualCollection.GetItem(int Index)
-		{
-			EventViewModel result;
-
-			result = Task.Run<EventViewModel>( ()=>GetEventAsync(Index) ).Result;
-			return result;
-		}
-
-		public async Task<EventViewModel> GetEventAsync(int Index)
-		{
-			Page page;
-
-			page = await GetPageAsync(Index / pageSize);
-			if (page == null) return null;
-			return page[Index % pageSize];
-		}
+		
 
 		private void BeginWork()
 		{
@@ -245,7 +139,7 @@ namespace LogInspect.ViewModels
 
 			BeginWork();
 			pages.Clear();
-			SelectedItemIndex = -1;
+			//SelectedItemIndex = -1;
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter);
 			eventIndexerModule.SetFilters(filters  );
 			EndWork();
@@ -257,45 +151,51 @@ namespace LogInspect.ViewModels
 		public async Task<int> FindPreviousAsync(int Index, Func<EventViewModel, bool> Predicate)
 		{
 			EventViewModel ev;
-			while (Index > 0)
+			return await Task.Run<int>(() =>
 			{
-				Index--;
-				ev = await this.GetEventAsync(Index);
-				if (Predicate(ev)) return Index;
-			}
-			return -1;
+				while (Index > 0)
+				{
+					Index--;
+					ev = Events[Index];
+					if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
+				}
+				return -1;
+			});
 		}
 		public async Task<int> FindNextAsync(int Index, Func<EventViewModel, bool> Predicate)
 		{
 			EventViewModel ev;
 
-			while (Index < eventIndexerModule.IndexedEventsCount - 1)
+			return await Task.Run<int>(() =>
 			{
-				Index++;
-				ev = await this.GetEventAsync(Index);
-				if (Predicate(ev)) return Index;
-			}
-			return -1;
+				while (Index < eventIndexerModule.IndexedEventsCount - 1)
+				{
+					Index++;
+					ev = Events[Index];
+					if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
+				}
+				return -1;
+			});
 
 		}
 		#endregion
 
 		#region find severities
-		public async Task<int> FindPreviousSeverityAsync(object Severity)
+		public async Task<int> FindPreviousSeverityAsync(object Severity,int StartIndex)
 		{
 			int index;
 
 			BeginWork();
-			index =  await  FindPreviousAsync(SelectedItemIndex, (item) => Severity.Equals( item.GetPropertyValue(pageEventReader.FormatHandler.SeverityColumn))); 
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item.GetPropertyValue(pageEventReader.FormatHandler.SeverityColumn))); 
 			EndWork();
 			return index;
 		}
-		public async Task<int> FindNextSeverityAsync(object Severity)
+		public async Task<int> FindNextSeverityAsync(object Severity, int StartIndex)
 		{
 			int index ;
 
 			BeginWork();
-			index = await  FindNextAsync(SelectedItemIndex, (item) =>  Severity.Equals(item.GetPropertyValue(pageEventReader.FormatHandler.SeverityColumn)));
+			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item.GetPropertyValue(pageEventReader.FormatHandler.SeverityColumn)));
 			EndWork();
 			return index;
 		}
@@ -304,32 +204,28 @@ namespace LogInspect.ViewModels
 		#region bookmark
 		public async Task ToogleBookMarkAsync()
 		{
-			FileIndex fileIndex;
-
-			if (SelectedItem == null) return;
+			if (Events.SelectedItem == null) return;
 			BeginWork();
-			SelectedItem.IsBookMarked = !SelectedItem.IsBookMarked;
-			fileIndex = eventIndexerModule[SelectedItemIndex];
-			fileIndex.IsBookMarked = SelectedItem.IsBookMarked;
+			Events.SelectedItem.IsBookMarked = !Events.SelectedItem.IsBookMarked;
 			await Task.Yield();
 			EndWork();
 		}
 
-		public async Task<int> FindPreviousBookMarkAsync()
+		public async Task<int> FindPreviousBookMarkAsync(int StartIndex)
 		{
 			int index;
 
 			BeginWork();
-			index = await FindPreviousAsync(SelectedItemIndex, (item) => item.IsBookMarked );
+			index = await FindPreviousAsync(StartIndex, (item) => item.IsBookMarked );
 			EndWork();
 			return index;
 		}
-		public async Task<int> FindNextBookMarkAsync()
+		public async Task<int> FindNextBookMarkAsync(int StartIndex)
 		{
 			int index;
 
 			BeginWork();
-			index = await FindNextAsync(SelectedItemIndex, (item) => item.IsBookMarked );
+			index = await FindNextAsync(StartIndex, (item) => item.IsBookMarked );
 			EndWork();
 			return index;
 		}

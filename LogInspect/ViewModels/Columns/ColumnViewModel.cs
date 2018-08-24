@@ -15,7 +15,7 @@ namespace LogInspect.ViewModels.Columns
 {
 	public abstract class ColumnViewModel : ViewModel
 	{
-		public event EventHandler WidthChanged;
+		//public event EventHandler WidthChanged;
 		public event EventHandler FilterChanged;
 
 		public TextAlignment Alignment
@@ -57,7 +57,7 @@ namespace LogInspect.ViewModels.Columns
 			get { return Filter != null; }
 		}
 
-		public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(ColumnViewModel),new PropertyMetadata(100d,WidthPropertyChanged));
+		public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(ColumnViewModel),new PropertyMetadata(100d));
 		public double Width
 		{
 			get { return (double)GetValue(WidthProperty); }
@@ -79,14 +79,7 @@ namespace LogInspect.ViewModels.Columns
 		}
 
 
-		private static void WidthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((ColumnViewModel)d).OnWidthChanged();
-		}
-		protected virtual void OnWidthChanged()
-		{
-			WidthChanged?.Invoke(this, EventArgs.Empty);
-		}
+		
 
 		public abstract PropertyViewModel CreatePropertyViewModel(EventViewModel Event);
 		public abstract FilterViewModel CreateFilterViewModel();
