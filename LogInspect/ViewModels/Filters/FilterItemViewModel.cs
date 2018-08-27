@@ -7,10 +7,10 @@ using System.Windows;
 
 namespace LogInspect.ViewModels.Filters
 {
-	public class SelectionFilterItem:DependencyObject
+	public class FilterItemViewModel:DependencyObject
 	{
 
-		public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(SelectionFilterItem));
+		public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(FilterItemViewModel));
 		public bool IsChecked
 		{
 			get { return (bool)GetValue(IsCheckedProperty); }
@@ -18,7 +18,7 @@ namespace LogInspect.ViewModels.Filters
 		}
 
 
-		public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(SelectionFilterItem));
+		public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(FilterItemViewModel));
 		public string Description
 		{
 			get { return (string)GetValue(DescriptionProperty); }

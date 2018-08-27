@@ -12,6 +12,13 @@ namespace LogInspect.ViewModels.Filters
 	public class TextFilterViewModel:FilterViewModel
 	{
 
+		public static readonly DependencyProperty ConditionProperty = DependencyProperty.Register("Condition", typeof(TextConditions), typeof(TextFilterViewModel));
+		public TextConditions Condition
+		{
+			get { return (TextConditions)GetValue(ConditionProperty); }
+			set { SetValue(ConditionProperty, value); }
+		}
+
 
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(TextFilter));
 		public string Value
@@ -20,7 +27,7 @@ namespace LogInspect.ViewModels.Filters
 			set { SetValue(ValueProperty, value); }
 		}
 
-		public TextFilterViewModel(ILogger Logger,TextFilter Model):base(Logger)
+		public TextFilterViewModel(ILogger Logger, string PropertyName, TextFilter Model):base(Logger,PropertyName)
 		{
 			if (Model!=null)
 			{
@@ -30,7 +37,7 @@ namespace LogInspect.ViewModels.Filters
 
 		public override Filter CreateFilter()
 		{
-			return new TextFilter() { Value=Value };
+			return new TextFilter(PropertyName) { Value=Value,Condition=Condition };
 		}
 
 

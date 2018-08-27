@@ -22,10 +22,12 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => true;
 
 
-		
+		public override Visibility ImageVisibility => Visibility.Visible;
+		public override string ImageSource => "/LogInspect;component/Images/Calendar_16x.png";
 
 
-		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment) : base(Logger,Name,Alignment)
+
+		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment) : base(Logger,Name,Name,Alignment)
 		{
 		
 		}
@@ -37,7 +39,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			return new TimeStampFilterViewModel(Logger,(TimeStampFilter)Filter);
+			return new TimeStampFilterViewModel(Logger,Name,(TimeStampFilter)Filter);
 		}
 
 

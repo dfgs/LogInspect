@@ -14,19 +14,21 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class SelectionPropertyColumnViewModel : ColumnViewModel
+	public class MultiChoicesColumnViewModel : ColumnViewModel
 	{
 		public override bool AllowsResize => true;
 		public override bool AllowsFilter => true;
 
+		public override Visibility ImageVisibility => Visibility.Collapsed;
+		public override string ImageSource => null;
 
 
-		private FilterChoicesViewModel filterChoicesViewModel;
+		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 
-		public SelectionPropertyColumnViewModel(ILogger Logger, string Name,string Alignment, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment)
+		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment)
 		{
 
-			this.filterChoicesViewModel = FilterChoicesViewModel;
+			this.filterItemSourcesViewModel = FilterChoicesViewModel;
 
 		}
 
@@ -37,7 +39,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			return new SelectionFilterViewModel(Logger,Name, filterChoicesViewModel.GetFilterChoices(Name),(SelectionFilter)Filter);
+			return new MultiChoicesFilterViewModel(Logger,Name, filterItemSourcesViewModel.GetFilterChoices(Name),(MultiChoicesFilter)Filter);
 		}
 
 	}

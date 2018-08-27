@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogInspect.ViewModels
 {
-	public delegate void FilterChoiceAddedEventHandler(object sender, FilterChoiceAddedEventArgs e);
+	public delegate void FilterItemAddedEventHandler(object sender, FilterItemAddedEventArgs e);
 
-	public class FilterChoiceAddedEventArgs : EventArgs
+	public class FilterItemAddedEventArgs : EventArgs
 	{
 		public string Property
 		{
@@ -20,7 +20,7 @@ namespace LogInspect.ViewModels
 			get;
 			private set;
 		}
-		public FilterChoiceAddedEventArgs(string Property,object Value)
+		public FilterItemAddedEventArgs(string Property,object Value)
 		{
 			this.Property = Property;this.Value = Value;
 		}

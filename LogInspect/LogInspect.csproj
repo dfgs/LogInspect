@@ -77,23 +77,25 @@
     </Compile>
     <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\Filters\Filter.cs" />
-    <Compile Include="Models\Filters\SelectionFilter.cs" />
+    <Compile Include="Models\Filters\MultiChoicesFilter.cs" />
     <Compile Include="Models\Filters\TextFilter.cs" />
+    <Compile Include="Models\Filters\TextCondition.cs" />
+    <Compile Include="Models\Filters\TimeStampConditions.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Modules\BaseEventModule.cs" />
     <Compile Include="Modules\EventReadEventHandler.cs" />
     <Compile Include="Modules\EventIndexedEventHandler.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
-    <Compile Include="ViewModels\Columns\SelectionPropertyColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\BaseCollectionViewModel.cs" />
-    <Compile Include="ViewModels\FilterChoiceAddedEventHandler.cs" />
-    <Compile Include="ViewModels\FilterChoicesViewModel .cs" />
+    <Compile Include="ViewModels\FilterItemAddedEventHandler.cs" />
+    <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
-    <Compile Include="ViewModels\Filters\SelectionFilterItem.cs" />
-    <Compile Include="ViewModels\Filters\SelectionFilterViewModel.cs" />
+    <Compile Include="ViewModels\Filters\FilterItemViewModel.cs" />
+    <Compile Include="ViewModels\Filters\MultiChoicesFilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\TextFilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\TimeStampFilterViewModel.cs" />
     <Compile Include="ViewModels\IndexerModuleViewModel.cs" />
@@ -102,7 +104,6 @@
     <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
-    <Compile Include="ViewModels\Page.cs" />
     <Compile Include="ViewModels\Properties\SeverityPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TimeStampPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TextPropertyViewModel.cs" />
@@ -110,16 +111,20 @@
     <Compile Include="ViewModels\Properties\LinePropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\PropertyViewModel.cs" />
     <Compile Include="ViewModels\SeveritiesViewModel.cs" />
+    <Compile Include="ViewModels\Statuses.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Filters\SelectionFilterView.xaml.cs">
-      <DependentUpon>SelectionFilterView.xaml</DependentUpon>
+    <Compile Include="Views\Filters\MuliChoicesFilterView.xaml.cs">
+      <DependentUpon>MuliChoicesFilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Filters\TextFilterView.xaml.cs">
       <DependentUpon>TextFilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Filters\TimeStampFilterView.xaml.cs">
+      <DependentUpon>TimeStampFilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewColumns.cs" />
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
@@ -149,11 +154,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Filters\SelectionFilterView.xaml">
+    <Page Include="Views\Filters\MuliChoicesFilterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filters\TextFilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filters\TimeStampFilterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\PreviousBookmark_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Calendar_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

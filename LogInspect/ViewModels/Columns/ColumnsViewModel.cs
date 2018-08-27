@@ -14,11 +14,11 @@ namespace LogInspect.ViewModels.Columns
 	{
 		private List<ColumnViewModel> items;
 
-		public event EventHandler FilterChanged;
+		//public event EventHandler FilterChanged;
 		
 		
 
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel) : base(Logger)
 		{
 
 			items = new List<ColumnViewModel>();
@@ -32,8 +32,8 @@ namespace LogInspect.ViewModels.Columns
 				{
 					AddColumn(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
 				}
-				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment, FilterChoicesViewModel) { Width = column.Width });
-				else if (column.IsFilterItemSource) AddColumn(new SelectionPropertyColumnViewModel(Logger, column.Name, column.Alignment, FilterChoicesViewModel) { Width = column.Width });
+				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment, FilterItemSourcesViewModel) { Width = column.Width });
+				else if (column.IsFilterItemSource) AddColumn(new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment, FilterItemSourcesViewModel) { Width = column.Width });
 				else AddColumn(new TextPropertyColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
 			}
 			
@@ -43,14 +43,11 @@ namespace LogInspect.ViewModels.Columns
 		private void AddColumn(ColumnViewModel Column)
 		{
 			//Column.WidthChanged += Column_WidthChanged;
-			Column.FilterChanged += Column_FilterChanged;
+			//Column.FilterChanged += Column_FilterChanged;
 			items.Add(Column);
 		}
 
-		private void Column_FilterChanged(object sender, EventArgs e)
-		{
-			FilterChanged?.Invoke(this, e);
-		}
+		
 
 		
 

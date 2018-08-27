@@ -10,8 +10,15 @@ namespace LogInspect.ViewModels.Filters
 {
 	public abstract class FilterViewModel : ViewModel
 	{
-		public FilterViewModel(ILogger Logger) : base(Logger)
+		public string PropertyName
 		{
+			get;
+			private set;
+		}
+
+		public FilterViewModel(ILogger Logger,string PropertyName) : base(Logger)
+		{
+			this.PropertyName = PropertyName;
 		}
 
 		public abstract Filter CreateFilter();

@@ -29,18 +29,12 @@ namespace LogInspect.ViewModels
 		}
 
 		private int bufferSize;
-		private int pageSize;
-		private int pageCount;
 		private int indexerLookupRetryDelay;
-		private int filtererLookupRetryDelay;
 
-		public AppViewModel(ILogger Logger,string Path, int BufferSize, int PageSize, int PageCount,int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) : base(Logger)
+		public AppViewModel(ILogger Logger,string Path, int BufferSize,int IndexerLookupRetryDelay) : base(Logger)
 		{
 			this.bufferSize = BufferSize;
-			this.pageSize = PageSize;
-			this.pageCount = PageCount;
 			this.indexerLookupRetryDelay = IndexerLookupRetryDelay;
-			this.filtererLookupRetryDelay = FiltererLookupRetryDelay;
 
 			LogFiles = new ObservableCollection<LogFileViewModel>();
 			formatHandlers = new List<FormatHandler>();
@@ -58,18 +52,14 @@ namespace LogInspect.ViewModels
 		public void Open(string FileName)
 		{
 			LogFileViewModel logFile;
-			EventReader pageEventReader,indexerEventReader;
+			EventReader indexerEventReader;
 
-			pageEventReader = CreateEventReader(FileName, bufferSize);
-			if (pageEventReader == null) return;
 			indexerEventReader = CreateEventReader(FileName, bufferSize);
 			if (indexerEventReader == null) return;
 
-			
-
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, pageEventReader,indexerEventReader,pageSize,pageCount, indexerLookupRetryDelay,filtererLookupRetryDelay);
+				logFile = new LogFileViewModel(Logger,FileName, indexerEventReader,indexerLookupRetryDelay);
 			}
 			catch(Exception ex)
 			{

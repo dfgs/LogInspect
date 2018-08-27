@@ -10,7 +10,16 @@ namespace LogInspect.Models.Filters
 {
     public abstract class Filter
     {
-		//public abstract Filter Clone();
+		public string PropertyName
+		{
+			get;
+			private set;
+		}
+
+		public Filter(string PropertyName)
+		{
+			this.PropertyName = PropertyName;
+		}
 
 		public abstract bool MustDiscard(Event Item);
 	}

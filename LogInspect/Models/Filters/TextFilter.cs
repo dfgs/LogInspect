@@ -10,6 +10,7 @@ namespace LogInspect.Models.Filters
 {
     public class TextFilter:Filter
     {
+		public static Array Conditions = Enum.GetValues(typeof(TextConditions));
 
 		public string Value
 		{
@@ -17,11 +18,33 @@ namespace LogInspect.Models.Filters
 			set;
 		}
 
-	
+		public TextConditions Condition
+		{
+			get;
+			set;
+		}
 
+		public TextFilter(string PropertyName):base(PropertyName)
+		{
+			
+		}
 		public override bool MustDiscard(Event Item)
 		{
-			return false;// Item.Severity != Value;
+			string value;
+
+			value = Item.GetValue(PropertyName)?.ToString();
+			if (value == null) return true;
+			switch (Condition)
+			{
+				case TextConditions.Equals:
+					return value != Value;
+				case TextConditions.Contains:
+					return !value.Contains(Value);
+				case TextConditions.StartsWith:
+					return !value.StartsWith(Value);
+				default:
+					return false;
+			}
 		}
 
 	}

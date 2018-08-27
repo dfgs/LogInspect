@@ -51,7 +51,12 @@ namespace LogInspect.ViewModels
 			CollectionChanged?.Invoke(this, e);
 		}
 
-
+		public void Clear()
+		{
+			items.Clear();
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+			OnPropertyChanged("Count");
+		}
 		public void Remove(int Index)
 		{
 			T item;
@@ -61,6 +66,7 @@ namespace LogInspect.ViewModels
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, Index));
 			OnPropertyChanged("Count");
 		}
+		
 		public void Add(T Item)
 		{
 			int index;

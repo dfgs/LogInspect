@@ -15,8 +15,16 @@ namespace LogInspect.ViewModels.Columns
 {
 	public abstract class ColumnViewModel : ViewModel
 	{
-		//public event EventHandler WidthChanged;
-		public event EventHandler FilterChanged;
+		public abstract Visibility ImageVisibility
+		{
+			get;
+		}
+		public abstract string ImageSource
+		{
+			get;
+		}
+			
+
 
 		public TextAlignment Alignment
 		{
@@ -25,6 +33,12 @@ namespace LogInspect.ViewModels.Columns
 		}
 
 		public string Name
+		{
+			get;
+			private set;
+		}
+
+		public string Description
 		{
 			get;
 			private set;
@@ -47,7 +61,7 @@ namespace LogInspect.ViewModels.Columns
 			{
 				if (filter == value) return;
 				filter = value;
-				FilterChanged?.Invoke(this, EventArgs.Empty);
+				//FilterChanged?.Invoke(this, EventArgs.Empty);
 				OnPropertyChanged("HasFilter");
 			}
 		}
@@ -67,7 +81,7 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		public ColumnViewModel(ILogger Logger,string Name, string Alignment) : base(Logger)
+		public ColumnViewModel(ILogger Logger,string Name,string Description, string Alignment) : base(Logger)
 		{
 			TextAlignment alignment;
 
@@ -76,6 +90,7 @@ namespace LogInspect.ViewModels.Columns
 			else this.Alignment = TextAlignment.Left;
 
 			this.Name = Name;
+			this.Description = Description;
 		}
 
 

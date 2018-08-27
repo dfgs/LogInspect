@@ -18,9 +18,9 @@ namespace LogInspect.Views.Filters
 	/// <summary>
 	/// Logique d'interaction pour SelectionFilterView.xaml
 	/// </summary>
-	public partial class SelectionFilterView : UserControl
+	public partial class MultiChoicesFilterView : UserControl
 	{
-		public SelectionFilterView()
+		public MultiChoicesFilterView()
 		{
 			InitializeComponent();
 		}

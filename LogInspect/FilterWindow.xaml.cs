@@ -29,6 +29,12 @@ namespace LogInspect
 			set { SetValue(FilterProperty, value); }
 		}
 
+		public bool RemoveFilter
+		{
+			get;
+			private set;
+		}
+
 		public FilterWindow()
         {
             InitializeComponent();
@@ -40,11 +46,12 @@ namespace LogInspect
 		}
 		private void ButtonRemove_Click(object sender, RoutedEventArgs e)
 		{
+			RemoveFilter = true;
 			DialogResult = false;
 		}
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
-			Close();
+			DialogResult = false;
 		}
 
 

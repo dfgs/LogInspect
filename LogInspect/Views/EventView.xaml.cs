@@ -1,4 +1,5 @@
 ﻿using LogInspect.ViewModels;
+using LogInspect.ViewModels.Columns;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,39 @@ namespace LogInspect.Views
 			listView.ScrollIntoView(listView.SelectedItem);
 		}
 
-		
+		private void ListView_Click(object sender, RoutedEventArgs e)
+		{
+			ListView listView;
+			GridViewColumnHeader columnHeader;
+			ColumnViewModel column;
+			LogFileViewModel logFile;
+			FilterWindow window;
+			bool result;
+
+			listView = sender as ListView;
+			if (listView == null) return;
+
+			logFile = listView.DataContext as LogFileViewModel;
+			if (logFile == null) return;
+
+			columnHeader = e.OriginalSource as GridViewColumnHeader;
+			if (columnHeader == null) return;
+			
+			column = columnHeader.Content as ColumnViewModel;
+			if (column == null) return;
+
+			if (!column.AllowsFilter) return;
+
+			window = new FilterWindow(); window.Owner = Application.Current.MainWindow; window.Filter = column.CreateFilterViewModel();
+			result = window.ShowDialog()??false;
+
+			if (!(window.RemoveFilter || result)) return;
+
+			if (result == true) column.Filter = window.Filter.CreateFilter();
+			else column.Filter = null;
+
+			logFile.Refresh();
+
+		}
 	}
 }

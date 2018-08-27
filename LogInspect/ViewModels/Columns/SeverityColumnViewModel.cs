@@ -16,14 +16,14 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class SeverityColumnViewModel : SelectionPropertyColumnViewModel
+	public class SeverityColumnViewModel : MultiChoicesColumnViewModel
 	{
 
 
 		
 
 
-		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,FilterChoicesViewModel)
+		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,FilterChoicesViewModel)
 		{
 		
 		}

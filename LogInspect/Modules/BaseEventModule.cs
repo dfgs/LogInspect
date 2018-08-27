@@ -35,6 +35,7 @@ namespace LogInspect.Modules
 
 		public event EventReadEventHandler Read;
 		public event EventIndexedEventHandler Indexed;
+		public event EventHandler Reseted;
 
 
 		public BaseEventModule(string Name, ILogger Logger, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
@@ -49,6 +50,7 @@ namespace LogInspect.Modules
 		{
 			IndexedEventsCount = 0;lineIndex = 0;
 			OnReset();
+			Reseted?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected abstract Event OnReadEvent();

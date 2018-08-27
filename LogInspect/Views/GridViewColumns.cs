@@ -17,10 +17,11 @@ namespace LogInspect.Views
 {
 	public static class GridViewColumns
 	{
-		public static readonly DependencyProperty ColumnsSourceProperty =	DependencyProperty.RegisterAttached("ColumnsSource",typeof(IEnumerable<ColumnViewModel>),typeof(GridViewColumns),new UIPropertyMetadata(null,ColumnsSourceChanged));
+		public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.RegisterAttached("HeaderTemplate", typeof(DataTemplate), typeof(GridViewColumns), new UIPropertyMetadata(null, ColumnsSourceChanged));
+		public static readonly DependencyProperty ColumnsSourceProperty = DependencyProperty.RegisterAttached("ColumnsSource", typeof(IEnumerable<ColumnViewModel>), typeof(GridViewColumns), new UIPropertyMetadata(null, ColumnsSourceChanged));
 
 		[AttachedPropertyBrowsableForType(typeof(GridView))]
-		public static object GetColumnsSource(DependencyObject obj)
+		public static IEnumerable<ColumnViewModel> GetColumnsSource(DependencyObject obj)
 		{
 			return (IEnumerable<ColumnViewModel>)obj.GetValue(ColumnsSourceProperty);
 		}
@@ -31,9 +32,19 @@ namespace LogInspect.Views
 		}
 
 
+		[AttachedPropertyBrowsableForType(typeof(GridView))]
+		public static DataTemplate GetHeaderTemplate(DependencyObject obj)
+		{
+			return (DataTemplate)obj.GetValue(HeaderTemplateProperty);
+		}
+
+		public static void SetHeaderTemplate(DependencyObject obj, DataTemplate value)
+		{
+			obj.SetValue(HeaderTemplateProperty, value);
+		}
 
 
-		
+
 
 
 		private static void ColumnsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -69,9 +80,9 @@ namespace LogInspect.Views
 			GridViewColumn column = new GridViewColumn();
 		
 			column.Width = Column.Width;
-			column.Header = Column.Name;
+			column.Header = Column;
 			column.CellTemplate = CreateDataTemplate(Column.Name);
-
+			column.HeaderTemplate = GetHeaderTemplate(gridView);
 			
 			//column.DisplayMemberBinding = new Binding($"[{Column.Name}]");
 

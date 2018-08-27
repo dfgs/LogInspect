@@ -13,11 +13,43 @@
 		<views:NotValueConverter x:Key="notValueConverter"/>
 
 		<views:BooleanToVisibiltyConverter x:Key="booleanToVisibilityConverter"/>
-		
-		<!--DataTemplate DataType="{x:Type models:Property}">
-			<TextBlock Text="{Binding Value}"/>
-		</-->
 
+		<Style x:Key="columnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+		</Style>
+		
+		<Style x:Key="filterButtonStyle" TargetType="{x:Type Border}">
+			<Setter Property="Visibility" Value="Collapsed"/>
+			<Style.Triggers>
+				<MultiDataTrigger>
+					<MultiDataTrigger.Conditions>
+						<Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=GridViewColumnHeader} ,Path=IsMouseOver}" Value="true"/>
+						<Condition Binding="{Binding Path=AllowsFilter}" Value="true"/>
+					</MultiDataTrigger.Conditions>
+
+					<Setter Property="Visibility" Value="Visible"/>
+				</MultiDataTrigger>
+				<DataTrigger Binding="{Binding HasFilter}" Value="true">
+					<Setter Property="Visibility" Value="Visible"/>
+				</DataTrigger>
+				
+			</Style.Triggers>
+		</Style>
+		
+		<DataTemplate x:Key="columnHeaderTemplate">
+			<DockPanel>
+				<Image DockPanel.Dock="Left" Source="{Binding ImageSource}" Visibility="{Binding ImageVisibility}" Stretch="Uniform" Width="12" Height="12"/>
+				<Border DockPanel.Dock="Right" Style="{StaticResource filterButtonStyle}">
+					<Image Source="/LogInspect;component/Images/Filter_16x.png" Stretch="Uniform" Width="12" Height="12"/>
+				</Border>
+				<TextBlock Text="{Binding Description}" HorizontalAlignment="Center"/>
+			</DockPanel>
+		</DataTemplate>
+		
+		
+		
+	
+		
 		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
 			<Image Source="/LogInspect;component/Images/Bookmark_16x.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Event.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
 		</DataTemplate>
@@ -53,10 +85,19 @@
 
 
 		<ListView Grid.Row="0" ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-					IsEnabled="{Binding IsWorking,Converter={StaticResource notValueConverter}}"
-					 SelectedItem="{Binding Events.SelectedItem}" SelectionChanged="ListView_Selected"
+					 SelectedItem="{Binding Events.SelectedItem}" 
+				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
 				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.IsDeferredScrollingEnabled="True">
-			
+			<ListView.Style>
+				<Style TargetType="{x:Type ListView}">
+					<Setter Property="IsEnabled" Value="False"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding Status}" Value="Idle">
+							<Setter Property="IsEnabled" Value="True"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ListView.Style>
 			<ListView.ItemContainerStyle>
 				<Style TargetType="{x:Type ListViewItem}">
 					<Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -66,7 +107,9 @@
 				</Style>
 			</ListView.ItemContainerStyle>
 			<ListView.View>
-				<GridView   views:GridViewColumns.ColumnsSource="{Binding Columns}"/>
+				<GridView   views:GridViewColumns.ColumnsSource="{Binding Columns}" ColumnHeaderTemplate="{StaticResource columnHeaderTemplate}" ColumnHeaderContainerStyle="{StaticResource columnHeaderStyle}"  >
+					
+				</GridView>
 			</ListView.View>
 		</ListView>
 		

@@ -16,7 +16,7 @@ namespace LogInspect.ViewModels
 		private string severityProperty;
 
 		
-		public SeveritiesViewModel(ILogger Logger,string SeverityProperty, FilterChoicesViewModel FilterChoicesViewModel) : base(Logger)
+		public SeveritiesViewModel(ILogger Logger,string SeverityProperty, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger)
 		{
 			
 			this.severityProperty = SeverityProperty;
@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels
 			FilterChoicesViewModel.FilterChoiceAdded += FilterChoicesViewModel_FilterChoiceAdded;
 		}
 
-		private void FilterChoicesViewModel_FilterChoiceAdded(object sender, FilterChoiceAddedEventArgs e)
+		private void FilterChoicesViewModel_FilterChoiceAdded(object sender, FilterItemAddedEventArgs e)
 		{
 			if (e.Property != severityProperty) return;
 			Add(e.Value);

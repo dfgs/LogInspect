@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInspect" Closing="Window_Closing"
 		xmlns:views="clr-namespace:LogInspect.Views"
+		xmlns:viewModels="clr-namespace:LogInspect.ViewModels"
 		xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
 		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" 
         Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
@@ -58,12 +59,24 @@
 			<TextBlock Text="{Binding SelectedItem.EventIndexer.Position,FallbackValue=NA}"/>
 			<TextBlock Text="/"/>
 			<TextBlock Text="{Binding SelectedItem.EventIndexer.Target,FallbackValue=NA}"/>
+			<ProgressBar VerticalAlignment="Center" Height="8" Width="100" Value="{Binding SelectedItem.EventIndexer.Position,Mode=OneWay, FallbackValue=0}" Maximum="{Binding SelectedItem.EventIndexer.Target,Mode=OneWay, FallbackValue=0}"/>
 			<Separator/>
 			<TextBlock Text="Events:"/>
 			<TextBlock Text="{Binding SelectedItem.EventIndexer.IndexedEventsCount,FallbackValue=NA}"/>
 			<Separator/>
 			<TextBlock Text="Status:"/>
-			<TextBlock Text="{Binding SelectedItem.IsWorking,FallbackValue=Idle}"/>
+			<TextBlock Text="{Binding SelectedItem.Status,FallbackValue=Idle}"/>
+			<ProgressBar VerticalAlignment="Center" Height="8" Width="100" IsIndeterminate="True" >
+				<ProgressBar.Style>
+					<Style TargetType="{x:Type ProgressBar}">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding SelectedItem.Status,FallbackValue=Idle}" Value="Idle">
+								<Setter Property="Visibility" Value="Collapsed"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ProgressBar.Style>
+			</ProgressBar>
 		</StatusBar>
 
 		<ToolBarTray DockPanel.Dock="Top"  DataContext="{Binding SelectedItem}">

@@ -10,8 +10,9 @@ namespace LogInspect.Models.Filters
 {
     public class TimeStampFilter:Filter
     {
+		public static Array Conditions = Enum.GetValues(typeof(TimeStampConditions));
 
-
+		
 		public DateTime StartDate
 		{
 			get;
@@ -25,11 +26,42 @@ namespace LogInspect.Models.Filters
 			set;
 		}
 
+		public TimeStampConditions Condition
+		{
+			get;
+			set;
+		}
 
+		public TimeStampFilter(string PropertyName):base(PropertyName)
+		{
+		}
 		
 		public override bool MustDiscard(Event Item)
 		{
-			return false;// (Item.TimeStamp < StartDate) || (Item.TimeStamp > EndDate);
+			DateTime date;
+
+			try
+			{
+				date = (DateTime)Item.GetValue(PropertyName);
+			}
+			catch
+			{
+				return false;
+			}
+
+			switch(Condition)
+			{
+				case TimeStampConditions.After:
+					return date < StartDate;
+				case TimeStampConditions.Before:
+					return date > StartDate;
+				case TimeStampConditions.Between:
+					return (date < StartDate) || (date > StartDate);
+				case TimeStampConditions.On:
+					return (date.Date != StartDate.Date) ;
+				default:
+					return false;
+			}
 		}
 
 	}

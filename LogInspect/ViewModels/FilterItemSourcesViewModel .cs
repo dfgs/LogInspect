@@ -15,15 +15,15 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-	public class FilterChoicesViewModel:BaseCollectionViewModel<EventViewModel>
+	public class FilterItemSourcesViewModel:BaseCollectionViewModel<EventViewModel>
 	{
 
 		private string[] properties;
 		private Dictionary<string, List<object>> items;
 
-		public event FilterChoiceAddedEventHandler FilterChoiceAdded;
+		public event FilterItemAddedEventHandler FilterChoiceAdded;
 
-		public FilterChoicesViewModel(ILogger Logger ,EventIndexerModule IndexerModule,IEnumerable<Column> Columns) : base(Logger)
+		public FilterItemSourcesViewModel(ILogger Logger ,EventIndexerModule IndexerModule,IEnumerable<Column> Columns) : base(Logger)
 		{
 			items = new Dictionary<string, List<object>>();
 			properties = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
@@ -50,7 +50,7 @@ namespace LogInspect.ViewModels
 					if (!values.Contains(value))
 					{
 						values.Add(value);
-						FilterChoiceAdded?.Invoke(this, new FilterChoiceAddedEventArgs(property, value));
+						FilterChoiceAdded?.Invoke(this, new FilterItemAddedEventArgs(property, value));
 					}
 				}
 			});

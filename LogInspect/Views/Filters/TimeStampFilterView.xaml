@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="LogInspect.Views.Filters.TimeStampFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogInspect.Views.Filters"
+			 xmlns:filters="clr-namespace:LogInspect.Models.Filters"
+			 xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="320" d:DesignWidth="320">
+	<StackPanel>
+		<StackPanel Margin="4">
+			<TextBlock Text="Condition:" FontWeight="Bold"/>
+			<ComboBox x:Name="conditionComboBox" Text="{Binding Condition}" ItemsSource="{x:Static filters:TimeStampFilter.Conditions}"/>
+		</StackPanel>
+		<StackPanel Margin="4">
+			<TextBlock Text="Start date:" FontWeight="Bold"/>
+			<DatePicker SelectedDate="{Binding StartDate}" />
+		</StackPanel>
+		<StackPanel Margin="4">
+			<TextBlock Text="Start time:" FontWeight="Bold"/>
+			<xtk:TimeSpanUpDown Text="{Binding StartTime}" TextAlignment="Left"/>
+		</StackPanel>
+		<StackPanel>
+			<StackPanel.Style>
+				<Style TargetType="{x:Type StackPanel}">
+					<Setter Property="IsEnabled" Value="False"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding ElementName=conditionComboBox,Path=SelectedItem}" Value="Between">
+							<Setter Property="IsEnabled" Value="True"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</StackPanel.Style>
+			<StackPanel Margin="4">
+				<TextBlock Text="End date:" FontWeight="Bold"/>
+				<DatePicker SelectedDate="{Binding EndDate}" />
+			</StackPanel>
+			<StackPanel Margin="4">
+				<TextBlock Text="End time:" FontWeight="Bold"/>
+				<xtk:TimeSpanUpDown Text="{Binding EndTime}" TextAlignment="Left"/>
+			</StackPanel>
+		</StackPanel>
+	</StackPanel>
+</UserControl>

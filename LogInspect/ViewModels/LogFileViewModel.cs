@@ -36,17 +36,13 @@ namespace LogInspect.ViewModels
 		}
 
 
-		private int pageSize;
-		private Cache<int,Page> pages;
-
-		private EventReader pageEventReader;
 
 
-		public static readonly DependencyProperty IsWorkingProperty = DependencyProperty.Register("IsWorking", typeof(bool), typeof(LogFileViewModel),new PropertyMetadata(false));
-		public bool IsWorking
+		public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(Statuses), typeof(LogFileViewModel),new PropertyMetadata(Statuses.Idle));
+		public Statuses Status
 		{
-			get { return (bool)GetValue(IsWorkingProperty); }
-			set { SetValue(IsWorkingProperty, value); }
+			get { return (Statuses)GetValue(StatusProperty); }
+			private set { SetValue(StatusProperty, value); }
 		}
 
 
@@ -64,7 +60,7 @@ namespace LogInspect.ViewModels
 		}
 		
 
-		private FilterChoicesViewModel filterChoices;
+		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 		public SeveritiesViewModel Severities
 		{
 			get;
@@ -77,27 +73,26 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public LogFileViewModel(ILogger Logger,string FileName,EventReader PageEventReader,EventReader IndexerEventReader,int PageSize,int PageCount, int IndexerLookupRetryDelay, int FiltererLookupRetryDelay) :base(Logger)
+		private EventReader EventReader;
+
+		public LogFileViewModel(ILogger Logger,string FileName,EventReader EventReader, int IndexerLookupRetryDelay) :base(Logger)
 		{
 
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
+			this.EventReader = EventReader;
 
-			this.pageSize = PageSize;
-			pages = new Cache<int, Page>(PageCount);
 
-			this.pageEventReader = PageEventReader;
-
-			eventIndexerModule = new EventIndexerModule(Logger, IndexerEventReader,IndexerLookupRetryDelay);
+			eventIndexerModule = new EventIndexerModule(Logger, EventReader,IndexerLookupRetryDelay);
 			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, 300);
 
-			filterChoices = new FilterChoicesViewModel(Logger, eventIndexerModule, pageEventReader.FormatHandler.Columns);
-			Severities = new SeveritiesViewModel(Logger, PageEventReader.FormatHandler.SeverityColumn, filterChoices);
+			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, eventIndexerModule, EventReader.FormatHandler.Columns);
+			Severities = new SeveritiesViewModel(Logger, EventReader.FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
-			Columns = new ColumnsViewModel(Logger, PageEventReader.FormatHandler,filterChoices);
-			Columns.FilterChanged += Columns_FilterChanged;
+			Columns = new ColumnsViewModel(Logger, EventReader.FormatHandler,filterItemSourcesViewModel);
+			//Columns.FilterChanged += Columns_FilterChanged;
 
-			Events = new EventsViewModel(Logger, eventIndexerModule,Columns,pageEventReader.FormatHandler.ColoringRules);
+			Events = new EventsViewModel(Logger, eventIndexerModule,Columns,EventReader.FormatHandler.ColoringRules);
 
 			Log(LogLevels.Information, "Starting EventIndexer");
 			eventIndexerModule.Start();
@@ -111,38 +106,26 @@ namespace LogInspect.ViewModels
 			eventIndexerModule.Stop();
 
 			EventIndexer.Dispose();
-			filterChoices.Dispose();
+			filterItemSourcesViewModel.Dispose();
 
-			pages.Clear();
-			pages = null;
 		}
 
 		
 
-		private void BeginWork()
-		{
-			IsWorking = true;
-		}
-		private void EndWork()
-		{
-			IsWorking = false;
-		}
+		
 
 		#region filter events
-		private void Columns_FilterChanged(object sender, EventArgs e)
+		/*private void Columns_FilterChanged(object sender, EventArgs e)
 		{
 			Refresh();
-		}
+		}*/
 		public void Refresh()
 		{
-			IEnumerable<Filter> filters;
+			Filter[] filters;
 
-			BeginWork();
-			pages.Clear();
 			//SelectedItemIndex = -1;
-			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter);
+			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
 			eventIndexerModule.SetFilters(filters  );
-			EndWork();
 		}
 
 		#endregion
@@ -157,6 +140,7 @@ namespace LogInspect.ViewModels
 				{
 					Index--;
 					ev = Events[Index];
+					//Thread.Sleep(1000);
 					if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
 				}
 				return -1;
@@ -172,6 +156,7 @@ namespace LogInspect.ViewModels
 				{
 					Index++;
 					ev = Events[Index];
+					//Thread.Sleep(1000);
 					if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
 				}
 				return -1;
@@ -185,48 +170,45 @@ namespace LogInspect.ViewModels
 		{
 			int index;
 
-			BeginWork();
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item.GetPropertyValue(pageEventReader.FormatHandler.SeverityColumn))); 
-			EndWork();
+			Status = Statuses.Searching;
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item.GetPropertyValue(EventReader.FormatHandler.SeverityColumn)));
+			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> FindNextSeverityAsync(object Severity, int StartIndex)
 		{
 			int index ;
 
-			BeginWork();
-			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item.GetPropertyValue(pageEventReader.FormatHandler.SeverityColumn)));
-			EndWork();
+			Status = Statuses.Searching;
+			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item.GetPropertyValue(EventReader.FormatHandler.SeverityColumn)));
+			Status = Statuses.Idle;
 			return index;
 		}
 		#endregion
 
 		#region bookmark
-		public async Task ToogleBookMarkAsync()
+		public void ToogleBookMark()
 		{
 			if (Events.SelectedItem == null) return;
-			BeginWork();
 			Events.SelectedItem.IsBookMarked = !Events.SelectedItem.IsBookMarked;
-			await Task.Yield();
-			EndWork();
 		}
 
 		public async Task<int> FindPreviousBookMarkAsync(int StartIndex)
 		{
 			int index;
 
-			BeginWork();
+			Status = Statuses.Searching;
 			index = await FindPreviousAsync(StartIndex, (item) => item.IsBookMarked );
-			EndWork();
+			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> FindNextBookMarkAsync(int StartIndex)
 		{
 			int index;
 
-			BeginWork();
+			Status = Statuses.Searching;
 			index = await FindNextAsync(StartIndex, (item) => item.IsBookMarked );
-			EndWork();
+			Status = Statuses.Idle;
 			return index;
 		}
 

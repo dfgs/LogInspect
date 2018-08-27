@@ -20,9 +20,11 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => true;
 
 
-	
+		public override Visibility ImageVisibility => Visibility.Collapsed;
+		public override string ImageSource => null;
 
-		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Alignment)
+
+		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Name,Alignment)
 		{
 		
 		}
@@ -35,7 +37,7 @@ namespace LogInspect.ViewModels.Columns
 		public override FilterViewModel CreateFilterViewModel()
 		{
 			
-			return new TextFilterViewModel(Logger,(TextFilter)Filter);
+			return new TextFilterViewModel(Logger,Name,(TextFilter)Filter);
 		}
 
 	}
