@@ -18,9 +18,9 @@ namespace LogInspect.ViewModels
 	{
 		
 		private IEnumerable<ColumnViewModel> columns;
-		private IEnumerable<ColoringRule> coloringRules;
+		private IEnumerable<EventColoringRule> coloringRules;
 
-		public EventsViewModel(ILogger Logger ,EventIndexerModule IndexerModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<ColoringRule> ColoringRules) : base(Logger)
+		public EventsViewModel(ILogger Logger ,EventIndexerModule IndexerModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
 		{
 			IndexerModule.Indexed += IndexerModule_Indexed;
 			IndexerModule.Reseted += IndexerModule_Reseted;

@@ -114,6 +114,9 @@
     <Compile Include="ViewModels\Statuses.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
+    <Compile Include="Views\EventDetailsView.xaml.cs">
+      <DependentUpon>EventDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EventView.xaml.cs">
       <DependentUpon>EventView.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,7 @@
     <Compile Include="Views\Filters\TimeStampFilterView.xaml.cs">
       <DependentUpon>TimeStampFilterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Inlines.cs" />
     <Compile Include="Views\GridViewColumns.cs" />
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
@@ -150,6 +154,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\EventDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -252,6 +260,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Calendar_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Bullet_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

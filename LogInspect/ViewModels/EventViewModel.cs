@@ -38,7 +38,7 @@ namespace LogInspect.ViewModels
 
 		public PropertyViewModel this[string PropertyName]
 		{
-			get { return Properties.FirstOrDefault(item=>item.Column.Name==PropertyName); }
+			get { return Properties.FirstOrDefault(item=>item.Name==PropertyName); }
 		}
 		
 
@@ -80,7 +80,7 @@ namespace LogInspect.ViewModels
 
 
 
-		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<ColoringRule> ColoringRules, Event Event, int EventIndex, int LineIndex) : base(Logger)
+		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event, int EventIndex, int LineIndex) : base(Logger)
 		{
 			//string severity;
 			
@@ -94,7 +94,7 @@ namespace LogInspect.ViewModels
 			Background = Brushes.LightGray;
 			Foreground = Brushes.Black;
 
-			foreach (ColoringRule coloringRule in ColoringRules)
+			foreach (EventColoringRule coloringRule in ColoringRules)
 			{
 
 				if (Regex.Match(Event.GetValue(coloringRule.Column) as string, coloringRule.Pattern).Success)
@@ -117,6 +117,10 @@ namespace LogInspect.ViewModels
 
 		}
 
+		public Inline[] GetPropertyInlines(string PropertyName)
+		{
+			return ev.GetProperty(PropertyName)?.Inlines;
+		}
 		public object GetPropertyValue(string PropertyName)
 		{
 			return ev.GetValue(PropertyName);

@@ -8,15 +8,8 @@ using System.Xml.Serialization;
 namespace LogInspectLib
 {
 	[Serializable]
-	public class ColoringRule
+	public class InlineColoringRule
 	{
-		[XmlAttribute]
-		public string Column
-		{
-			get;
-			set;
-		}
-
 		[XmlAttribute]
 		public string Pattern
 		{
@@ -25,11 +18,17 @@ namespace LogInspectLib
 		}
 
 		[XmlAttribute]
-		public string Background
+		public string Foreground
 		{
 			get;
 			set;
 		}
 
+		[XmlAttribute]
+		public bool Underline
+		{
+			get;
+			set;
+		}
 	}
 }

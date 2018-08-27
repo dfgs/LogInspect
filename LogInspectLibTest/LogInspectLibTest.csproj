@@ -51,6 +51,7 @@
     <Compile Include="CharReaderUnitTest.cs" />
     <Compile Include="LineReaderUnitTest.cs" />
     <Compile Include="EventReaderUnitTest.cs" />
+    <Compile Include="InlineParserUnitTest.cs" />
     <Compile Include="LogReaderUnitTest.cs" />
     <Compile Include="LineUnitTest.cs" />
     <Compile Include="EventUnitTest.cs" />

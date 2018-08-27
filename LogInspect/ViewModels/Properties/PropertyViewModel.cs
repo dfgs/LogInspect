@@ -14,29 +14,22 @@ namespace LogInspect.ViewModels.Properties
 	{
 
 
-		public ColumnViewModel Column
+		private ColumnViewModel column;
+
+		public string Name
 		{
-			get;
-			private set;
+			get { return column.Name; }
 		}
 
-		/*public EventViewModel Event
+		public TextAlignment Alignment
 		{
-			get;
-			private set;
+			get { return column.Alignment; }
 		}
 
-		public object Value
-		{
-			get;
-			private set;
-		}*/
 
 		public PropertyViewModel(ILogger Logger,ColumnViewModel Column) : base(Logger)
 		{
-			this.Column = Column;
-			/*this.Event = Event;
-			this.Value = Column.GetValue(Event);*/
+			this.column = Column;
 		}
 
 

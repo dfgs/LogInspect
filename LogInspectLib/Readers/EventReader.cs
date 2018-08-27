@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogInspectLib.Parsers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -76,21 +77,7 @@ namespace LogInspectLib.Readers
 			return new Event(log,null, Property.EmptyProperties);
 			
 		}
-		protected override async Task<Event> OnReadAsync()
-		{
-			Log log;
-			Event? ev;
-
-			log = await logReader.ReadAsync();
-			foreach (LogParser parser in logParsers)
-			{
-				ev = parser.Parse(log);
-				if (ev.HasValue) return ev.Value;
-			}
-
-			return new Event(log, null, Property.EmptyProperties);
-		}
-
+		
 
 	}
 }

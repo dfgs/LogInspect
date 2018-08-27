@@ -16,6 +16,10 @@ namespace LogInspect.ViewModels.Properties
 			private set;
 		}
 
+		public bool Value
+		{
+			get { return Event.IsBookMarked; }
+		}
 		public BookMarkPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event) : base(Logger, Column)
 		{
 			this.Event = Event;

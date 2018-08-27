@@ -53,6 +53,18 @@ namespace LogInspectLib
 			set;
 		}
 
+		[XmlArray]
+		public List<InlineColoringRule> InlineColoringRules
+		{
+			get;
+			set;
+		}
+
+		public Column()
+		{
+			InlineColoringRules = new List<InlineColoringRule>();
+		}
+
 		public object GetValue(string Text)
 		{
 			if (Type != "DateTime") return Text;

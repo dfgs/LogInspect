@@ -24,5 +24,17 @@ namespace LogInspectLib
 			get;
 			set;
 		}
+
+		public Inline[] Inlines
+		{
+			get;
+			set;
+		}
+
+		public Property()
+		{
+
+		}
+
 	}
 }

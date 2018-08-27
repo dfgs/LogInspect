@@ -35,6 +35,7 @@ namespace LogInspect
 		{
 			FormatHandler schema;
 			Rule rule;
+			Column column;
 
 			#region rcm
 			schema = new FormatHandler() { Name = "Nice.Perform.RCM", FileNamePattern = @"^RCM\.log(\.\d+)?$"};
@@ -69,8 +70,12 @@ namespace LogInspect
 			schema.Columns.Add(new Column() { Name = "Date",  Width = 200, Alignment = "Center",Format = "yyyy-MM-dd HH:mm:ss.fff",Type="DateTime" });
 			schema.Columns.Add(new Column() { Name = "Severity", Width = 100, Alignment = "Center", IsFilterItemSource = true });
 			schema.Columns.Add(new Column() { Name = "Thread", Width = 300, IsFilterItemSource = true });
-			schema.Columns.Add(new Column() { Name = "Message", Width = 600 });
-
+			column = new Column() { Name = "Message", Width = 600 };
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"CVSKEY=\d+", Foreground = "Green" });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"AudioFragment:\d+", Foreground = "Blue" });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"(\\)(\\[A-Za-z0-9-_()]+){2,}(\\?)", Foreground = "Blue",Underline=true });
+			
+			schema.Columns.Add(column);
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
@@ -92,8 +97,8 @@ namespace LogInspect
 			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
 			schema.Rules.Add(rule);
 
-			schema.ColoringRules.Add(new ColoringRule() { Column = "Severity", Pattern = @"ERROR", Background="OrangeRed" });
-			schema.ColoringRules.Add(new ColoringRule() { Column = "Severity", Pattern = @"WARN", Background="Orange" });
+			schema.EventColoringRules.Add(new EventColoringRule() { Column = "Severity", Pattern = @"ERROR", Background="OrangeRed" });
+			schema.EventColoringRules.Add(new EventColoringRule() { Column = "Severity", Pattern = @"WARN", Background="Orange" });
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion

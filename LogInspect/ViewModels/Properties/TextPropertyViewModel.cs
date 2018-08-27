@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.ViewModels.Columns;
+using LogInspectLib;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties
@@ -17,14 +18,16 @@ namespace LogInspect.ViewModels.Properties
 			private set;
 		}
 
-		public TextAlignment Alignment
+
+		public Inline[] Inlines
 		{
 			get;
 			private set;
 		}
-		public TextPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event,TextAlignment Alignment) : base(Logger, Column)
+
+		public TextPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event) : base(Logger, Column)
 		{
-			this.Value = Event.GetPropertyValue(Column.Name)?.ToString();this.Alignment = Alignment;
+			this.Value = Event.GetPropertyValue(Column.Name)?.ToString();this.Inlines = Event.GetPropertyInlines(Column.Name);
 		}
 	}
 }

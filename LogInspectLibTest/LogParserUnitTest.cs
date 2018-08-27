@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogInspectLibTest

@@ -74,7 +74,7 @@ namespace LogInspectLib
 		}
 
 		[XmlArray]
-		public List<ColoringRule> ColoringRules
+		public List<EventColoringRule> EventColoringRules
 		{
 			get;
 			set;
@@ -87,7 +87,7 @@ namespace LogInspectLib
 			DiscardLinePatterns = new List<string>();
 			Rules = new List<Rule>();
 			Columns = new List<Column>();
-			ColoringRules = new List<ColoringRule>();
+			EventColoringRules = new List<EventColoringRule>();
 		}
 
 		public void SaveToFile(string FileName)

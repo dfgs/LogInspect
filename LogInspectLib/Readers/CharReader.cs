@@ -80,16 +80,7 @@ namespace LogInspectLib.Readers
 			bufferIndex++;
 			return c;
 		}
-		protected override async Task<char> OnReadAsync()
-		{
-			char c;
-
-			if ((buffer == null) || (bufferIndex == buffer.Length)) await LoadAsync();
-			c = buffer[bufferIndex];
-			position += encoding.GetByteCount(buffer, bufferIndex, 1);
-			bufferIndex++;
-			return c;
-		}
+		
 		protected override void OnSeek(long Position)
 		{
 			if ((Position >= bufferPosition) && (Position < bufferPosition + bufferSize))

@@ -55,22 +55,22 @@
 		</DataTemplate>
 		
 		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
-			<TextBlock  Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Column.Alignment}" Foreground="Gray"/>
+			<TextBlock  Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Alignment}" Foreground="Gray"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
-			<TextBlock Text="{Binding Value}" TextAlignment="{Binding Column.Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black"/>
+			<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black"/>
 		</DataTemplate>
 		
 		<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
 			<DockPanel>
 				<Border DockPanel.Dock="Left" Width="4" Background="{Binding Background}" VerticalAlignment="Stretch"/>
-				<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextAlignment="{Binding Column.Alignment}" TextTrimming="CharacterEllipsis"/>
+				<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis"/>
 			</DockPanel>
 		</DataTemplate>
 		
 		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-			<TextBlock  Text="{Binding Value}" TextAlignment="{Binding Column.Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black"/>
+			<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis"/>
 		</DataTemplate>
 		<!-- -->
 
@@ -115,6 +115,22 @@
 		
 		
 		<GridSplitter  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<TextBox  Grid.Row="2" IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Events.SelectedItem.Lines,Mode=OneWay}"/>
+		<TabControl Grid.Row="2" DataContext="{Binding Events.SelectedItem}">
+			<TabItem Header="Event details">
+				<views:EventDetailsView/>
+			</TabItem>
+			<TabItem Header="Raw data">
+				<TextBox   IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}"/>
+			</TabItem>
+			<TabItem Header="Inlines">
+				<ItemsControl ItemsSource="{Binding [Message].Inlines}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Value}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</TabItem>
+		</TabControl>
 	</Grid>
 </UserControl>

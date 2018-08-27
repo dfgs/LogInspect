@@ -92,7 +92,7 @@ namespace LogInspect.ViewModels
 			Columns = new ColumnsViewModel(Logger, EventReader.FormatHandler,filterItemSourcesViewModel);
 			//Columns.FilterChanged += Columns_FilterChanged;
 
-			Events = new EventsViewModel(Logger, eventIndexerModule,Columns,EventReader.FormatHandler.ColoringRules);
+			Events = new EventsViewModel(Logger, eventIndexerModule,Columns,EventReader.FormatHandler.EventColoringRules);
 
 			Log(LogLevels.Information, "Starting EventIndexer");
 			eventIndexerModule.Start();
