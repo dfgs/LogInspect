@@ -31,12 +31,14 @@ namespace LogInspect.ViewModels
 		private int bufferSize;
 		private int indexerLookupRetryDelay;
 		private int indexerBufferLookupRetryDelay;
+		private int indexerProgressRefreshDelay;
 
-		public AppViewModel(ILogger Logger,string Path, int BufferSize,int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay) : base(Logger)
+		public AppViewModel(ILogger Logger,string Path, int BufferSize,int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) : base(Logger)
 		{
 			this.bufferSize = BufferSize;
 			this.indexerLookupRetryDelay = IndexerLookupRetryDelay;
 			this.indexerBufferLookupRetryDelay = IndexerBufferLookupRetryDelay;
+			this.indexerProgressRefreshDelay = IndexerProgressRefreshDelay;
 
 			LogFiles = new ObservableCollection<LogFileViewModel>();
 			formatHandlers = new List<FormatHandler>();
@@ -61,7 +63,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, indexerEventReader,indexerLookupRetryDelay,indexerBufferLookupRetryDelay);
+				logFile = new LogFileViewModel(Logger,FileName, indexerEventReader,indexerLookupRetryDelay,indexerBufferLookupRetryDelay, indexerProgressRefreshDelay);
 			}
 			catch(Exception ex)
 			{

@@ -14,5 +14,8 @@
     <Setting Name="IndexerBufferLookupRetryDelay" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">500</Value>
     </Setting>
+    <Setting Name="IndexerProgressRefreshDelay" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

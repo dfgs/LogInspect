@@ -2,6 +2,7 @@
 using LogLib;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,32 +13,32 @@ namespace LogInspect.ViewModels.Filters
 	public class TextFilterViewModel:FilterViewModel
 	{
 
-		public static readonly DependencyProperty ConditionProperty = DependencyProperty.Register("Condition", typeof(TextConditions), typeof(TextFilterViewModel));
-		public TextConditions Condition
+		public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<TextFilterItem>), typeof(TextFilterViewModel));
+		public ObservableCollection<TextFilterItem> ItemsSource
 		{
-			get { return (TextConditions)GetValue(ConditionProperty); }
-			set { SetValue(ConditionProperty, value); }
-		}
-
-
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(TextFilter));
-		public string Value
-		{
-			get { return (string)GetValue(ValueProperty); }
-			set { SetValue(ValueProperty, value); }
+			get { return (ObservableCollection<TextFilterItem>)GetValue(ItemsSourceProperty); }
+			private set { SetValue(ItemsSourceProperty, value); }
 		}
 
 		public TextFilterViewModel(ILogger Logger, string PropertyName, TextFilter Model):base(Logger,PropertyName)
 		{
-			if (Model!=null)
+			ItemsSource = new ObservableCollection<TextFilterItem>();
+			if (Model != null)
 			{
-				this.Value = Model.Value;
+				foreach (TextFilterItem item in Model.Items)
+				{
+					ItemsSource.Add(new TextFilterItem() {  Condition=item.Condition, Value=item.Value });
+				}
+			}
+			else
+			{
+				ItemsSource.Add(new TextFilterItem() {Condition=TextConditions.Equals }) ;
 			}
 		}
 
 		public override Filter CreateFilter()
 		{
-			return new TextFilter(PropertyName) { Value=Value,Condition=Condition };
+			return new TextFilter(PropertyName) { Items=ItemsSource.ToArray() };
 		}
 
 

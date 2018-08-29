@@ -5,16 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
  			 xmlns:filters="clr-namespace:LogInspect.Models.Filters"
             xmlns:local="clr-namespace:LogInspect.Views.Filters"
-             mc:Ignorable="d" 
-              d:DesignWidth="200">
-	<StackPanel>
-		<StackPanel Margin="4">
-			<TextBlock Text="Condition:" FontWeight="Bold"/>
-			<ComboBox x:Name="conditionComboBox" Text="{Binding Condition}" ItemsSource="{x:Static filters:TextFilter.Conditions}"/>
-		</StackPanel>
-		<StackPanel Margin="4">
-			<TextBlock Text="Value:" FontWeight="Bold"/>
-			<TextBox Text="{Binding Value}" />
-		</StackPanel>
-	</StackPanel>
+             mc:Ignorable="d" >
+	<UserControl.Resources>
+		<DataTemplate x:Key="textFilterItemTemplate" DataType="{x:Type filters:TextFilterItem}">
+			<DockPanel>
+				<TextBlock Margin="4" Text="Text" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+				<ComboBox Margin="4" x:Name="conditionComboBox" DockPanel.Dock="Left" Width="100" SelectedItem="{Binding Condition}" ItemsSource="{x:Static filters:TextFilterItem.Conditions}"/>
+				<TextBox Margin="4" Text="{Binding Value}"  />
+			</DockPanel>
+		</DataTemplate>
+	</UserControl.Resources>
+
+
+	<UserControl.CommandBindings>
+		<CommandBinding Command="Delete" CanExecute="DeleteCommandBinding_CanExecute" Executed="DeleteCommandBinding_Executed"/>
+	</UserControl.CommandBindings>
+	
+	
+	<DockPanel>
+		<TextBlock Margin="4" DockPanel.Dock="Top" FontWeight="Bold" Text="Enter filter conditions:"/>
+		<UniformGrid Rows="1" Columns="2" DockPanel.Dock="Top" Width="300" HorizontalAlignment="Center">
+			<Button Margin="4" Click="ButtonAdd_Click">
+				<Image Source="/LogInspect;component/Images/add.png" Stretch="None"/>
+			</Button>
+			<Button Margin="4" Command="Delete">
+				<Image Source="/LogInspect;component/Images/delete.png" Stretch="None"/>
+			</Button>
+		</UniformGrid>
+		<ListBox x:Name="listBox" Background="Transparent" BorderThickness="0" MinHeight="300" ItemsSource="{Binding ItemsSource}" ItemTemplate="{StaticResource textFilterItemTemplate}">
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<Setter Property="HorizontalAlignment" Value="Stretch"/>
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+				</Style>
+			</ListBox.ItemContainerStyle>
+		</ListBox>
+	</DockPanel>
+
 </UserControl>

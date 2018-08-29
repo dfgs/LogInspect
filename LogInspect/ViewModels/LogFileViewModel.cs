@@ -81,7 +81,7 @@ namespace LogInspect.ViewModels
 
 		private EventReader EventReader;
 
-		public LogFileViewModel(ILogger Logger,string FileName,EventReader EventReader, int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay) :base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName,EventReader EventReader, int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) :base(Logger)
 		{
 
 			this.FileName = FileName;
@@ -90,7 +90,7 @@ namespace LogInspect.ViewModels
 
 
 			eventIndexerModule = new EventIndexerModule(Logger, EventReader,IndexerLookupRetryDelay);
-			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, 300);
+			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, IndexerProgressRefreshDelay);
 
 			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, eventIndexerModule, EventReader.FormatHandler.Columns);
 			Severities = new SeveritiesViewModel(Logger, EventReader.FormatHandler.SeverityColumn, filterItemSourcesViewModel);

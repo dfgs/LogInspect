@@ -113,7 +113,7 @@ namespace LogInspect
 
 			logger = new ConsoleLogger(new DefaultLogFormatter());
 			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize,
-				 Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.IndexerBufferLookupRetryDelay);
+				 Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.IndexerBufferLookupRetryDelay, Properties.Settings.Default.IndexerProgressRefreshDelay);
 
 			InitializeComponent();
 			DataContext = appViewModel;

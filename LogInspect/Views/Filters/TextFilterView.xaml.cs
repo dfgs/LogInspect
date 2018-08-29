@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogInspect.Models.Filters;
+using LogInspect.ViewModels.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,30 @@ namespace LogInspect.Views.Filters
 		public TextFilterView()
 		{
 			InitializeComponent();
+		}
+
+		private void ButtonAdd_Click(object sender, RoutedEventArgs e)
+		{
+			TextFilterViewModel filter;
+
+			filter = DataContext as TextFilterViewModel;
+			if (filter == null) return;
+			filter.ItemsSource.Add(new TextFilterItem() { Condition=TextConditions.Equals });
+		}
+
+		private void DeleteCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = listBox?.SelectedValue != null;e.Handled = true;
+		}
+
+		private void DeleteCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			TextFilterViewModel filter;
+
+			filter = DataContext as TextFilterViewModel;
+			if (filter == null) return;
+			filter.ItemsSource.Remove((TextFilterItem)listBox.SelectedValue);
+
 		}
 	}
 }

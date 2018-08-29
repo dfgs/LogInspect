@@ -80,6 +80,7 @@
     <Compile Include="Models\Filters\MultiChoicesFilter.cs" />
     <Compile Include="Models\Filters\TextFilter.cs" />
     <Compile Include="Models\Filters\TextCondition.cs" />
+    <Compile Include="Models\Filters\TextFilterItem.cs" />
     <Compile Include="Models\Filters\TimeStampConditions.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Modules\BufferItem.cs" />
@@ -300,6 +301,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
