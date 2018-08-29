@@ -55,7 +55,9 @@ namespace LogInspect.Views
 				run = new System.Windows.Documents.Run();
 				run.Text = inline.Value;
 				run.Foreground = (Brush)converter.ConvertFromString(inline.Foreground);
-				if (inline.Underline) run.TextDecorations = TextDecorations.Underline;
+				if (inline.Underline) run.TextDecorations=TextDecorations.Underline;
+				if (inline.Bold) run.FontWeight=FontWeights.Bold;
+				if (inline.Italic) run.FontStyle=FontStyles.Italic;
 				textBlock.Inlines.Add(run);
 			}
 		}

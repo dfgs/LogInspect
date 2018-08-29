@@ -56,7 +56,7 @@ namespace LogInspect.Models.Filters
 				case TimeStampConditions.Before:
 					return date > StartDate;
 				case TimeStampConditions.Between:
-					return (date < StartDate) || (date > StartDate);
+					return (date < StartDate) || (date > EndDate);
 				case TimeStampConditions.On:
 					return (date.Date != StartDate.Date) ;
 				default:

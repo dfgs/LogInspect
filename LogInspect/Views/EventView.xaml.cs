@@ -70,5 +70,24 @@ namespace LogInspect.Views
 			logFile.Refresh();
 
 		}
+
+		private void Marker_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			Border border;
+			MarkerViewModel marker;
+			LogFileViewModel logFileViewModel;
+
+			logFileViewModel = DataContext as LogFileViewModel;
+			if (logFileViewModel == null) return;
+
+			border = sender as Border;
+			if (border == null) return;
+
+			marker = border.DataContext as MarkerViewModel;
+			if (marker == null) return;
+
+			logFileViewModel.Events.Select(marker.Position);
+		}
+
 	}
 }

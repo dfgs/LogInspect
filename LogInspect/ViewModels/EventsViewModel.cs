@@ -20,29 +20,30 @@ namespace LogInspect.ViewModels
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> coloringRules;
 
-		public EventsViewModel(ILogger Logger ,EventIndexerModule IndexerModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
+		public EventsViewModel(ILogger Logger ,EventIndexerBufferModule BufferModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
 		{
-			IndexerModule.Indexed += IndexerModule_Indexed;
-			IndexerModule.Reseted += IndexerModule_Reseted;
+			BufferModule.EventsBuffered += BufferModule_EventsBuffered;
+			BufferModule.Reseted += BufferModule_Reseted;
 			this.columns = Columns;
 			this.coloringRules = ColoringRules;
 		}
 
-		private void IndexerModule_Reseted(object sender, EventArgs e)
+		
+
+		private void BufferModule_Reseted(object sender, EventArgs e)
 		{
 			Dispatcher.Invoke(() =>
 			{
 				Clear();
 			});
 		}
-
-		private void IndexerModule_Indexed(object sender, EventIndexedEventArgs e)
+		private void BufferModule_EventsBuffered(object sender, EventsBufferedEventArgs e)
 		{
-			EventViewModel ev;
 			Dispatcher.Invoke(() =>
 			{
-				ev = new EventViewModel(Logger, columns, coloringRules, e.Event, e.EventIndex, e.LineIndex);
-				Add(ev);
+				List<EventViewModel> list = new List<EventViewModel>();
+				list.AddRange(e.Items.Select(item => new EventViewModel(Logger, columns, coloringRules, item.Event, item.EventIndex, item.LineIndex)));
+				AddRange(list) ;
 			});
 		}
 

@@ -58,7 +58,7 @@ namespace LogInspect.ViewModels
 			get;
 			private set;
 		}
-		
+		private EventIndexerBufferModule indexerBufferModule;
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 		public SeveritiesViewModel Severities
@@ -73,9 +73,15 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
+		public MarkersViewModel Markers
+		{
+			get;
+			private set;
+		}
+
 		private EventReader EventReader;
 
-		public LogFileViewModel(ILogger Logger,string FileName,EventReader EventReader, int IndexerLookupRetryDelay) :base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName,EventReader EventReader, int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay) :base(Logger)
 		{
 
 			this.FileName = FileName;
@@ -92,9 +98,14 @@ namespace LogInspect.ViewModels
 			Columns = new ColumnsViewModel(Logger, EventReader.FormatHandler,filterItemSourcesViewModel);
 			//Columns.FilterChanged += Columns_FilterChanged;
 
-			Events = new EventsViewModel(Logger, eventIndexerModule,Columns,EventReader.FormatHandler.EventColoringRules);
+			indexerBufferModule = new EventIndexerBufferModule(Logger, eventIndexerModule, IndexerLookupRetryDelay);
 
-			Log(LogLevels.Information, "Starting EventIndexer");
+			Events = new EventsViewModel(Logger, indexerBufferModule,Columns,EventReader.FormatHandler.EventColoringRules);
+			Markers = new MarkersViewModel(Logger, indexerBufferModule, EventReader.FormatHandler.EventColoringRules, EventReader.FormatHandler.SeverityColumn);
+
+			Log(LogLevels.Information, "Starting EventIndexerBufferModule");
+			indexerBufferModule.Start();
+			Log(LogLevels.Information, "Starting EventIndexerModule");
 			eventIndexerModule.Start();
 		}
 
@@ -102,7 +113,9 @@ namespace LogInspect.ViewModels
 		public override void Dispose()
 		{
 
-			Log(LogLevels.Information, "Stopping EventIndexer");
+			Log(LogLevels.Information, "Stopping EventIndexerBufferModule");
+			indexerBufferModule.Stop();
+			Log(LogLevels.Information, "Stopping EventIndexerModule");
 			eventIndexerModule.Stop();
 
 			EventIndexer.Dispose();

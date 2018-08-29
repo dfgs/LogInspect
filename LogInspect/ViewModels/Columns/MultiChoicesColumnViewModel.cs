@@ -20,7 +20,7 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => true;
 
 		public override Visibility ImageVisibility => Visibility.Collapsed;
-		public override string ImageSource => null;
+		public override string ImageSource => "/LogInspect;component/Images/Calendar.png"; // define a default image souce to avoid converter exceptions
 
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;

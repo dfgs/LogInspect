@@ -3,10 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LogInspect.Views"
+             xmlns:views="clr-namespace:LogInspect.Views"
+			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
 	<UserControl.Resources>
+		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
+			<TextBlock Text="{Binding Value}"/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
+			<TextBlock Text="{Binding Value}"/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
+			<TextBlock Text="{Binding Value}"/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
+			<TextBlock Text="{Binding Value}"/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
+			<TextBlock views:Inlines.InlineSource="{Binding Inlines}" />
+		</DataTemplate>
+		
 		<DataTemplate x:Key="propertyTemplate">
 			<Grid ToolTip="{Binding Value}">
 				<Grid.ColumnDefinitions>
@@ -14,11 +35,11 @@
 					<ColumnDefinition Width="Auto" SharedSizeGroup="Content"/>
 				</Grid.ColumnDefinitions>
 				<StackPanel Grid.Column="0" Orientation="Horizontal" >
-					<Image Source="/LogInspect;component/Images/Bullet_16x.png" Stretch="None" />
+					<Image Source="/LogInspect;component/Images/Bullet_blue.png" Stretch="None" />
 					<TextBlock FontWeight="Bold" Text="{Binding Name}"/>
 					<TextBlock FontWeight="Bold" Text=": "/>
 				</StackPanel>
-				<TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis"  Text="{Binding Value}"  MaxWidth="150"/>
+				<ContentPresenter Grid.Column="1" Content="{Binding}"/>
 			</Grid>
 		</DataTemplate>
 	</UserControl.Resources>
@@ -26,7 +47,7 @@
 	<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True">
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
-				<WrapPanel  Orientation="Horizontal"/>
+				<StackPanel />
 			</ItemsPanelTemplate>
 		</ItemsControl.ItemsPanel>
 	</ItemsControl>

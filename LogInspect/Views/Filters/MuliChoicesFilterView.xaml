@@ -6,10 +6,16 @@
              xmlns:local="clr-namespace:LogInspect.Views.Filters"
              mc:Ignorable="d" 
              d:DesignWidth="200">
+	
 	<StackPanel >
-		<StackPanel Margin="4">
-			<TextBlock Text="Select filtered items:" FontWeight="Bold"/>
-			<ListBox  Height="300" ItemsSource="{Binding ItemsSource}">
+		<StackPanel >
+			<TextBlock Margin="4" Text="Select filtered items:" FontWeight="Bold"/>
+			<UniformGrid Rows="1">
+				<Button Margin="4" Content="All" Click="AllButton_Click"/>
+				<Button Margin="4" Content="None" Click="NoneButton_Click"/>
+				<Button Margin="4" Content="Invert" Click="InvertButton_Click"/>
+			</UniformGrid>
+			<ListBox  Margin="4" Height="300" ItemsSource="{Binding ItemsSource}">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal">

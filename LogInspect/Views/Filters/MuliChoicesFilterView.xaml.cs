@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogInspect.ViewModels.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,40 @@ namespace LogInspect.Views.Filters
 		{
 			InitializeComponent();
 		}
+
+		private void AllButton_Click(object sender, RoutedEventArgs e)
+		{
+			MultiChoicesFilterViewModel filter;
+
+			filter = DataContext as MultiChoicesFilterViewModel;
+			if (filter == null) return;
+			foreach(FilterItemViewModel item in filter.ItemsSource)
+			{
+				item.IsChecked = true;
+			}
+		}
+		private void NoneButton_Click(object sender, RoutedEventArgs e)
+		{
+			MultiChoicesFilterViewModel filter;
+
+			filter = DataContext as MultiChoicesFilterViewModel;
+			if (filter == null) return;
+			foreach (FilterItemViewModel item in filter.ItemsSource)
+			{
+				item.IsChecked = false;
+			}
+		}
+		private void InvertButton_Click(object sender, RoutedEventArgs e)
+		{
+			MultiChoicesFilterViewModel filter;
+
+			filter = DataContext as MultiChoicesFilterViewModel;
+			if (filter == null) return;
+			foreach (FilterItemViewModel item in filter.ItemsSource)
+			{
+				item.IsChecked = !item.IsChecked;
+			}
+		}
+
 	}
 }

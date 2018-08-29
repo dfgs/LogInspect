@@ -32,6 +32,7 @@ namespace LogInspect.Modules
 		}
 
 		private int lookupRetryDelay;
+		private DateTime startTime;
 
 		public event EventReadEventHandler Read;
 		public event EventIndexedEventHandler Indexed;
@@ -60,6 +61,8 @@ namespace LogInspect.Modules
 		{
 			Event item;
 
+			startTime = DateTime.Now;
+
 			while(State == ModuleStates.Started)
 			{
 				while((State == ModuleStates.Started) && (Position < Target))
@@ -82,6 +85,8 @@ namespace LogInspect.Modules
 					}
 					lineIndex += item.Log.Lines.Count();
 				}
+				Log(LogLevels.Debug, $"Indexed reached end of stream in {DateTime.Now - startTime}");
+				startTime = DateTime.Now;
 				WaitHandles(lookupRetryDelay, QuitEvent);
 			}
 		}

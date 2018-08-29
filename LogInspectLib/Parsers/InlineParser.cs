@@ -30,6 +30,7 @@ namespace LogInspectLib.Parsers
 			int index;
 			List<Inline> inlines;
 			Inline inline;
+			InlineColoringRule coloringRule;
 
 			if (Value == null) yield break;
 
@@ -37,8 +38,12 @@ namespace LogInspectLib.Parsers
 			for (int t = 0; t < column.InlineColoringRules.Count; t++)
 			{
 				match = regexes[t].Match(Value);
-				if (!match.Success) continue;
-				inlines.Add( new Inline() { Index = match.Index, Length = match.Length, Foreground=column.InlineColoringRules[t].Foreground, Underline=column.InlineColoringRules[t].Underline, Value=match.Value });
+				coloringRule = column.InlineColoringRules[t];
+				while (match.Success)
+				{
+					inlines.Add(new Inline() { Index = match.Index, Length = match.Length, Foreground = coloringRule.Foreground, Underline = coloringRule.Underline, Bold= coloringRule.Bold,Italic= coloringRule.Italic, Value = match.Value });
+					match = match.NextMatch();
+				}
 			}
 			inlines.Sort((item1, item2) => comparer.Compare(item1.Index,item2.Index) );
 
@@ -46,12 +51,15 @@ namespace LogInspectLib.Parsers
 			index = 0;
 			foreach(Inline matchedInline in inlines)
 			{
+				if (matchedInline.Index < index) continue;	// several coloring rules can apply to one property
 				if (matchedInline.Index != index)
 				{
 					inline = new Inline();
 					inline.Index = index;
 					inline.Length = matchedInline.Index - index;
 					inline.Foreground = "Black";
+					
+
 					inline.Value = Value.Substring(inline.Index, inline.Length);
 
 					yield return inline;

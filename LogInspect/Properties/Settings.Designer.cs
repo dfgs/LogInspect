@@ -49,5 +49,14 @@ namespace LogInspect.Properties {
                 return ((int)(this["IndexerLookupRetryDelay"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int IndexerBufferLookupRetryDelay {
+            get {
+                return ((int)(this["IndexerBufferLookupRetryDelay"]));
+            }
+        }
     }
 }

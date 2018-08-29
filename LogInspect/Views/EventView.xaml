@@ -10,69 +10,77 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
 	<UserControl.Resources>
-		<views:NotValueConverter x:Key="notValueConverter"/>
+		<ResourceDictionary>
+			
+			<views:NotValueConverter x:Key="notValueConverter"/>
 
-		<views:BooleanToVisibiltyConverter x:Key="booleanToVisibilityConverter"/>
+			<views:BooleanToVisibiltyConverter x:Key="booleanToVisibilityConverter"/>
 
-		<Style x:Key="columnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-		</Style>
+
 		
-		<Style x:Key="filterButtonStyle" TargetType="{x:Type Border}">
-			<Setter Property="Visibility" Value="Collapsed"/>
-			<Style.Triggers>
-				<MultiDataTrigger>
-					<MultiDataTrigger.Conditions>
-						<Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=GridViewColumnHeader} ,Path=IsMouseOver}" Value="true"/>
-						<Condition Binding="{Binding Path=AllowsFilter}" Value="true"/>
-					</MultiDataTrigger.Conditions>
 
-					<Setter Property="Visibility" Value="Visible"/>
-				</MultiDataTrigger>
-				<DataTrigger Binding="{Binding HasFilter}" Value="true">
-					<Setter Property="Visibility" Value="Visible"/>
-				</DataTrigger>
+			<Style x:Key="columnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+			</Style>
+		
+			<Style x:Key="filterButtonStyle" TargetType="{x:Type Border}">
+				<Setter Property="Visibility" Value="Collapsed"/>
+				<Style.Triggers>
+					<MultiDataTrigger>
+						<MultiDataTrigger.Conditions>
+							<Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=GridViewColumnHeader} ,Path=IsMouseOver}" Value="true"/>
+							<Condition Binding="{Binding Path=AllowsFilter}" Value="true"/>
+						</MultiDataTrigger.Conditions>
+
+						<Setter Property="Visibility" Value="Visible"/>
+					</MultiDataTrigger>
+					<DataTrigger Binding="{Binding HasFilter}" Value="true">
+						<Setter Property="Visibility" Value="Visible"/>
+					</DataTrigger>
 				
-			</Style.Triggers>
-		</Style>
+				</Style.Triggers>
+			</Style>
 		
-		<DataTemplate x:Key="columnHeaderTemplate">
-			<DockPanel>
-				<Image DockPanel.Dock="Left" Source="{Binding ImageSource}" Visibility="{Binding ImageVisibility}" Stretch="Uniform" Width="12" Height="12"/>
-				<Border DockPanel.Dock="Right" Style="{StaticResource filterButtonStyle}">
-					<Image Source="/LogInspect;component/Images/Filter_16x.png" Stretch="Uniform" Width="12" Height="12"/>
-				</Border>
-				<TextBlock Text="{Binding Description}" HorizontalAlignment="Center"/>
-			</DockPanel>
-		</DataTemplate>
+			<DataTemplate x:Key="columnHeaderTemplate">
+				<DockPanel >
+					<Border DockPanel.Dock="Right" Style="{StaticResource filterButtonStyle}">
+						<Image Source="/LogInspect;component/Images/Filter_16x.png" Stretch="Uniform" Width="12" Height="12"/>
+					</Border>
+					<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+						<Image Source="{Binding ImageSource}" Visibility="{Binding ImageVisibility}" Stretch="Uniform" Width="12" Height="12" Margin="0,0,4,0"/>
+						<TextBlock Text="{Binding Description}" />
+					</StackPanel>
+				</DockPanel>
+			</DataTemplate>
 		
 		
 		
 	
 		
-		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-			<Image Source="/LogInspect;component/Images/Bookmark_16x.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Event.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
-		</DataTemplate>
+			<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
+				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Event.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
+			</DataTemplate>
 		
-		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
-			<TextBlock  Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Alignment}" Foreground="Gray"/>
-		</DataTemplate>
+			<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
+				<TextBlock  Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Alignment}" Foreground="Gray" ToolTip="{Binding}"/>
+			</DataTemplate>
 
-		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
-			<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black"/>
-		</DataTemplate>
+			<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
+				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
+			</DataTemplate>
 		
-		<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
-			<DockPanel>
-				<Border DockPanel.Dock="Left" Width="4" Background="{Binding Background}" VerticalAlignment="Stretch"/>
-				<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis"/>
-			</DockPanel>
-		</DataTemplate>
+			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
+				<DockPanel ToolTip="{Binding}">
+					<Border DockPanel.Dock="Left" Width="4" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>
+					<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis"/>
+				</DockPanel>
+			</DataTemplate>
 		
-		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-			<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis"/>
-		</DataTemplate>
-		<!-- -->
+			<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
+				<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/>
+			</DataTemplate>
+			<!-- -->
+		</ResourceDictionary>
 
 	</UserControl.Resources>
 
@@ -83,54 +91,89 @@
 			<RowDefinition Height="150"/>
 		</Grid.RowDefinitions>
 
+		<DockPanel Grid.Row="0">
 
-		<ListView Grid.Row="0" ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+			<Grid DockPanel.Dock="Right" Width="5" Margin="0,2,0,2">
+				<Grid.RowDefinitions>
+					<RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+				</Grid.RowDefinitions>
+				<ItemsControl Grid.Row="1"  ItemsSource="{Binding Markers}" >
+					<ItemsControl.ItemContainerStyle>
+						<Style TargetType="{x:Type ContentPresenter}">
+							<Setter Property="views:MarkerPanel.Position" Value="{Binding Position}"/>
+							<Setter Property="views:MarkerPanel.Size" Value="{Binding Size}"/>
+						</Style>
+					</ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<views:MarkerPanel TotalSize="{Binding Events.Count}" MinItemHeight="5"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Border Background="{Binding Background}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MouseDown="Marker_MouseDown" Cursor="Hand"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
+			</Grid>
+			
+			<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
 					 SelectedItem="{Binding Events.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
 				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.IsDeferredScrollingEnabled="True">
-			<ListView.Style>
-				<Style TargetType="{x:Type ListView}">
-					<Setter Property="IsEnabled" Value="False"/>
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding Status}" Value="Idle">
-							<Setter Property="IsEnabled" Value="True"/>
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</ListView.Style>
-			<ListView.ItemContainerStyle>
-				<Style TargetType="{x:Type ListViewItem}">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-					<Setter Property="Margin" Value="0"/>
-					<Setter Property="Padding" Value="0"/>
-					<!--Setter Property="Background" Value="{Binding Background}"/-->
-				</Style>
-			</ListView.ItemContainerStyle>
-			<ListView.View>
-				<GridView   views:GridViewColumns.ColumnsSource="{Binding Columns}" ColumnHeaderTemplate="{StaticResource columnHeaderTemplate}" ColumnHeaderContainerStyle="{StaticResource columnHeaderStyle}"  >
-					
-				</GridView>
-			</ListView.View>
-		</ListView>
+				
+				<ListView.Style>
+					<Style TargetType="{x:Type ListView}">
+						<Setter Property="IsEnabled" Value="False"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding Status}" Value="Idle">
+								<Setter Property="IsEnabled" Value="True"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ListView.Style>
+				<ListView.ItemContainerStyle>
+					<Style TargetType="{x:Type ListViewItem}">
+						<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+						<Setter Property="Margin" Value="0"/>
+						<Setter Property="Padding" Value="0"/>
+						<!--Setter Property="Background" Value="{Binding Background}"/-->
+					</Style>
+				</ListView.ItemContainerStyle>
+				<ListView.View>
+					<GridView   views:GridViewColumns.ColumnsSource="{Binding Columns}" ColumnHeaderTemplate="{StaticResource columnHeaderTemplate}" ColumnHeaderContainerStyle="{StaticResource columnHeaderStyle}"  >
+
+					</GridView>
+				</ListView.View>
+			</ListView>
+
+		</DockPanel>
 		
 		
 		<GridSplitter  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 		<TabControl Grid.Row="2" DataContext="{Binding Events.SelectedItem}">
-			<TabItem Header="Event details">
+			<TabItem >
+				<TabItem.Header>
+					<StackPanel Orientation="Horizontal">
+						<Image Source="/LogInspect;component/Images/information.png" Stretch="None" Margin="0,0,4,0"/>
+						<TextBlock Text="Details"/>
+					</StackPanel>
+				</TabItem.Header>
 				<views:EventDetailsView/>
 			</TabItem>
-			<TabItem Header="Raw data">
+			<TabItem >
+				<TabItem.Header>
+					<StackPanel Orientation="Horizontal">
+						<Image Source="/LogInspect;component/Images/text_align_left.png" Stretch="None" Margin="0,0,4,0"/>
+						<TextBlock Text="Raw data"/>
+					</StackPanel>
+				</TabItem.Header>
 				<TextBox   IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}"/>
 			</TabItem>
-			<TabItem Header="Inlines">
-				<ItemsControl ItemsSource="{Binding [Message].Inlines}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Value}"/>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</TabItem>
+			
 		</TabControl>
 	</Grid>
 </UserControl>

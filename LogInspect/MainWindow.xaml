@@ -7,7 +7,7 @@
 		xmlns:views="clr-namespace:LogInspect.Views"
 		xmlns:viewModels="clr-namespace:LogInspect.ViewModels"
 		xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" 
+		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"  WindowState="Maximized"
         Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	
 	<Window.Resources>
@@ -21,6 +21,30 @@
 			</Style.Triggers>
 		</Style>
 
+		<Style x:Key="tabCloseButtonStyle" TargetType="{x:Type Button}">
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="BorderBrush" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Background" Value="Transparent"/>
+
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+							<Image Source="Images\cross.png" Stretch="Uniform"  Margin="0"  />
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="true">
+					<Setter Property="BorderBrush" Value="Gray"/>
+				</Trigger>
+				<Trigger Property="IsPressed" Value="true">
+					<Setter Property="Background" Value="LightGray"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
 		<RoutedUICommand x:Key="filterEvents"/>
 
 		<RoutedUICommand x:Key="findPreviousSeverity"/>
@@ -38,6 +62,7 @@
 		<KeyBinding Command="{StaticResource findPreviousSeverity}" Key="Left" Modifiers="Ctrl"/>
 		<KeyBinding Command="{StaticResource findNextSeverity}" Key="Right" Modifiers="Ctrl"/>
 		<KeyBinding Command="{StaticResource toogleBookMark}" Key="B" Modifiers="Ctrl" />
+		<KeyBinding Command="Close" Key="F4" Modifiers="Ctrl"/>
 	</Window.InputBindings>
 
 	<Window.CommandBindings>
@@ -51,6 +76,8 @@
 		<CommandBinding Command="{StaticResource toogleBookMark}" CanExecute="SetBookMarkCommandBinding_CanExecute" Executed="ToogleBookMarkCommandBinding_Executed"/>
 		<CommandBinding Command="{StaticResource findPreviousBookMark}" CanExecute="FindPreviousBookMarkCommandBinding_CanExecute" Executed="FindPreviousBookMarkCommandBinding_Executed"/>
 		<CommandBinding Command="{StaticResource findNextBookMark}" CanExecute="FindNextBookMarkCommandBinding_CanExecute" Executed="FindNextBookMarkCommandBinding_Executed"/>
+
+		<CommandBinding Command="Close" CanExecute="CloseCommandBinding_CanExecute" Executed="CloseCommandBinding_Executed"/>
 	</Window.CommandBindings>
 	
     <DockPanel>
@@ -82,27 +109,27 @@
 		<ToolBarTray DockPanel.Dock="Top"  DataContext="{Binding SelectedItem}">
 			<ToolBar >
 				<Button Command="Open" ToolTip="Open file">
-					<Image Source="Images\OpenFile_16x.png" Stretch="None"   />
+					<Image Source="Images\Folder.png" Stretch="None"   />
 				</Button>
 			</ToolBar>
 			<ToolBar>
 				<Button Command="{StaticResource findPreviousSeverity}" ToolTip="Find previous">
-					<Image Source="Images\FindPrevious_16x.png" Stretch="None"  />
+					<Image Source="Images\bullet_arrow_left.png" Stretch="None"  />
 				</Button>
 				<ComboBox Width="100" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}"/>
 				<Button Command="{StaticResource findNextSeverity}" ToolTip="Find next">
-					<Image Source="Images\FindNext_16x.png" Stretch="None"  />
+					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 			<ToolBar>
 				<Button Command="{StaticResource toogleBookMark}" ToolTip="Toogle bookmark">
-					<Image Source="Images\BookMark_16x.png" Stretch="None"  />
+					<Image Source="Images\flag_blue.png" Stretch="None"  />
 				</Button>
 				<Button Command="{StaticResource findPreviousBookMark}" ToolTip="Find previous">
-					<Image Source="Images\PreviousBookMark_16x.png" Stretch="None"  />
+					<Image Source="Images\bullet_arrow_left.png" Stretch="None"  />
 				</Button>
 				<Button Command="{StaticResource findNextBookMark}" ToolTip="Find next">
-					<Image Source="Images\NextBookMark_16x.png" Stretch="None"  />
+					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 		</ToolBarTray>
@@ -111,7 +138,12 @@
 		<TabControl ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedItem}">
 			<TabControl.ItemTemplate>
 				<DataTemplate>
-					<TextBlock Text="{Binding Name}"/>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+						<Button Margin="8,0,0,0"  VerticalAlignment="Center" Command="Close" Style="{StaticResource tabCloseButtonStyle}"/>
+
+
+					</StackPanel>
 				</DataTemplate>
 			</TabControl.ItemTemplate>
 			<TabControl.ContentTemplate>

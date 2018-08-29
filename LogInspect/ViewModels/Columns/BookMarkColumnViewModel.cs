@@ -20,7 +20,7 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsFilter => false;
 
 		public override Visibility ImageVisibility => Visibility.Visible;
-		public override string ImageSource => "/LogInspect;component/Images/BookMark_16x.png";
+		public override string ImageSource => "/LogInspect;component/Images/flag_blue.png";
 
 		public BookMarkColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"","Center")
 		{

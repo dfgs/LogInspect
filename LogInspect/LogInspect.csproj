@@ -82,6 +82,9 @@
     <Compile Include="Models\Filters\TextCondition.cs" />
     <Compile Include="Models\Filters\TimeStampConditions.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
+    <Compile Include="Modules\BufferItem.cs" />
+    <Compile Include="Modules\EventsBufferedEventHandler.cs" />
+    <Compile Include="Modules\EventIndexerBufferModule.cs" />
     <Compile Include="Modules\BaseEventModule.cs" />
     <Compile Include="Modules\EventReadEventHandler.cs" />
     <Compile Include="Modules\EventIndexedEventHandler.cs" />
@@ -90,6 +93,8 @@
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\BaseCollectionViewModel.cs" />
+    <Compile Include="ViewModels\MarkersViewModel.cs" />
+    <Compile Include="ViewModels\MarkerViewModel.cs" />
     <Compile Include="ViewModels\FilterItemAddedEventHandler.cs" />
     <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
@@ -135,6 +140,7 @@
     <Compile Include="Views\Layout.cs" />
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
+    <Compile Include="Views\MarkerPanel.cs" />
     <Page Include="FilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -263,6 +269,37 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Bullet_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\find.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bullet_arrow_left.png" />
+    <Resource Include="Images\bullet_arrow_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\flag_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\calendar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\text_indent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bullet_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\text_align_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cross.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

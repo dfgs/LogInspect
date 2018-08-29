@@ -19,11 +19,11 @@ namespace LogInspect.ViewModels.Columns
 		public override bool AllowsResize => false;
 		public override bool AllowsFilter => false;
 
-		public override Visibility ImageVisibility => Visibility.Collapsed;
-		public override string ImageSource => null;
+		public override Visibility ImageVisibility => Visibility.Visible;
+		public override string ImageSource => "/LogInspect;component/Images/text_indent.png";
 
 
-		public LineColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,Name,"Right")
+		public LineColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"","Right")
 		{
 		}
 

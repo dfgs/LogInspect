@@ -33,8 +33,21 @@ namespace LogInspectLib
 			get;
 			set;
 		}
-		
+		public bool Bold
+		{
+			get;
+			set;
+		}
+		public bool Italic
+		{
+			get;
+			set;
+		}
 
+		public override string ToString()
+		{
+			return $"{Index}: {Value}";
+		}
 
 	}
 }

@@ -30,5 +30,17 @@ namespace LogInspectLib
 			get;
 			set;
 		}
+		[XmlAttribute]
+		public bool Bold
+		{
+			get;
+			set;
+		}
+		[XmlAttribute]
+		public bool Italic
+		{
+			get;
+			set;
+		}
 	}
 }

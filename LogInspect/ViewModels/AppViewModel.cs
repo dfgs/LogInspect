@@ -30,11 +30,13 @@ namespace LogInspect.ViewModels
 
 		private int bufferSize;
 		private int indexerLookupRetryDelay;
+		private int indexerBufferLookupRetryDelay;
 
-		public AppViewModel(ILogger Logger,string Path, int BufferSize,int IndexerLookupRetryDelay) : base(Logger)
+		public AppViewModel(ILogger Logger,string Path, int BufferSize,int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay) : base(Logger)
 		{
 			this.bufferSize = BufferSize;
 			this.indexerLookupRetryDelay = IndexerLookupRetryDelay;
+			this.indexerBufferLookupRetryDelay = IndexerBufferLookupRetryDelay;
 
 			LogFiles = new ObservableCollection<LogFileViewModel>();
 			formatHandlers = new List<FormatHandler>();
@@ -59,7 +61,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, indexerEventReader,indexerLookupRetryDelay);
+				logFile = new LogFileViewModel(Logger,FileName, indexerEventReader,indexerLookupRetryDelay,indexerBufferLookupRetryDelay);
 			}
 			catch(Exception ex)
 			{
@@ -69,6 +71,15 @@ namespace LogInspect.ViewModels
 			LogFiles.Add(logFile);
 			SelectedItem = logFile;
 		}
+
+		public void CloseCurrent()
+		{
+			if (SelectedItem == null) return;
+			SelectedItem.Dispose();
+			LogFiles.Remove(SelectedItem);
+			SelectedItem = LogFiles.FirstOrDefault();
+		}
+
 
 		public void LoadSchemas(string Path)
 		{
@@ -142,7 +153,6 @@ namespace LogInspect.ViewModels
 
 			return reader;
 		}
-
 
 	}
 }

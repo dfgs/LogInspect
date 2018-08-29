@@ -23,7 +23,7 @@ namespace LogInspect.ViewModels.Columns
 
 
 		public override Visibility ImageVisibility => Visibility.Visible;
-		public override string ImageSource => "/LogInspect;component/Images/Calendar_16x.png";
+		public override string ImageSource => "/LogInspect;component/Images/Calendar.png";
 
 
 

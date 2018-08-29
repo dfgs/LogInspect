@@ -91,8 +91,21 @@ namespace LogInspect.ViewModels
 			//public enum Severity {Debug,Info,Warning,Error,Critical};
 
 
-			Background = Brushes.LightGray;
-			Foreground = Brushes.Black;
+			Background = GetBackground(ColoringRules,Event );
+			if (Background == null)
+			{
+				Background = Brushes.LightGray;
+				Foreground = Brushes.Black;
+			}
+			else Foreground = Background;
+
+
+			Properties = Columns.Select(item => item.CreatePropertyViewModel(this)).ToArray();
+
+		}
+
+		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules,Event Event)
+		{
 
 			foreach (EventColoringRule coloringRule in ColoringRules)
 			{
@@ -101,20 +114,17 @@ namespace LogInspect.ViewModels
 				{
 					try
 					{
-						Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
-						Foreground = Background;
-						break;
+						Brush Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
+						return Background;
 					}
-					catch(Exception ex)
+					catch 
 					{
-						Log(ex);
+						
 					}
-					
+
 				}
 			}
-
-			Properties = Columns.Select(item => item.CreatePropertyViewModel(this)).ToArray();
-
+			return null;
 		}
 
 		public Inline[] GetPropertyInlines(string PropertyName)

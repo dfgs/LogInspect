@@ -71,10 +71,17 @@ namespace LogInspect
 			schema.Columns.Add(new Column() { Name = "Severity", Width = 100, Alignment = "Center", IsFilterItemSource = true });
 			schema.Columns.Add(new Column() { Name = "Thread", Width = 300, IsFilterItemSource = true });
 			column = new Column() { Name = "Message", Width = 600 };
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"CVSKEY=\d+", Foreground = "Green" });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"AudioFragment:\d+", Foreground = "Blue" });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"(\\)(\\[A-Za-z0-9-_()]+){2,}(\\?)", Foreground = "Blue",Underline=true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"CVSKEY=\d+", Foreground = "Green",Bold=true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"AudioFragment:\d+", Foreground = "Olive",Bold=true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+", Foreground = "Blue",Underline=true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"Error num=\d+", Foreground = "Red", Bold = true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"Error = [^\.]+", Foreground = "Red", Bold = true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"'[^']+'", Foreground = "BlueViolet" });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"\d+(\.\d+)? ms", Foreground = "Black", Bold = true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @" \d+ ", Foreground = "Black", Bold = true });
+			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"Connected|CorrectMediumFound", Foreground = "RosyBrown",  Italic = true });
 			
+
 			schema.Columns.Add(column);
 
 			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
@@ -106,7 +113,7 @@ namespace LogInspect
 
 			logger = new ConsoleLogger(new DefaultLogFormatter());
 			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize,
-				 Properties.Settings.Default.IndexerLookupRetryDelay);
+				 Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.IndexerBufferLookupRetryDelay);
 
 			InitializeComponent();
 			DataContext = appViewModel;
@@ -163,25 +170,25 @@ namespace LogInspect
 		#region severities
 		private void FindPreviousSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem!=null) && (appViewModel.SelectedItem.Status== Statuses.Idle) && (appViewModel.SelectedItem.Events.SelectedItem!=null) ; e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem!=null) && (appViewModel.SelectedItem.Status== Statuses.Idle)  ; e.Handled = true;
 		}
 
 		private async void FindPreviousSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			int index;
-			index=await appViewModel.SelectedItem.FindPreviousSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem,appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			index=await appViewModel.SelectedItem.FindPreviousSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem,appViewModel.SelectedItem.Events.SelectedItem?.EventIndex??-1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 
 		private void FindNextSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) ; e.Handled = true;
 		}
 
 		private async void FindNextSeverityCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			int index;
-			index = await appViewModel.SelectedItem.FindNextSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem, appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			index = await appViewModel.SelectedItem.FindNextSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem, appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 		#endregion
@@ -198,31 +205,43 @@ namespace LogInspect
 		}
 		private void FindPreviousBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
 		}
 
 		private async void FindPreviousBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			int index;
-			index = await appViewModel.SelectedItem.FindPreviousBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			index = await appViewModel.SelectedItem.FindPreviousBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
 
 		private void FindNextBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) ; e.Handled = true;
 		}
 
 		private async void FindNextBookMarkCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			int index;
-			index=await appViewModel.SelectedItem.FindNextBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem.EventIndex);
+			index=await appViewModel.SelectedItem.FindNextBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
 		}
+
+
+
+
 		#endregion
 
+		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
 
+		}
 
+		private void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			appViewModel.CloseCurrent();
+		}
 
 
 	}
