@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="FormatHandlerDesigner.Views.RulesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:FormatHandlerDesigner.Views"
+			 xmlns:lil="clr-namespace:LogInspectLib;assembly=LogInspectLib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+	<UserControl.Resources>
+		<DataTemplate DataType="{x:Type lil:Rule}">
+			<TextBlock Text="{Binding Name}"/>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<DockPanel >
+		<views:ListView  DockPanel.Dock="Top" x:Name="list" Header="Rules" List="{Binding Rules}" AddItem="ListView_AddItem" Height="150"/>
+		<TabControl>
+			<TabItem Header="General">
+				<ScrollViewer >
+					<StackPanel Grid.IsSharedSizeScope="True">
+						<views:PropertyView Header="Name:" Value="{Binding ElementName=list,Path=SelectedItem.Value.Name}"/>
+						<views:PropertyView Header="Discard:" PropertyType="Bool" Value="{Binding ElementName=list,Path=SelectedItem.Value.Discard}"/>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<TabItem Header="Tokens">
+				<StackPanel Grid.IsSharedSizeScope="True">
+					<ScrollViewer>
+						<views:TokensView DataContext="{Binding ElementName=list,Path=SelectedItem.Value}"/>
+					</ScrollViewer>
+				</StackPanel>
+			</TabItem>
+		</TabControl>
+	</DockPanel>
+</UserControl>

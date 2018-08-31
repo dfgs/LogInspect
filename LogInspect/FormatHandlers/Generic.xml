@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Generic format handler</Name>
+  <FileNamePattern>.*</FileNamePattern>
+  <AppendLineToPreviousPatterns />
+  <AppendLineToNextPatterns />
+  <DiscardLinePatterns />
+  <Columns>
+    <Column Name="Message" Width="1000" Alignment="Left" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+  </Columns>
+  <Rules>
+    <Rule Name="Generic rule" Discard="false">
+      <Tokens>
+        <Token Pattern=".*" Name="Message" />
+      </Tokens>
+    </Rule>
+  </Rules>
+  <EventColoringRules />
+</FormatHandler>

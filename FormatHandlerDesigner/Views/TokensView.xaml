@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="FormatHandlerDesigner.Views.TokensView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:FormatHandlerDesigner.Views"
+			 xmlns:lil="clr-namespace:LogInspectLib;assembly=LogInspectLib"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<DataTemplate DataType="{x:Type lil:Token}">
+			<TextBlock Text="{Binding Pattern}"/>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<StackPanel Grid.IsSharedSizeScope="True">
+		<views:ListView x:Name="list"  Header="Tokens" List="{Binding Tokens}" AddItem="list_AddItem" Height="150"/>
+		<views:PropertyView Header="Name:" Value="{Binding ElementName=list,Path=SelectedItem.Value.Name}"/>
+		<StackPanel Orientation="Horizontal">
+			<views:PropertyView Header="Pattern:" Value="{Binding ElementName=list,Path=SelectedItem.Value.Pattern}"/>
+			<views:PatternTestView Pattern="{Binding ElementName=list,Path=SelectedItem.Value.Pattern}"/>
+		</StackPanel>
+	</StackPanel>
+</UserControl>

@@ -45,14 +45,6 @@ namespace LogInspectLib
 			set;
 		}
 
-
-		[XmlArray]
-		public List<Rule> Rules
-		{
-			get;
-			set;
-		}
-
 		[XmlArray]
 		public List<Column> Columns
 		{
@@ -72,6 +64,15 @@ namespace LogInspectLib
 			get;
 			set;
 		}
+
+
+		[XmlArray]
+		public List<Rule> Rules
+		{
+			get;
+			set;
+		}
+
 
 		[XmlArray]
 		public List<EventColoringRule> EventColoringRules

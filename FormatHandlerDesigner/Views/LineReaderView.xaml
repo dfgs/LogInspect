@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="FormatHandlerDesigner.Views.LineReaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:FormatHandlerDesigner.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<StackPanel Grid.IsSharedSizeScope="True">
+		<views:ListView x:Name="discardLinesList"  Header="'Dicard line' patterns" List="{Binding DiscardLinePatterns}" AddItem="PatternListView_AddItem" Height="150"/>
+		<views:PropertyView Header="Pattern:" Value="{Binding ElementName=discardLinesList,Path=SelectedItem.Value}"/>
+		<views:PatternTestView Pattern="{Binding ElementName=discardLinesList,Path=SelectedItem.Value}" Orientation="Vertical"/>
+		
+		<views:ListView  x:Name="appendToPreviousList" Header="'Append line to previous' patterns" List="{Binding AppendLineToPreviousPatterns}" AddItem="PatternListView_AddItem" Height="150"/>
+		<views:PropertyView Header="Pattern:" Value="{Binding ElementName=appendToPreviousList,Path=SelectedItem.Value}"/>
+		<views:PatternTestView Pattern="{Binding ElementName=appendToPreviousList,Path=SelectedItem.Value}" Orientation="Vertical"/>
+
+		<views:ListView x:Name="appendToNextList"  Header="'Append line to next' patterns" List="{Binding AppendLineToNextPatterns}" AddItem="PatternListView_AddItem" Height="150"/>
+		<views:PropertyView Header="Pattern:" Value="{Binding ElementName=appendToNextList,Path=SelectedItem.Value}"/>
+		<views:PatternTestView Pattern="{Binding ElementName=appendToNextList,Path=SelectedItem.Value}" Orientation="Vertical"/>
+
+	</StackPanel>
+</UserControl>
