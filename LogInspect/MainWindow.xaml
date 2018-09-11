@@ -78,6 +78,7 @@
 		<CommandBinding Command="{StaticResource findNextBookMark}" CanExecute="FindNextBookMarkCommandBinding_CanExecute" Executed="FindNextBookMarkCommandBinding_Executed"/>
 
 		<CommandBinding Command="Close" CanExecute="CloseCommandBinding_CanExecute" Executed="CloseCommandBinding_Executed"/>
+
 	</Window.CommandBindings>
 	
     <DockPanel>
@@ -119,7 +120,7 @@
 				<Button Command="{StaticResource findPreviousSeverity}" ToolTip="Find previous">
 					<Image Source="Images\bullet_arrow_left.png" Stretch="None"  />
 				</Button>
-				<ComboBox Width="100" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}"/>
+				<ComboBox Width="120" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}"/>
 				<Button Command="{StaticResource findNextSeverity}" ToolTip="Find next">
 					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
 				</Button>
@@ -138,6 +139,9 @@
 			<ToolBar>
 				<ToggleButton ToolTip="Tail logs" IsChecked="{Binding Events.Tail}">
 					<Image Source="Images/script_go.png" Stretch="None"   />
+				</ToggleButton>
+				<ToggleButton ToolTip="Find" IsChecked="{Binding IsFindMenuVisible}">
+					<Image Source="Images/page_find.png" Stretch="None"   />
 				</ToggleButton>
 			</ToolBar>
 		</ToolBarTray>

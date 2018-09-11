@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+	
 	<UserControl.Resources>
 		<ResourceDictionary>
 			
@@ -84,14 +85,25 @@
 
 	</UserControl.Resources>
 
+	<UserControl.InputBindings>
+		<KeyBinding Key="F" Modifiers="Ctrl" Command="Find"/>
+	</UserControl.InputBindings>
+	
+	<UserControl.CommandBindings>
+		<CommandBinding Command="Find" CanExecute="FindCommandBinding_CanExecute" Executed="FindCommandBinding_Executed"/>
+	</UserControl.CommandBindings>
+
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="7"/>
 			<RowDefinition Height="150"/>
 		</Grid.RowDefinitions>
 
-		<DockPanel Grid.Row="0">
+		<views:FindView Grid.Row="0" Visibility="{Binding IsFindMenuVisible,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=1}" />
+
+		<DockPanel Grid.Row="1">
 
 			<Grid DockPanel.Dock="Right" Width="5" Margin="0,2,0,2">
 				<Grid.RowDefinitions>
@@ -119,7 +131,8 @@
 				</ItemsControl>
 
 			</Grid>
-			
+
+
 			<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
 					 SelectedItem="{Binding Events.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
@@ -155,8 +168,8 @@
 		</DockPanel>
 		
 		
-		<GridSplitter  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<TabControl Grid.Row="2" DataContext="{Binding Events.SelectedItem}">
+		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+		<TabControl Grid.Row="3" DataContext="{Binding Events.SelectedItem}">
 			<TabItem >
 				<TabItem.Header>
 					<StackPanel Orientation="Horizontal">

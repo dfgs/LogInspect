@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using LogInspect.Modules;
 using LogInspectLib;
 using LogLib;
@@ -14,9 +15,15 @@ namespace LogInspect.ViewModels.Columns
 	{
 		private List<ColumnViewModel> items;
 
-		//public event EventHandler FilterChanged;
-		
-		
+
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(ColumnViewModel), typeof(ColumnsViewModel));
+		public ColumnViewModel SelectedItem
+		{
+			get { return (ColumnViewModel)GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
+		}
+
+
 
 		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel) : base(Logger)
 		{

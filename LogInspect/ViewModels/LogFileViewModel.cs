@@ -37,7 +37,14 @@ namespace LogInspect.ViewModels
 
 
 
-	
+
+		public static readonly DependencyProperty IsFindMenuVisibleProperty = DependencyProperty.Register("IsFindMenuVisible", typeof(bool), typeof(LogFileViewModel));
+		public bool IsFindMenuVisible
+		{
+			get { return (bool)GetValue(IsFindMenuVisibleProperty); }
+			set { SetValue(IsFindMenuVisibleProperty, value); }
+		}
+
 
 
 		public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(Statuses), typeof(LogFileViewModel),new PropertyMetadata(Statuses.Idle));

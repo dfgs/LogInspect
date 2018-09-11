@@ -135,6 +135,9 @@
     <Compile Include="Views\Filters\TimeStampFilterView.xaml.cs">
       <DependentUpon>TimeStampFilterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FindView.xaml.cs">
+      <DependentUpon>FindView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Inlines.cs" />
     <Compile Include="Views\GridViewColumns.cs" />
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
@@ -178,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Filters\TimeStampFilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FindView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -343,6 +350,21 @@
     <None Include="FormatHandlers\Nice.NTR.Alcatel-Lucent.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\page_find.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\style.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\style_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\text_smallcaps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\text_letterspacing.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

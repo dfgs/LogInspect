@@ -14,7 +14,8 @@ namespace LogInspect.Views
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (ValueType.Equals(value , true)) return Visibility.Visible;
-			else return Visibility.Hidden;
+			if (parameter==null) return Visibility.Hidden;
+			return Visibility.Collapsed;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
