@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date">
+  <Name>LogInspect</Name>
+  <FileNamePattern>LogInspect.log</FileNamePattern>
+  <AppendLineToPreviousPatterns />
+  <AppendLineToNextPatterns />
+  <DiscardLinePatterns />
+  <Columns>
+    <Column Name="Date" Type="DateTime" Format="dd/MM/yyyy HH:mm:ss" Width="200" Alignment="Center" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="ModuleID" Width="100" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Module" Width="200" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Method" Width="200" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Message" Width="600" Alignment="Left" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+  </Columns>
+  <Rules>
+    <Rule Name="Event" Discard="false">
+      <Tokens>
+        <Token Pattern="\d\d\/\d\d\/\d\d\d\d \d\d:\d\d:\d\d" Name="Date" />
+        <Token Pattern=" \| " />
+        <Token Pattern="[^ ]+" Name="Severity" />
+        <Token Pattern=" \| " />
+        <Token Pattern="\d+" Name="ModuleID" />
+        <Token Pattern=" \| " />
+        <Token Pattern="[^ ]+" Name="Module" />
+        <Token Pattern=" \| " />
+        <Token Pattern="[^ ]+" Name="Method" />
+        <Token Pattern=" \| " />
+        <Token Pattern=".*" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Default" Discard="false">
+      <Tokens>
+        <Token Pattern=".*" Name="Message" />
+      </Tokens>
+    </Rule>
+  </Rules>
+  <EventColoringRules>
+    <EventColoringRule Column="Severity" Pattern="Fatal" Background="Red" />
+    <EventColoringRule Column="Severity" Pattern="Error" Background="OrangeRed" />
+    <EventColoringRule Column="Severity" Pattern="Warning" Background="Orange" />
+  </EventColoringRules>
+</FormatHandler>

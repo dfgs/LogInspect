@@ -20,7 +20,15 @@ namespace LogInspect.ViewModels
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> coloringRules;
 
-		public EventsViewModel(ILogger Logger ,EventIndexerBufferModule BufferModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
+		public static readonly DependencyProperty TailProperty = DependencyProperty.Register("Tail", typeof(bool), typeof(EventsViewModel));
+		public bool Tail
+		{
+			get { return (bool)GetValue(TailProperty); }
+			set { SetValue(TailProperty, value); }
+		}
+
+
+		public EventsViewModel(ILogger Logger , EventIndexerBufferModule BufferModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
 		{
 			BufferModule.EventsBuffered += BufferModule_EventsBuffered;
 			BufferModule.Reseted += BufferModule_Reseted;
@@ -44,6 +52,7 @@ namespace LogInspect.ViewModels
 				List<EventViewModel> list = new List<EventViewModel>();
 				list.AddRange(e.Items.Select(item => new EventViewModel(Logger, columns, coloringRules, item.Event, item.EventIndex, item.LineIndex)));
 				AddRange(list) ;
+				if (Tail) Select(Count - 1);
 			});
 		}
 

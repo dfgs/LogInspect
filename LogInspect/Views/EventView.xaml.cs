@@ -89,5 +89,48 @@ namespace LogInspect.Views
 			logFileViewModel.Events.Select(marker.Position);
 		}
 
+		private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true;e.Handled = true;
+		}
+
+		private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ListView listView;
+			GridView gridView;
+
+			listView = sender as ListView;
+			if (listView == null) return;
+			gridView = listView.View as GridView;
+			if (gridView == null) return;
+
+			StringBuilder buffer = new StringBuilder();
+			
+			foreach(ColumnViewModel column in gridView.Columns.Select(item=>item.Header))
+			{
+				if (string.IsNullOrEmpty(column.Description)) continue; 
+				buffer.Append(column.Description);
+				buffer.Append("\t");
+			}
+
+			buffer.Append("\n");
+			
+			foreach (EventViewModel ev in listView.SelectedItems)
+			{
+				foreach (ColumnViewModel column in gridView.Columns.Select(item => item.Header))
+				{
+					if (string.IsNullOrEmpty(column.Description)) continue;
+					buffer.Append(ev.GetPropertyValue(column.Name));
+					buffer.Append("\t");
+				}
+				buffer.Append("\n");
+			}
+
+		
+
+			Clipboard.SetText(buffer.ToString());
+		}
+
+
 	}
 }

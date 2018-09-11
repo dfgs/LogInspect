@@ -22,6 +22,13 @@ namespace FormatHandlerDesigner.Views
 	public partial class PatternTestView : UserControl
 	{
 
+		public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(string), typeof(PatternTestView));
+		public string Header
+		{
+			get { return (string)GetValue(HeaderProperty); }
+			set { SetValue(HeaderProperty, value); }
+		}
+
 
 		public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(PatternTestView));
 		public Orientation Orientation
@@ -45,6 +52,8 @@ namespace FormatHandlerDesigner.Views
 			set { SetValue(PatternProperty, value); }
 		}
 
+		public event GetPatternEventHandler GetPattern;
+
 		public PatternTestView()
 		{
 			InitializeComponent();
@@ -52,12 +61,23 @@ namespace FormatHandlerDesigner.Views
 
 		private void TestCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = (!string.IsNullOrEmpty(Pattern)) && (!string.IsNullOrEmpty(textBox.Text));e.Handled = true;
+			e.CanExecute = ((!string.IsNullOrEmpty(Pattern)) || (GetPattern!=null)  ) && (!string.IsNullOrEmpty(textBox.Text));e.Handled = true;
 		}
 
 		private void TestCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			Status=Regex.Match(textBox.Text, Pattern).Success;
+			GetPatternEventArgs e2;
+
+			e2 = new GetPatternEventArgs() { Pattern = this.Pattern };
+			GetPattern?.Invoke(this, e2);
+			try
+			{
+				Status = Regex.Match(textBox.Text, e2.Pattern, RegexOptions.None, TimeSpan.FromSeconds(5)).Success;
+			}
+			catch
+			{
+				Status = false;
+			}
 
 		}
 

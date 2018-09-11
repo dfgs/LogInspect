@@ -70,14 +70,14 @@
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
-				<DockPanel ToolTip="{Binding}">
-					<Border DockPanel.Dock="Left" Width="4" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>
+				<DockPanel ToolTip="{Binding}" >
+					<Border Width="4" DockPanel.Dock="Left" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>
 					<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis"/>
 				</DockPanel>
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-				<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/>
+				<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis" TextAlignment="{Binding Alignment}" ToolTip="{Binding}"/>
 			</DataTemplate>
 			<!-- -->
 		</ResourceDictionary>
@@ -124,7 +124,9 @@
 					 SelectedItem="{Binding Events.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
 				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.IsDeferredScrollingEnabled="True">
-				
+				<ListView.CommandBindings>
+					<CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
+				</ListView.CommandBindings>
 				<ListView.Style>
 					<Style TargetType="{x:Type ListView}">
 						<Setter Property="IsEnabled" Value="False"/>
@@ -171,7 +173,7 @@
 						<TextBlock Text="Raw data"/>
 					</StackPanel>
 				</TabItem.Header>
-				<TextBox   IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}"/>
+				<TextBox  IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}" VerticalScrollBarVisibility="Auto" />
 			</TabItem>
 			
 		</TabControl>

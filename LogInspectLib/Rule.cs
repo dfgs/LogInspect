@@ -17,9 +17,6 @@ namespace LogInspectLib
 			set;
 		}
 
-
-
-
 		[XmlAttribute]
 		public bool Discard
 		{

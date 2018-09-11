@@ -106,11 +106,14 @@ namespace LogInspect.ViewModels
 
 		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules,Event Event)
 		{
+			string value;
 
 			foreach (EventColoringRule coloringRule in ColoringRules)
 			{
+				value = Event.GetValue(coloringRule.Column) as string;
+				if (value == null) continue;
 
-				if (Regex.Match(Event.GetValue(coloringRule.Column) as string, coloringRule.Pattern).Success)
+				if (Regex.Match(value, coloringRule.Pattern).Success)
 				{
 					try
 					{

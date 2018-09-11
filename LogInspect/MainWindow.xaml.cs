@@ -33,6 +33,7 @@ namespace LogInspect
 
 		public MainWindow()
 		{
+			/*
 			FormatHandler schema;
 			Rule rule;
 			Column column;
@@ -109,14 +110,21 @@ namespace LogInspect
 
 			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
 			#endregion
+			//*/
 
-
-			logger = new ConsoleLogger(new DefaultLogFormatter());
+			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
 			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize,
 				 Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.IndexerBufferLookupRetryDelay, Properties.Settings.Default.IndexerProgressRefreshDelay);
 
 			InitializeComponent();
 			DataContext = appViewModel;
+
+
+			string[] args = Environment.GetCommandLineArgs();
+			if (args!=null)
+			{
+				if (args.Contains("-SelfLogging")) appViewModel.Open("LogInspect.log");
+			}
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

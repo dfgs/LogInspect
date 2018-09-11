@@ -14,10 +14,11 @@ namespace LogInspectLib.Parsers
 		private Column[] columns;
 		private InlineParser[] inlineParsers;
 
+
 		public LogParser( Rule Rule,IEnumerable<Column> Columns)
 		{
 			this.rule = Rule;
-			regex = new Regex(Rule.GetPattern());
+			regex = new Regex(Rule.GetPattern(),RegexOptions.Compiled,TimeSpan.FromSeconds(2));
 			columns = Columns.ToArray();
 			inlineParsers = columns.Select((item) => new InlineParser(item)).ToArray();
 		}
@@ -30,7 +31,14 @@ namespace LogInspectLib.Parsers
 			Property property;
 			Column column;
 
-			match = regex.Match(Log.ToSingleLine());
+			try  // match can timeout !
+			{
+				match = regex.Match(Log.ToSingleLine());
+			}
+			catch
+			{
+				return null;
+			}
 			if (!match.Success) return null;
 
 			properties = new List<Property>();

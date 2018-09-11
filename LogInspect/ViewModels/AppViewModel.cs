@@ -90,7 +90,7 @@ namespace LogInspect.ViewModels
 			Log(LogLevels.Information, "Parsing format handlers directory...");
 			try
 			{
-				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml"))
+				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((item)=>item) )
 				{
 					Log(LogLevels.Information, $"Loading file {FileName}");
 					try
@@ -144,7 +144,7 @@ namespace LogInspect.ViewModels
 			Log(LogLevels.Information, "Creating event reader...");
 			try
 			{
-				stream = new FileStream(FileName, FileMode.Open,FileAccess.Read);
+				stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
 				reader = new EventReader(stream, Encoding.Default,BufferSize, formatHandler);
 			}
 			catch (Exception ex)

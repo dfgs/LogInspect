@@ -20,7 +20,7 @@ namespace LogInspectLib.Parsers
 			regexes = new Regex[Column.InlineColoringRules.Count];
 			for(int t=0;t<Column.InlineColoringRules.Count;t++)
 			{
-				regexes[t] = new Regex(Column.InlineColoringRules[t].Pattern);
+				regexes[t] = new Regex(Column.InlineColoringRules[t].Pattern,RegexOptions.Compiled);
 			}
 		}
 

@@ -14,7 +14,7 @@
 		</StackPanel>
 		<views:PropertyView Header="Severity column:" Value="{Binding SeverityColumn}"/>
 		<views:PropertyView Header="Timestamp column:" Value="{Binding TimeStampColumn}"/>
-
+		<views:EvenrColoringRulesView />
 	</StackPanel>
 
 </UserControl>

@@ -31,6 +31,12 @@ namespace LogInspect.Modules
 			private set;
 		}
 
+		public int Rate
+		{
+			get;
+			private set;
+		}
+
 		private int lookupRetryDelay;
 		private DateTime startTime;
 
@@ -76,14 +82,20 @@ namespace LogInspect.Modules
 						Log(ex);
 						return;
 					}
-					Read?.Invoke(this, new EventReadEventArgs(item));
 
-					if (MustIndexEvent(item))
+					if (!item.Rule.Discard)
 					{
-						Indexed?.Invoke(this, new EventIndexedEventArgs(item, IndexedEventsCount,lineIndex));
-						IndexedEventsCount++;
+						Read?.Invoke(this, new EventReadEventArgs(item));
+
+						if (MustIndexEvent(item))
+						{
+							Indexed?.Invoke(this, new EventIndexedEventArgs(item, IndexedEventsCount, lineIndex));
+							IndexedEventsCount++;
+						}
 					}
+
 					lineIndex += item.Log.Lines.Count();
+
 				}
 				Log(LogLevels.Debug, $"Indexed reached end of stream in {DateTime.Now - startTime}");
 				startTime = DateTime.Now;

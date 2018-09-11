@@ -56,9 +56,13 @@
     </ApplicationDefinition>
     <Compile Include="ListViewModel.cs" />
     <Compile Include="ViewModel.cs" />
+    <Compile Include="Views\GetPatternEventHandler.cs" />
     <Compile Include="Views\AddItemEventHandler.cs" />
     <Compile Include="Views\ColumnsView.xaml.cs">
       <DependentUpon>ColumnsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventColoringRulesView.xaml.cs">
+      <DependentUpon>EventColoringRulesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FormatHandlerView.xaml.cs">
       <DependentUpon>FormatHandlerView.xaml</DependentUpon>
@@ -102,6 +106,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ColumnsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EventColoringRulesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

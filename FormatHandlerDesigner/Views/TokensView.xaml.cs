@@ -21,7 +21,15 @@ namespace FormatHandlerDesigner.Views
     /// </summary>
     public partial class TokensView : UserControl
     {
-        public TokensView()
+
+		public static readonly DependencyProperty RulePatternProperty = DependencyProperty.Register("RulePattern", typeof(string), typeof(TokensView));
+		public string RulePattern
+		{
+			get { return (string)GetValue(RulePatternProperty); }
+			set { SetValue(RulePatternProperty, value); }
+		}
+
+		public TokensView()
         {
             InitializeComponent();
         }
@@ -31,5 +39,14 @@ namespace FormatHandlerDesigner.Views
 			e.AddedItem = new Token() { Pattern = ".*" };
 		}
 
+		private void PatternTestView_GetPattern(object sender, GetPatternEventArgs e)
+		{
+			Rule rule;
+
+			rule = DataContext as Rule;
+			if (rule == null) return;
+			e.Pattern = rule.GetPattern();
+			this.RulePattern = e.Pattern;
+		}
 	}
 }

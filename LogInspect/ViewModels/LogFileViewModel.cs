@@ -37,6 +37,8 @@ namespace LogInspect.ViewModels
 
 
 
+	
+
 
 		public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(Statuses), typeof(LogFileViewModel),new PropertyMetadata(Statuses.Idle));
 		public Statuses Status

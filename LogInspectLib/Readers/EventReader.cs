@@ -66,16 +66,16 @@ namespace LogInspectLib.Readers
 		{
 			Log log;
 			Event? ev;
+			//Event result;
 
 			log = logReader.Read();
-			foreach(LogParser parser in logParsers)
+			foreach (LogParser parser in logParsers)
 			{
 				ev = parser.Parse(log);
 				if (ev.HasValue) return ev.Value;
 			}
+			return new Event(log, null, Property.EmptyProperties);
 
-			return new Event(log,null, Property.EmptyProperties);
-			
 		}
 		
 

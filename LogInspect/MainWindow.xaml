@@ -90,6 +90,9 @@
 			<Separator/>
 			<TextBlock Text="Events:"/>
 			<TextBlock Text="{Binding SelectedItem.EventIndexer.IndexedEventsCount,FallbackValue=NA}"/>
+			<TextBlock Text="Rate:"/>
+			<TextBlock Text="{Binding SelectedItem.EventIndexer.Rate,FallbackValue=NA}"/>
+			<TextBlock Text="/s"/>
 			<Separator/>
 			<TextBlock Text="Status:"/>
 			<TextBlock Text="{Binding SelectedItem.Status,FallbackValue=Idle}"/>
@@ -131,6 +134,11 @@
 				<Button Command="{StaticResource findNextBookMark}" ToolTip="Find next">
 					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
 				</Button>
+			</ToolBar>
+			<ToolBar>
+				<ToggleButton ToolTip="Tail logs" IsChecked="{Binding Events.Tail}">
+					<Image Source="Images/script_go.png" Stretch="None"   />
+				</ToggleButton>
 			</ToolBar>
 		</ToolBarTray>
 

@@ -15,7 +15,7 @@
 	</UserControl.CommandBindings>
 	<StackPanel Orientation="{Binding ElementName=root,Path=Orientation}">
 		<StackPanel Orientation="Horizontal">
-			<TextBlock Grid.Column="0" Margin="4" VerticalAlignment="Center" Text="Test pattern:" FontWeight="Bold"/>
+			<TextBlock Grid.Column="0" Margin="4" VerticalAlignment="Center" Text="{Binding ElementName=root,Path= Header,FallbackValue=Test pattern:,TargetNullValue=Test pattern:}" FontWeight="Bold"/>
 			<Image  Margin="4"  Stretch="None">
 				<Image.Style>
 					<Style TargetType="{x:Type Image}">
@@ -38,7 +38,7 @@
 				<Image Source="/FormatHandlerDesigner;component/Images/magnifier.png" Stretch="None"/>
 			</Button>
 		</StackPanel>
-		<TextBox  Margin="4" x:Name="textBox" TextChanged="textBox_TextChanged" >
+		<TextBox  Margin="4" x:Name="textBox" TextChanged="textBox_TextChanged"  >
 			<TextBox.Style>
 				<Style TargetType="{x:Type TextBox}">
 					<Setter Property="Height" Value="150"/>

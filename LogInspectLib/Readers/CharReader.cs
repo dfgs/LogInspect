@@ -28,7 +28,12 @@ namespace LogInspectLib.Readers
 
 		public override bool EndOfStream
 		{
-			get { return position == stream.Length; }
+			get {  return position == stream.Length; }
+		}
+
+		public long AvailableBytes
+		{
+			get { return stream.Length - position; }
 		}
 
 		public CharReader(Stream Stream,Encoding Encoding,int BufferSize)
@@ -57,19 +62,8 @@ namespace LogInspectLib.Readers
 			else this.buffer = encoding.GetChars(bytes, 0, count);
 			bufferIndex = 0;
 		}
-		private async Task LoadAsync()
-		{
-			int count;
-			byte[] bytes;
+		
 
-			bufferPosition = position;
-
-			bytes = new byte[bufferSize];
-			count = await stream.ReadAsync(bytes, 0, bufferSize);
-			if (count <= 0) throw (new EndOfStreamException());
-			else this.buffer = encoding.GetChars(bytes, 0, count);
-			bufferIndex = 0;
-		}
 		protected override char OnRead()
 		{
 			char c;

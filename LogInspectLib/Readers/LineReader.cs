@@ -47,17 +47,23 @@ namespace LogInspectLib.Readers
 			char c;
 			StringBuilder sb;
 			long pos;
+			long availableBytes;
 
 			pos = Position;
-			sb = new StringBuilder(1024);
-			do
-			{
-				c = charReader.Read();
-				if (c == '\n') break;
-				if (c == '\r') continue;
-				sb.Append(c);
-			} while (!charReader.EndOfStream);
+			sb = new StringBuilder(2048);
 
+			do
+			{ 
+				availableBytes = charReader.AvailableBytes;	// needed optimization because charReader.EndOfStream is very slow
+				for (long t = 0; t < availableBytes; t++)
+				{
+					c = charReader.Read();
+					if (c == '\n') goto result;
+					if (c == '\r') continue;
+					sb.Append(c);
+				}
+			} while (!charReader.EndOfStream);
+			result:
 			return new Line(pos, sb.ToString());
 
 		}

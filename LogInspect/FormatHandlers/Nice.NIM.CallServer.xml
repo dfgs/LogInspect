@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date">
+  <Name>Nice.NIM.CallServer</Name>
+  <FileNamePattern>^Call Server\.log(\.\d+)?$</FileNamePattern>
+  <AppendLineToPreviousPatterns />
+  <AppendLineToNextPatterns>
+    <string>[^\u0003]$</string>
+  </AppendLineToNextPatterns>
+  <DiscardLinePatterns />
+  <Columns>
+    <Column Name="Date" Type="DateTime" Format="dd-MM-yy HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Thread" Width="150" Alignment="" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Module" Width="100" Alignment="" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Message" Width="600" IsFilterItemSource="false">
+      <InlineColoringRules>
+        <InlineColoringRule Pattern="L(og)?ge?r(=| )\d+" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+        <InlineColoringRule Pattern="([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+" Foreground="Blue" Underline="true" Bold="false" Italic="false" />
+        <InlineColoringRule Pattern="[iI]nteractionID(=| )\d+" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+        <InlineColoringRule Pattern="[A-Z]+(_[A-Z]+)+" Foreground="Brown" Underline="false" Bold="true" Italic="false" />
+        <InlineColoringRule Pattern="Ch=\d+" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+        <InlineColoringRule Pattern="[a-zA-Z0-9-_]*Status *(=| ) *.*OK" Foreground="Green" Underline="false" Bold="true" Italic="false" />
+        <InlineColoringRule Pattern="Status 0 *\(Ok\)" Foreground="Green" Underline="false" Bold="true" Italic="false" />
+        <InlineColoringRule Pattern="D(N|EV)=&quot;\d+&quot; " Foreground="Goldenrod" Underline="false" Bold="false" Italic="true" />
+        <InlineColoringRule Pattern="(agent|user)ID=\d*" Foreground="Goldenrod" Underline="false" Bold="false" Italic="true" />
+      </InlineColoringRules>
+    </Column>
+  </Columns>
+  <Rules>
+    <Rule Name="Event" Discard="false">
+      <Tokens>
+        <Token Pattern="^\d\d/\d\d/\d\d \d\d:\d\d:\d\d\.\d+" Name="Date" />
+        <Token Pattern=" *\| *" />
+        <Token Pattern="[^ ]+" Name="Severity" />
+        <Token Pattern=" *\| *" />
+        <Token Pattern=".+(?= *\| *)" Name="Thread" />
+        <Token Pattern=" *\| *" />
+        <Token Pattern=".+(?= *\| *)" Name="Module" />
+        <Token Pattern=" *\| *" />
+        <Token Pattern="[^\u0003]+" Name="Message" />
+        <Token Pattern="\u0003$" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Comment" Discard="true">
+      <Tokens>
+        <Token Pattern="^//" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Default" Discard="false">
+      <Tokens>
+        <Token Pattern=".*" Name="Message" />
+      </Tokens>
+    </Rule>
+  </Rules>
+  <EventColoringRules>
+    <EventColoringRule Column="Severity" Pattern="ERROR" Background="OrangeRed" />
+    <EventColoringRule Column="Severity" Pattern="WARN" Background="Orange" />
+  </EventColoringRules>
+</FormatHandler>

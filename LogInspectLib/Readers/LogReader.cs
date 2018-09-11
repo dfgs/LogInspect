@@ -53,15 +53,15 @@ namespace LogInspectLib.Readers
 
 			foreach (string pattern in FormatHandler.AppendLineToPreviousPatterns)
 			{
-				this.appendToPreviousRegexes.Add(new Regex(pattern));
+				this.appendToPreviousRegexes.Add(new Regex(pattern,RegexOptions.Compiled));
 			}
 			foreach (string pattern in FormatHandler.AppendLineToNextPatterns)
 			{
-				this.appendToNextRegexes.Add(new Regex(pattern));
+				this.appendToNextRegexes.Add(new Regex(pattern, RegexOptions.Compiled));
 			}
 			foreach (string pattern in FormatHandler.DiscardLinePatterns)
 			{
-				this.discardRegexes.Add(new Regex(pattern));
+				this.discardRegexes.Add(new Regex(pattern, RegexOptions.Compiled));
 			}
 
 		}
@@ -73,6 +73,7 @@ namespace LogInspectLib.Readers
 
 		private bool MustAppendToNextLine(Line Line)
 		{
+			//return false;
 			foreach (Regex regex in appendToNextRegexes)
 			{
 				if (regex.Match(Line.Value).Success) return true;
