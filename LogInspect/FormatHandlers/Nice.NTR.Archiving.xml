@@ -38,7 +38,7 @@
       <Tokens>
         <Token Pattern="^\[" />
         <Token Pattern="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" Name="Date" />
-        <Token Pattern=" " />
+        <Token Pattern="[" />
         <Token Pattern="[^\]]+" Name="Severity" />
         <Token Pattern="] " />
         <Token Pattern="[^:]+" Name="Thread" />
@@ -50,7 +50,6 @@
       <Tokens>
         <Token Pattern="^\[" />
         <Token Pattern="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" Name="Date" />
-        <Token Pattern=" " />
         <Token Pattern="[^\]]+" Name="Severity" />
         <Token Pattern="] " />
         <Token Pattern=".+" Name="Message" />

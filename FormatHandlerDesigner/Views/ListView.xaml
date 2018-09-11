@@ -9,6 +9,8 @@
 
 	<UserControl.Resources>
 		<RoutedCommand x:Key="addCommand"/>
+		<RoutedCommand x:Key="moveUpCommand"/>
+		<RoutedCommand x:Key="moveDownCommand"/>
 
 		<DataTemplate x:Key="viewModelDataTemplate">
 			<ContentPresenter Content="{Binding Value}"/>
@@ -22,6 +24,8 @@
 	<UserControl.CommandBindings>
 		<CommandBinding Command="{StaticResource addCommand}" CanExecute="AddCommandBinding_CanExecute" Executed="AddCommandBinding_Executed"/>
 		<CommandBinding Command="Delete" CanExecute="DeleteCommandBinding_CanExecute" Executed="DeleteCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource moveUpCommand}" CanExecute="MoveUpCommandBinding_CanExecute" Executed="MoveUpCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource moveDownCommand}" CanExecute="MoveDownCommandBinding_CanExecute" Executed="MoveDownCommandBinding_Executed"/>
 	</UserControl.CommandBindings>
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -32,7 +36,13 @@
 			<Button Grid.Column="3" Margin="2" ToolTip="Delete item" Command="Delete">
 				<Image Source="/FormatHandlerDesigner;component/Images/delete.png" Stretch="None"/>
 			</Button>
-		
+			<Button Grid.Column="3" Margin="2" ToolTip="Move up" Command="{StaticResource moveUpCommand}">
+				<Image Source="/FormatHandlerDesigner;component/Images/arrow_up.png" Stretch="None"/>
+			</Button>
+			<Button Grid.Column="3" Margin="2" ToolTip="Move up" Command="{StaticResource moveDownCommand}">
+				<Image Source="/FormatHandlerDesigner;component/Images/arrow_down.png" Stretch="None"/>
+			</Button>
+
 		</StackPanel>
 		<ListBox ItemsSource="{Binding ElementName=root,Path=ItemsSource}" ItemTemplate="{StaticResource viewModelDataTemplate}" SelectedItem="{Binding ElementName=root,Path=SelectedItem}"/>
 	</DockPanel>

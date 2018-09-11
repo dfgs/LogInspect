@@ -101,5 +101,27 @@ namespace FormatHandlerDesigner.Views
 		}
 
 
+		private void MoveUpCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (ItemsSource != null) && (SelectedItem != null); e.Handled = true;
+		}
+
+		private void MoveUpCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ItemsSource.MoveUp(ItemsSource.IndexOf(SelectedItem));
+		}
+
+
+		private void MoveDownCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (ItemsSource != null) && (SelectedItem != null); e.Handled = true;
+		}
+
+		private void MoveDownCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ItemsSource.MoveDown(ItemsSource.IndexOf(SelectedItem));
+		}
+
+
 	}
 }

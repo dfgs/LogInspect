@@ -66,6 +66,7 @@ namespace FormatHandlerDesigner
 
 			return item;
 		}
+		
 		public void RemoveAt(int Index)
 		{
 			ViewModel item;
@@ -76,7 +77,38 @@ namespace FormatHandlerDesigner
 
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,item,Index));
 		}
+		public void MoveUp(int Index)
+		{
+			ViewModel item;
 
+			if (Index <= 0) return;
+
+			item = items[Index];
+			model.RemoveAt(Index);
+			items.RemoveAt(Index);
+
+			Index--;
+			model.Insert(Index, item.Value);
+			items.Insert(Index, item);
+
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, Index, Index + 1));
+		}
+		public void MoveDown(int Index)
+		{
+			ViewModel item;
+
+			if (Index >= items.Count-1) return;
+
+			item = items[Index];
+			model.RemoveAt(Index);
+			items.RemoveAt(Index);
+			
+			Index++;
+			model.Insert(Index, item.Value);
+			items.Insert(Index, item);
+
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, Index,Index-1));
+		}
 		public IEnumerator<ViewModel> GetEnumerator()
 		{
 			return items.GetEnumerator();
