@@ -17,5 +17,8 @@
     <Setting Name="IndexerProgressRefreshDelay" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">300</Value>
     </Setting>
+    <Setting Name="PatternLibsFolder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PatternLibs</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

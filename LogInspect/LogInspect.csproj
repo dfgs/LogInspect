@@ -94,6 +94,7 @@
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\BaseCollectionViewModel.cs" />
+    <Compile Include="ViewModels\FindOptions.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
     <Compile Include="ViewModels\FilterItemAddedEventHandler.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="ViewModels\Statuses.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
+    <Compile Include="Views\Commands.cs" />
     <Compile Include="Views\EventDetailsView.xaml.cs">
       <DependentUpon>EventDetailsView.xaml</DependentUpon>
     </Compile>
@@ -365,6 +367,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\text_letterspacing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\magnifier_next.png" />
+    <Resource Include="Images\magnifier_previous.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.CallController.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PatternLibs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

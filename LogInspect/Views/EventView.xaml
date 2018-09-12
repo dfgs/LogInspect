@@ -17,9 +17,6 @@
 
 			<views:BooleanToVisibiltyConverter x:Key="booleanToVisibilityConverter"/>
 
-
-		
-
 			<Style x:Key="columnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 			</Style>
@@ -54,10 +51,6 @@
 				</DockPanel>
 			</DataTemplate>
 		
-		
-		
-	
-		
 			<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
 				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Event.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
 			</DataTemplate>
@@ -85,13 +78,7 @@
 
 	</UserControl.Resources>
 
-	<UserControl.InputBindings>
-		<KeyBinding Key="F" Modifiers="Ctrl" Command="Find"/>
-	</UserControl.InputBindings>
 	
-	<UserControl.CommandBindings>
-		<CommandBinding Command="Find" CanExecute="FindCommandBinding_CanExecute" Executed="FindCommandBinding_Executed"/>
-	</UserControl.CommandBindings>
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -101,7 +88,7 @@
 			<RowDefinition Height="150"/>
 		</Grid.RowDefinitions>
 
-		<views:FindView Grid.Row="0" Visibility="{Binding IsFindMenuVisible,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=1}" />
+		<views:FindView Grid.Row="0" Visibility="{Binding FindOptions.IsVisible,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=1}" />
 
 		<DockPanel Grid.Row="1">
 

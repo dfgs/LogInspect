@@ -45,39 +45,39 @@
 				</Trigger>
 			</Style.Triggers>
 		</Style>
-		<RoutedUICommand x:Key="filterEvents"/>
-
-		<RoutedUICommand x:Key="findPreviousSeverity"/>
-		<RoutedUICommand x:Key="findNextSeverity"/>
 		
-		<RoutedUICommand x:Key="toogleBookMark"/>
-		<RoutedUICommand x:Key="findPreviousBookMark"/>
-		<RoutedUICommand x:Key="findNextBookMark"/>
 	
 	</Window.Resources>
 	
 	
 	<Window.InputBindings>
-		<KeyBinding Command="{StaticResource filterEvents}" Key="F5" />
-		<KeyBinding Command="{StaticResource findPreviousSeverity}" Key="Left" Modifiers="Ctrl"/>
-		<KeyBinding Command="{StaticResource findNextSeverity}" Key="Right" Modifiers="Ctrl"/>
-		<KeyBinding Command="{StaticResource toogleBookMark}" Key="B" Modifiers="Ctrl" />
+		<KeyBinding Command="Refresh" Key="F5" />
+		<KeyBinding Command="{x:Static views:Commands.FindPreviousSeverity}" Key="Left" Modifiers="Ctrl"/>
+		<KeyBinding Command="{x:Static views:Commands.FindNextSeverity}" Key="Right" Modifiers="Ctrl"/>
+		<KeyBinding Command="{x:Static views:Commands.ToogleBookMark}" Key="B" Modifiers="Ctrl" />
 		<KeyBinding Command="Close" Key="F4" Modifiers="Ctrl"/>
+		<KeyBinding Key="F" Modifiers="Ctrl" Command="Find"/>
+		<KeyBinding Key="F3" Command="{x:Static views:Commands.FindNext}"/>
+		<KeyBinding Modifiers="Ctrl" Key="F3" Command="{x:Static views:Commands.FindPrevious}"/>
 	</Window.InputBindings>
 
 	<Window.CommandBindings>
 		<CommandBinding Command="Open" CanExecute="OpenCommandBinding_CanExecute" Executed="OpenCommandBinding_Executed"/>
 
-		<CommandBinding Command="{StaticResource filterEvents}" CanExecute="FilterEventsCommandBinding_CanExecute" Executed="FilterEventsCommandBinding_Executed"/>
+		<CommandBinding Command="Refresh" CanExecute="FilterEventsCommandBinding_CanExecute" Executed="FilterEventsCommandBinding_Executed"/>
 
-		<CommandBinding Command="{StaticResource findPreviousSeverity}" CanExecute="FindPreviousSeverityCommandBinding_CanExecute" Executed="FindPreviousSeverityCommandBinding_Executed"/>
-		<CommandBinding Command="{StaticResource findNextSeverity}" CanExecute="FindNextSeverityCommandBinding_CanExecute" Executed="FindNextSeverityCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.FindPreviousSeverity}" CanExecute="FindPreviousSeverityCommandBinding_CanExecute" Executed="FindPreviousSeverityCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.FindNextSeverity}" CanExecute="FindNextSeverityCommandBinding_CanExecute" Executed="FindNextSeverityCommandBinding_Executed"/>
 
-		<CommandBinding Command="{StaticResource toogleBookMark}" CanExecute="SetBookMarkCommandBinding_CanExecute" Executed="ToogleBookMarkCommandBinding_Executed"/>
-		<CommandBinding Command="{StaticResource findPreviousBookMark}" CanExecute="FindPreviousBookMarkCommandBinding_CanExecute" Executed="FindPreviousBookMarkCommandBinding_Executed"/>
-		<CommandBinding Command="{StaticResource findNextBookMark}" CanExecute="FindNextBookMarkCommandBinding_CanExecute" Executed="FindNextBookMarkCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.ToogleBookMark}" CanExecute="SetBookMarkCommandBinding_CanExecute" Executed="ToogleBookMarkCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.FindPreviousBookMark}" CanExecute="FindPreviousBookMarkCommandBinding_CanExecute" Executed="FindPreviousBookMarkCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.FindNextBookMark}" CanExecute="FindNextBookMarkCommandBinding_CanExecute" Executed="FindNextBookMarkCommandBinding_Executed"/>
 
 		<CommandBinding Command="Close" CanExecute="CloseCommandBinding_CanExecute" Executed="CloseCommandBinding_Executed"/>
+
+		<CommandBinding Command="Find" CanExecute="FindCommandBinding_CanExecute" Executed="FindCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.FindPrevious}" CanExecute="FindPreviousCommandBinding_CanExecute" Executed="FindPreviousCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.FindNext}" CanExecute="FindNextCommandBinding_CanExecute" Executed="FindNextCommandBinding_Executed"/>
 
 	</Window.CommandBindings>
 	
@@ -117,22 +117,22 @@
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<Button Command="{StaticResource findPreviousSeverity}" ToolTip="Find previous">
-					<Image Source="Images\bullet_arrow_left.png" Stretch="None"  />
+				<Button Command="{x:Static views:Commands.FindPreviousSeverity}" ToolTip="Find previous">
+					<Image Source="Images/magnifier_previous.png" Stretch="None"  />
 				</Button>
 				<ComboBox Width="120" ItemsSource="{Binding Severities}" SelectedItem="{Binding Severities.SelectedItem}"/>
-				<Button Command="{StaticResource findNextSeverity}" ToolTip="Find next">
-					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
+				<Button Command="{x:Static views:Commands.FindNextSeverity}" ToolTip="Find next">
+					<Image Source="Images/magnifier_next.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<Button Command="{StaticResource toogleBookMark}" ToolTip="Toogle bookmark">
+				<Button Command="{x:Static views:Commands.ToogleBookMark}" ToolTip="Toogle bookmark">
 					<Image Source="Images\flag_blue.png" Stretch="None"  />
 				</Button>
-				<Button Command="{StaticResource findPreviousBookMark}" ToolTip="Find previous">
+				<Button Command="{x:Static views:Commands.FindPreviousBookMark}" ToolTip="Find previous">
 					<Image Source="Images\bullet_arrow_left.png" Stretch="None"  />
 				</Button>
-				<Button Command="{StaticResource findNextBookMark}" ToolTip="Find next">
+				<Button Command="{x:Static views:Commands.FindNextBookMark}" ToolTip="Find next">
 					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
@@ -140,7 +140,7 @@
 				<ToggleButton ToolTip="Tail logs" IsChecked="{Binding Events.Tail}">
 					<Image Source="Images/script_go.png" Stretch="None"   />
 				</ToggleButton>
-				<ToggleButton ToolTip="Find" IsChecked="{Binding IsFindMenuVisible}">
+				<ToggleButton ToolTip="Find" IsChecked="{Binding FindOptions.IsVisible}">
 					<Image Source="Images/page_find.png" Stretch="None"   />
 				</ToggleButton>
 			</ToolBar>

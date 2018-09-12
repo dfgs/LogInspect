@@ -131,20 +131,7 @@ namespace LogInspect.Views
 			Clipboard.SetText(buffer.ToString());
 		}
 
-		private void FindCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			LogFileViewModel vm;
-			vm = DataContext as LogFileViewModel;
-			e.CanExecute = (vm != null) ; e.Handled = true;
-		}
 
-		private void FindCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			LogFileViewModel vm;
-			vm = DataContext as LogFileViewModel;
-
-			vm.IsFindMenuVisible = true;
-		}
 
 
 	}

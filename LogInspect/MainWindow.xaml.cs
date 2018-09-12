@@ -33,84 +33,9 @@ namespace LogInspect
 
 		public MainWindow()
 		{
-			/*
-			FormatHandler schema;
-			Rule rule;
-			Column column;
-
-			#region rcm
-			schema = new FormatHandler() { Name = "Nice.Perform.RCM", FileNamePattern = @"^RCM\.log(\.\d+)?$"};
-			schema.AppendLineToNextPatterns.Add(@".*(?<!\u0003)$");
-
-			rule = new LogInspectLib.Rule() { Name = "Event" };
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"^\d\d/\d\d/\d\d \d\d:\d\d:\d\d\.\d+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^ ]+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
-			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^,]+(, *[^,]+)*" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
-			rule.Tokens.Add(new Token() { Name = "Module", Pattern = @"[^ ]+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @" *\| *" });
-			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @"[^\u0003]+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\u0003$" });
-			schema.Rules.Add(rule);
-
-			rule = new LogInspectLib.Rule() { Name = "Comment" };
-			rule.Tokens.Add(new Token() { Pattern = @"^//" });
-			schema.Rules.Add(rule);
-			
-			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.Perform.RCM.xml"));
-			#endregion
-
-			#region NTR
-			schema = new FormatHandler() { Name = "Nice.NTR.Archiving", FileNamePattern = @"^CyberTech\.ContentManager\.Archiving\.WindowsService-\d\d\d\d-\d\d-\d\d\.log$" };
-			schema.AppendLineToPreviousPatterns.Add(@"^[^\[]");
-			schema.DiscardLinePatterns.Add(@"^$");
-			schema.SeverityColumn = "Severity";
-			schema.TimeStampColumn = "Date";
-			schema.Columns.Add(new Column() { Name = "Date",  Width = 200, Alignment = "Center",Format = "yyyy-MM-dd HH:mm:ss.fff",Type="DateTime" });
-			schema.Columns.Add(new Column() { Name = "Severity", Width = 100, Alignment = "Center", IsFilterItemSource = true });
-			schema.Columns.Add(new Column() { Name = "Thread", Width = 300, IsFilterItemSource = true });
-			column = new Column() { Name = "Message", Width = 600 };
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"CVSKEY=\d+", Foreground = "Green",Bold=true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"AudioFragment:\d+", Foreground = "Olive",Bold=true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+", Foreground = "Blue",Underline=true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"Error num=\d+", Foreground = "Red", Bold = true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"Error = [^\.]+", Foreground = "Red", Bold = true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"'[^']+'", Foreground = "BlueViolet" });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"\d+(\.\d+)? ms", Foreground = "Black", Bold = true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @" \d+ ", Foreground = "Black", Bold = true });
-			column.InlineColoringRules.Add(new LogInspectLib.InlineColoringRule() { Pattern = @"Connected|CorrectMediumFound", Foreground = "RosyBrown",  Italic = true });
-			
-
-			schema.Columns.Add(column);
-
-			rule = new LogInspectLib.Rule() { Name = "Event with thread" };
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
-			rule.Tokens.Add(new Token() { Name = "Thread", Pattern = @"[^:]+"});
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @": " });
-			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+"});
-			schema.Rules.Add(rule);
-
-			rule = new LogInspectLib.Rule() { Name = "Event without thread" };
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @"^\[" });
-			rule.Tokens.Add(new Token() { Name = "Date", Pattern = @"\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @" " });
-			rule.Tokens.Add(new Token() { Name = "Severity", Pattern = @"[^\]]+" });
-			rule.Tokens.Add(new Token() { Name = null, Pattern = @"] " });
-			rule.Tokens.Add(new Token() { Name = "Message", Pattern = @".+" });
-			schema.Rules.Add(rule);
-
-			schema.EventColoringRules.Add(new EventColoringRule() { Column = "Severity", Pattern = @"ERROR", Background="OrangeRed" });
-			schema.EventColoringRules.Add(new EventColoringRule() { Column = "Severity", Pattern = @"WARN", Background="Orange" });
-
-			schema.SaveToFile(System.IO.Path.Combine(Properties.Settings.Default.FormatHandlersFolder, "Nice.NTR.Archiving.xml"));
-			#endregion
-			//*/
+			PatternLib lib = new PatternLib() {Name="Generic" };
+			lib.Add(new Pattern() {Name="Date",Value= @"\d\d\d\d-\d\d-\d\d *\d\d:\d\d:\d\d\.\d+" });
+			lib.SaveToFile(@"PatternLibs\Generic.xml");
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
 			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize,
@@ -239,6 +164,44 @@ namespace LogInspect
 
 
 		#endregion
+
+		#region find
+		private void FindCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null); e.Handled = true;
+		}
+
+		private void FindCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			appViewModel.SelectedItem.FindOptions.IsVisible = true;
+		}
+		private void FindPreviousCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.FindOptions.Column != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) && (!string.IsNullOrEmpty(appViewModel.SelectedItem.FindOptions.Text)); e.Handled = true;
+		}
+
+		private async void FindPreviousCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			int index;
+
+			index = await appViewModel.SelectedItem.FindPreviousAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1, appViewModel.SelectedItem.FindOptions.Match);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+		}
+
+		private void FindNextCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.FindOptions.Column != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) && (!string.IsNullOrEmpty(appViewModel.SelectedItem.FindOptions.Text)); e.Handled = true;
+		}
+
+		private async void FindNextCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			int index;
+
+			index = await appViewModel.SelectedItem.FindNextAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1, appViewModel.SelectedItem.FindOptions.Match );
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+		}
+		#endregion
+
 
 		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{

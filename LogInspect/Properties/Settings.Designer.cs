@@ -67,5 +67,14 @@ namespace LogInspect.Properties {
                 return ((int)(this["IndexerProgressRefreshDelay"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PatternLibs")]
+        public string PatternLibsFolder {
+            get {
+                return ((string)(this["PatternLibsFolder"]));
+            }
+        }
     }
 }

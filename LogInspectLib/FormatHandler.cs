@@ -65,6 +65,12 @@ namespace LogInspectLib
 			set;
 		}
 
+		[XmlAttribute]
+		public string DefaultColumn
+		{
+			get;
+			set;
+		}
 
 		[XmlArray]
 		public List<Rule> Rules

@@ -44,6 +44,8 @@
     <Compile Include="Inline.cs" />
     <Compile Include="InlineColoringRule.cs" />
     <Compile Include="Parsers\InlineParser.cs" />
+    <Compile Include="Pattern.cs" />
+    <Compile Include="PatternLib.cs" />
     <Compile Include="Readers\EventReader.cs" />
     <Compile Include="Readers\Reader.cs" />
     <Compile Include="Readers\CharReader.cs" />
@@ -71,6 +73,11 @@
       <Project>{ef4b0001-2859-4a09-8f95-3e5bef4a5272}</Project>
       <Name>LogLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PatternLibs\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

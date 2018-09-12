@@ -22,35 +22,23 @@ namespace LogInspect.Views
 	public partial class FindView : UserControl
 	{
 
-		public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(FindView));
-		public string Text
-		{
-			get { return (string)GetValue(TextProperty); }
-			set { SetValue(TextProperty, value); }
-		}
 
-
-		public static readonly DependencyProperty MatchWholeWordProperty = DependencyProperty.Register("MatchWholeWord", typeof(bool), typeof(FindView));
-		public bool MatchWholeWord
-		{
-			get { return (bool)GetValue(MatchWholeWordProperty); }
-			set { SetValue(MatchWholeWordProperty, value); }
-		}
-
-
-		public static readonly DependencyProperty CaseSensitiveProperty = DependencyProperty.Register("CaseSensitive", typeof(bool), typeof(FindView));
-		public bool CaseSensitive
-		{
-			get { return (bool)GetValue(CaseSensitiveProperty); }
-			set { SetValue(CaseSensitiveProperty, value); }
-		}
 
 
 		public FindView()
 		{
 			InitializeComponent();
+			
 		}
 
+		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+		{
+			base.OnPropertyChanged(e);
+			if ((e.Property==VisibilityProperty) && (ValueType.Equals(e.NewValue,Visibility.Visible)))
+			{
+				textBox.Focus();
+			}
+		}
 
 		#region commands
 		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -65,44 +53,14 @@ namespace LogInspect.Views
 			LogFileViewModel vm;
 			vm = DataContext as LogFileViewModel;
 
-			vm.IsFindMenuVisible = false;
+			vm.FindOptions.IsVisible = false;
 		}
 
-		private void FindPreviousCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			LogFileViewModel vm;
-			vm = DataContext as LogFileViewModel;
-			e.CanExecute = (vm != null) && (vm.Columns.SelectedItem!=null) && (vm.Status == Statuses.Idle) && (!string.IsNullOrEmpty(Text)); e.Handled = true;
-		}
 
-		private async void FindPreviousCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			int index;
-			LogFileViewModel vm;
-			vm = DataContext as LogFileViewModel;
 
-			index = await vm.FindPreviousAsync(vm.Events.SelectedItem?.EventIndex ?? -1,(item)=>item.GetPropertyValue(vm.Columns.SelectedItem.Name)?.ToString()?.Contains(Text)??false) ;
-			if (index >= 0) vm.Events.Select(index);
-		}
-
-		private void FindNextCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			LogFileViewModel vm;
-			vm = DataContext as LogFileViewModel;
-			e.CanExecute = (vm != null) && (vm.Columns.SelectedItem != null) && (vm.Status == Statuses.Idle) && (!string.IsNullOrEmpty(Text)); e.Handled = true;
-		}
-
-		private async void FindNextCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			int index;
-			LogFileViewModel vm;
-			vm = DataContext as LogFileViewModel;
-
-			index = await vm.FindNextAsync( vm.Events.SelectedItem?.EventIndex ?? -1, (item) => item.GetPropertyValue(vm.Columns.SelectedItem.Name)?.ToString()?.Contains(Text) ?? false);
-			if (index >= 0) vm.Events.Select(index);
-		}
 		#endregion
 
+		
 
 	}
 }

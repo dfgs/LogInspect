@@ -4,24 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
-             mc:Ignorable="d" x:Name="root"
-              d:DesignWidth="800">
+             mc:Ignorable="d" 
+              d:DesignWidth="800" >
 	<UserControl.Resources>
-		<RoutedCommand x:Key="findPrevious"/>
-		<RoutedCommand x:Key="findNext"/>
 		<RoutedCommand x:Key="close"/>
 	</UserControl.Resources>
 
 	<UserControl.InputBindings>
 		<KeyBinding Key="Esc" Command="{StaticResource close}"/>
-		<KeyBinding Key="F3" Command="{StaticResource findNext}"/>
-		<KeyBinding Modifiers="Ctrl" Key="F3" Command="{StaticResource findPrevious}"/>
 	</UserControl.InputBindings>
 	
 	<UserControl.CommandBindings>
 		<CommandBinding Command="{StaticResource close}" CanExecute="CloseCommandBinding_CanExecute" Executed="CloseCommandBinding_Executed"/>
-		<CommandBinding Command="{StaticResource findPrevious}" CanExecute="FindPreviousCommandBinding_CanExecute" Executed="FindPreviousCommandBinding_Executed"/>
-		<CommandBinding Command="{StaticResource findNext}" CanExecute="FindNextCommandBinding_CanExecute" Executed="FindNextCommandBinding_Executed"/>
 	</UserControl.CommandBindings>
 	
     <DockPanel>
@@ -29,29 +23,29 @@
 			<Image Source="/LogInspect;component/Images/cross.png" Stretch="None"  />
 		</Button>
 
-		<Button DockPanel.Dock="Right" Margin="4" Command="{StaticResource findNext}" ToolTip="Find next">
+		<Button DockPanel.Dock="Right" Margin="4" Command="{x:Static views:Commands.FindNext}" ToolTip="Find next">
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Text="Next" Margin="4,0,4,0"/>
 				<Image Source="/LogInspect;component/Images/bullet_arrow_right.png" Stretch="None"  />
 			</StackPanel>
 		</Button>
 
-		<Button DockPanel.Dock="Right" Margin="4" Command="{StaticResource findPrevious}" ToolTip="Find previous">
+		<Button DockPanel.Dock="Right" Margin="4" Command="{x:Static views:Commands.FindPrevious}" ToolTip="Find previous">
 			<StackPanel Orientation="Horizontal"  >
 				<Image Source="/LogInspect;component/Images/bullet_arrow_left.png" Stretch="None"  />
 				<TextBlock Text="Previous" Margin="4,0,4,0"/>
 			</StackPanel>
 		</Button>
-		<ToggleButton DockPanel.Dock="Right" Margin="4" ToolTip="Case sensitive" IsChecked="{Binding ElementName=root,Path=CaseSensitve}">
+		<ToggleButton DockPanel.Dock="Right" Margin="4" ToolTip="Case sensitive" IsChecked="{Binding Path=FindOptions.CaseSensitive}">
 			<Image Source="/LogInspect;component/Images/text_smallcaps.png" Stretch="None"  />
 		</ToggleButton>
-		<ToggleButton DockPanel.Dock="Right" Margin="4" ToolTip="Match whole word" IsChecked="{Binding ElementName=root,Path=MatchWholeWord}">
+		<ToggleButton DockPanel.Dock="Right" Margin="4" ToolTip="Match whole word" IsChecked="{Binding Path=FindOptions.MatchWholeWord}">
 			<Image Source="/LogInspect;component/Images/text_letterspacing.png" Stretch="None"  />
 		</ToggleButton>
 		<Image Margin="4" DockPanel.Dock="Left" Source="/LogInspect;component/Images/page_find.png" Stretch="None"  />
 		<TextBlock DockPanel.Dock="Left" Margin="4" Text="Find" VerticalAlignment="Center" />
-		<ComboBox Width="120" Margin="4" DockPanel.Dock="Right" VerticalAlignment="Center" ItemsSource="{Binding Columns}" SelectedItem="{Binding Columns.SelectedItem}" DisplayMemberPath="Name"/>
+		<ComboBox Width="120" Margin="4" DockPanel.Dock="Right" VerticalAlignment="Center" ItemsSource="{Binding Columns}" SelectedValue="{Binding FindOptions.Column}" DisplayMemberPath="Name" SelectedValuePath="Name"/>
 		<TextBlock  Text="in" Margin="4" DockPanel.Dock="Right" VerticalAlignment="Center" />
-		<TextBox VerticalAlignment="Center" Text="{Binding ElementName=root,Path=Text,UpdateSourceTrigger=PropertyChanged}"/>
+		<TextBox x:Name="textBox" VerticalAlignment="Center" Text="{Binding Path=FindOptions.Text,UpdateSourceTrigger=PropertyChanged}"/>
 	</DockPanel>
 </UserControl>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date">
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <Name>Nice.NTR.Alcatel-Lucent</Name>
-  <FileNamePattern>^Alcatel-Lucent-\d+-\d\d\d\d-\d\d-\d\d_\d\dhr\.log$</FileNamePattern>
+  <FileNamePattern>^Alcatel-Lucent-\d+-\d\d\d\d-\d\d-\d\d(_\d\dhr)?\.log$</FileNamePattern>
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
@@ -14,7 +14,7 @@
     <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
       <InlineColoringRules />
     </Column>
-    <Column Name="Event" Width="300" IsFilterItemSource="true">
+    <Column Name="Event" Width="150" IsFilterItemSource="true">
       <InlineColoringRules />
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
@@ -48,7 +48,10 @@
         <Token Pattern=" +" />
         <Token Pattern="\w+" Name="Severity" />
         <Token Pattern=" +" />
-        <Token Pattern="CSTA EVENT - Class \d+ - Type \d+" Name="Event" />
+        <Token Pattern="CSTA EVENT" Name="Event" />
+        <Token Pattern=" *- *" />
+        <Token Pattern=".*" />
+        <Token Pattern="Class \d+ - Type \d+" Name="Message" />
       </Tokens>
     </Rule>
     <Rule Name="NTR Message" Discard="false">

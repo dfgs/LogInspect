@@ -38,11 +38,11 @@ namespace LogInspect.ViewModels
 
 
 
-		public static readonly DependencyProperty IsFindMenuVisibleProperty = DependencyProperty.Register("IsFindMenuVisible", typeof(bool), typeof(LogFileViewModel));
-		public bool IsFindMenuVisible
+		public static readonly DependencyProperty FindOptionsProperty = DependencyProperty.Register("FindOptions", typeof(FindOptions), typeof(LogFileViewModel));
+		public FindOptions FindOptions
 		{
-			get { return (bool)GetValue(IsFindMenuVisibleProperty); }
-			set { SetValue(IsFindMenuVisibleProperty, value); }
+			get { return (FindOptions)GetValue(FindOptionsProperty); }
+			set { SetValue(FindOptionsProperty, value); }
 		}
 
 
@@ -97,6 +97,8 @@ namespace LogInspect.ViewModels
 			this.Name = Path.GetFileName(FileName);
 			this.EventReader = EventReader;
 
+			FindOptions = new FindOptions();
+			FindOptions.Column = EventReader.FormatHandler.DefaultColumn;
 
 			eventIndexerModule = new EventIndexerModule(Logger, EventReader,IndexerLookupRetryDelay);
 			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, IndexerProgressRefreshDelay);
@@ -105,7 +107,6 @@ namespace LogInspect.ViewModels
 			Severities = new SeveritiesViewModel(Logger, EventReader.FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
 			Columns = new ColumnsViewModel(Logger, EventReader.FormatHandler,filterItemSourcesViewModel);
-			//Columns.FilterChanged += Columns_FilterChanged;
 
 			indexerBufferModule = new EventIndexerBufferModule(Logger, eventIndexerModule, IndexerLookupRetryDelay);
 

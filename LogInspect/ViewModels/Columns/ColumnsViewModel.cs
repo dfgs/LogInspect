@@ -16,13 +16,7 @@ namespace LogInspect.ViewModels.Columns
 		private List<ColumnViewModel> items;
 
 
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(ColumnViewModel), typeof(ColumnsViewModel));
-		public ColumnViewModel SelectedItem
-		{
-			get { return (ColumnViewModel)GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
-		}
-
+		
 
 
 		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel) : base(Logger)
