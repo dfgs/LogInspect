@@ -59,6 +59,7 @@
     <Compile Include="FormatHandlerUnitTest.cs" />
     <Compile Include="LogUnitTest.cs" />
     <Compile Include="LogParserUnitTest.cs" />
+    <Compile Include="RegexBuilderUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

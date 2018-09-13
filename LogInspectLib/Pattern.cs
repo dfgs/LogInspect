@@ -52,6 +52,11 @@ namespace LogInspectLib
 			set;
 		}
 
+		public Pattern()
+		{
+
+		}
+		
 	}
 
 
