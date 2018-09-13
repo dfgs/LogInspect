@@ -12,7 +12,7 @@ namespace LogInspectLib
 	public class PatternLib:List<Pattern>
 	{
 		[XmlAttribute]
-		public string Name
+		public string NameSpace
 		{
 			get;
 			set;

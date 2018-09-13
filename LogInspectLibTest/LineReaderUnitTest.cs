@@ -15,10 +15,7 @@ namespace LogInspectLibTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(null, Encoding.Default, 1); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(new MemoryStream(), null, 1); });
-			Assert.ThrowsException<ArgumentException>(() => { new LineReader(new MemoryStream(), Encoding.Default, 0); });
-			Assert.ThrowsException<ArgumentException>(() => { new LineReader(new MemoryStream(), Encoding.Default, -1); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(null); });
 		}
 
 		[TestMethod]
@@ -29,7 +26,7 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items)+"\r\n"));
-			reader = new LineReader(stream, Encoding.Default, 5);
+			reader = new LineReader(new CharReader(stream, Encoding.Default, 5));
 
 			foreach (string item in items)
 			{
@@ -47,7 +44,7 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LineReader(stream, Encoding.Default, 4096);
+			reader = new LineReader(new CharReader(stream, Encoding.Default, 4096));
 
 			for(int t=0;t<3;t++)
 			{
@@ -71,7 +68,7 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LineReader(stream, Encoding.Default, 5);
+			reader = new LineReader(new CharReader(stream, Encoding.Default, 5));
 
 			for (int t = 0; t < 3; t++)
 			{

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<PatternLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Generic">
+  <Pattern Name="Date" Value="\d\d\d\d-\d\d-\d\d" Italic="false" Bold="false" Underline="false" />
+  <Pattern Name="Time" Value="\d\d:\d\d:\d\d\.\d+" Italic="false" Bold="false" Underline="false" />
+</PatternLib>

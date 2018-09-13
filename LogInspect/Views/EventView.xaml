@@ -170,7 +170,7 @@
 				<TabItem.Header>
 					<StackPanel Orientation="Horizontal">
 						<Image Source="/LogInspect;component/Images/text_align_left.png" Stretch="None" Margin="0,0,4,0"/>
-						<TextBlock Text="Raw data"/>
+						<TextBlock Text="Raw data" TextWrapping="Wrap"/>
 					</StackPanel>
 				</TabItem.Header>
 				<TextBox  IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}" VerticalScrollBarVisibility="Auto" />

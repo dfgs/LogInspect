@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
-	public class CharReader:Reader<char>
+	public class CharReader:Reader<char>,ICharReader
 	{
 		private Stream stream;
 		private int bufferSize;
 		private char[] buffer;
 		private int bufferIndex;
-		private Encoding encoding;
+	
 
 		private long bufferPosition;
 		private long position;
@@ -35,6 +35,13 @@ namespace LogInspectLib.Readers
 		{
 			get { return stream.Length - position; }
 		}
+
+		/*public Encoding Encoding
+		{
+			get;
+			private set;
+		}*/
+		private Encoding encoding;
 
 		public CharReader(Stream Stream,Encoding Encoding,int BufferSize)
 		{

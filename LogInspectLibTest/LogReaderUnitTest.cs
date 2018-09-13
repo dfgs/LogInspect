@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using LogInspectLib;
 using LogInspectLib.Readers;
+using LogInspectLibTest.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogInspectLibTest
@@ -10,14 +11,13 @@ namespace LogInspectLibTest
 	[TestClass]
 	public class LogReaderUnitTest
 	{
+		private static IRegexBuilder regexBuilder = new RegexBuilder();
+
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(null, Encoding.Default, 1,new FormatHandler()); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(new MemoryStream(), null, 1, new FormatHandler()); });
-			Assert.ThrowsException<ArgumentException>(() => { new LogReader(new MemoryStream(), Encoding.Default, 0, new FormatHandler()); });
-			Assert.ThrowsException<ArgumentException>(() => { new LogReader(new MemoryStream(), Encoding.Default, -1, new FormatHandler()); });
-			Assert.ThrowsException<ArgumentException>(() => { new LogReader(new MemoryStream(), Encoding.Default, 0, null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(null,new RegexBuilder(), null, null, null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(new MockedLineReader() ,null, null, null, null); });
 		}
 
 
@@ -27,11 +27,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] {"item1", "item2", "item3","", "item4","" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items)+ "\r\n"));
-			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader( stream, Encoding.Default,10)),regexBuilder, null, null, null);
 
 			foreach (string item in items)
 			{
@@ -47,12 +45,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "item3", "discard", "item4", "discard" };	// ending with discard
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
-			formatHandler.DiscardLinePatterns.Add("discard");
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, 10)), regexBuilder, null,null,new string[] {"discard" } );
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
@@ -68,12 +63,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] {"discard", "item1", "item2", "item3", "discard", "item4" }; // starting with discard
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
-			formatHandler.DiscardLinePatterns.Add("discard");
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, 10)), regexBuilder,null, null, new string[] { "discard" });
 
 			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[2], reader.Read().ToSingleLine());
@@ -90,13 +82,10 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", " item3", " item4", "item5", "" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
 
-			formatHandler = new FormatHandler();
-			formatHandler.AppendLineToPreviousPatterns.Add("^ ");
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default,10)), regexBuilder,new string[] { "^ " } ,null,null);
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1] + items[2] + items[3], reader.Read().ToSingleLine());
@@ -113,12 +102,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2+", "item3+", "item4", "item5", "" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
-			formatHandler.AppendLineToNextPatterns.Add(@"\+$");
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default,10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader( stream, Encoding.Default,10)), regexBuilder, null, new string[] { @"\+$" },null);
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1] + items[2] + items[3], reader.Read().ToSingleLine());
@@ -136,14 +122,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "discard", " item4", "item5", "" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-
-			formatHandler = new FormatHandler();
-			formatHandler.DiscardLinePatterns.Add("discard");
-			formatHandler.AppendLineToPreviousPatterns.Add("^ ");
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, 10)), regexBuilder, new string[] { "^ " },null, new string[] { "discard" });
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1] +  items[3], reader.Read().ToSingleLine());
@@ -160,13 +141,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2+", "discard", "item4", "item5", "" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
-			formatHandler.DiscardLinePatterns.Add("discard");
-			formatHandler.AppendLineToNextPatterns.Add(@"\+$");
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default, 10, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, 10)), regexBuilder, null, new string[] { @"\+$" }, new string[] { "discard" });
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1] + items[3], reader.Read().ToSingleLine());
@@ -184,11 +161,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default, 4096, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, 4096)), regexBuilder, null, null, null);
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1], reader.Read().ToSingleLine());
@@ -210,11 +185,9 @@ namespace LogInspectLibTest
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
 			MemoryStream stream;
 			LogReader reader;
-			FormatHandler formatHandler;
 
-			formatHandler = new FormatHandler();
 			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n"));
-			reader = new LogReader(stream, Encoding.Default, 5, formatHandler);
+			reader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, 5)), regexBuilder, null, null, null);
 
 			Assert.AreEqual(items[0], reader.Read().ToSingleLine());
 			Assert.AreEqual(items[1], reader.Read().ToSingleLine());

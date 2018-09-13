@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogInspectLib.Parsers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -87,6 +88,8 @@ namespace LogInspectLib
 			set;
 		}
 
+		
+
 		public FormatHandler()
 		{
 			AppendLineToNextPatterns = new List<string>();
@@ -127,13 +130,17 @@ namespace LogInspectLib
 			return (FormatHandler)serializer.Deserialize(Stream);
 		}
 
-		public bool MatchFileName(string FileName)
-		{
-			Regex regex;
+		
 
-			regex = new Regex(FileNamePattern);
-			return regex.Match(FileName).Success;
+
+		public IEnumerable<ILogParser> CreateLogParsers(IRegexBuilder RegexBuilder)
+		{
+			foreach (Rule rule in Rules)
+			{
+				yield return new LogParser(rule, Columns,RegexBuilder);
+			}
 		}
+
 
 
 	}

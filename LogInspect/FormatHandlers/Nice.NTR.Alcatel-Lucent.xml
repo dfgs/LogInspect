@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <Name>Nice.NTR.Alcatel-Lucent</Name>
-  <FileNamePattern>^Alcatel-Lucent-\d+-\d\d\d\d-\d\d-\d\d(_\d\dhr)?\.log$</FileNamePattern>
+  <FileNamePattern>^Alcatel-Lucent-\d+-{Date}(_\d\dhr)?\.log$</FileNamePattern>
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
@@ -32,9 +32,9 @@
   <Rules>
     <Rule Name="NTR Event" Discard="false">
       <Tokens>
-        <Token Pattern="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" Name="Date" />
-        <Token Pattern=" +" />
-        <Token Pattern="\w+" Name="Severity" />
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern=" " />
+        <Token Pattern="{NTRSeverity}" Name="Severity" />
         <Token Pattern=" +" />
         <Token Pattern="\[" />
         <Token Pattern="[^\]]+" Name="Event" />
@@ -44,9 +44,9 @@
     </Rule>
     <Rule Name="CSTA Event" Discard="false">
       <Tokens>
-        <Token Pattern="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" Name="Date" />
-        <Token Pattern=" +" />
-        <Token Pattern="\w+" Name="Severity" />
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern=" " />
+        <Token Pattern="{NTRSeverity}" Name="Severity" />
         <Token Pattern=" +" />
         <Token Pattern="CSTA EVENT" Name="Event" />
         <Token Pattern=" *- *" />
@@ -56,9 +56,9 @@
     </Rule>
     <Rule Name="NTR Message" Discard="false">
       <Tokens>
-        <Token Pattern="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d+" Name="Date" />
-        <Token Pattern=" +" />
-        <Token Pattern="\w+" Name="Severity" />
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern=" " />
+        <Token Pattern="{NTRSeverity}" Name="Severity" />
         <Token Pattern=" +" />
         <Token Pattern=".+" Name="Message" />
       </Tokens>

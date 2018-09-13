@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
-    public class LineReader:Reader<Line>
+    public class LineReader:Reader<Line>,ILineReader
     {
 
 		public override long Position
@@ -25,15 +25,13 @@ namespace LogInspectLib.Readers
 			get { return charReader.EndOfStream; }
 		}
 
-		private CharReader charReader;
+		private ICharReader charReader;
 		
-		public LineReader(Stream Stream, Encoding Encoding,int BufferSize):base()
+		public LineReader(ICharReader CharReader):base()
         {
-			if (Stream == null) throw new ArgumentNullException("Stream");
-			if (Encoding == null) throw new ArgumentNullException("Encoding");
-			if (BufferSize <= 0) throw new ArgumentException("BufferSize");
+			if (CharReader == null) throw new ArgumentNullException("CharReader");
 
-			this.charReader = new CharReader(Stream, Encoding, BufferSize);
+			this.charReader = CharReader;
 		}
 
 
@@ -52,8 +50,10 @@ namespace LogInspectLib.Readers
 			pos = Position;
 			sb = new StringBuilder(2048);
 
-			do
-			{ 
+			if (charReader.EndOfStream) throw new EndOfStreamException();
+
+			while (!charReader.EndOfStream)
+			{
 				availableBytes = charReader.AvailableBytes;	// needed optimization because charReader.EndOfStream is very slow
 				for (long t = 0; t < availableBytes; t++)
 				{
@@ -62,7 +62,7 @@ namespace LogInspectLib.Readers
 					if (c == '\r') continue;
 					sb.Append(c);
 				}
-			} while (!charReader.EndOfStream);
+			} 
 			result:
 			return new Line(pos, sb.ToString());
 

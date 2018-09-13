@@ -88,30 +88,38 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		private EventReader EventReader;
-
-		public LogFileViewModel(ILogger Logger,string FileName,EventReader EventReader, int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) :base(Logger)
+		private EventReader eventReader;
+		private FormatHandler formatHandler;
+	
+		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, int BufferSize, int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) :base(Logger)
 		{
+			Stream stream;
 
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
-			this.EventReader = EventReader;
+			this.formatHandler = FormatHandler;
+
+			Log(LogLevels.Information, "Creating event reader...");
+			stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+			this.eventReader = new EventReader(new LogReader(new LineReader(new CharReader(stream, Encoding.Default, BufferSize)),RegexBuilder, FormatHandler.AppendLineToPreviousPatterns, FormatHandler.AppendLineToNextPatterns, FormatHandler.DiscardLinePatterns), FormatHandler.CreateLogParsers(RegexBuilder));
+
+			Log(LogLevels.Information, "Creating modules and viewmodels");
 
 			FindOptions = new FindOptions();
-			FindOptions.Column = EventReader.FormatHandler.DefaultColumn;
+			FindOptions.Column = FormatHandler.DefaultColumn;
 
-			eventIndexerModule = new EventIndexerModule(Logger, EventReader,IndexerLookupRetryDelay);
+			eventIndexerModule = new EventIndexerModule(Logger, eventReader,IndexerLookupRetryDelay);
 			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, IndexerProgressRefreshDelay);
 
-			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, eventIndexerModule, EventReader.FormatHandler.Columns);
-			Severities = new SeveritiesViewModel(Logger, EventReader.FormatHandler.SeverityColumn, filterItemSourcesViewModel);
+			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, eventIndexerModule, FormatHandler.Columns);
+			Severities = new SeveritiesViewModel(Logger, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
-			Columns = new ColumnsViewModel(Logger, EventReader.FormatHandler,filterItemSourcesViewModel);
+			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel);
 
 			indexerBufferModule = new EventIndexerBufferModule(Logger, eventIndexerModule, IndexerLookupRetryDelay);
 
-			Events = new EventsViewModel(Logger, indexerBufferModule,Columns,EventReader.FormatHandler.EventColoringRules);
-			Markers = new MarkersViewModel(Logger, indexerBufferModule, EventReader.FormatHandler.EventColoringRules, EventReader.FormatHandler.SeverityColumn);
+			Events = new EventsViewModel(Logger, indexerBufferModule,Columns,FormatHandler.EventColoringRules);
+			Markers = new MarkersViewModel(Logger, indexerBufferModule, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
 
 			Log(LogLevels.Information, "Starting EventIndexerBufferModule");
 			indexerBufferModule.Start();
@@ -135,7 +143,7 @@ namespace LogInspect.ViewModels
 
 		
 
-		
+
 
 		#region filter events
 		/*private void Columns_FilterChanged(object sender, EventArgs e)
@@ -194,7 +202,7 @@ namespace LogInspect.ViewModels
 			int index;
 
 			Status = Statuses.Searching;
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item.GetPropertyValue(EventReader.FormatHandler.SeverityColumn)));
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item.GetPropertyValue(formatHandler.SeverityColumn)));
 			Status = Statuses.Idle;
 			return index;
 		}
@@ -203,7 +211,7 @@ namespace LogInspect.ViewModels
 			int index ;
 
 			Status = Statuses.Searching;
-			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item.GetPropertyValue(EventReader.FormatHandler.SeverityColumn)));
+			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item.GetPropertyValue(formatHandler.SeverityColumn)));
 			Status = Statuses.Idle;
 			return index;
 		}

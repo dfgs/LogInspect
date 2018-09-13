@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Parsers
 {
-	public class LogParser
+	public class LogParser:ILogParser
 	{
 		private Rule rule;
 		private Regex regex;
 		private Column[] columns;
-		private InlineParser[] inlineParsers;
+		private IInlineParser[] inlineParsers;
 
 
-		public LogParser( Rule Rule,IEnumerable<Column> Columns)
+		public LogParser( Rule Rule,IEnumerable<Column> Columns,IRegexBuilder RegexBuilder)
 		{
 			this.rule = Rule;
-			regex = new Regex(Rule.GetPattern(),RegexOptions.Compiled,TimeSpan.FromSeconds(2));
-			columns = Columns.ToArray();
-			inlineParsers = columns.Select((item) => new InlineParser(item)).ToArray();
+			regex = RegexBuilder.Build(Rule.GetPattern());
+			this.columns = Columns.ToArray();
+			this.inlineParsers = Columns.Select((item) => new InlineParser(item,RegexBuilder)).ToArray();
 		}
 
 		public Event? Parse(Log Log)

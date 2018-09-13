@@ -9,6 +9,8 @@ namespace LogInspectLibTest
 	[TestClass]
 	public class LogParserUnitTest
 	{
+		private static IRegexBuilder regexBuilder = new RegexBuilder();
+
 		private static string log1 = "1|2|3|4";
 
 		[TestMethod]
@@ -29,7 +31,7 @@ namespace LogInspectLibTest
 			rule.Tokens.Add(new Token() { Name = "C3", Pattern = @"\d" });
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
 			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
-			parser = new LogParser(rule,columns);
+			parser = new LogParser(rule,columns,regexBuilder);
 
 			log = new Log(new Line(0, log1));
 			ev=parser.Parse(log);

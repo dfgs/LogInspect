@@ -32,7 +32,7 @@ namespace LogInspectLibTest
 			string regex;
 
 			rb = new RegexBuilder();
-			rb.Add(new Pattern() { Name = "A", Value = "abc" });
+			rb.Add("",new Pattern() { Name = "A", Value = "abc" });
 			regex = rb.BuildRegexPattern("{A}");
 			Assert.AreEqual("abc", regex);
 		}
@@ -44,8 +44,8 @@ namespace LogInspectLibTest
 			string regex;
 
 			rb = new RegexBuilder();
-			rb.Add(new Pattern() { Name = "A", Value = "abc" });
-			rb.Add(new Pattern() { Name = "B", Value = "ghi" });
+			rb.Add("", new Pattern() { Name = "A", Value = "abc" });
+			rb.Add("", new Pattern() { Name = "B", Value = "ghi" });
 			regex = rb.BuildRegexPattern("{A}def{B}");
 			Assert.AreEqual("abcdefghi", regex);
 		}
@@ -57,8 +57,8 @@ namespace LogInspectLibTest
 			string regex;
 
 			rb = new RegexBuilder();
-			rb.Add(new Pattern() { Name = "A", Value = "a{B}c" });
-			rb.Add(new Pattern() { Name = "B", Value = "b" });
+			rb.Add("", new Pattern() { Name = "A", Value = "a{B}c" });
+			rb.Add("", new Pattern() { Name = "B", Value = "b" });
 			regex = rb.BuildRegexPattern("{A}");
 			Assert.AreEqual("abc", regex);
 		}
@@ -81,8 +81,8 @@ namespace LogInspectLibTest
 			string regex;
 
 			rb = new RegexBuilder();
-			rb.Add(new Pattern() { Name = "A", Value = "abc" });
-			rb.Add(new Pattern() { Name = "B", Value = "ghi" });
+			rb.Add("", new Pattern() { Name = "A", Value = "abc" });
+			rb.Add("", new Pattern() { Name = "B", Value = "ghi" });
 			regex = rb.BuildRegexPattern("{A}d{ef{B}");
 			Assert.AreEqual("abcd{efghi", regex);
 		}
@@ -93,7 +93,7 @@ namespace LogInspectLibTest
 			RegexBuilder rb;
 
 			rb = new RegexBuilder();
-			rb.Add(new Pattern() { Name = "A", Value = "a{B}c" });
+			rb.Add("", new Pattern() { Name = "A", Value = "a{B}c" });
 			Assert.ThrowsException<KeyNotFoundException>(()=>rb.BuildRegexPattern("{A}"));
 		}
 
@@ -104,13 +104,40 @@ namespace LogInspectLibTest
 			string regex;
 
 			rb = new RegexBuilder();
-			rb.Add(new Pattern() { Name = "A", Value = "a{B}c" });
-			rb.Add(new Pattern() { Name = "B", Value = "b" });
-			rb.Add(new Pattern() { Name = "B", Value = "c" });
+			rb.Add("", new Pattern() { Name = "A", Value = "a{B}c" });
+			rb.Add("", new Pattern() { Name = "B", Value = "b" });
+			rb.Add("", new Pattern() { Name = "B", Value = "c" });
 			regex = rb.BuildRegexPattern("{A}");
 			Assert.AreEqual("acc", regex);
 		}
 
+		[TestMethod]
+		public void ShouldOverrideAnExistingPatternUsingNameSpace()
+		{
+			RegexBuilder rb;
+			string regex;
+
+			rb = new RegexBuilder();
+			rb.Add("A", new Pattern() { Name = "A", Value = "a{B}c" });
+			rb.Add("A", new Pattern() { Name = "B", Value = "b" });
+			rb.Add("B", new Pattern() { Name = "B", Value = "c" });
+			regex = rb.BuildRegexPattern("{A}");
+			Assert.AreEqual("acc", regex);
+		}
+
+		[TestMethod]
+		public void ShouldNotOverrideAnExistingPatternUsingNameSpace()
+		{
+			RegexBuilder rb;
+			string regex;
+
+			rb = new RegexBuilder();
+			rb.Add("A", new Pattern() { Name = "A", Value = "a{A.B}c" });
+			rb.Add("A", new Pattern() { Name = "B", Value = "b" });
+			rb.Add("B", new Pattern() { Name = "B", Value = "c" });
+			regex = rb.BuildRegexPattern("{A}");
+			Assert.AreEqual("abc", regex);
+		}
 
 	}
 

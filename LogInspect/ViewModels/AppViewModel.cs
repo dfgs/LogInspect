@@ -1,4 +1,5 @@
 ﻿using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogInspectLib.Readers;
 using LogLib;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -15,6 +17,7 @@ namespace LogInspect.ViewModels
 	public class AppViewModel : ViewModel
 	{
 		private List<FormatHandler> formatHandlers;
+		private IRegexBuilder regexBuilder;
 
 		public ObservableCollection<LogFileViewModel> LogFiles
 		{
@@ -33,16 +36,19 @@ namespace LogInspect.ViewModels
 		private int indexerBufferLookupRetryDelay;
 		private int indexerProgressRefreshDelay;
 
-		public AppViewModel(ILogger Logger,string Path, int BufferSize,int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) : base(Logger)
+		public AppViewModel(ILogger Logger,string FormatHandlersPath,string PatternLibsPath, int BufferSize,int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) : base(Logger)
 		{
 			this.bufferSize = BufferSize;
 			this.indexerLookupRetryDelay = IndexerLookupRetryDelay;
 			this.indexerBufferLookupRetryDelay = IndexerBufferLookupRetryDelay;
 			this.indexerProgressRefreshDelay = IndexerProgressRefreshDelay;
 
+			this.regexBuilder = new RegexBuilder();
+			LoadPatternLibs(PatternLibsPath);
+
 			LogFiles = new ObservableCollection<LogFileViewModel>();
 			formatHandlers = new List<FormatHandler>();
-			LoadSchemas(Path);
+			LoadSchemas(FormatHandlersPath);
 		}
 
 		public override void Dispose()
@@ -56,14 +62,13 @@ namespace LogInspect.ViewModels
 		public void Open(string FileName)
 		{
 			LogFileViewModel logFile;
-			EventReader indexerEventReader;
+			FormatHandler formatHandler;
 
-			indexerEventReader = CreateEventReader(FileName, bufferSize);
-			if (indexerEventReader == null) return;
+			formatHandler = GetFormatHandler(FileName);
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, indexerEventReader,indexerLookupRetryDelay,indexerBufferLookupRetryDelay, indexerProgressRefreshDelay);
+				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder, bufferSize,indexerLookupRetryDelay,indexerBufferLookupRetryDelay, indexerProgressRefreshDelay);
 			}
 			catch(Exception ex)
 			{
@@ -83,9 +88,36 @@ namespace LogInspect.ViewModels
 		}
 
 
+		public void LoadPatternLibs(string Path)
+		{
+			PatternLib lib;
+
+			Log(LogLevels.Information, "Parsing pattern libs directory...");
+			try
+			{
+				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((item) => item))
+				{
+					Log(LogLevels.Information, $"Loading file {FileName}");
+					try
+					{
+						lib = PatternLib.LoadFromFile(FileName);
+					}
+					catch (Exception ex)
+					{
+						Log(ex);
+						continue;
+					}
+					regexBuilder.Add(lib.NameSpace,lib);
+				}
+			}
+			catch (Exception ex)
+			{
+				Log(ex);
+			}
+		}
 		public void LoadSchemas(string Path)
 		{
-			FormatHandler schema;
+			FormatHandler formatHandler;
 
 			Log(LogLevels.Information, "Parsing format handlers directory...");
 			try
@@ -95,20 +127,28 @@ namespace LogInspect.ViewModels
 					Log(LogLevels.Information, $"Loading file {FileName}");
 					try
 					{
-						schema = FormatHandler.LoadFromFile(FileName);
+						formatHandler = FormatHandler.LoadFromFile(FileName);
 					}
 					catch (Exception ex)
 					{
 						Log(ex);
 						continue;
 					}
-					formatHandlers.Add(schema);
+					formatHandlers.Add(formatHandler);
 				}
 			}
 			catch (Exception ex)
 			{
 				Log(ex);
 			}
+		}
+
+		private bool MatchFileName(string FileName, string FileNamePattern)
+		{
+			Regex regex;
+
+			regex = regexBuilder.Build(FileNamePattern);
+			return regex.Match(FileName).Success;
 		}
 
 		public FormatHandler GetFormatHandler(string FileName)
@@ -119,7 +159,7 @@ namespace LogInspect.ViewModels
 
 			shortName = Path.GetFileName(FileName);
 			Log(LogLevels.Information, $"Try to find a format handler for file {shortName}");
-			formatHandler = formatHandlers.FirstOrDefault(item => item.MatchFileName(shortName));
+			formatHandler = formatHandlers.FirstOrDefault(item => MatchFileName(shortName,item.FileNamePattern) );
 			if (formatHandler == null)
 			{
 				Log(LogLevels.Warning, $"Format of log file {shortName} is unmanaged");
@@ -133,28 +173,10 @@ namespace LogInspect.ViewModels
 			return formatHandler;
 		}
 
-		public EventReader CreateEventReader(string FileName,int BufferSize)
-		{
-			Stream stream;
-			EventReader reader;
-			FormatHandler formatHandler;
+		
+		
 
-			formatHandler = GetFormatHandler(FileName);
 
-			Log(LogLevels.Information, "Creating event reader...");
-			try
-			{
-				stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
-				reader = new EventReader(stream, Encoding.Default,BufferSize, formatHandler);
-			}
-			catch (Exception ex)
-			{
-				Log(ex);
-				return null;
-			}
-
-			return reader;
-		}
 
 	}
 }

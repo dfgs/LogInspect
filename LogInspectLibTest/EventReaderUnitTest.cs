@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogInspectLib.Readers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,6 +13,8 @@ namespace LogInspectLibTest
 	[TestClass]
 	public class EventReaderUnitTest
 	{
+		private static IRegexBuilder regexBuilder = new RegexBuilder();
+
 		private static string log1 = "1|2|3|4";
 		private static string log2 = "1234";
 		private static string logString1 = log1 + "\r\n" + log2 ;
@@ -18,15 +23,11 @@ namespace LogInspectLibTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new EventReader(null, Encoding.Default, 1,new FormatHandler()); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new EventReader(new MemoryStream(), null, 1, new FormatHandler()); });
-			Assert.ThrowsException<ArgumentException>(() => { new EventReader(new MemoryStream(), Encoding.Default, 0, new FormatHandler()); });
-			Assert.ThrowsException<ArgumentException>(() => { new EventReader(new MemoryStream(), Encoding.Default, -1, new FormatHandler()); });
-			Assert.ThrowsException<ArgumentException>(() => { new EventReader(new MemoryStream(), Encoding.Default, 0, null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new EventReader(null,  Enumerable.Empty<ILogParser>()); });
 		}
 
 
-	
+
 
 		[TestMethod]
 		public void ShouldRead()
@@ -36,7 +37,6 @@ namespace LogInspectLibTest
 			EventReader reader;
 			FormatHandler formatHandler;
 			Rule rule;
-
 
 			formatHandler = new FormatHandler();
 			formatHandler.Columns.Add(new Column() { Name = "C1" });
@@ -54,8 +54,9 @@ namespace LogInspectLibTest
 			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
 			formatHandler.Rules.Add(rule);
 
+
 			stream = new MemoryStream(Encoding.Default.GetBytes(logString1));
-			reader = new EventReader(stream, Encoding.Default,10, formatHandler);
+			reader = new EventReader(new LogReader(new LineReader(new CharReader( stream, Encoding.Default,10)),regexBuilder,formatHandler.AppendLineToPreviousPatterns,formatHandler.AppendLineToNextPatterns,formatHandler.DiscardLinePatterns), formatHandler.CreateLogParsers(regexBuilder));
 
 			ev = reader.Read();
 			Assert.IsNotNull(ev.Log);

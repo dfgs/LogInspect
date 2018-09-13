@@ -44,7 +44,7 @@
 		</DataTemplate>
 	</UserControl.Resources>
 
-	<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True">
+	<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
 				<StackPanel />

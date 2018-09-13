@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
-    public class EventReader :Reader<Event>
+    public class EventReader :Reader<Event>,IEventReader
     {
 		public override bool EndOfStream
 		{
@@ -25,32 +25,18 @@ namespace LogInspectLib.Readers
 			get { return logReader.Length; }
 		}
 
-		private LogReader logReader;
+		private ILogReader logReader;
 
-		private List<LogParser> logParsers;
-		public FormatHandler FormatHandler { get; }
-
-		
+		private IEnumerable<ILogParser> logParsers;
 
 		
-		public EventReader(Stream Stream, Encoding Encoding,int BufferSize, FormatHandler FormatHandler):base()
+		public EventReader(ILogReader LogReader, IEnumerable<ILogParser> LogParsers):base()
         {
-			if (Stream == null) throw new ArgumentNullException("Stream");
-			if (Encoding == null) throw new ArgumentNullException("Encoding");
-			if (BufferSize <= 0) throw new ArgumentException("BufferSize");
-			if (FormatHandler == null) throw new ArgumentNullException("FormatHandler");
+			if (LogReader == null) throw new ArgumentNullException("LogReader");
 
-			this.logReader = new LogReader(Stream, Encoding, BufferSize,FormatHandler);
+			this.logReader = LogReader;
 
-			this.FormatHandler = FormatHandler;
-
-			logParsers = new List<LogParser>();			
-			foreach (Rule rule in FormatHandler.Rules)
-			{
-				this.logParsers.Add(new LogParser(rule,FormatHandler.Columns));
-			}
-			
-			
+			logParsers = LogParsers ?? Enumerable.Empty<ILogParser>();			
 		}
 
 		protected override void OnSeek(long Position)
@@ -58,10 +44,7 @@ namespace LogInspectLib.Readers
 			logReader.Seek(Position);
 		}
 
-		public int GetReadLines()
-		{
-			return logReader.GetReadLines();
-		}
+		
 		protected override Event OnRead()
 		{
 			Log log;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
-	public abstract class Reader<T>
+	public abstract class Reader<T>:IReader<T>
 	{
 		
 		public abstract bool EndOfStream

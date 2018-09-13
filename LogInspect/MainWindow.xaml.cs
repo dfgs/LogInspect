@@ -33,12 +33,9 @@ namespace LogInspect
 
 		public MainWindow()
 		{
-			PatternLib lib = new PatternLib() {Name="Generic" };
-			lib.Add(new Pattern() {Name="Date",Value= @"\d\d\d\d-\d\d-\d\d *\d\d:\d\d:\d\d\.\d+" });
-			lib.SaveToFile(@"PatternLibs\Generic.xml");
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
-			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.BufferSize,
+			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.PatternLibsFolder, Properties.Settings.Default.BufferSize,
 				 Properties.Settings.Default.IndexerLookupRetryDelay, Properties.Settings.Default.IndexerBufferLookupRetryDelay, Properties.Settings.Default.IndexerProgressRefreshDelay);
 
 			InitializeComponent();

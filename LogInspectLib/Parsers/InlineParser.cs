@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Parsers
 {
-	public class InlineParser
+	public class InlineParser:IInlineParser
 	{
 		private static Comparer<int> comparer=Comparer<int>.Default;
 
 		private Column column;
 		private Regex[] regexes;
 
-		public InlineParser(Column Column)
+		public InlineParser(Column Column, IRegexBuilder RegexBuilder)
 		{
 			this.column = Column;
 			regexes = new Regex[Column.InlineColoringRules.Count];
 			for(int t=0;t<Column.InlineColoringRules.Count;t++)
 			{
-				regexes[t] = new Regex(Column.InlineColoringRules[t].Pattern,RegexOptions.Compiled);
+				regexes[t] = RegexBuilder.Build(Column.InlineColoringRules[t].Pattern);
 			}
 		}
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib.Readers
 {
-    public class LogReader :Reader<Log>
+    public class LogReader :Reader<Log>,ILogReader
     {
 		private int readLines;
 
@@ -27,41 +27,39 @@ namespace LogInspectLib.Readers
 		}
 
 
-		private LineReader lineReader;
+		private ILineReader lineReader;
 
 
-		public FormatHandler FormatHandler { get; }
+		//public FormatHandler FormatHandler { get; }
 
 		private List<Regex> appendToNextRegexes;
 		private List<Regex> appendToPreviousRegexes;
 		private List<Regex> discardRegexes;
 		
-		public LogReader(Stream Stream, Encoding Encoding,int BufferSize, FormatHandler FormatHandler):base()
+		public LogReader(ILineReader LineReader, IRegexBuilder RegexBuilder, IEnumerable<string> AppendLineToPreviousPatterns, IEnumerable<string> AppendLineToNextPatterns, IEnumerable<string> DiscardLinePatterns) :base()
         {
-			if (Stream == null) throw new ArgumentNullException("Stream");
-			if (Encoding == null) throw new ArgumentNullException("Encoding");
-			if (BufferSize <= 0) throw new ArgumentException("BufferSize");
-			if (FormatHandler == null) throw new ArgumentNullException("FormatHandler");
+			if (LineReader == null) throw new ArgumentNullException("LineReader");
+			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
 
-			this.lineReader = new LineReader(Stream, Encoding, BufferSize);
+			this.lineReader = LineReader;// new LineReader(new CharReader( Stream, Encoding, BufferSize));
 
-			this.FormatHandler = FormatHandler;
+			//this.FormatHandler = FormatHandler;
 			
 			this.appendToNextRegexes = new List<Regex>();
 			this.appendToPreviousRegexes = new List<Regex>();
 			this.discardRegexes = new List<Regex>();
 
-			foreach (string pattern in FormatHandler.AppendLineToPreviousPatterns)
+			foreach (string pattern in AppendLineToPreviousPatterns ?? Enumerable.Empty<string>())
 			{
-				this.appendToPreviousRegexes.Add(new Regex(pattern,RegexOptions.Compiled));
+				this.appendToPreviousRegexes.Add(RegexBuilder.Build(pattern));
 			}
-			foreach (string pattern in FormatHandler.AppendLineToNextPatterns)
+			foreach (string pattern in AppendLineToNextPatterns ?? Enumerable.Empty<string>())
 			{
-				this.appendToNextRegexes.Add(new Regex(pattern, RegexOptions.Compiled));
+				this.appendToNextRegexes.Add(RegexBuilder.Build(pattern));
 			}
-			foreach (string pattern in FormatHandler.DiscardLinePatterns)
+			foreach (string pattern in DiscardLinePatterns ?? Enumerable.Empty<string>())
 			{
-				this.discardRegexes.Add(new Regex(pattern, RegexOptions.Compiled));
+				this.discardRegexes.Add(RegexBuilder.Build(pattern));
 			}
 
 		}
