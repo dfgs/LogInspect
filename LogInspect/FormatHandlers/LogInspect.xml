@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <Name>LogInspect</Name>
-  <FileNamePattern>LogInspect.log</FileNamePattern>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               Name="LogInspect" FileNamePattern="^LogInspect.log$"
+               DefaultNameSpace="Generic" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns />
   <DiscardLinePatterns />

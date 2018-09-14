@@ -65,7 +65,7 @@ namespace LogInspectLib
 			InlineColoringRules = new List<InlineColoringRule>();
 		}
 
-		public object GetValue(string Text)
+		public object ConvertValue(string Text)
 		{
 			if (Type != "DateTime") return Text;
 

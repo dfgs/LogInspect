@@ -1,6 +1,7 @@
 ﻿using LogInspect.Models;
 using LogInspect.Models.Filters;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogInspectLib.Readers;
 using LogLib;
 using ModuleLib;
@@ -16,23 +17,23 @@ namespace LogInspect.Modules
 
 	public class EventIndexerModule : BaseEventModule
 	{
-		private EventReader eventReader;
+		private ILogReader logReader;
 
 		private Filter[] filters;
 
 		public override long Position
 		{
-			get { return eventReader.Position; }
+			get { return logReader.Position; }
 		}
 		public override long Target
 		{
-			get { return eventReader.Length; }
+			get { return logReader.Length; }
 		}
 
 
-		public EventIndexerModule(ILogger Logger, EventReader EventReader,int LookupRetryDelay) : base("EventIndexer",Logger,ThreadPriority.Lowest,LookupRetryDelay)
+		public EventIndexerModule(ILogger Logger, ILogReader LogReader,ILogParser LogParser, int LookupRetryDelay) : base("EventIndexer",Logger,LogParser, ThreadPriority.Lowest,LookupRetryDelay)
 		{
-			this.eventReader = EventReader;
+			this.logReader = LogReader;
 		}
 
 		protected override bool MustIndexEvent(Event Input)
@@ -47,15 +48,16 @@ namespace LogInspect.Modules
 			}
 			return true;
 		}
-		protected override Event OnReadEvent()
+
+		protected override Log OnReadLog()
 		{
-			return eventReader.Read();
+			return logReader.Read();
 
 		}
 
 		protected override void OnReset()
 		{
-			eventReader.Seek(0);
+			logReader.Seek(0);
 		}
 
 		public void SetFilters(IEnumerable<Filter> Filters)

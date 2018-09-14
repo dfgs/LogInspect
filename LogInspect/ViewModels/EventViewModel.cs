@@ -18,6 +18,16 @@ namespace LogInspect.ViewModels
 
 		private Event ev;
 
+		public object this[string Name]
+		{
+			get
+			{
+				return ev[Name];
+			}
+		}
+
+	
+
 		public IEnumerable<PropertyViewModel> Properties
 		{
 			get;
@@ -36,10 +46,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public PropertyViewModel this[string PropertyName]
-		{
-			get { return Properties.FirstOrDefault(item=>item.Name==PropertyName); }
-		}
+		
 		
 
 		public Brush Background
@@ -54,18 +61,19 @@ namespace LogInspect.ViewModels
 		}
 		public string RawLog
 		{
-			get { return ev.Log.ToSingleLine(); }
+			get { return "TODO"; }
 		}
 
-		public Rule Rule
+		/*public Rule Rule
 		{
 			get { return ev.Rule; }
-		}
+		}*/
+
 		public string Lines
 		{
 			get
 			{
-				return string.Join("\r\n", ev.Log.Lines.Select(item=>item.Value));
+				return "TODO";
 			}
 		}
 
@@ -110,7 +118,7 @@ namespace LogInspect.ViewModels
 
 			foreach (EventColoringRule coloringRule in ColoringRules)
 			{
-				value = Event.GetValue(coloringRule.Column) as string;
+				value = Event[coloringRule.Column]?.ToString();
 				if (value == null) continue;
 
 				if (Regex.Match(value, coloringRule.Pattern).Success)
@@ -122,7 +130,7 @@ namespace LogInspect.ViewModels
 					}
 					catch 
 					{
-						
+						//Log(LogLevels.Error, $"Invalid background {coloringRule.Background}");
 					}
 
 				}
@@ -130,14 +138,11 @@ namespace LogInspect.ViewModels
 			return null;
 		}
 
-		public Inline[] GetPropertyInlines(string PropertyName)
+		/*public Inline[] GetPropertyInlines(string PropertyName)
 		{
 			return ev.GetProperty(PropertyName)?.Inlines;
-		}
-		public object GetPropertyValue(string PropertyName)
-		{
-			return ev.GetValue(PropertyName);
-		}
+		}*/
+		
 
 	}
 

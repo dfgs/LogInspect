@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <Name>Nice.NIM.CallServer</Name>
-  <FileNamePattern>^Call Server\.log(\.\d+)?$</FileNamePattern>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               Name="Nice.NIM.CallServer" FileNamePattern="^Call Server\.log(\.\d+)?$"
+               DefaultNameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns>
     <string>[^\u0003]$</string>

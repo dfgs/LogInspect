@@ -6,32 +6,24 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public struct Line
+	public class Line
 	{
-		/*public int Index
-		{
-			get;
-			private set;
-		}*/
+		
 		public long Position
 		{
 			get;
-			private set;
+			set;
 		}
 		public string Value
 		{
 			get;
-			private set;
+			set;
 		}
 
-
-		public Line(long Position,string Value)
+		public Line()
 		{
-			//if (Index < 0) throw new ArgumentException("Index");
-			if (Position < 0) throw new ArgumentException("Position");
-			if (Value == null) throw new ArgumentNullException("Value");
-
-			this.Position = Position;this.Value = Value;
+		
 		}
+
 	}
 }

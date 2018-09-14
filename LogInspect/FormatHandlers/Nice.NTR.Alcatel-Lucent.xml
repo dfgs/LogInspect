@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <Name>Nice.NTR.Alcatel-Lucent</Name>
-  <FileNamePattern>^Alcatel-Lucent-\d+-{Date}(_\d\dhr)?\.log$</FileNamePattern>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               Name="Nice.NTR.Alcatel-Lucent" FileNamePattern="^Alcatel-Lucent-\d+-{Date}(_{Number}hr)?\.log$"
+               DefaultNameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
-    <string>^$</string>
+    <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>
     <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
@@ -19,11 +19,11 @@
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineColoringRules>
-        <InlineColoringRule Pattern="(\[|')DR_S\d+_B\d+_TS\d+(\]|')" Foreground="BlueViolet" Underline="false" Bold="false" Italic="true" />
-        <InlineColoringRule Pattern="[A-Z]+(_[A-Z]+)+" Foreground="Brown" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="\[\d+\]" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="(T|t)arget:? *\d+" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="(D|d)evice:? *\d+" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+        <InlineColoringRule Pattern="(\[|')DR_S{Number}_B{Number}_TS{Number}(\]|')" Foreground="BlueViolet" Underline="false" Bold="false" Italic="true" />
+        <InlineColoringRule Pattern="{Const}" Foreground="Brown" Underline="false" Bold="true" Italic="false" />
+        <InlineColoringRule Pattern="\[{Number}\]" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+        <InlineColoringRule Pattern="(T|t)arget:? *{Number}" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+        <InlineColoringRule Pattern="(D|d)evice:? *{Number}" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
         <InlineColoringRule Pattern="CallState: \w+" Foreground="Chocolate" Underline="false" Bold="false" Italic="false" />
         <InlineColoringRule Pattern="\[SUCCESS\]" Foreground="Green" Underline="false" Bold="true" Italic="false" />
       </InlineColoringRules>
@@ -34,19 +34,19 @@
       <Tokens>
         <Token Pattern="{Date} {Time}" Name="Date" />
         <Token Pattern=" " />
-        <Token Pattern="{NTRSeverity}" Name="Severity" />
+        <Token Pattern="{Severity}" Name="Severity" />
         <Token Pattern=" +" />
         <Token Pattern="\[" />
         <Token Pattern="[^\]]+" Name="Event" />
         <Token Pattern="\] " />
-        <Token Pattern=".+" Name="Message" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>
     <Rule Name="CSTA Event" Discard="false">
       <Tokens>
         <Token Pattern="{Date} {Time}" Name="Date" />
         <Token Pattern=" " />
-        <Token Pattern="{NTRSeverity}" Name="Severity" />
+        <Token Pattern="{Severity}" Name="Severity" />
         <Token Pattern=" +" />
         <Token Pattern="CSTA EVENT" Name="Event" />
         <Token Pattern=" *- *" />
@@ -58,14 +58,14 @@
       <Tokens>
         <Token Pattern="{Date} {Time}" Name="Date" />
         <Token Pattern=" " />
-        <Token Pattern="{NTRSeverity}" Name="Severity" />
+        <Token Pattern="{Severity}" Name="Severity" />
         <Token Pattern=" +" />
-        <Token Pattern=".+" Name="Message" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>
     <Rule Name="Default" Discard="false">
       <Tokens>
-        <Token Pattern=".*" Name="Message" />
+        <Token Pattern="{WholeLine}" Name="Message" />
       </Tokens>
     </Rule>
   </Rules>

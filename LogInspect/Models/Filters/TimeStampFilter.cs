@@ -42,7 +42,7 @@ namespace LogInspect.Models.Filters
 
 			try
 			{
-				date = (DateTime)Item.GetValue(PropertyName);
+				date = (DateTime)Item[PropertyName];
 			}
 			catch
 			{

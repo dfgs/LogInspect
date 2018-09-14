@@ -9,52 +9,47 @@ namespace LogInspectLib.Parsers
 {
 	public class LogParser:ILogParser
 	{
-		private Rule rule;
-		private Regex regex;
-		private Column[] columns;
-		private IInlineParser[] inlineParsers;
+		private List<Regex> items;
 
+		private IEnumerable<Column> columns;
+		private IRegexBuilder regexBuilder;
 
-		public LogParser( Rule Rule,IEnumerable<Column> Columns,IRegexBuilder RegexBuilder)
+		public LogParser(  IRegexBuilder RegexBuilder, IEnumerable<Column> Columns)
 		{
-			this.rule = Rule;
-			regex = RegexBuilder.Build(Rule.GetPattern());
-			this.columns = Columns.ToArray();
-			this.inlineParsers = Columns.Select((item) => new InlineParser(item,RegexBuilder)).ToArray();
+			this.regexBuilder = RegexBuilder;
+			this.items = new List<Regex>();
+			this.columns = Columns;
 		}
 
-		public Event? Parse(Log Log)
+		public void Add(string DefaultNameSpace,string Pattern)
+		{
+			Regex regex;
+			regex = regexBuilder.Build(DefaultNameSpace, Pattern);
+			items.Add(regex);
+		}
+
+		public Event Parse(Log Log)
 		{
 			Match match;
 			Event ev;
-			List<Property> properties;
-			Property property;
-			Column column;
 
-			try  // match can timeout !
+
+			foreach (Regex regex in items)
 			{
 				match = regex.Match(Log.ToSingleLine());
-			}
-			catch
-			{
-				return null;
-			}
-			if (!match.Success) return null;
+				if (!match.Success) continue;
 
-			properties = new List<Property>();
-			for(int t=0;t<columns.Length;t++)
-			{
-				column = columns[t];
-				property=new Property() { Name = column.Name };
-				property.Value = column.GetValue(match.Groups[column.Name].Value);
-				property.Inlines = inlineParsers[t].Parse(property.Value?.ToString()).ToArray();
+				ev = new Event();
+				foreach(Column column in columns)
+				{
+					ev[column.Name] = column.ConvertValue(match.Groups[column.Name].Value);
+				}
 
-				properties.Add(property);
+				return ev;
+
 			}
 
-			ev = new Event(Log,rule, properties.ToArray() );
-
-			return ev;
+			return null;
 		}
 
 

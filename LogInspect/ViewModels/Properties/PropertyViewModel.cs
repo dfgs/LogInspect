@@ -10,6 +10,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Properties
 {
+	//TODO Remove ?
 	public abstract class PropertyViewModel : ViewModel
 	{
 

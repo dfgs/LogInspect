@@ -26,7 +26,7 @@ namespace LogInspect.Models.Filters
 
 		public override bool MustDiscard(Event Item)
 		{
-			return FilteredItems.Contains( Item.GetValue(PropertyName) );
+			return FilteredItems.Contains( Item[PropertyName] );
 		}
 
 	}

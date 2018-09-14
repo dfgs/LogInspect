@@ -9,37 +9,35 @@ namespace LogInspectLib
 {
 	public class RegexBuilder:IRegexBuilder
 	{
-		private static Regex patternExtract=new Regex(@"{(?<Pattern>\w+(\.\w+)*)}|(?<Regex>.[^{]*)");
+		private static Regex patternExtract=new Regex(@"{(?<NameSpacePattern>\w+(\.\w+)+)}|{(?<Pattern>\w+)}|(?<Regex>.[^{]*)");
 
 		private Dictionary<string, Pattern> patterns;
-		private Dictionary<string, Pattern> patternsWithNameSpace;
+		private Dictionary<string, Pattern> fullNamedPatterns;
 		public Dictionary<string, string> cache;
 
 
 		public RegexBuilder()
 		{
+			fullNamedPatterns = new Dictionary<string, Pattern>();
 			patterns = new Dictionary<string, Pattern>();
-			patternsWithNameSpace = new Dictionary<string, Pattern>();
 			cache = new Dictionary<string, string>();
 		}
 
-		private string FullPatterName(string NameSpace,Pattern Pattern)
+		private string GetFullPatterName(string NameSpace,string PatternName)
 		{
-			return $"{NameSpace}.{Pattern.Name}";
+			return $"{NameSpace}.{PatternName}";
 		}
 
 		public void Add(string NameSpace,Pattern Pattern)
 		{
 			string fullName;
 
-
-			fullName = FullPatterName(NameSpace, Pattern);
+			fullName = GetFullPatterName(NameSpace, Pattern.Name);
 			cache.Clear();
+			if (fullNamedPatterns.ContainsKey(fullName)) fullNamedPatterns.Remove(fullName);
+			fullNamedPatterns.Add(fullName, Pattern);
 			if (patterns.ContainsKey(Pattern.Name)) patterns.Remove(Pattern.Name);
 			patterns.Add(Pattern.Name, Pattern);
-			if (patternsWithNameSpace.ContainsKey(fullName)) patternsWithNameSpace.Remove(fullName);
-			patternsWithNameSpace.Add(fullName, Pattern);
-
 		}
 
 		public void Add(string NameSpace, IEnumerable<Pattern> Patterns)
@@ -49,13 +47,13 @@ namespace LogInspectLib
 				Add(NameSpace,item);
 			}
 		}
-		public string BuildRegexPattern(string Pattern)
+		public string BuildRegexPattern(string DefaultNameSpace,string Pattern)
 		{
 			MatchCollection matches;
 			StringBuilder sb;
 			Group group;
 			string regex;
-			string subPatternName;
+			string fullName;
 			Pattern subPattern;
 
 			sb = new StringBuilder();
@@ -66,32 +64,47 @@ namespace LogInspectLib
 				if (!string.IsNullOrEmpty(group.Value))
 				{
 					regex = group.Value;
+					sb.Append(regex);
+					continue;
 				}
-				else
+				group = match.Groups["NameSpacePattern"];
+				if (!string.IsNullOrEmpty(group.Value))
 				{
-					subPatternName = match.Groups["Pattern"].Value;
-					if (!cache.TryGetValue(subPatternName, out regex))
+					fullName = group.Value;
+					if (!cache.TryGetValue(fullName, out regex))
 					{
-						if ( (!patternsWithNameSpace.TryGetValue(subPatternName, out subPattern)) && (!patterns.TryGetValue(subPatternName, out subPattern))) throw new KeyNotFoundException($"Pattern {subPatternName} doesn't exist in regex builder");
-						regex = BuildRegexPattern(subPattern.Value);
-						cache.Add(subPatternName, regex);
+						if  (!fullNamedPatterns.TryGetValue(fullName, out subPattern)) throw new KeyNotFoundException($"Pattern {fullName} doesn't exist in regex builder");
+						regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
+						cache.Add(fullName, regex);
 					}
+					sb.Append(regex);
+					continue;
 				}
-				sb.Append(regex);
+				group = match.Groups["Pattern"];
+				if (!string.IsNullOrEmpty(group.Value))
+				{
+					fullName = GetFullPatterName(DefaultNameSpace,group.Value);
+					if (!cache.TryGetValue(fullName, out regex))
+					{
+						if ( (!fullNamedPatterns.TryGetValue(fullName, out subPattern))  && (!patterns.TryGetValue(group.Value, out subPattern))) throw new KeyNotFoundException($"Pattern {fullName} doesn't exist in regex builder");
+						regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
+						cache.Add(fullName, regex);
+					}
+					sb.Append(regex);
+					continue;
+				}
 			}
 			return sb.ToString();
 		}
 
-
-		/*public Regex Build(Pattern Pattern)
+		public Regex Build(string DefaultNameSpace, string Pattern)
 		{
-			return new Regex(BuildRegexPattern(Pattern.Value), RegexOptions.Compiled,TimeSpan.FromSeconds(2));
-		}*/
-
-		public Regex Build(string Pattern)
-		{
-			return new Regex(BuildRegexPattern(Pattern),RegexOptions.Compiled, TimeSpan.FromSeconds(2));
+			return new Regex(BuildRegexPattern(DefaultNameSpace, Pattern),RegexOptions.Compiled, TimeSpan.FromSeconds(2));
 		}
 
+		public void ClearCache()
+		{
+			cache.Clear();
+		}
 	}
 }

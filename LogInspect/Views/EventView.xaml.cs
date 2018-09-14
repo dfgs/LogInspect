@@ -120,7 +120,7 @@ namespace LogInspect.Views
 				foreach (ColumnViewModel column in gridView.Columns.Select(item => item.Header))
 				{
 					if (string.IsNullOrEmpty(column.Description)) continue;
-					buffer.Append(ev.GetPropertyValue(column.Name));
+					buffer.Append(ev[column.Name]);
 					buffer.Append("\t");
 				}
 				buffer.Append("\n");

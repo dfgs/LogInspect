@@ -46,7 +46,7 @@ namespace LogInspect.ViewModels
 				foreach (string property in properties)
 				{
 					values = items[property];
-					value = e.Event.GetValue(property);
+					value = e.Event[property];
 					if (!values.Contains(value))
 					{
 						values.Add(value);

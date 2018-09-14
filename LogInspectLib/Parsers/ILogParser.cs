@@ -8,7 +8,7 @@ namespace LogInspectLib.Parsers
 {
 	public interface ILogParser:IParser
 	{
-		Event? Parse(Log Log);
-
+		Event Parse(Log Log);
+		void Add(string DefaultNameSpace, string Pattern);
 	}
 }

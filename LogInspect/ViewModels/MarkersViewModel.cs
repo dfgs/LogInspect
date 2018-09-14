@@ -59,7 +59,7 @@ namespace LogInspect.ViewModels
 					brush = EventViewModel.GetBackground(coloringRules, item.Event);
 					if (brush == null) continue;
 
-					severity = item.Event.GetValue(severityColumn);
+					severity = item.Event[severityColumn];
 					if (this.Count > 0) range = this[Count - 1];
 
 					if ((range == null) || (!ValueType.Equals(severity, range.Severity) || (item.EventIndex != range.Position + range.Size)))

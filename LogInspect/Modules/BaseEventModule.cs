@@ -1,5 +1,6 @@
 ﻿using LogInspect.Models;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 using ModuleLib;
 using System;
@@ -13,6 +14,8 @@ namespace LogInspect.Modules
 {
 	public abstract class BaseEventModule: ThreadModule
 	{
+		private ILogParser logParser;
+
 		private int lineIndex;
 
 		public abstract long Position
@@ -44,9 +47,9 @@ namespace LogInspect.Modules
 		public event EventIndexedEventHandler Indexed;
 		public event EventHandler Reseted;
 
-
-		public BaseEventModule(string Name, ILogger Logger, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
+		public BaseEventModule(string Name, ILogger Logger,ILogParser LogParser, ThreadPriority Priority, int LookupRetryDelay) : base(Name, Logger,Priority)
 		{
+			this.logParser = LogParser;
 			this.lookupRetryDelay = LookupRetryDelay;
 		}
 
@@ -60,11 +63,12 @@ namespace LogInspect.Modules
 			Reseted?.Invoke(this, EventArgs.Empty);
 		}
 
-		protected abstract Event OnReadEvent();
+		protected abstract Log OnReadLog();
 		protected abstract bool MustIndexEvent(Event Event);
 		
 		protected override sealed void ThreadLoop()
 		{
+			Log log;
 			Event item;
 
 			startTime = DateTime.Now;
@@ -75,7 +79,7 @@ namespace LogInspect.Modules
 				{
 					try
 					{
-						item = OnReadEvent();
+						log = OnReadLog();
 					}
 					catch(Exception ex)
 					{
@@ -83,7 +87,21 @@ namespace LogInspect.Modules
 						return;
 					}
 
-					if (!item.Rule.Discard)
+					try
+					{
+						item = logParser.Parse(log);
+					}
+					catch(Exception ex)
+					{
+						Log(ex);
+						continue;
+					}
+					if (item==null)
+					{
+						Log(LogLevels.Warning, $"Cannot parse log: {log.ToSingleLine()}");
+					}
+
+					//if (!item.Rule.Discard)
 					{
 						Read?.Invoke(this, new EventReadEventArgs(item));
 
@@ -94,7 +112,7 @@ namespace LogInspect.Modules
 						}
 					}
 
-					lineIndex += item.Log.Lines.Count();
+					lineIndex += log.Lines.Count();
 
 				}
 				Log(LogLevels.Debug, $"Indexed reached end of stream in {DateTime.Now - startTime}");

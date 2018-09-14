@@ -64,7 +64,7 @@ namespace LogInspectLib.Readers
 				}
 			} 
 			result:
-			return new Line(pos, sb.ToString());
+			return new Line() { Position = pos, Value = sb.ToString() };
 
 		}
 

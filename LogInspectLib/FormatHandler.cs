@@ -11,13 +11,21 @@ namespace LogInspectLib
 	[Serializable]
     public class FormatHandler
     {
-		[XmlElement]
+		[XmlAttribute]
 		public string Name
 		{
 			get;
 			set;
 		}
-		[XmlElement]
+
+		[XmlAttribute]
+		public string DefaultNameSpace
+		{
+			get;
+			set;
+		}
+
+		[XmlAttribute]
 		public string FileNamePattern
 		{
 			get;
@@ -133,12 +141,17 @@ namespace LogInspectLib
 		
 
 
-		public IEnumerable<ILogParser> CreateLogParsers(IRegexBuilder RegexBuilder)
+		public ILogParser CreateLogParser(IRegexBuilder RegexBuilder)
 		{
+			ILogParser logParser;
+
+			logParser = new LogParser(RegexBuilder, Columns);
 			foreach (Rule rule in Rules)
 			{
-				yield return new LogParser(rule, Columns,RegexBuilder);
+				logParser.Add(DefaultNameSpace, rule.GetPattern());
 			}
+
+			return logParser;
 		}
 
 

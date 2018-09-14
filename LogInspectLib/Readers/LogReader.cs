@@ -36,7 +36,7 @@ namespace LogInspectLib.Readers
 		private List<Regex> appendToPreviousRegexes;
 		private List<Regex> discardRegexes;
 		
-		public LogReader(ILineReader LineReader, IRegexBuilder RegexBuilder, IEnumerable<string> AppendLineToPreviousPatterns, IEnumerable<string> AppendLineToNextPatterns, IEnumerable<string> DiscardLinePatterns) :base()
+		public LogReader(ILineReader LineReader, IRegexBuilder RegexBuilder,string DefaultNameSpace, IEnumerable<string> AppendLineToPreviousPatterns, IEnumerable<string> AppendLineToNextPatterns, IEnumerable<string> DiscardLinePatterns) :base()
         {
 			if (LineReader == null) throw new ArgumentNullException("LineReader");
 			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
@@ -51,15 +51,15 @@ namespace LogInspectLib.Readers
 
 			foreach (string pattern in AppendLineToPreviousPatterns ?? Enumerable.Empty<string>())
 			{
-				this.appendToPreviousRegexes.Add(RegexBuilder.Build(pattern));
+				this.appendToPreviousRegexes.Add(RegexBuilder.Build(DefaultNameSpace, pattern));
 			}
 			foreach (string pattern in AppendLineToNextPatterns ?? Enumerable.Empty<string>())
 			{
-				this.appendToNextRegexes.Add(RegexBuilder.Build(pattern));
+				this.appendToNextRegexes.Add(RegexBuilder.Build(DefaultNameSpace, pattern));
 			}
 			foreach (string pattern in DiscardLinePatterns ?? Enumerable.Empty<string>())
 			{
-				this.discardRegexes.Add(RegexBuilder.Build(pattern));
+				this.discardRegexes.Add(RegexBuilder.Build(DefaultNameSpace,pattern));
 			}
 
 		}
@@ -102,14 +102,14 @@ namespace LogInspectLib.Readers
 
 		protected override Log OnRead()
         {
-  			List<Line> lines;
 			Line line;
  			bool mustAppend;
 			Log log;
 			long pos;
 
+			log = new Log();
+
 			readLines = 0;
-			lines = new List<Line>();
 			do
 			{
 				line = lineReader.Read();readLines++;
@@ -119,7 +119,7 @@ namespace LogInspectLib.Readers
 				}
 				else
 				{
-					lines.Add(line);
+					log.Lines.Add(line);
 					mustAppend = MustAppendToNextLine(line);
 				}
 			} while ((mustAppend)&&(!EndOfStream));
@@ -133,7 +133,7 @@ namespace LogInspectLib.Readers
 					mustAppend = MustAppendToPreviousLine(line);
 					if (mustAppend)
 					{
-						lines.Add(line);
+						log.Lines.Add(line);
 					}
 					else
 					{
@@ -144,7 +144,6 @@ namespace LogInspectLib.Readers
 				}
 			}
 
-			log =new Log(lines.ToArray());
 			return log;
 			
         }

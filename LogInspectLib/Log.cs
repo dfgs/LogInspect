@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace LogInspectLib
 {
-    public struct Log
+    public class Log
     {
-        public Line[] Lines
+        public List<Line> Lines
         {
             get;
             private set;
@@ -15,24 +15,25 @@ namespace LogInspectLib
 		
 		public long Position
 		{
-			get { return Lines[0].Position; }
+			get { return Lines.FirstOrDefault()?.Position??-1; }
 		}
 
-        
-        public Log(params Line[] Lines)
-        {
-			if (Lines == null)  throw (new ArgumentNullException("Lines"));
-			this.Lines = Lines;
-        }
+		public Log()
+		{
+			Lines = new List<Line>();
+		}
+		
 
 		public string ToSingleLine()
 		{
 			return String.Join("", Lines.Select(item=>item.Value));
 		}
+
 		public string ToMultipleLines()
 		{
 			return String.Join("\r\n", Lines.Select(item => item.Value));
 		}
+
 		public override string ToString()
 		{
 			return ToSingleLine();

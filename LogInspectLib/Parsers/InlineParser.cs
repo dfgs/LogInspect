@@ -14,13 +14,13 @@ namespace LogInspectLib.Parsers
 		private Column column;
 		private Regex[] regexes;
 
-		public InlineParser(Column Column, IRegexBuilder RegexBuilder)
+		public InlineParser(Column Column, IRegexBuilder RegexBuilder, string DefaultNameSpace)
 		{
 			this.column = Column;
 			regexes = new Regex[Column.InlineColoringRules.Count];
 			for(int t=0;t<Column.InlineColoringRules.Count;t++)
 			{
-				regexes[t] = RegexBuilder.Build(Column.InlineColoringRules[t].Pattern);
+				regexes[t] = RegexBuilder.Build(DefaultNameSpace, Column.InlineColoringRules[t].Pattern);
 			}
 		}
 

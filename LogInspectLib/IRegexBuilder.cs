@@ -13,9 +13,8 @@ namespace LogInspectLib
 		void Add(string NameSpace,Pattern Pattern);
 		void Add(string NameSpace, IEnumerable<Pattern> Patterns);
 
-		string BuildRegexPattern(string Pattern);
-		//Regex Build(Pattern Pattern);
-		Regex Build(string Pattern);
+		string BuildRegexPattern(string DefaultNameSpace, string Pattern);
+		Regex Build(string DefaultNameSpace,string Pattern);
 
 
 	}

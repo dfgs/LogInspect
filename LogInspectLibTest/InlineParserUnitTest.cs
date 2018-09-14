@@ -26,7 +26,7 @@ namespace LogInspectLibTest
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "White", Pattern = "White" });
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "Black", Pattern = "Black" });
 
-			parser = new InlineParser(column,regexBuilder);
+			parser = new InlineParser(column,regexBuilder,"");
 			inlines = parser.Parse("RedGreenBlueBlackWhite").ToArray();
 			Assert.AreEqual(5, inlines.Length);
 			Assert.AreEqual("Red", inlines[0].Value);
@@ -49,7 +49,7 @@ namespace LogInspectLibTest
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "Black", Pattern = "Black" });
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "White", Pattern = "White" });
 
-			parser = new InlineParser(column, regexBuilder);
+			parser = new InlineParser(column, regexBuilder, "");
 			inlines = parser.Parse("RedGreenBlueBlackWhite").ToArray();
 			Assert.AreEqual(5, inlines.Length);
 			Assert.AreEqual("Red", inlines[0].Value);
@@ -72,7 +72,7 @@ namespace LogInspectLibTest
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "White", Pattern = "White" });
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "Black", Pattern = "Black" });
 
-			parser = new InlineParser(column, regexBuilder);
+			parser = new InlineParser(column, regexBuilder, "");
 			inlines = parser.Parse("Red_Green_Blue_Black_White").ToArray();
 			Assert.AreEqual(9, inlines.Length);
 			Assert.AreEqual("Red", inlines[0].Value);
@@ -99,7 +99,7 @@ namespace LogInspectLibTest
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "Black", Pattern = "Black" });
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "White", Pattern = "White" });
 
-			parser = new InlineParser(column, regexBuilder);
+			parser = new InlineParser(column, regexBuilder, "");
 			inlines = parser.Parse("Red_Green_Blue_Black_White").ToArray();
 			Assert.AreEqual(9, inlines.Length);
 			Assert.AreEqual("Red", inlines[0].Value);
@@ -127,7 +127,7 @@ namespace LogInspectLibTest
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "White", Pattern = "White" });
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "Black", Pattern = "Black" });
 
-			parser = new InlineParser(column, regexBuilder);
+			parser = new InlineParser(column, regexBuilder, "");
 			inlines = parser.Parse("__Red_Green_Blue_Black_White").ToArray();
 			Assert.AreEqual(10, inlines.Length);
 			Assert.AreEqual("__", inlines[0].Value);
@@ -156,7 +156,7 @@ namespace LogInspectLibTest
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "White", Pattern = "White" });
 			column.InlineColoringRules.Add(new InlineColoringRule() { Foreground = "Black", Pattern = "Black" });
 
-			parser = new InlineParser(column, regexBuilder);
+			parser = new InlineParser(column, regexBuilder, "");
 			inlines = parser.Parse("Red_Green_Blue_Black_White__").ToArray();
 			Assert.AreEqual(10, inlines.Length);
 			Assert.AreEqual("Red", inlines[0].Value);

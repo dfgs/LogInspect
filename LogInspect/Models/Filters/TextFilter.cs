@@ -24,7 +24,7 @@ namespace LogInspect.Models.Filters
 		{
 			string value;
 
-			value = Item.GetValue(PropertyName)?.ToString();
+			value = Item[PropertyName]?.ToString();
 
 			foreach (TextFilterItem item in Items)
 			{

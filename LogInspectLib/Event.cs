@@ -7,50 +7,44 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public struct Event
+	public class Event
 	{
-		public Log Log
+		public object this[string Name]
+		{
+			get { return Properties[Name]; }
+			set { Properties[Name] = value; }
+		}
+
+		/*public Log Log
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public Rule Rule
 		{
 			get;
-			private set;
+			set;
 		}
-
 
 		public long Position
 		{
-			get { return Log.Position; }
-		}
+			get { return Log?.Position??-1; }
+		}*/
 
-		public Property[] Properties
+		public PropertyCollection<object> Properties
 		{
 			get;
 			private set;
 		}
 
+		public Event()
+		{
+			this.Properties = new PropertyCollection<object>();
+		}
+
 		
 
-		public Event(Log Log,Rule Rule, params Property[] Properties)
-		{
-			if (Properties == null) throw new ArgumentNullException("Properties");
-			this.Log = Log;this.Rule = Rule;this.Properties = Properties;
-			
-		}
-
-		public Property GetProperty(string Name)
-		{
-			return Properties.FirstOrDefault(item => item.Name == Name);
-		}
-			
-		public object GetValue(string Name)
-		{
-			return Properties.FirstOrDefault(item => item.Name == Name)?.Value;
-		}
 
 	}
 }

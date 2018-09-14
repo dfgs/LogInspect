@@ -27,7 +27,7 @@ namespace LogInspect.ViewModels.Properties
 
 		public TextPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event) : base(Logger, Column)
 		{
-			this.Value = Event.GetPropertyValue(Column.Name)?.ToString();this.Inlines = Event.GetPropertyInlines(Column.Name);
+			this.Value = Event[Column.Name]?.ToString();this.Inlines = null;// Event.GetPropertyInlines(Column.Name);
 		}
 	}
 }

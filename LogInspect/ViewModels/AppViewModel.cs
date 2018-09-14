@@ -143,12 +143,20 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		private bool MatchFileName(string FileName, string FileNamePattern)
+		private bool MatchFileName(string FileName, string FileNamePattern,string DefaultNameSpace)
 		{
 			Regex regex;
 
-			regex = regexBuilder.Build(FileNamePattern);
-			return regex.Match(FileName).Success;
+			try
+			{
+				regex = regexBuilder.Build(DefaultNameSpace, FileNamePattern);
+				return regex.Match(FileName).Success;
+			}
+			catch(Exception ex)
+			{
+				Log(ex);
+				return false;
+			}
 		}
 
 		public FormatHandler GetFormatHandler(string FileName)
@@ -159,7 +167,7 @@ namespace LogInspect.ViewModels
 
 			shortName = Path.GetFileName(FileName);
 			Log(LogLevels.Information, $"Try to find a format handler for file {shortName}");
-			formatHandler = formatHandlers.FirstOrDefault(item => MatchFileName(shortName,item.FileNamePattern) );
+			formatHandler = formatHandlers.FirstOrDefault(item => MatchFileName(shortName,item.FileNamePattern,item.DefaultNameSpace) );
 			if (formatHandler == null)
 			{
 				Log(LogLevels.Warning, $"Format of log file {shortName} is unmanaged");
