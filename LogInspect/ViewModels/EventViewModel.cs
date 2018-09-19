@@ -88,7 +88,7 @@ namespace LogInspect.ViewModels
 
 
 
-		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event, int EventIndex, int LineIndex) : base(Logger)
+		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event, int EventIndex, int LineIndex) : base(Logger,-1)
 		{
 			//string severity;
 			

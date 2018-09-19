@@ -28,7 +28,7 @@ namespace LogInspect.ViewModels.Properties
 		}
 
 
-		public PropertyViewModel(ILogger Logger,ColumnViewModel Column) : base(Logger)
+		public PropertyViewModel(ILogger Logger,ColumnViewModel Column) : base(Logger,-1)
 		{
 			this.column = Column;
 		}

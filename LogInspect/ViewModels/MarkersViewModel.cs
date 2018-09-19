@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace LogInspect.ViewModels
 {
-	public class MarkersViewModel:BaseCollectionViewModel<MarkerViewModel>
+	public class MarkersViewModel:CollectionViewModel<MarkerViewModel>
 	{
 		private string severityColumn;
 		private IEnumerable<EventColoringRule> coloringRules;
@@ -27,24 +27,24 @@ namespace LogInspect.ViewModels
 		}
 		
 
-		public MarkersViewModel(ILogger Logger , EventIndexerBufferModule BufferModule, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger)
+		public MarkersViewModel(ILogger Logger , int RefreshInterval, EventLoaderModule EventLoaderModule, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger, RefreshInterval)
 		{
-			BufferModule.EventsBuffered += BufferModule_EventsBuffered;
-			BufferModule.Reseted += BufferModule_Reseted;
+			//BufferModule.EventsBuffered += BufferModule_EventsBuffered;
+			//BufferModule.Reseted += BufferModule_Reseted;
 			this.severityColumn = SeverityColumn;
 			this.coloringRules = ColoringRules;
 		}
 
 
-		private void BufferModule_Reseted(object sender, EventArgs e)
+		/*private void BufferModule_Reseted(object sender, EventArgs e)
 		{
 			Dispatcher.Invoke(() =>
 			{
 				Clear();
 			});
-		}
+		}*/
 
-		private void BufferModule_EventsBuffered(object sender, EventsBufferedEventArgs e)
+		/*private void BufferModule_EventsBuffered(object sender, EventsBufferedEventArgs e)
 		{
 			object severity;
 			MarkerViewModel range=null;
@@ -74,7 +74,7 @@ namespace LogInspect.ViewModels
 					range.Size++;
 				}
 			});
-		}
+		}*/
 
 
 	}

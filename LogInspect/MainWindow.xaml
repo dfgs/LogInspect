@@ -108,6 +108,9 @@
 					</Style>
 				</ProgressBar.Style>
 			</ProgressBar>
+			<Separator/>
+			<TextBlock Text="Handler name: " />
+			<TextBlock Text="{Binding SelectedItem.FormatHandlerName,FallbackValue=NA}"/>
 		</StatusBar>
 
 		<ToolBarTray DockPanel.Dock="Top"  DataContext="{Binding SelectedItem}">

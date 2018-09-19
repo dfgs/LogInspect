@@ -14,12 +14,12 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-	public class BaseCollectionViewModel<T>:ViewModel,IEnumerable<T>,INotifyCollectionChanged
+	public class CollectionViewModel<T>:ViewModel,IEnumerable<T>,INotifyCollectionChanged
 	{
 		private List<T> items;
 
 
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(T), typeof(BaseCollectionViewModel<T>));
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(T), typeof(CollectionViewModel<T>));
 		public T SelectedItem
 		{
 			get { return (T)GetValue(SelectedItemProperty); }
@@ -39,7 +39,7 @@ namespace LogInspect.ViewModels
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 	
-		public BaseCollectionViewModel(ILogger Logger ) : base(Logger)
+		public CollectionViewModel(ILogger Logger,int RefreshInterval) : base(Logger, RefreshInterval)
 		{
 			items = new List<T>();
 		}

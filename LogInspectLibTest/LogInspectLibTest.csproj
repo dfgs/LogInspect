@@ -48,11 +48,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharReaderUnitTest.cs" />
-    <Compile Include="LineReaderUnitTest.cs" />
+    <Compile Include="LineLoaderUnitTest.cs" />
     <Compile Include="InlineParserUnitTest.cs" />
-    <Compile Include="LogReaderUnitTest.cs" />
-    <Compile Include="Mocks\MockedLineReader.cs" />
+    <Compile Include="EventLoaderUnitTest.cs" />
+    <Compile Include="LogLoaderUnitTest.cs" />
+    <Compile Include="Mocks\MockedLogLoader.cs" />
+    <Compile Include="Mocks\MockedLineLoader.cs" />
+    <Compile Include="Mocks\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogParserUnitTest.cs" />
     <Compile Include="RegexBuilderUnitTest.cs" />

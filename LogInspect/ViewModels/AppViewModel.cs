@@ -1,6 +1,6 @@
 ﻿using LogInspectLib;
+using LogInspectLib.Loaders;
 using LogInspectLib.Parsers;
-using LogInspectLib.Readers;
 using LogLib;
 using System;
 using System.Collections.Generic;
@@ -31,17 +31,13 @@ namespace LogInspect.ViewModels
 			set { SetValue(SelectedItemProperty, value); }
 		}
 
-		private int bufferSize;
-		private int indexerLookupRetryDelay;
-		private int indexerBufferLookupRetryDelay;
-		private int indexerProgressRefreshDelay;
+		private int loaderModuleLookupRetryDelay;
+		private int viewModelRefreshDelay;
 
-		public AppViewModel(ILogger Logger,string FormatHandlersPath,string PatternLibsPath, int BufferSize,int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) : base(Logger)
+		public AppViewModel(ILogger Logger,string FormatHandlersPath,string PatternLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshDelay) : base(Logger,-1)
 		{
-			this.bufferSize = BufferSize;
-			this.indexerLookupRetryDelay = IndexerLookupRetryDelay;
-			this.indexerBufferLookupRetryDelay = IndexerBufferLookupRetryDelay;
-			this.indexerProgressRefreshDelay = IndexerProgressRefreshDelay;
+			this.loaderModuleLookupRetryDelay = LoaderModuleLookupRetryDelay;
+			this.viewModelRefreshDelay = ViewModelRefreshDelay;
 
 			this.regexBuilder = new RegexBuilder();
 			LoadPatternLibs(PatternLibsPath);
@@ -68,7 +64,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder, bufferSize,indexerLookupRetryDelay,indexerBufferLookupRetryDelay, indexerProgressRefreshDelay);
+				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,loaderModuleLookupRetryDelay,viewModelRefreshDelay);
 			}
 			catch(Exception ex)
 			{

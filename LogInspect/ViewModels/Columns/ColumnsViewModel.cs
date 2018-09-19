@@ -19,7 +19,7 @@ namespace LogInspect.ViewModels.Columns
 		
 
 
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel) : base(Logger)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel) : base(Logger,-1)
 		{
 
 			items = new List<ColumnViewModel>();

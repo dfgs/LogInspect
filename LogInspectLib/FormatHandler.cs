@@ -138,7 +138,18 @@ namespace LogInspectLib
 			return (FormatHandler)serializer.Deserialize(Stream);
 		}
 
-		
+
+		private IStringMatcher CreateStringMatcher(IRegexBuilder RegexBuilder,IEnumerable<string> Patterns)
+		{
+			IStringMatcher matcher;
+
+			matcher = new StringMatcher();
+			foreach (string pattern in Patterns)
+			{
+				matcher.Add(RegexBuilder.Build(DefaultNameSpace, pattern));
+			}
+			return matcher;
+		}
 
 
 		public ILogParser CreateLogParser(IRegexBuilder RegexBuilder)
@@ -154,6 +165,18 @@ namespace LogInspectLib
 			return logParser;
 		}
 
+		public IStringMatcher CreateDiscardLinesMatcher(IRegexBuilder RegexBuilder)
+		{
+			return CreateStringMatcher(RegexBuilder, DiscardLinePatterns);
+		}
+		public IStringMatcher CreateAppendLineToPreviousMatcher(IRegexBuilder RegexBuilder)
+		{
+			return CreateStringMatcher(RegexBuilder, AppendLineToPreviousPatterns);
+		}
+		public IStringMatcher CreateAppendLineToNextMatcher(IRegexBuilder RegexBuilder)
+		{
+			return CreateStringMatcher(RegexBuilder, AppendLineToNextPatterns);
+		}
 
 
 	}

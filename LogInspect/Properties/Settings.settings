@@ -5,16 +5,10 @@
     <Setting Name="FormatHandlersFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">FormatHandlers</Value>
     </Setting>
-    <Setting Name="BufferSize" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">65535</Value>
-    </Setting>
-    <Setting Name="IndexerLookupRetryDelay" Type="System.Int32" Scope="Application">
+    <Setting Name="LoaderModuleLookupRetryDelay" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="IndexerBufferLookupRetryDelay" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">500</Value>
-    </Setting>
-    <Setting Name="IndexerProgressRefreshDelay" Type="System.Int32" Scope="Application">
+    <Setting Name="ViewModelRefreshDelay" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="PatternLibsFolder" Type="System.String" Scope="Application">

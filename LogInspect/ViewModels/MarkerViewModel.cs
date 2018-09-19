@@ -44,7 +44,7 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public MarkerViewModel(ILogger Logger) : base(Logger)
+		public MarkerViewModel(ILogger Logger) : base(Logger,-1)
 		{
 		}
 	}

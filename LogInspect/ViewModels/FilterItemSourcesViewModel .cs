@@ -2,6 +2,7 @@
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
+using LogInspectLib.Loaders;
 using LogLib;
 using System;
 using System.Collections;
@@ -12,48 +13,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
-	public class FilterItemSourcesViewModel:BaseCollectionViewModel<EventViewModel>
+	public class FilterItemSourcesViewModel:ViewModel
 	{
+		private int position;
 
-		private string[] properties;
+		private IEventLoader eventLoader;
+
+		private string[] columns;
 		private Dictionary<string, List<object>> items;
 
-		public event FilterItemAddedEventHandler FilterChoiceAdded;
-
-		public FilterItemSourcesViewModel(ILogger Logger ,EventIndexerModule IndexerModule,IEnumerable<Column> Columns) : base(Logger)
+		public IEnumerable<object> this[string Column]
 		{
-			items = new Dictionary<string, List<object>>();
-			properties = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
-			foreach (string Property in properties)
-			{
-				items.Add(Property, new List<object>());
-			}
-			IndexerModule.Read += IndexerModule_Read;
+			get { return items[Column]; }
 		}
 
-		
+		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,IEventLoader EventLoader, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
+		{
+			items = new Dictionary<string, List<object>>();
+			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
+			foreach (string column in columns)
+			{
+				items.Add(column, new List<object>());
+			}
 
-		private void IndexerModule_Read(object sender, EventReadEventArgs e)
+			this.eventLoader = EventLoader;
+
+			
+		}
+
+		protected override void OnRefresh()
 		{
 			List<object> values;
 			object value;
+			int count;
 
-			Dispatcher.Invoke(() =>
+			count = eventLoader.Count;
+			for (int t = position ; t < count; t++)
 			{
-				foreach (string property in properties)
+				foreach (string property in columns)
 				{
 					values = items[property];
-					value = e.Event[property];
+					value = eventLoader[t][property];
 					if (!values.Contains(value))
 					{
 						values.Add(value);
-						FilterChoiceAdded?.Invoke(this, new FilterItemAddedEventArgs(property, value));
+						//FilterChoiceAdded?.Invoke(this, new FilterItemAddedEventArgs(property, value));
 					}
 				}
-			});
+			}
+			position = count;
+
 		}
 
 		public IEnumerable<object> GetFilterChoices(string Property)

@@ -83,21 +83,23 @@
     <Compile Include="Models\Filters\TextFilterItem.cs" />
     <Compile Include="Models\Filters\TimeStampConditions.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
-    <Compile Include="Modules\BufferItem.cs" />
-    <Compile Include="Modules\EventsBufferedEventHandler.cs" />
-    <Compile Include="Modules\EventIndexerBufferModule.cs" />
-    <Compile Include="Modules\BaseEventModule.cs" />
-    <Compile Include="Modules\EventReadEventHandler.cs" />
-    <Compile Include="Modules\EventIndexedEventHandler.cs" />
+    <Compile Include="Modules\BaseModule.cs" />
+    <Compile Include="Modules\ILoaderModule.cs" />
+    <Compile Include="Modules\ILineLoaderModule.cs" />
+    <Compile Include="Modules\IEventLoaderModule.cs" />
+    <Compile Include="Modules\ILogLoaderModule.cs" />
+    <Compile Include="Modules\LoaderModule.cs" />
+    <Compile Include="Modules\LineLoaderModule.cs" />
+    <Compile Include="Modules\EventLoaderModule.cs" />
+    <Compile Include="Modules\LogLoaderModule.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
-    <Compile Include="ViewModels\BaseCollectionViewModel.cs" />
+    <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\FindOptions.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
-    <Compile Include="ViewModels\FilterItemAddedEventHandler.cs" />
     <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
@@ -105,7 +107,6 @@
     <Compile Include="ViewModels\Filters\MultiChoicesFilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\TextFilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\TimeStampFilterViewModel.cs" />
-    <Compile Include="ViewModels\IndexerModuleViewModel.cs" />
     <Compile Include="ViewModels\Columns\BookMarkColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\LineColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
@@ -161,7 +162,6 @@
     </Compile>
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\LogFileViewModel.cs" />
-    <Compile Include="Modules\EventIndexerModule.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

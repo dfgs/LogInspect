@@ -34,37 +34,19 @@ namespace LogInspect.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("65535")]
-        public int BufferSize {
-            get {
-                return ((int)(this["BufferSize"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int IndexerLookupRetryDelay {
+        public int LoaderModuleLookupRetryDelay {
             get {
-                return ((int)(this["IndexerLookupRetryDelay"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500")]
-        public int IndexerBufferLookupRetryDelay {
-            get {
-                return ((int)(this["IndexerBufferLookupRetryDelay"]));
+                return ((int)(this["LoaderModuleLookupRetryDelay"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public int IndexerProgressRefreshDelay {
+        public int ViewModelRefreshDelay {
             get {
-                return ((int)(this["IndexerProgressRefreshDelay"]));
+                return ((int)(this["ViewModelRefreshDelay"]));
             }
         }
         

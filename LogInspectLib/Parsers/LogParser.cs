@@ -33,7 +33,6 @@ namespace LogInspectLib.Parsers
 			Match match;
 			Event ev;
 
-
 			foreach (Regex regex in items)
 			{
 				match = regex.Match(Log.ToSingleLine());
@@ -46,10 +45,9 @@ namespace LogInspectLib.Parsers
 				}
 
 				return ev;
-
 			}
 
-			return null;
+			throw new FormatException($"Failed to parse log: {Log.ToSingleLine()}");
 		}
 
 

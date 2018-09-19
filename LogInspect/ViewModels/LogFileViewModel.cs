@@ -3,7 +3,8 @@ using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
-using LogInspectLib.Readers;
+using LogInspectLib.Loaders;
+using LogInspectLib.Parsers;
 using LogLib;
 using System;
 using System.Collections;
@@ -35,8 +36,13 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
+		public string FormatHandlerName
+		{
+			get;
+			private set;
+		}
 
-
+		private string severityColumn;
 
 		public static readonly DependencyProperty FindOptionsProperty = DependencyProperty.Register("FindOptions", typeof(FindOptions), typeof(LogFileViewModel));
 		public FindOptions FindOptions
@@ -45,8 +51,6 @@ namespace LogInspect.ViewModels
 			set { SetValue(FindOptionsProperty, value); }
 		}
 
-
-
 		public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(Statuses), typeof(LogFileViewModel),new PropertyMetadata(Statuses.Idle));
 		public Statuses Status
 		{
@@ -54,20 +58,11 @@ namespace LogInspect.ViewModels
 			private set { SetValue(StatusProperty, value); }
 		}
 
-
 		public ColumnsViewModel Columns
 		{
 			get;
 			private set;
 		}
-
-		private EventIndexerModule eventIndexerModule;
-		public IndexerModuleViewModel<EventIndexerModule> EventIndexer
-		{
-			get;
-			private set;
-		}
-		private EventIndexerBufferModule indexerBufferModule;
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 		public SeveritiesViewModel Severities
@@ -88,56 +83,78 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		private ILogReader logReader;
-		private FormatHandler formatHandler;
+		private IEventLoader eventLoader;
+		private ILogLoader logLoader;
+		private ILineLoader lineLoader;
+
+		private ILineLoaderModule lineLoaderModule;
+		private ILogLoaderModule logLoaderModule;
+		private IEventLoaderModule eventLoaderModule;
+
 	
-		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, int BufferSize, int IndexerLookupRetryDelay, int IndexerBufferLookupRetryDelay,int IndexerProgressRefreshDelay) :base(Logger)
+		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, int LoaderModuleLookupRetryDelay,int ViewModelRefreshDelay) :base(Logger,-1)
 		{
 			Stream stream;
+			IStringMatcher discardLineMatcher;
+			IStringMatcher appendLineToPreviousMatcher;
+			IStringMatcher appendLineToNextMatcher;
+			ILogParser logParser;
 
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
-			this.formatHandler = FormatHandler;
+			this.FormatHandlerName = FormatHandler.Name;
+			this.severityColumn = FormatHandler.SeverityColumn;
 
-			Log(LogLevels.Information, "Creating event reader...");
-			stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-			this.logReader = new LogReader(new LineReader(new CharReader(stream, Encoding.Default, BufferSize)), RegexBuilder, FormatHandler.DefaultNameSpace, FormatHandler.AppendLineToPreviousPatterns, FormatHandler.AppendLineToNextPatterns, FormatHandler.DiscardLinePatterns);
+			Log(LogLevels.Information, "Creating modules");
 
-			Log(LogLevels.Information, "Creating modules and viewmodels");
+			stream = new FileStream(FileName, FileMode.Open);
+
+			discardLineMatcher = FormatHandler.CreateDiscardLinesMatcher(RegexBuilder);
+			appendLineToPreviousMatcher = FormatHandler.CreateAppendLineToPreviousMatcher(RegexBuilder);
+			appendLineToNextMatcher = FormatHandler.CreateAppendLineToNextMatcher(RegexBuilder) ;
+
+			logParser = FormatHandler.CreateLogParser(RegexBuilder);
+			
+			lineLoader = new LineLoader(stream, Encoding.Default, discardLineMatcher);
+			logLoader = new LogLoader(lineLoader, appendLineToPreviousMatcher, appendLineToNextMatcher);
+			eventLoader = new EventLoader(logLoader, logParser);
+
+			lineLoaderModule = new LineLoaderModule(Logger, lineLoader, LoaderModuleLookupRetryDelay);
+			logLoaderModule = new LogLoaderModule(Logger, logLoader, LoaderModuleLookupRetryDelay);
+			eventLoaderModule = new EventLoaderModule(Logger, eventLoader, LoaderModuleLookupRetryDelay);
+
+			Log(LogLevels.Information, "Creating viewmodels");
 
 			FindOptions = new FindOptions();
 			FindOptions.Column = FormatHandler.DefaultColumn;
 
-			eventIndexerModule = new EventIndexerModule(Logger, logReader, FormatHandler.CreateLogParser(RegexBuilder) ,IndexerLookupRetryDelay);
-			EventIndexer = new IndexerModuleViewModel<EventIndexerModule>(Logger, eventIndexerModule, IndexerProgressRefreshDelay);
-
-			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, eventIndexerModule, FormatHandler.Columns);
-			Severities = new SeveritiesViewModel(Logger, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
+			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshDelay, eventLoader, FormatHandler.Columns);
+			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshDelay, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
 			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel);
 
-			indexerBufferModule = new EventIndexerBufferModule(Logger, eventIndexerModule, IndexerLookupRetryDelay);
 
-			Events = new EventsViewModel(Logger, indexerBufferModule,Columns,FormatHandler.EventColoringRules);
-			Markers = new MarkersViewModel(Logger, indexerBufferModule, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
+			Events = new EventsViewModel(Logger, ViewModelRefreshDelay, eventLoader,Columns,FormatHandler.EventColoringRules);
+			Markers = null;//new MarkersViewModel(Logger, indexerBufferModule, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
 
-			Log(LogLevels.Information, "Starting EventIndexerBufferModule");
-			indexerBufferModule.Start();
-			Log(LogLevels.Information, "Starting EventIndexerModule");
-			eventIndexerModule.Start();
+
+			Log(LogLevels.Information, "Starting modules");
+			lineLoaderModule.Start();
+			logLoaderModule.Start();
+			eventLoaderModule.Start();
+
 		}
 
 
 		public override void Dispose()
 		{
 
-			Log(LogLevels.Information, "Stopping EventIndexerBufferModule");
-			indexerBufferModule.Stop();
-			Log(LogLevels.Information, "Stopping EventIndexerModule");
-			eventIndexerModule.Stop();
+			Log(LogLevels.Information, "Stopping modules");
+			eventLoaderModule.Stop();
+			logLoaderModule.Stop();
+			lineLoaderModule.Stop();
 
-			EventIndexer.Dispose();
-			filterItemSourcesViewModel.Dispose();
+			filterItemSourcesViewModel.Dispose();//*/
 
 		}
 
@@ -156,7 +173,7 @@ namespace LogInspect.ViewModels
 
 			//SelectedItemIndex = -1;
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			eventIndexerModule.SetFilters(filters  );
+			//eventIndexerModule.SetFilters(filters  );
 		}
 
 		#endregion
@@ -165,14 +182,15 @@ namespace LogInspect.ViewModels
 		public async Task<int> FindPreviousAsync(int Index, Func<EventViewModel, bool> Predicate)
 		{
 			EventViewModel ev;
+					
 			return await Task.Run<int>(() =>
 			{
 				while (Index > 0)
 				{
 					Index--;
 					ev = Events[Index];
-					//Thread.Sleep(1000);
-					if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
+					//if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
+					if (Predicate(ev)) return Index;
 				}
 				return -1;
 			});
@@ -183,16 +201,16 @@ namespace LogInspect.ViewModels
 
 			return await Task.Run<int>(() =>
 			{
-				while (Index < eventIndexerModule.IndexedEventsCount - 1)
+				while (Index < Events.Count- 1)
 				{
 					Index++;
 					ev = Events[Index];
-					//Thread.Sleep(1000);
-					if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
+					//if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
+					if (Predicate(ev)) return Index;
 				}
 				return -1;
 			});
-
+			
 		}
 		#endregion
 
@@ -202,7 +220,7 @@ namespace LogInspect.ViewModels
 			int index;
 
 			Status = Statuses.Searching;
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item[formatHandler.SeverityColumn]));
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item[severityColumn]));
 			Status = Statuses.Idle;
 			return index;
 		}
@@ -211,7 +229,7 @@ namespace LogInspect.ViewModels
 			int index ;
 
 			Status = Statuses.Searching;
-			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item[formatHandler.SeverityColumn]));
+			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item[severityColumn]));
 			Status = Statuses.Idle;
 			return index;
 		}

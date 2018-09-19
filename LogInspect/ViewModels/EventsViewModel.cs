@@ -2,6 +2,7 @@
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
+using LogInspectLib.Loaders;
 using LogLib;
 using System;
 using System.Collections;
@@ -11,12 +12,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
-	public class EventsViewModel:BaseCollectionViewModel<EventViewModel>
+	public class EventsViewModel:CollectionViewModel<EventViewModel>
 	{
-		
+		private int position;
+
+		private IEventLoader eventLoader;
+
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> coloringRules;
 
@@ -28,34 +33,35 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public EventsViewModel(ILogger Logger , EventIndexerBufferModule BufferModule,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
+		public EventsViewModel(ILogger Logger , int RefreshInterval, IEventLoader EventLoader,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger, RefreshInterval)
 		{
-			BufferModule.EventsBuffered += BufferModule_EventsBuffered;
-			BufferModule.Reseted += BufferModule_Reseted;
+			//BufferModule.EventsBuffered += BufferModule_EventsBuffered;
+			//BufferModule.Reseted += BufferModule_Reseted;
 			this.columns = Columns;
 			this.coloringRules = ColoringRules;
+
+			this.eventLoader = EventLoader;
+			
+		}
+		protected override void OnRefresh()
+		{
+			int count;
+			EventViewModel vm;
+
+			List<EventViewModel> list = new List<EventViewModel>();
+			count = eventLoader.Count;
+
+			for(int t=position;t<count;t++)
+			{
+				vm = new EventViewModel(Logger, columns, coloringRules, eventLoader[t], 0, 0);
+				list.Add(vm);
+			}
+			position = count;
+			AddRange(list);
+			if (Tail) Select(Count - 1);
 		}
 
 		
-
-		private void BufferModule_Reseted(object sender, EventArgs e)
-		{
-			Dispatcher.Invoke(() =>
-			{
-				Clear();
-			});
-		}
-		private void BufferModule_EventsBuffered(object sender, EventsBufferedEventArgs e)
-		{
-			Dispatcher.Invoke(() =>
-			{
-				List<EventViewModel> list = new List<EventViewModel>();
-				list.AddRange(e.Items.Select(item => new EventViewModel(Logger, columns, coloringRules, item.Event, item.EventIndex, item.LineIndex)));
-				AddRange(list) ;
-				if (Tail) Select(Count - 1);
-			});
-		}
-
 
 	}
 }

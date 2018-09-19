@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
@@ -27,11 +28,32 @@ namespace LogInspect.ViewModels
 			get;
 			private set;
 		}
-		public ViewModel(ILogger Logger)
+
+		private DispatcherTimer timer;
+
+		public ViewModel(ILogger Logger,int RefreshInterval)
 		{
 			this.ID = counter;counter++;
 			this.Logger = Logger;
+			if (RefreshInterval>0)
+			{
+				timer = new DispatcherTimer();
+				timer.Interval = TimeSpan.FromMilliseconds(RefreshInterval);
+				timer.Tick += Timer_Tick;
+				timer.Start();
+			}
 		}
+
+		protected virtual void OnRefresh()
+		{
+
+		}
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			OnRefresh();
+		}
+
 		public virtual void Dispose()
 		{
 
