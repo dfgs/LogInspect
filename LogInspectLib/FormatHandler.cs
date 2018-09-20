@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -156,7 +157,7 @@ namespace LogInspectLib
 		{
 			ILogParser logParser;
 
-			logParser = new LogParser();
+			logParser = new LogParser(Columns.Select(item=>item.Name));
 			foreach (Rule rule in Rules)
 			{
 				logParser.Add(RegexBuilder.Build(DefaultNameSpace, rule.GetPattern()));

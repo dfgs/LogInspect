@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using LogInspectLib;
 using LogInspectLib.Loaders;
@@ -18,7 +19,7 @@ namespace LogInspectLibTest
 		public void ShouldHaveCorrectConstructorParameters()
 		{
 			Assert.ThrowsException<ArgumentNullException>(() => { new EventLoader(Utils.EmptyLogLoader,null); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new EventLoader(null,new LogParser() ); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new EventLoader(null,new LogParser(Enumerable.Empty<string>()) ); });
 		}
 
 
@@ -31,7 +32,7 @@ namespace LogInspectLibTest
 			Column[] columns;
 
 			columns = new Column[] { new Column() { Name = "A" }, new Column() { Name = "B" }, new Column() { Name = "C" } };
-			parser = new LogParser();
+			parser = new LogParser(columns.Select(item=>item.Name));
 			parser.Add( @"(?<A>\w\d) \| (?<B>\w\d) \| (?<C>\w\d)");
 
 			logLoader = new MockedLogLoader();

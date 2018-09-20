@@ -140,9 +140,9 @@ namespace LogInspect.ViewModels
 			logLoader = new LogLoader(lineLoader, appendLineToPreviousMatcher, appendLineToNextMatcher);
 			eventLoader = new EventLoader(logLoader, logParser);
 
-			lineLoaderModule = new LineLoaderModule(Logger, lineLoader, LoaderModuleLookupRetryDelay);
-			logLoaderModule = new LogLoaderModule(Logger, logLoader, LoaderModuleLookupRetryDelay);
-			eventLoaderModule = new EventLoaderModule(Logger, eventLoader, LoaderModuleLookupRetryDelay);
+			lineLoaderModule = new LineLoaderModule(Logger, lineLoader, null,LoaderModuleLookupRetryDelay);
+			logLoaderModule = new LogLoaderModule(Logger, logLoader, lineLoaderModule.ProceededEvent, LoaderModuleLookupRetryDelay);
+			eventLoaderModule = new EventLoaderModule(Logger, eventLoader,logLoaderModule.ProceededEvent, LoaderModuleLookupRetryDelay);
 
 			Log(LogLevels.Information, "Creating viewmodels");
 

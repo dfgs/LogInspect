@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LogInspect.Modules
@@ -26,7 +27,7 @@ namespace LogInspect.Modules
 
 		
 
-		public LoaderModule(string Name,ILogger Logger,TLoader Loader, int LookupRetryDelay) :base(Name,Logger,LookupRetryDelay,System.Threading.ThreadPriority.Lowest)
+		public LoaderModule(string Name,ILogger Logger,TLoader Loader,WaitHandle LookUpRetryEvent, int LookupRetryDelay) :base(Name,Logger,LookupRetryDelay, LookUpRetryEvent, System.Threading.ThreadPriority.Lowest)
 		{
 			this.Loader = Loader;
 		}

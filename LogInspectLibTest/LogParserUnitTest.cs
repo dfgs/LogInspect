@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using LogInspectLib;
 using LogInspectLib.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +35,7 @@ namespace LogInspectLibTest
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
 			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
 
-			parser = new LogParser();
+			parser = new LogParser(columns.Select(item=>item.Name));
 			parser.Add( rule.GetPattern());
 
 			log = new Log();

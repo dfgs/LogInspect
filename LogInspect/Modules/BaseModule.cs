@@ -30,15 +30,25 @@ namespace LogInspect.Modules
 			get;
 			private set;
 		}
-		
+
+		public AutoResetEvent ProceededEvent
+		{
+			get;
+			private set;
+		}
+
 		private int lookupRetryDelay;
 		private DateTime startTime;
 		private RateMeter rateMeter;
-	
-		public BaseModule(string Name, ILogger Logger, int LookupRetryDelay,ThreadPriority Priority) : base(Name, Logger,Priority)
+		private WaitHandle[] events;
+
+		public BaseModule(string Name, ILogger Logger, int LookupRetryDelay,WaitHandle LookUpRetryEvent,ThreadPriority Priority) : base(Name, Logger,Priority)
 		{
 			this.lookupRetryDelay = LookupRetryDelay;
 			rateMeter = new RateMeter(1);
+			if (LookUpRetryEvent == null) events = new WaitHandle[] { QuitEvent };
+			else events = new WaitHandle[] { QuitEvent,LookUpRetryEvent };
+			ProceededEvent = new AutoResetEvent(false);
 		}
 
 		protected abstract bool OnProcessItem();
@@ -55,13 +65,14 @@ namespace LogInspect.Modules
 					result=OnProcessItem();
 					if (!result) break;
 					Count++;
+					ProceededEvent.Set();
 					rateMeter.Refresh(1);
 				}
 
 				rateMeter.Refresh(0);
 				Log(LogLevels.Debug, $"Module reached target in {DateTime.Now - startTime}");
 				startTime = DateTime.Now;
-				WaitHandles(lookupRetryDelay, QuitEvent);
+				WaitHandles(lookupRetryDelay, events);
 			}
 
 		}

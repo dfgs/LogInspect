@@ -10,11 +10,13 @@ namespace LogInspectLib.Parsers
 	public class LogParser:ILogParser
 	{
 		private List<Regex> items;
+		private IEnumerable<string> columns;
 
-
-		public LogParser( )
+		public LogParser(IEnumerable<string> Columns)
 		{
+			if (Columns == null) throw new ArgumentNullException("Columns");
 			this.items = new List<Regex>();
+			this.columns = Columns;
 		}
 
 		public void Add(Regex Regex)
@@ -43,7 +45,7 @@ namespace LogInspectLib.Parsers
 
 				ev = new Event();
 				ev.LineIndex = Log.LineIndex;
-				foreach(string column in regex.GetGroupNames())
+				foreach(string column in columns)
 				{
 					ev[column] = match.Groups[column].Value;
 				}
