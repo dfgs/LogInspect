@@ -18,6 +18,11 @@ namespace LogInspectLib
 			get { return Lines.FirstOrDefault()?.Position??-1; }
 		}
 
+		public int LineIndex
+		{
+			get { return Lines.FirstOrDefault()?.Index ?? -1; }
+		}
+
 		public Log()
 		{
 			Lines = new List<Line>();

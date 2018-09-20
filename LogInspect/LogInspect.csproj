@@ -84,6 +84,7 @@
     <Compile Include="Models\Filters\TimeStampConditions.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Modules\BaseModule.cs" />
+    <Compile Include="Modules\IBaseModule.cs" />
     <Compile Include="Modules\ILoaderModule.cs" />
     <Compile Include="Modules\ILineLoaderModule.cs" />
     <Compile Include="Modules\IEventLoaderModule.cs" />
@@ -92,12 +93,16 @@
     <Compile Include="Modules\LineLoaderModule.cs" />
     <Compile Include="Modules\EventLoaderModule.cs" />
     <Compile Include="Modules\LogLoaderModule.cs" />
+    <Compile Include="Modules\RateMeter.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\FindOptions.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\Loaders\ILoaderViewModel.cs" />
+    <Compile Include="ViewModels\Loaders\LoaderViewModel.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
     <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
@@ -120,6 +125,7 @@
     <Compile Include="ViewModels\Properties\PropertyViewModel.cs" />
     <Compile Include="ViewModels\SeveritiesViewModel.cs" />
     <Compile Include="ViewModels\Statuses.cs" />
+    <Compile Include="ViewModels\StreamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
     <Compile Include="Views\Commands.cs" />

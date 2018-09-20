@@ -14,6 +14,12 @@ namespace LogInspectLib.Loaders
 		//public abstract long Position { get; }
 		//public abstract long Length { get; }
 
+		public abstract bool CanLoad
+		{
+			get;
+		}
+
+
 		public T this[int Index]
 		{
 			get

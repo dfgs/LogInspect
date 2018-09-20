@@ -58,7 +58,7 @@
 			<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
 				<TextBlock  Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Alignment}" Foreground="Gray" ToolTip="{Binding}"/>
 			</DataTemplate>
-
+			
 			<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
 				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
 			</DataTemplate>

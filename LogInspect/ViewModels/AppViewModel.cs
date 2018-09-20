@@ -32,12 +32,12 @@ namespace LogInspect.ViewModels
 		}
 
 		private int loaderModuleLookupRetryDelay;
-		private int viewModelRefreshDelay;
+		private int viewModelRefreshInterval;
 
-		public AppViewModel(ILogger Logger,string FormatHandlersPath,string PatternLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshDelay) : base(Logger,-1)
+		public AppViewModel(ILogger Logger,string FormatHandlersPath,string PatternLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval) : base(Logger,-1)
 		{
 			this.loaderModuleLookupRetryDelay = LoaderModuleLookupRetryDelay;
-			this.viewModelRefreshDelay = ViewModelRefreshDelay;
+			this.viewModelRefreshInterval = ViewModelRefreshInterval;
 
 			this.regexBuilder = new RegexBuilder();
 			LoadPatternLibs(PatternLibsPath);
@@ -64,7 +64,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,loaderModuleLookupRetryDelay,viewModelRefreshDelay);
+				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,loaderModuleLookupRetryDelay,viewModelRefreshInterval);
 			}
 			catch(Exception ex)
 			{

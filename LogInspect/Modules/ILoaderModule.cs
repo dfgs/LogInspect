@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public interface ILoaderModule<TLoader,T>
+	public interface ILoaderModule<TLoader,T>:IBaseModule
 		where TLoader:ILoader<T>
 	{
+		
 		TLoader Loader
 		{
 			get;

@@ -83,16 +83,28 @@
 	
     <DockPanel>
 		<StatusBar DockPanel.Dock="Bottom">
-			<TextBlock Text="File indexing:"/>
-			<TextBlock Text="{Binding SelectedItem.EventIndexer.Position,FallbackValue=NA}"/>
+			<TextBlock Text="File reading:"/>
+			<TextBlock Text="{Binding SelectedItem.Stream.Position,FallbackValue=NA}"/>
 			<TextBlock Text="/"/>
-			<TextBlock Text="{Binding SelectedItem.EventIndexer.Target,FallbackValue=NA}"/>
-			<ProgressBar VerticalAlignment="Center" Height="8" Width="100" Value="{Binding SelectedItem.EventIndexer.Position,Mode=OneWay, FallbackValue=0}" Maximum="{Binding SelectedItem.EventIndexer.Target,Mode=OneWay, FallbackValue=0}"/>
+			<TextBlock Text="{Binding SelectedItem.Stream.Length,FallbackValue=NA}"/>
+			<ProgressBar VerticalAlignment="Center" Height="8" Width="100" Value="{Binding SelectedItem.Stream.Position,Mode=OneWay, FallbackValue=0}" Maximum="{Binding SelectedItem.Stream.Length,Mode=OneWay, FallbackValue=0}"/>
+			<Separator/>
+			<TextBlock Text="Lines:"/>
+			<TextBlock Text="{Binding SelectedItem.LineLoader.Count,FallbackValue=NA}"/>
+			<TextBlock Text="Rate:"/>
+			<TextBlock Text="{Binding SelectedItem.LineLoader.Rate,FallbackValue=NA}"/>
+			<TextBlock Text="/s"/>
+			<Separator/>
+			<TextBlock Text="Logs:"/>
+			<TextBlock Text="{Binding SelectedItem.LogLoader.Count,FallbackValue=NA}"/>
+			<TextBlock Text="Rate:"/>
+			<TextBlock Text="{Binding SelectedItem.LogLoader.Rate,FallbackValue=NA}"/>
+			<TextBlock Text="/s"/>
 			<Separator/>
 			<TextBlock Text="Events:"/>
-			<TextBlock Text="{Binding SelectedItem.EventIndexer.IndexedEventsCount,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.EventLoader.Count,FallbackValue=NA}"/>
 			<TextBlock Text="Rate:"/>
-			<TextBlock Text="{Binding SelectedItem.EventIndexer.Rate,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.EventLoader.Rate,FallbackValue=NA}"/>
 			<TextBlock Text="/s"/>
 			<Separator/>
 			<TextBlock Text="Status:"/>

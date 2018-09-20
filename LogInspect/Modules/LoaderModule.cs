@@ -15,7 +15,7 @@ namespace LogInspect.Modules
 	{
 		public override bool CanProcess
 		{
-			get { return true; }
+			get { return Loader.CanLoad; }
 		}
 
 		public TLoader Loader
@@ -23,6 +23,8 @@ namespace LogInspect.Modules
 			get;
 			private set;
 		}
+
+		
 
 		public LoaderModule(string Name,ILogger Logger,TLoader Loader, int LookupRetryDelay) :base(Name,Logger,LookupRetryDelay,System.Threading.ThreadPriority.Lowest)
 		{

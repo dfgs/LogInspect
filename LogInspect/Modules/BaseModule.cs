@@ -12,17 +12,9 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public abstract class BaseModule: ThreadModule
+	public abstract class BaseModule: ThreadModule,IBaseModule
 	{
 
-		/*public abstract long Position
-		{
-			get;
-		}
-		public abstract long Target
-		{
-			get;
-		}*/
 
 		public abstract bool CanProcess
 		{
@@ -31,47 +23,42 @@ namespace LogInspect.Modules
 		
 		public int Rate
 		{
+			get { return rateMeter.Rate; }
+		}
+		public int Count
+		{
 			get;
 			private set;
 		}
-
+		
 		private int lookupRetryDelay;
 		private DateTime startTime;
-
+		private RateMeter rateMeter;
 	
 		public BaseModule(string Name, ILogger Logger, int LookupRetryDelay,ThreadPriority Priority) : base(Name, Logger,Priority)
 		{
 			this.lookupRetryDelay = LookupRetryDelay;
+			rateMeter = new RateMeter(1);
 		}
 
 		protected abstract bool OnProcessItem();
 
 		protected override sealed void ThreadLoop()
 		{
-			long startTick,tick;
-			long count;
-			double seconds;
 			bool result;
 
-			count = 0;
-			startTick = Environment.TickCount;
-			startTime = DateTime.Now;
+			startTime = DateTime.Now;rateMeter.Start();
 			while(State == ModuleStates.Started)
 			{
 				while((State == ModuleStates.Started) && (CanProcess))
 				{
 					result=OnProcessItem();
 					if (!result) break;
-					count++;
-
-					tick = Environment.TickCount;
-					seconds = TimeSpan.FromTicks(tick - startTick).TotalSeconds;
-					if (seconds>=1)
-					{
-						Rate = (int)(count / seconds);
-						count = 0;startTick = tick;
-					}
+					Count++;
+					rateMeter.Refresh(1);
 				}
+
+				rateMeter.Refresh(0);
 				Log(LogLevels.Debug, $"Module reached target in {DateTime.Now - startTime}");
 				startTime = DateTime.Now;
 				WaitHandles(lookupRetryDelay, QuitEvent);

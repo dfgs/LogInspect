@@ -11,7 +11,7 @@ using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
-	public abstract class ViewModel:DependencyObject,INotifyPropertyChanged, IDisposable
+	public abstract class ViewModel:DependencyObject,IViewModel
 	{
 		private static int counter;
 

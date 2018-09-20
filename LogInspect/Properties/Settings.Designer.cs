@@ -44,9 +44,9 @@ namespace LogInspect.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public int ViewModelRefreshDelay {
+        public int ViewModelRefreshInterval {
             get {
-                return ((int)(this["ViewModelRefreshDelay"]));
+                return ((int)(this["ViewModelRefreshInterval"]));
             }
         }
         

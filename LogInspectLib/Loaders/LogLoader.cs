@@ -14,7 +14,11 @@ namespace LogInspectLib.Loaders
 		private IStringMatcher appendLineToNextMatcher;
 		private int lineIndex;
 
-		
+		public override bool CanLoad
+		{
+			get { return lineIndex < lineLoader.Count; }
+		}
+
 
 		public LogLoader(ILineLoader LineLoader, IStringMatcher AppendLineToPreviousMatcher, IStringMatcher AppendLineToNextMatcher)
 		{

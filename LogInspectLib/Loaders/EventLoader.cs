@@ -17,7 +17,11 @@ namespace LogInspectLib.Loaders
 		private int logIndex;
 		private ILogParser logParser;
 
-		
+		public override bool CanLoad
+		{
+			get { return logIndex<logLoader.Count; }
+		}
+
 
 		public EventLoader(ILogLoader LogLoader,ILogParser LogParser)
 		{
@@ -45,10 +49,6 @@ namespace LogInspectLib.Loaders
 				} while (false); // TODO add discard event rule
 			
 				return ev;
-			}
-			catch(FormatException ex)
-			{
-				throw (ex);
 			}
 			catch(Exception ex)
 			{

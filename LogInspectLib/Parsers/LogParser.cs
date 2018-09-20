@@ -39,6 +39,7 @@ namespace LogInspectLib.Parsers
 				if (!match.Success) continue;
 
 				ev = new Event();
+				ev.LineIndex = Log.LineIndex;
 				foreach(Column column in columns)
 				{
 					ev[column.Name] = column.ConvertValue(match.Groups[column.Name].Value);
@@ -47,7 +48,7 @@ namespace LogInspectLib.Parsers
 				return ev;
 			}
 
-			throw new FormatException($"Failed to parse log: {Log.ToSingleLine()}");
+			return null;
 		}
 
 

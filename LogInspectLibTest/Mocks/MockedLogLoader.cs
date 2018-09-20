@@ -12,6 +12,10 @@ namespace LogInspectLibTest.Mocks
 	{
 		private int count = 0;
 
+		public override bool CanLoad
+		{
+			get { return true; }
+		}
 
 		protected override Log OnLoad()
 		{

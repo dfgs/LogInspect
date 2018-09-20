@@ -18,6 +18,10 @@ namespace LogInspectLib.Loaders
 			get;
 		}*/
 
+		bool CanLoad
+		{
+			get;
+		}
 		int Count
 		{
 			get;

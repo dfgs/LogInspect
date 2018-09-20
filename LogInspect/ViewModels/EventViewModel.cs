@@ -22,7 +22,7 @@ namespace LogInspect.ViewModels
 		{
 			get
 			{
-				return ev[Name];
+				return Properties.FirstOrDefault(item=>item.Name==Name);
 			}
 		}
 
@@ -37,13 +37,12 @@ namespace LogInspect.ViewModels
 		public int EventIndex
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int LineIndex
 		{
-			get;
-			private set;
+			get { return ev.LineIndex; }
 		}
 
 		
@@ -88,13 +87,11 @@ namespace LogInspect.ViewModels
 
 
 
-		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event, int EventIndex, int LineIndex) : base(Logger,-1)
+		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event) : base(Logger,-1)
 		{
 			//string severity;
 			
 			this.ev = Event;
-			this.EventIndex = EventIndex;
-			this.LineIndex = LineIndex;
 
 			//public enum Severity {Debug,Info,Warning,Error,Critical};
 
@@ -109,6 +106,8 @@ namespace LogInspect.ViewModels
 
 
 			Properties = Columns.Select(item => item.CreatePropertyViewModel(this)).ToArray();
+			object toto = this["Line number"];
+			object tato = this["Line number"];
 
 		}
 

@@ -53,7 +53,8 @@ namespace LogInspect.ViewModels
 
 			for(int t=position;t<count;t++)
 			{
-				vm = new EventViewModel(Logger, columns, coloringRules, eventLoader[t], 0, 0);
+				vm = new EventViewModel(Logger, columns, coloringRules, eventLoader[t]);
+				vm.EventIndex = t;
 				list.Add(vm);
 			}
 			position = count;

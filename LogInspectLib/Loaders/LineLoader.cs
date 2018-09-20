@@ -12,7 +12,10 @@ namespace LogInspectLib.Loaders
 		private StreamReader reader;
 		private IStringMatcher discardMatcher;
 
-		
+		public override bool CanLoad
+		{
+			get { return reader.BaseStream.Position < reader.BaseStream.Length; }
+		}
 
 		public LineLoader(Stream Stream,Encoding Encoding,IStringMatcher DiscardMatcher)
 		{
@@ -32,6 +35,7 @@ namespace LogInspectLib.Loaders
 			{
 				item.Position = reader.BaseStream.Position;
 				item.Value = reader.ReadLine();
+				item.Index = Count;
 				if (item.Value == null) throw new EndOfStreamException();
 			} while (discardMatcher.Match(item.Value));
 

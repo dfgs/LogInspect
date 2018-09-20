@@ -13,6 +13,11 @@ namespace LogInspectLibTest.Mocks
 		private int count = 0;
 		private string val = null;
 
+		public override bool CanLoad
+		{
+			get { return true; }
+		}
+
 
 		protected override Line OnLoad()
 		{

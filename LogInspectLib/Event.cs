@@ -15,6 +15,11 @@ namespace LogInspectLib
 			set { Properties[Name] = value; }
 		}
 
+		public int LineIndex
+		{
+			get;
+			set;
+		}
 		/*public Log Log
 		{
 			get;

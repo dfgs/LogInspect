@@ -2,6 +2,7 @@
 using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
+using LogInspect.ViewModels.Loaders;
 using LogInspectLib;
 using LogInspectLib.Loaders;
 using LogInspectLib.Parsers;
@@ -88,11 +89,31 @@ namespace LogInspect.ViewModels
 		private ILineLoader lineLoader;
 
 		private ILineLoaderModule lineLoaderModule;
+		public ILoaderViewModel LineLoader
+		{
+			get;
+			private set;
+		}
 		private ILogLoaderModule logLoaderModule;
+		public ILoaderViewModel LogLoader
+		{
+			get;
+			private set;
+		}
 		private IEventLoaderModule eventLoaderModule;
+		public ILoaderViewModel EventLoader
+		{
+			get;
+			private set;
+		}
 
-	
-		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, int LoaderModuleLookupRetryDelay,int ViewModelRefreshDelay) :base(Logger,-1)
+		public StreamViewModel Stream
+		{
+			get;
+			private set;
+		}
+
+		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, int LoaderModuleLookupRetryDelay,int ViewModelRefreshInterval) :base(Logger,-1)
 		{
 			Stream stream;
 			IStringMatcher discardLineMatcher;
@@ -128,14 +149,20 @@ namespace LogInspect.ViewModels
 			FindOptions = new FindOptions();
 			FindOptions.Column = FormatHandler.DefaultColumn;
 
-			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshDelay, eventLoader, FormatHandler.Columns);
-			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshDelay, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
+			Stream = new StreamViewModel(Logger, ViewModelRefreshInterval, stream);
+
+			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshInterval, eventLoader, FormatHandler.Columns);
+			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshInterval, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
 			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel);
 
-
-			Events = new EventsViewModel(Logger, ViewModelRefreshDelay, eventLoader,Columns,FormatHandler.EventColoringRules);
+			Events = new EventsViewModel(Logger, ViewModelRefreshInterval, eventLoader,Columns,FormatHandler.EventColoringRules);
 			Markers = null;//new MarkersViewModel(Logger, indexerBufferModule, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
+
+
+			LineLoader = new LoaderViewModel(Logger, ViewModelRefreshInterval, lineLoaderModule);
+			LogLoader = new LoaderViewModel(Logger, ViewModelRefreshInterval, logLoaderModule);
+			EventLoader = new LoaderViewModel(Logger, ViewModelRefreshInterval, eventLoaderModule);
 
 
 			Log(LogLevels.Information, "Starting modules");
