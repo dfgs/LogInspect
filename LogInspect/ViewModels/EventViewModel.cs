@@ -18,22 +18,20 @@ namespace LogInspect.ViewModels
 
 		private Event ev;
 
-		public object this[string Name]
+		private PropertyCollection<PropertyViewModel> properties;
+		public IEnumerable<PropertyViewModel> Properties
+		{
+			get { return properties; }
+		}
+
+		public PropertyViewModel this[string Name]
 		{
 			get
 			{
-				return Properties.FirstOrDefault(item=>item.Name==Name);
+				return properties[Name];
 			}
 		}
-
-	
-
-		public IEnumerable<PropertyViewModel> Properties
-		{
-			get;
-			private set;
-		}
-
+		
 		public int EventIndex
 		{
 			get;
@@ -63,11 +61,7 @@ namespace LogInspect.ViewModels
 			get { return "TODO"; }
 		}
 
-		/*public Rule Rule
-		{
-			get { return ev.Rule; }
-		}*/
-
+		
 		public string Lines
 		{
 			get
@@ -104,10 +98,12 @@ namespace LogInspect.ViewModels
 			}
 			else Foreground = Background;
 
-
-			Properties = Columns.Select(item => item.CreatePropertyViewModel(this)).ToArray();
-			object toto = this["Line number"];
-			object tato = this["Line number"];
+			properties = new PropertyCollection<PropertyViewModel>();
+			foreach(ColumnViewModel column in Columns)
+			{
+				properties[column.Name] = column.CreatePropertyViewModel(this);
+			}
+			
 
 		}
 
@@ -137,6 +133,10 @@ namespace LogInspect.ViewModels
 			return null;
 		}
 
+		public string GetEventValue(string Column)
+		{
+			return ev[Column];
+		}
 		/*public Inline[] GetPropertyInlines(string PropertyName)
 		{
 			return ev.GetProperty(PropertyName)?.Inlines;

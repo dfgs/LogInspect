@@ -34,8 +34,8 @@ namespace LogInspectLibTest
 			rule.Tokens.Add(new Token() { Name = null, Pattern = @"\|" });
 			rule.Tokens.Add(new Token() { Name = "C4", Pattern = @"\d$" });
 
-			parser = new LogParser(regexBuilder, columns);
-			parser.Add("", rule.GetPattern());
+			parser = new LogParser();
+			parser.Add( rule.GetPattern());
 
 			log = new Log();
 			log.Lines.Add(new Line() { Value = log1 });

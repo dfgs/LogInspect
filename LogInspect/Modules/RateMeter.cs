@@ -9,7 +9,7 @@ namespace LogInspect.Modules
 	public class RateMeter
 	{
 		private int counter;
-		private long startTicks;
+		private DateTime startTime;
 		private int interval;
 
 		public int MaxRate
@@ -31,7 +31,7 @@ namespace LogInspect.Modules
 
 		public void Start()
 		{
-			startTicks = Environment.TickCount;
+			startTime = DateTime.Now;
 			counter = 0;
 			Rate = 0;
 			MaxRate = 0;
@@ -39,19 +39,19 @@ namespace LogInspect.Modules
 
 		public void Refresh(int Count)
 		{
-			long ticks;
+			DateTime now;
 			double seconds;
 
 			counter+=Count;
 
-			ticks = Environment.TickCount;
-			seconds = TimeSpan.FromTicks(ticks - startTicks).TotalSeconds;
+			now = DateTime.Now;
+			seconds = (now-startTime).TotalSeconds;
 			if (seconds>interval)
 			{
 				Rate = (int)(counter / seconds);
 				if (Rate > MaxRate) MaxRate = Rate;
 				counter = 0;
-				startTicks = ticks;
+				startTime = now;
 			}
 		}
 

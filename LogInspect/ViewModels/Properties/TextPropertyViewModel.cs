@@ -12,22 +12,16 @@ namespace LogInspect.ViewModels.Properties
 {
 	public class TextPropertyViewModel : PropertyViewModel
 	{
-		public string Value
-		{
-			get;
-			private set;
-		}
-
-
+		
 		public Inline[] Inlines
 		{
 			get;
 			private set;
 		}
 
-		public TextPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event) : base(Logger, Column)
+		public TextPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment, string Value) : base(Logger, Name,Alignment)
 		{
-			this.Value = Event[Column.Name]?.ToString();this.Inlines = null;// Event.GetPropertyInlines(Column.Name);
+			this.Value = Value;this.Inlines = null;// Event.GetPropertyInlines(Column.Name);
 		}
 	}
 }

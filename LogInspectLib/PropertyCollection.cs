@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public class PropertyCollection<T>
+	public class PropertyCollection<T>:IEnumerable<T>
 	{
 		private Dictionary<string, T> items;
 
@@ -34,5 +35,14 @@ namespace LogInspectLib
 			items = new Dictionary<string, T>();
 		}
 
+		public IEnumerator<T> GetEnumerator()
+		{
+			return items.Values.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return items.Values.GetEnumerator();
+		}
 	}
 }

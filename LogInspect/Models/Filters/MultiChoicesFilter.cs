@@ -1,4 +1,5 @@
-﻿using LogInspectLib;
+﻿using LogInspect.ViewModels;
+using LogInspectLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,9 @@ namespace LogInspect.Models.Filters
 	
 		}
 
-		public override bool MustDiscard(Event Item)
+		public override bool MustDiscard(EventViewModel Item)
 		{
-			return FilteredItems.Contains( Item[PropertyName] );
+			return FilteredItems.Contains( Item[Column].Value );
 		}
 
 	}

@@ -10,33 +10,22 @@ namespace LogInspectLib
 	public class StringMatcher : IStringMatcher
 	{
 		private List<Regex> items;
-		//private IRegexBuilder regexBuilder;
 
 		public StringMatcher()
 		{
-			//if (RegexBuilder== null) throw new ArgumentNullException("RegexBuilder");
 			items = new List<Regex>();
-			//this.regexBuilder = RegexBuilder;
 		}
 
 		public void Add( Regex Regex)
 		{
-			//Regex item;
-			//item = regexBuilder.Build(DefaultNameSpace, Regex);
 			items.Add(Regex);
 		}
 		public void Add(string Pattern)
 		{
-			//Regex item;
-			//item = regexBuilder.Build(DefaultNameSpace, Regex);
 			items.Add(new Regex(Pattern,RegexOptions.Compiled));
 		}
 		public void Add( IEnumerable<Regex> Regexes)
 		{
-			/*foreach(string pattern in Regexes)
-			{
-				Add( DefaultNameSpace, pattern);
-			}*/
 			items.AddRange(Regexes);
 		}
 

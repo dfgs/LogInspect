@@ -65,14 +65,7 @@ namespace LogInspectLib
 			InlineColoringRules = new List<InlineColoringRule>();
 		}
 
-		public object ConvertValue(string Text)
-		{
-			if (Type != "DateTime") return Text;
-
-			DateTime result;
-			if (DateTime.TryParseExact(Text, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result)) return result;;
-			return Text;
-		}
+		
 
 	}
 }

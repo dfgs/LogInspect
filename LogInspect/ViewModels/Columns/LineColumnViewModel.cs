@@ -23,13 +23,13 @@ namespace LogInspect.ViewModels.Columns
 		public override string ImageSource => "/LogInspect;component/Images/text_indent.png";
 
 
-		public LineColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"","Right")
+		public LineColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"","Right",null)
 		{
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new LinePropertyViewModel(Logger, this, Event);
+			return new LinePropertyViewModel(Logger,Name,Alignment, Event.LineIndex+1);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

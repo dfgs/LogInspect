@@ -128,7 +128,7 @@ namespace LogInspect.ViewModels
 
 			Log(LogLevels.Information, "Creating modules");
 
-			stream = new FileStream(FileName, FileMode.Open);
+			stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
 
 			discardLineMatcher = FormatHandler.CreateDiscardLinesMatcher(RegexBuilder);
 			appendLineToPreviousMatcher = FormatHandler.CreateAppendLineToPreviousMatcher(RegexBuilder);

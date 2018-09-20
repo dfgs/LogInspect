@@ -1,4 +1,5 @@
-﻿using LogInspectLib;
+﻿using LogInspect.ViewModels;
+using LogInspectLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,18 @@ namespace LogInspect.Models.Filters
 		{
 			
 		}
-		public override bool MustDiscard(Event Item)
+		public override bool MustDiscard(EventViewModel Item)
 		{
 			string value;
 
-			value = Item[PropertyName]?.ToString();
-
+			try
+			{
+				value = (string)Item[Column].Value;
+			}
+			catch
+			{
+				return false;
+			}
 			foreach (TextFilterItem item in Items)
 			{
 				if (item.Match(value)) return false;

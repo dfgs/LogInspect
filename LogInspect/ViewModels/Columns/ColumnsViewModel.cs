@@ -31,7 +31,7 @@ namespace LogInspect.ViewModels.Columns
 			{
 				if (column.Name == FormatHandler.TimeStampColumn)
 				{
-					AddColumn(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
+					AddColumn(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment,column.Format) { Width = column.Width });
 				}
 				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment, FilterItemSourcesViewModel) { Width = column.Width });
 				else if (column.IsFilterItemSource) AddColumn(new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment, FilterItemSourcesViewModel) { Width = column.Width });

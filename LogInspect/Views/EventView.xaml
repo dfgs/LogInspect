@@ -52,7 +52,7 @@
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Event.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
+				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Value.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
@@ -71,7 +71,10 @@
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
+				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
+				<!--
 				<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis" TextAlignment="{Binding Alignment}" ToolTip="{Binding}"/>
+				-->
 			</DataTemplate>
 			<!-- -->
 		</ResourceDictionary>

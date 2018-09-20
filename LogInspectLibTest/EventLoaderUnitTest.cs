@@ -18,7 +18,7 @@ namespace LogInspectLibTest
 		public void ShouldHaveCorrectConstructorParameters()
 		{
 			Assert.ThrowsException<ArgumentNullException>(() => { new EventLoader(Utils.EmptyLogLoader,null); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new EventLoader(null,new LogParser(Utils.EmptyRegexBuilder,new Column[0]) ); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new EventLoader(null,new LogParser() ); });
 		}
 
 
@@ -31,8 +31,8 @@ namespace LogInspectLibTest
 			Column[] columns;
 
 			columns = new Column[] { new Column() { Name = "A" }, new Column() { Name = "B" }, new Column() { Name = "C" } };
-			parser = new LogParser(Utils.EmptyRegexBuilder, columns);
-			parser.Add("", @"(?<A>\w\d) \| (?<B>\w\d) \| (?<C>\w\d)");
+			parser = new LogParser();
+			parser.Add( @"(?<A>\w\d) \| (?<B>\w\d) \| (?<C>\w\d)");
 
 			logLoader = new MockedLogLoader();
 

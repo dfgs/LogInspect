@@ -1,4 +1,6 @@
-﻿using LogInspectLib;
+﻿using LogInspect.ViewModels;
+using LogInspect.ViewModels.Properties;
+using LogInspectLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,13 +38,13 @@ namespace LogInspect.Models.Filters
 		{
 		}
 		
-		public override bool MustDiscard(Event Item)
+		public override bool MustDiscard(EventViewModel Item)
 		{
 			DateTime date;
 
 			try
 			{
-				date = (DateTime)Item[PropertyName];
+				date = (DateTime)Item[Column].Value;
 			}
 			catch
 			{

@@ -10,27 +10,30 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Properties
 {
-	//TODO Remove ?
 	public abstract class PropertyViewModel : ViewModel
 	{
-
-
-		private ColumnViewModel column;
-
 		public string Name
 		{
-			get { return column.Name; }
+			get;
+			private set;
 		}
 
 		public TextAlignment Alignment
 		{
-			get { return column.Alignment; }
+			get;
+			private set;
 		}
 
-
-		public PropertyViewModel(ILogger Logger,ColumnViewModel Column) : base(Logger,-1)
+		public  object Value
 		{
-			this.column = Column;
+			get;
+			protected set;
+		}
+
+		public PropertyViewModel(ILogger Logger,string Name,TextAlignment Alignment) : base(Logger,-1)
+		{
+			this.Name = Name;
+			this.Alignment = Alignment;
 		}
 
 

@@ -23,9 +23,9 @@ namespace LogInspect.ViewModels.Properties
 			private set;
 		}
 
-		public SeverityPropertyViewModel(ILogger Logger, ColumnViewModel Column,EventViewModel Event) : base(Logger, Column,Event)
+		public SeverityPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment,string Value,Brush Background,Brush Foreground) : base(Logger, Name,Alignment,Value)
 		{
-			this.Background = Event.Background;this.Foreground = Event.Foreground;
+			this.Background = Background;this.Foreground = Foreground;
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using LogInspectLib;
+﻿using LogInspect.ViewModels;
+using LogInspectLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,17 @@ namespace LogInspect.Models.Filters
 {
     public abstract class Filter
     {
-		public string PropertyName
+		public string Column
 		{
 			get;
 			private set;
 		}
 
-		public Filter(string PropertyName)
+		public Filter(string Column)
 		{
-			this.PropertyName = PropertyName;
+			this.Column = Column;
 		}
 
-		public abstract bool MustDiscard(Event Item);
+		public abstract bool MustDiscard(EventViewModel Item);
 	}
 }

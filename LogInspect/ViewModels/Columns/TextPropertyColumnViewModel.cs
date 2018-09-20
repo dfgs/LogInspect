@@ -10,6 +10,7 @@ using LogInspect.Modules;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
+using LogInspectLib;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -24,14 +25,14 @@ namespace LogInspect.ViewModels.Columns
 		public override string ImageSource => "/LogInspect;component/Images/Calendar.png"; // define a default image souce to avoid converter exceptions
 
 
-		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Name,Alignment)
+		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Name,Alignment,null)
 		{
 		
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new TextPropertyViewModel(Logger, this, Event);
+			return new TextPropertyViewModel(Logger, Name,Alignment, Event.GetEventValue(Name));
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

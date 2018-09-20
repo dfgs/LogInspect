@@ -11,21 +11,23 @@ namespace LogInspectLib.Parsers
 	{
 		private List<Regex> items;
 
-		private IEnumerable<Column> columns;
-		private IRegexBuilder regexBuilder;
 
-		public LogParser(  IRegexBuilder RegexBuilder, IEnumerable<Column> Columns)
+		public LogParser( )
 		{
-			this.regexBuilder = RegexBuilder;
 			this.items = new List<Regex>();
-			this.columns = Columns;
 		}
 
-		public void Add(string DefaultNameSpace,string Pattern)
+		public void Add(Regex Regex)
 		{
-			Regex regex;
-			regex = regexBuilder.Build(DefaultNameSpace, Pattern);
-			items.Add(regex);
+			items.Add(Regex);
+		}
+		public void Add(string Pattern)
+		{
+			items.Add(new Regex(Pattern, RegexOptions.Compiled));
+		}
+		public void Add(IEnumerable<Regex> Regexes)
+		{
+			items.AddRange(Regexes);
 		}
 
 		public Event Parse(Log Log)
@@ -33,6 +35,7 @@ namespace LogInspectLib.Parsers
 			Match match;
 			Event ev;
 
+			
 			foreach (Regex regex in items)
 			{
 				match = regex.Match(Log.ToSingleLine());
@@ -40,9 +43,9 @@ namespace LogInspectLib.Parsers
 
 				ev = new Event();
 				ev.LineIndex = Log.LineIndex;
-				foreach(Column column in columns)
+				foreach(string column in regex.GetGroupNames())
 				{
-					ev[column.Name] = column.ConvertValue(match.Groups[column.Name].Value);
+					ev[column] = match.Groups[column].Value;
 				}
 
 				return ev;

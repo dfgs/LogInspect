@@ -10,6 +10,7 @@ using LogInspect.Modules;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
+using LogInspectLib;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -25,7 +26,7 @@ namespace LogInspect.ViewModels.Columns
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 
-		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment)
+		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment,null)
 		{
 
 			this.filterItemSourcesViewModel = FilterChoicesViewModel;
@@ -34,7 +35,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new TextPropertyViewModel(Logger, this, Event);
+			return new TextPropertyViewModel(Logger, Name,Alignment, Event.GetEventValue(Name));
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

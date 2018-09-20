@@ -30,7 +30,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new SeverityPropertyViewModel(Logger, this, Event);
+			return new SeverityPropertyViewModel(Logger, Name,Alignment,Event.GetEventValue(Name),Event.Background,Event.Foreground);
 		}
 
 

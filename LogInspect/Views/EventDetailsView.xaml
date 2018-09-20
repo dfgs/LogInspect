@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800" >
 	<UserControl.Resources>
 		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-			<TextBlock Text="{Binding Value}"/>
+			<TextBlock Text="{Binding Value.IsBookMarked}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">

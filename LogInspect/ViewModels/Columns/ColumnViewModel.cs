@@ -44,6 +44,12 @@ namespace LogInspect.ViewModels.Columns
 			private set;
 		}
 
+		public string Format
+		{
+			get;
+			private set;
+		}
+
 		public abstract bool AllowsFilter
 		{
 			get;
@@ -61,7 +67,6 @@ namespace LogInspect.ViewModels.Columns
 			{
 				if (filter == value) return;
 				filter = value;
-				//FilterChanged?.Invoke(this, EventArgs.Empty);
 				OnPropertyChanged("HasFilter");
 			}
 		}
@@ -77,11 +82,11 @@ namespace LogInspect.ViewModels.Columns
 			get { return (double)GetValue(WidthProperty); }
 			set { SetValue(WidthProperty, value); }
 		}
-		
 
 
 
-		public ColumnViewModel(ILogger Logger,string Name,string Description, string Alignment) : base(Logger,-1)
+
+		public ColumnViewModel(ILogger Logger, string Name, string Description, string Alignment,string Format) : base(Logger,-1)
 		{
 			TextAlignment alignment;
 
@@ -91,8 +96,8 @@ namespace LogInspect.ViewModels.Columns
 
 			this.Name = Name;
 			this.Description = Description;
+			this.Format = Format;
 		}
-
 
 		
 

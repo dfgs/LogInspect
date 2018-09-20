@@ -156,10 +156,10 @@ namespace LogInspectLib
 		{
 			ILogParser logParser;
 
-			logParser = new LogParser(RegexBuilder, Columns);
+			logParser = new LogParser();
 			foreach (Rule rule in Rules)
 			{
-				logParser.Add(DefaultNameSpace, rule.GetPattern());
+				logParser.Add(RegexBuilder.Build(DefaultNameSpace, rule.GetPattern()));
 			}
 
 			return logParser;

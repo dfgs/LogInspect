@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,14 +28,16 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment) : base(Logger,Name,Name,Alignment)
+		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment,string Format) : base(Logger,Name,Name,Alignment,Format)
 		{
 		
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new TimeStampPropertyViewModel(Logger, this, Event);
+			DateTime value;
+			DateTime.TryParseExact(Event.GetEventValue(Name), Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out value) ;
+			return new TimeStampPropertyViewModel(Logger, Name,Alignment,value);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()
