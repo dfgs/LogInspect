@@ -46,7 +46,8 @@ namespace LogInspectLib.Loaders
 					log = logLoader[logIndex];
 					ev = logParser.Parse(log);
 					logIndex++;
-				} while (false); // TODO add discard event rule
+					if (ev != null) break; // not discarded
+				} while (true); 
 			
 				return ev;
 			}

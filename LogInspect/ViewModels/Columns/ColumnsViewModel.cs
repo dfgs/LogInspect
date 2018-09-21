@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels.Columns
 
 			items = new List<ColumnViewModel>();
 
-			AddColumn(new BookMarkColumnViewModel(Logger, "BookMarked") { Width = 20 });
+			AddColumn(new BookMarkColumnViewModel(Logger, "BookMarked") { Width = 30 });
 			AddColumn(new LineColumnViewModel(Logger, "Line number") { Width = 50 });
 
 			foreach (Column column in FormatHandler.Columns)

@@ -11,14 +11,14 @@ using LogLib;
 
 namespace LogInspect.ViewModels
 {
-	public class SeveritiesViewModel : CollectionViewModel<object>
+	public class SeveritiesViewModel : CollectionViewModel<string>
 	{
 		private int position;
-		private IEnumerable<object> items;
+		private IEnumerable<string> items;
 
 		public SeveritiesViewModel(ILogger Logger, int RefreshInterval, string SeverityColumn, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,RefreshInterval)
 		{
-			items=FilterChoicesViewModel[SeverityColumn];
+			items = FilterChoicesViewModel[SeverityColumn];//.Cast<string>();
 		}
 
 		protected override void OnRefresh()

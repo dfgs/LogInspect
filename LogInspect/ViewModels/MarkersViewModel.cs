@@ -2,6 +2,7 @@
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
+using LogInspectLib.Loaders;
 using LogLib;
 using System;
 using System.Collections;
@@ -20,6 +21,12 @@ namespace LogInspect.ViewModels
 		private string severityColumn;
 		private IEnumerable<EventColoringRule> coloringRules;
 
+		private int position;
+
+
+		private EventsViewModel events;
+
+
 		public int Maximum
 		{
 			get;
@@ -27,45 +34,38 @@ namespace LogInspect.ViewModels
 		}
 		
 
-		public MarkersViewModel(ILogger Logger , int RefreshInterval, EventLoaderModule EventLoaderModule, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger, RefreshInterval)
+		public MarkersViewModel(ILogger Logger , int RefreshInterval, EventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger, RefreshInterval)
 		{
-			//BufferModule.EventsBuffered += BufferModule_EventsBuffered;
-			//BufferModule.Reseted += BufferModule_Reseted;
 			this.severityColumn = SeverityColumn;
 			this.coloringRules = ColoringRules;
+			this.events = Events;
 		}
-
-
-		/*private void BufferModule_Reseted(object sender, EventArgs e)
+		protected override void OnRefresh()
 		{
-			Dispatcher.Invoke(() =>
-			{
-				Clear();
-			});
-		}*/
-
-		/*private void BufferModule_EventsBuffered(object sender, EventsBufferedEventArgs e)
-		{
-			object severity;
-			MarkerViewModel range=null;
+			int count;
+			EventViewModel item;
+			string severity;
+			MarkerViewModel range = null;
 			Brush brush;
-			
 
-			Dispatcher.Invoke(() =>
+			lock (this)
 			{
-				Maximum += e.Items.Length;
-				foreach (BufferItem item in e.Items)
+				count = events.Count;
+
+			
+				for (int t = position; t < count; t++)
 				{
-					brush = EventViewModel.GetBackground(coloringRules, item.Event);
+					item = events[t];
+					brush = EventViewModel.GetBackground(coloringRules, item);
 					if (brush == null) continue;
 
-					severity = item.Event[severityColumn];
+					severity = item.GetEventValue(severityColumn);
 					if (this.Count > 0) range = this[Count - 1];
 
-					if ((range == null) || (!ValueType.Equals(severity, range.Severity) || (item.EventIndex != range.Position + range.Size)))
+					if ((range == null) || (severity != range.Severity) || (t != range.Position + range.Size))
 					{
 						range = new MarkerViewModel(Logger);
-						range.Position = item.EventIndex;
+						range.Position = t;
 						range.Background = brush;
 						range.Severity = severity;
 						Add(range);
@@ -73,9 +73,18 @@ namespace LogInspect.ViewModels
 
 					range.Size++;
 				}
-			});
-		}*/
+				position = count;
+			}
+		}
 
+		public void Clear()
+		{
+			lock(this)
+			{
+				this.position = 0;
+				Reset();
+			}
+		}
 
 	}
 }

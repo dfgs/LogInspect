@@ -33,7 +33,7 @@ namespace LogInspectLibTest
 
 			columns = new Column[] { new Column() { Name = "A" }, new Column() { Name = "B" }, new Column() { Name = "C" } };
 			parser = new LogParser(columns.Select(item=>item.Name));
-			parser.Add( @"(?<A>\w\d) \| (?<B>\w\d) \| (?<C>\w\d)");
+			parser.Add( @"(?<A>\w\d) \| (?<B>\w\d) \| (?<C>\w\d)",false);
 
 			logLoader = new MockedLogLoader();
 
@@ -52,6 +52,43 @@ namespace LogInspectLibTest
 			}
 			Assert.AreEqual(5,loader.Count);
 			Assert.ThrowsException<EndOfStreamException>(()=> { loader.Load(); });
+		}
+
+		[TestMethod]
+		public void ShouldDiscard()
+		{
+			MockedLogLoader logLoader;
+			EventLoader loader;
+			ILogParser parser;
+			Column[] columns;
+
+			columns = new Column[] { new Column() { Name = "A" }, new Column() { Name = "B" }, new Column() { Name = "C" } };
+			parser = new LogParser(columns.Select(item => item.Name));
+			parser.Add(@"discard", true);
+			parser.Add(@"(?<A>\w\d) \| (?<B>\w\d) \| (?<C>\w\d)", false);
+
+			logLoader = new MockedLogLoader();
+
+			loader = new EventLoader(logLoader, parser);
+
+			for (int t = 0; t < 5; t++)
+			{
+				logLoader.Load();
+				logLoader.Load("discard");
+
+			}
+
+			for (int t = 0; t < 5; t++)
+			{
+				loader.Load();
+				Assert.AreEqual($"A{t * 2}", loader[t]["A"]);
+				Assert.AreEqual($"B{t * 2}", loader[t]["B"]);
+				Assert.AreEqual($"C{t * 2}", loader[t]["C"]);
+				Assert.AreEqual(3, loader[t].Properties.Count);
+
+			}
+			Assert.AreEqual(5, loader.Count);
+			Assert.ThrowsException<EndOfStreamException>(() => { loader.Load(); });
 		}
 
 

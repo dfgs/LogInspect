@@ -10,8 +10,7 @@ namespace LogInspectLib.Parsers
 	public interface ILogParser:IParser
 	{
 		Event Parse(Log Log);
-		void Add(IEnumerable<Regex> Regexes);
-		void Add(Regex Regex);
-		void Add(string Pattern);
+		void Add(Regex Regex,bool Discard);
+		void Add(string Pattern,bool Discard);
 	}
 }

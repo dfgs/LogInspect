@@ -11,6 +11,7 @@ namespace LogInspectLibTest.Mocks
 	public class MockedLogLoader : Loader<Log>, ILogLoader
 	{
 		private int count = 0;
+		private string line;
 
 		public override bool CanLoad
 		{
@@ -22,12 +23,18 @@ namespace LogInspectLibTest.Mocks
 			Log result;
 			result = new Log();
 			
-			result.Lines.Add( new Line() { Position = count, Value = $"A{count} | B{count} | C{count}" });
+			if (line==null)	result.Lines.Add( new Line() { Position = count, Value = $"A{count} | B{count} | C{count}" });
+			else result.Lines.Add(new Line() { Position = count, Value = line});
 			count++;
+			line = null;
 			return result;
 		}
 
-		
+		public void Load(string Line)
+		{
+			this.line = Line;
+			Load();
+		}
 
 	}
 }

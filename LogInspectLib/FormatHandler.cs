@@ -160,7 +160,7 @@ namespace LogInspectLib
 			logParser = new LogParser(Columns.Select(item=>item.Name));
 			foreach (Rule rule in Rules)
 			{
-				logParser.Add(RegexBuilder.Build(DefaultNameSpace, rule.GetPattern()));
+				logParser.Add(RegexBuilder.Build(DefaultNameSpace, rule.GetPattern()),rule.Discard );
 			}
 
 			return logParser;

@@ -36,10 +36,10 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public static readonly DependencyProperty SeverityProperty = DependencyProperty.Register("Severity", typeof(object), typeof(MarkerViewModel));
-		public object Severity
+		public static readonly DependencyProperty SeverityProperty = DependencyProperty.Register("Severity", typeof(string), typeof(MarkerViewModel));
+		public string Severity
 		{
-			get { return GetValue(SeverityProperty); }
+			get { return (string)GetValue(SeverityProperty); }
 			set { SetValue(SeverityProperty, value); }
 		}
 

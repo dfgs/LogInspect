@@ -126,7 +126,7 @@
 			<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
 					 SelectedItem="{Binding Events.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
-				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.IsDeferredScrollingEnabled="True">
+				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" >
 				<ListView.CommandBindings>
 					<CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
 				</ListView.CommandBindings>

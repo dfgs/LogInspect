@@ -157,7 +157,7 @@ namespace LogInspect.ViewModels
 			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel);
 
 			Events = new EventsViewModel(Logger, ViewModelRefreshInterval, eventLoader,Columns,FormatHandler.EventColoringRules);
-			Markers = null;//new MarkersViewModel(Logger, indexerBufferModule, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
+			Markers = new MarkersViewModel(Logger, ViewModelRefreshInterval,  Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
 
 
 			LineLoader = new LoaderViewModel(Logger, ViewModelRefreshInterval, lineLoaderModule);
@@ -197,10 +197,10 @@ namespace LogInspect.ViewModels
 		public void Refresh()
 		{
 			Filter[] filters;
-
-			//SelectedItemIndex = -1;
+			
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			//eventIndexerModule.SetFilters(filters  );
+			Events.SetFilters(filters  );
+			Markers.Clear();
 		}
 
 		#endregion
@@ -216,8 +216,8 @@ namespace LogInspect.ViewModels
 				{
 					Index--;
 					ev = Events[Index];
-					//if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
-					if (Predicate(ev)) return Index;
+					if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
+					//if (Predicate(ev)) return Index;
 				}
 				return -1;
 			});
@@ -232,8 +232,8 @@ namespace LogInspect.ViewModels
 				{
 					Index++;
 					ev = Events[Index];
-					//if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
-					if (Predicate(ev)) return Index;
+					if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
+					//if (Predicate(ev)) return Index;
 				}
 				return -1;
 			});
@@ -242,21 +242,21 @@ namespace LogInspect.ViewModels
 		#endregion
 
 		#region find severities
-		public async Task<int> FindPreviousSeverityAsync(object Severity,int StartIndex)
+		public async Task<int> FindPreviousSeverityAsync(string Severity,int StartIndex)
 		{
 			int index;
 
 			Status = Statuses.Searching;
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity.Equals( item[severityColumn]));
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item.GetEventValue(severityColumn));
 			Status = Statuses.Idle;
 			return index;
 		}
-		public async Task<int> FindNextSeverityAsync(object Severity, int StartIndex)
+		public async Task<int> FindNextSeverityAsync(string Severity, int StartIndex)
 		{
 			int index ;
 
 			Status = Statuses.Searching;
-			index = await  FindNextAsync(StartIndex, (item) =>  Severity.Equals(item[severityColumn]));
+			index = await  FindNextAsync(StartIndex, (item) => Severity == item.GetEventValue(severityColumn));
 			Status = Statuses.Idle;
 			return index;
 		}

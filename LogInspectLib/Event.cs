@@ -20,22 +20,7 @@ namespace LogInspectLib
 			get;
 			set;
 		}
-		/*public Log Log
-		{
-			get;
-			set;
-		}
-
-		public Rule Rule
-		{
-			get;
-			set;
-		}
-
-		public long Position
-		{
-			get { return Log?.Position??-1; }
-		}*/
+		
 
 		public PropertyCollection<string> Properties
 		{

@@ -57,7 +57,7 @@ namespace LogInspect.ViewModels
 			if (MatchWholeWord) pattern = $@"\b{Regex.Escape(Text)}\b";
 			else pattern = $@"{Regex.Escape(Text)}";
 
-			return Regex.Match(Event[Column]?.ToString()??"",pattern,CaseSensitive?RegexOptions.None: RegexOptions.IgnoreCase).Success;
+			return Regex.Match(Event.GetEventValue(Column)??"",pattern,CaseSensitive?RegexOptions.None: RegexOptions.IgnoreCase).Success;
 		}
 		
 

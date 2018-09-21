@@ -11,6 +11,7 @@ namespace LogInspectLib.Loaders
 	{
 		private StreamReader reader;
 		private IStringMatcher discardMatcher;
+		private int index;
 
 		public override bool CanLoad
 		{
@@ -35,7 +36,8 @@ namespace LogInspectLib.Loaders
 			{
 				item.Position = reader.BaseStream.Position;
 				item.Value = reader.ReadLine();
-				item.Index = Count;
+				item.Index = index;
+				index++;	// must use a local index in order to take discarded lines in account
 				if (item.Value == null) throw new EndOfStreamException();
 			} while (discardMatcher.Match(item.Value));
 

@@ -87,7 +87,6 @@ namespace LogInspect.ViewModels
 			
 			this.ev = Event;
 
-			//public enum Severity {Debug,Info,Warning,Error,Critical};
 
 
 			Background = GetBackground(ColoringRules,Event );
@@ -113,7 +112,7 @@ namespace LogInspect.ViewModels
 
 			foreach (EventColoringRule coloringRule in ColoringRules)
 			{
-				value = Event[coloringRule.Column]?.ToString();
+				value = Event[coloringRule.Column];
 				if (value == null) continue;
 
 				if (Regex.Match(value, coloringRule.Pattern).Success)
@@ -132,6 +131,33 @@ namespace LogInspect.ViewModels
 			}
 			return null;
 		}
+
+		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules, EventViewModel Event)
+		{
+			string value;
+
+			foreach (EventColoringRule coloringRule in ColoringRules)
+			{
+				value = Event.GetEventValue( coloringRule.Column);
+				if (value == null) continue;
+
+				if (Regex.Match(value, coloringRule.Pattern).Success)
+				{
+					try
+					{
+						Brush Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
+						return Background;
+					}
+					catch
+					{
+						//Log(LogLevels.Error, $"Invalid background {coloringRule.Background}");
+					}
+
+				}
+			}
+			return null;
+		}
+
 
 		public string GetEventValue(string Column)
 		{

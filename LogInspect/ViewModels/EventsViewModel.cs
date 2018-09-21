@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
@@ -32,11 +33,10 @@ namespace LogInspect.ViewModels
 			set { SetValue(TailProperty, value); }
 		}
 
+		private Filter[] filters;
 
 		public EventsViewModel(ILogger Logger , int RefreshInterval, IEventLoader EventLoader,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger, RefreshInterval)
 		{
-			//BufferModule.EventsBuffered += BufferModule_EventsBuffered;
-			//BufferModule.Reseted += BufferModule_Reseted;
 			this.columns = Columns;
 			this.coloringRules = ColoringRules;
 
@@ -48,21 +48,43 @@ namespace LogInspect.ViewModels
 			int count;
 			EventViewModel vm;
 
-			List<EventViewModel> list = new List<EventViewModel>();
-			count = eventLoader.Count;
-
-			for(int t=position;t<count;t++)
+			lock (this)
 			{
-				vm = new EventViewModel(Logger, columns, coloringRules, eventLoader[t]);
-				vm.EventIndex = t;
-				list.Add(vm);
+				List<EventViewModel> list = new List<EventViewModel>();
+				count = eventLoader.Count;
+
+				for (int t = position; t < count; t++)
+				{
+					vm = new EventViewModel(Logger, columns, coloringRules, eventLoader[t]);
+					vm.EventIndex = t;
+					if (MustDiscard(vm)) continue;
+					list.Add(vm);
+				}
+				position = count;
+				AddRange(list);
+				if (Tail) Select(Count - 1);
+
 			}
-			position = count;
-			AddRange(list);
-			if (Tail) Select(Count - 1);
+		}
+		private bool MustDiscard(EventViewModel Event)
+		{
+			if (filters == null) return false;
+			foreach(Filter filter in filters)
+			{
+				if (filter.MustDiscard(Event)) return true;
+			}
+			return false;
+		}
+		public void SetFilters(Filter[] Filters)
+		{
+			lock (this)
+			{
+				this.filters = Filters;
+				this.position = 0;
+				Reset();
+			}
 		}
 
-		
 
 	}
 }

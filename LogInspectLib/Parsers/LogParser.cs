@@ -9,42 +9,40 @@ namespace LogInspectLib.Parsers
 {
 	public class LogParser:ILogParser
 	{
-		private List<Regex> items;
+		private List<Tuple<Regex,bool>> items;
 		private IEnumerable<string> columns;
 
 		public LogParser(IEnumerable<string> Columns)
 		{
 			if (Columns == null) throw new ArgumentNullException("Columns");
-			this.items = new List<Regex>();
+			this.items = new List<Tuple<Regex, bool>>();
 			this.columns = Columns;
 		}
 
-		public void Add(Regex Regex)
+		public void Add(Regex Regex,bool Discard)
 		{
-			items.Add(Regex);
+			items.Add(new Tuple<Regex, bool>(Regex,Discard));
 		}
-		public void Add(string Pattern)
+		public void Add(string Pattern,bool Discard)
 		{
-			items.Add(new Regex(Pattern, RegexOptions.Compiled));
+			items.Add(new Tuple<Regex, bool>(new Regex(Pattern, RegexOptions.Compiled),Discard));
 		}
-		public void Add(IEnumerable<Regex> Regexes)
-		{
-			items.AddRange(Regexes);
-		}
+		
 
 		public Event Parse(Log Log)
 		{
 			Match match;
 			Event ev;
 
-			
-			foreach (Regex regex in items)
-			{
-				match = regex.Match(Log.ToSingleLine());
-				if (!match.Success) continue;
+			ev = new Event();
+			ev.LineIndex = Log.LineIndex;
 
-				ev = new Event();
-				ev.LineIndex = Log.LineIndex;
+			foreach (Tuple<Regex,bool> tuple in items)
+			{
+				match = tuple.Item1.Match(Log.ToSingleLine());
+				if (!match.Success) continue;
+				if (tuple.Item2) return null;
+
 				foreach(string column in columns)
 				{
 					ev[column] = match.Groups[column].Value;
@@ -53,7 +51,7 @@ namespace LogInspectLib.Parsers
 				return ev;
 			}
 
-			return null;
+			return ev;
 		}
 
 

@@ -69,13 +69,15 @@ namespace LogInspect.Views
 			double size;
 			double position;
 			double h,y;
+			double totalSize;
 
+			totalSize = Math.Max(TotalSize, 1);
 			foreach (UIElement child in Children)
 			{
 				position = GetPosition(child);
 				size = GetSize(child);
-				h = finalSize.Height * size / TotalSize+MinItemHeight;
-				y = position * finalSize.Height / TotalSize-MinItemHeight*0.5d;
+				h = finalSize.Height * size / totalSize+MinItemHeight;
+				y = position * finalSize.Height / totalSize-MinItemHeight*0.5d;
 				child.Arrange(new Rect(0,y,finalSize.Width, h));
 			}
 

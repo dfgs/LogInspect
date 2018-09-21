@@ -24,20 +24,20 @@ namespace LogInspect.ViewModels
 		private IEventLoader eventLoader;
 
 		private string[] columns;
-		private Dictionary<string, List<object>> items;
+		private Dictionary<string, List<string>> items;
 
-		public IEnumerable<object> this[string Column]
+		public IEnumerable<string> this[string Column]
 		{
 			get { return items[Column]; }
 		}
 
 		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,IEventLoader EventLoader, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
 		{
-			items = new Dictionary<string, List<object>>();
+			items = new Dictionary<string, List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
 			foreach (string column in columns)
 			{
-				items.Add(column, new List<object>());
+				items.Add(column, new List<string>());
 			}
 
 			this.eventLoader = EventLoader;
@@ -47,8 +47,8 @@ namespace LogInspect.ViewModels
 
 		protected override void OnRefresh()
 		{
-			List<object> values;
-			object value;
+			List<string> values;
+			string value;
 			int count;
 
 			count = eventLoader.Count;
