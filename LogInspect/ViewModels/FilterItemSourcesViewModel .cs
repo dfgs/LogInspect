@@ -21,7 +21,7 @@ namespace LogInspect.ViewModels
 	{
 		private int position;
 
-		private IEventLoader eventLoader;
+		private ILogLoader eventLoader;
 
 		private string[] columns;
 		private Dictionary<string, List<string>> items;
@@ -31,7 +31,7 @@ namespace LogInspect.ViewModels
 			get { return items[Column]; }
 		}
 
-		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,IEventLoader EventLoader, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
+		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,ILogLoader EventLoader, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
 		{
 			items = new Dictionary<string, List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
@@ -45,7 +45,7 @@ namespace LogInspect.ViewModels
 			
 		}
 
-		protected override void OnRefresh()
+		/*protected override void OnRefresh()
 		{
 			List<string> values;
 			string value;
@@ -67,7 +67,7 @@ namespace LogInspect.ViewModels
 			}
 			position = count;
 
-		}
+		}//*/
 
 		public IEnumerable<object> GetFilterChoices(string Property)
 		{

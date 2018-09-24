@@ -5,29 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLib.Loaders
+namespace LogInspectLib.Readers
 {
-	public class LineLoader:Loader<Line>,ILineLoader
+	public class LineReader:Reader<Line>,ILineReader
 	{
 		private StreamReader reader;
 		private IStringMatcher discardMatcher;
 		private int index;
 
-		public override bool CanLoad
+		public override bool CanRead
 		{
-			get { return reader.BaseStream.Position < reader.BaseStream.Length; }
+			get { return !reader.EndOfStream; }
 		}
 
-		public LineLoader(Stream Stream,Encoding Encoding,IStringMatcher DiscardMatcher)
+		public LineReader(Stream Stream, Encoding Encoding, IStringMatcher DiscardMatcher)
 		{
 			if (Stream == null) throw new ArgumentNullException("Stream");
 			if (Encoding == null) throw new ArgumentNullException("Encoding");
 			if (DiscardMatcher == null) throw new ArgumentNullException("DiscardMatcher");
-			this.reader = new StreamReader(Stream,Encoding);
+			this.reader = new StreamReader(Stream, Encoding);
 			this.discardMatcher = DiscardMatcher;
 		}
 
-		protected override Line OnLoad()
+		protected override Line OnRead()
 		{
 			Line item;
 			item = new Line();
@@ -37,12 +37,13 @@ namespace LogInspectLib.Loaders
 				item.Position = reader.BaseStream.Position;
 				item.Value = reader.ReadLine();
 				item.Index = index;
-				index++;	// must use a local index in order to take discarded lines in account
+				index++;    // must use a local index in order to take discarded lines in account
 				if (item.Value == null) throw new EndOfStreamException();
 			} while (discardMatcher.Match(item.Value));
 
 			return item;
 		}
+
 
 	}
 }

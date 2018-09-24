@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels
 		private int position;
 
 
-		private EventsViewModel events;
+		private FilteredEventsViewModel events;
 
 
 		public int Maximum
@@ -34,7 +34,7 @@ namespace LogInspect.ViewModels
 		}
 		
 
-		public MarkersViewModel(ILogger Logger , int RefreshInterval, EventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger, RefreshInterval)
+		public MarkersViewModel(ILogger Logger , int RefreshInterval, FilteredEventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger, RefreshInterval)
 		{
 			this.severityColumn = SeverityColumn;
 			this.coloringRules = ColoringRules;

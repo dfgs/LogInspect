@@ -17,16 +17,15 @@ using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
-	public class EventsViewModel:CollectionViewModel<EventViewModel>
+	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel>
 	{
-		private int position;
 
-		private IEventLoader eventLoader;
+		private ILogLoader logLoader;
 
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> coloringRules;
 
-		public static readonly DependencyProperty TailProperty = DependencyProperty.Register("Tail", typeof(bool), typeof(EventsViewModel));
+		public static readonly DependencyProperty TailProperty = DependencyProperty.Register("Tail", typeof(bool), typeof(FilteredEventsViewModel));
 		public bool Tail
 		{
 			get { return (bool)GetValue(TailProperty); }
@@ -35,12 +34,12 @@ namespace LogInspect.ViewModels
 
 		private Filter[] filters;
 
-		public EventsViewModel(ILogger Logger , int RefreshInterval, IEventLoader EventLoader,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger, RefreshInterval)
+		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, ILogLoader LogLoader,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger, RefreshInterval)
 		{
 			this.columns = Columns;
 			this.coloringRules = ColoringRules;
 
-			this.eventLoader = EventLoader;
+			this.logLoader = LogLoader;
 			
 		}
 		protected override void OnRefresh()
@@ -48,14 +47,14 @@ namespace LogInspect.ViewModels
 			int count;
 			EventViewModel vm;
 
-			lock (this)
+			/*lock (this)
 			{
 				List<EventViewModel> list = new List<EventViewModel>();
-				count = eventLoader.Count;
+				count = logLoader.Count;
 
 				for (int t = position; t < count; t++)
 				{
-					vm = new EventViewModel(Logger, columns, coloringRules, eventLoader[t]);
+					vm = new EventViewModel(Logger, columns, coloringRules, logLoader[t]);
 					vm.EventIndex = t;
 					if (MustDiscard(vm)) continue;
 					list.Add(vm);
@@ -64,7 +63,7 @@ namespace LogInspect.ViewModels
 				AddRange(list);
 				if (Tail) Select(Count - 1);
 
-			}
+			}*/
 		}
 		private bool MustDiscard(EventViewModel Event)
 		{
@@ -80,7 +79,6 @@ namespace LogInspect.ViewModels
 			lock (this)
 			{
 				this.filters = Filters;
-				this.position = 0;
 				Reset();
 			}
 		}

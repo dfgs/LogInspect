@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using LogInspectLib;
@@ -17,146 +18,108 @@ namespace LogInspectLibTest
 		public void ShouldHaveCorrectConstructorParameters()
 		{
 			Assert.ThrowsException<ArgumentNullException>(() => { new LogLoader(null,Utils.EmptyStringMatcher,Utils.EmptyStringMatcher); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogLoader(Utils.EmptyLineLoader, null, Utils.EmptyStringMatcher); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogLoader(Utils.EmptyLineLoader, Utils.EmptyStringMatcher, null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogLoader(new MockedLineReader(), null, Utils.EmptyStringMatcher); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogLoader(new MockedLineReader(), Utils.EmptyStringMatcher, null); });
 		}
 
 
 		[TestMethod]
 		public void ShouldReadWithoutPatterns()
 		{
-			ILineLoader lineLoader;
 			LogLoader loader;
+			int index;
 
-			lineLoader = new MockedLineLoader();
-			for (int t = 0; t < 5; t++) lineLoader.Load();
-			
-			loader = new LogLoader(lineLoader,Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
+			loader = new LogLoader(new MockedLineReader(5),Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
 
 			for (int t = 0; t < 5; t++)
 			{
 				loader.Load();
-				Assert.AreEqual(lineLoader[t].Value, loader[t].ToSingleLine());
 			}
 			Assert.AreEqual(5,loader.Count);
 			Assert.ThrowsException<EndOfStreamException>(()=> { loader.Load(); });
+
+			index = 0;
+			foreach (Log item in  loader.GetBuffer())
+			{
+				Assert.AreEqual($"Item {index}", item.ToSingleLine());
+				index++;
+			}
 		}
 
 
 		[TestMethod]
 		public void ShouldReadLogWithAppendToPreviousPatterns()
 		{
-			MockedLineLoader lineLoader;
 			LogLoader loader;
 			IStringMatcher matcher;
-
-			lineLoader = new MockedLineLoader();
-			lineLoader.Load("Item ");
-			lineLoader.Load("1");
-			lineLoader.Load("Item ");
-			lineLoader.Load("2");
-			lineLoader.Load("Item ");
-			lineLoader.Load("3");
-			lineLoader.Load("Item ");
-			lineLoader.Load("4");
-			lineLoader.Load("Item A");
-			lineLoader.Load("Item B");
+			int index;
 
 			matcher = new StringMatcher();
 			matcher.Add("[0-9]");
 
-			loader = new LogLoader(lineLoader, matcher, Utils.EmptyStringMatcher);
+			loader = new LogLoader(new MockedLineReaderWithAppend(6), matcher, Utils.EmptyStringMatcher);
 
-			for (int t = 0; t < 6; t++) loader.Load();
+			for (int t = 0; t < 3; t++)
+			{
+				loader.Load();
+			}
 
-			Assert.AreEqual("Item 1", loader[0].ToSingleLine());
-			Assert.AreEqual("Item 2", loader[1].ToSingleLine());
-			Assert.AreEqual("Item 3", loader[2].ToSingleLine());
-			Assert.AreEqual("Item 4", loader[3].ToSingleLine());
-			Assert.AreEqual("Item A", loader[4].ToSingleLine());
-			Assert.AreEqual("Item B", loader[5].ToSingleLine());
+			Assert.AreEqual(3, loader.Count);
+			Assert.ThrowsException<EndOfStreamException>(() => { loader.Load(); });
 
-			Assert.AreEqual(6, loader.Count);
-			Assert.ThrowsException<EndOfStreamException>(() =>  loader.Load() );
+			index = 0;
+			foreach (Log item in loader.GetBuffer())
+			{
+				Assert.AreEqual($"Item {index}", item.ToSingleLine());
+				index+=2;
+			}
 		}
 
 		[TestMethod]
 		public void ShouldReadLogWithAppendToNextPatterns()
 		{
-			MockedLineLoader lineLoader;
 			LogLoader loader;
 			IStringMatcher matcher;
-
-			lineLoader = new MockedLineLoader();
-			lineLoader.Load("Item ");
-			lineLoader.Load("1");
-			lineLoader.Load("Item ");
-			lineLoader.Load("2");
-			lineLoader.Load("Item ");
-			lineLoader.Load("3");
-			lineLoader.Load("Item ");
-			lineLoader.Load("4");
-			lineLoader.Load("Item A");
-			lineLoader.Load("Item B");
+			int index;
 
 			matcher = new StringMatcher();
-			matcher.Add( " $");
+			matcher.Add(" $");
 
-			loader = new LogLoader(lineLoader, Utils.EmptyStringMatcher, matcher);
+			loader = new LogLoader(new MockedLineReaderWithAppend(6), Utils.EmptyStringMatcher, matcher);
 
-			for (int t = 0; t < 6; t++) loader.Load();
+			for (int t = 0; t < 3; t++)
+			{
+				loader.Load();
+			}
 
-			Assert.AreEqual("Item 1", loader[0].ToSingleLine());
-			Assert.AreEqual("Item 2", loader[1].ToSingleLine());
-			Assert.AreEqual("Item 3", loader[2].ToSingleLine());
-			Assert.AreEqual("Item 4", loader[3].ToSingleLine());
-			Assert.AreEqual("Item A", loader[4].ToSingleLine());
-			Assert.AreEqual("Item B", loader[5].ToSingleLine());
+			Assert.AreEqual(3, loader.Count);
+			Assert.ThrowsException<EndOfStreamException>(() => { loader.Load(); });
 
-			Assert.AreEqual(6, loader.Count);
-			Assert.ThrowsException<EndOfStreamException>(() => loader.Load());
+			index = 0;
+			foreach (Log item in loader.GetBuffer())
+			{
+				Assert.AreEqual($"Item {index}", item.ToSingleLine());
+				index += 2;
+			}
 		}
+		
 		[TestMethod]
 		public void ShouldFailIfCannotAppendToNext()
 		{
-			MockedLineLoader lineLoader;
 			LogLoader loader;
 			IStringMatcher matcher;
-
-			lineLoader = new MockedLineLoader();
-			lineLoader.Load("Item ");
-			lineLoader.Load("1");
-			lineLoader.Load("Item ");
-			lineLoader.Load("2");
-			lineLoader.Load("Item ");
-			lineLoader.Load("3");
-			lineLoader.Load("Item ");
+			MockedLineReaderWithIncompleteAppend lineReader;
 
 			matcher = new StringMatcher();
-			matcher.Add( " $");
+			matcher.Add(" $");
 
-			loader = new LogLoader(lineLoader, Utils.EmptyStringMatcher, matcher);
+			lineReader = new MockedLineReaderWithIncompleteAppend();
 
-			for (int t = 0; t < 3; t++) loader.Load();
+			loader = new LogLoader(lineReader, Utils.EmptyStringMatcher, matcher);
 
-			Assert.AreEqual("Item 1", loader[0].ToSingleLine());
-			Assert.AreEqual("Item 2", loader[1].ToSingleLine());
-			Assert.AreEqual("Item 3", loader[2].ToSingleLine());
-
-			// cannot load last item because missing EOL
-			Assert.AreEqual(3, loader.Count);
-			Assert.ThrowsException<EndOfStreamException>(() => loader.Load());
-
-			// can load if we add missing line
-			lineLoader.Load("4");
-			loader.Load();
-
-			Assert.AreEqual("Item 4", loader[3].ToSingleLine());
-			Assert.AreEqual(4, loader.Count);
-			Assert.ThrowsException<EndOfStreamException>(() => loader.Load());
+			Assert.ThrowsException<EndOfStreamException>(() => { loader.Load(); });
 
 		}
-
 
 
 

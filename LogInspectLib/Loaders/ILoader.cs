@@ -8,29 +8,21 @@ namespace LogInspectLib.Loaders
 {
 	public interface ILoader<T>
 	{
-		/*long Position
-		{
-			get;
-		}
-
-		long Length
+		/*bool CanLoad
 		{
 			get;
 		}*/
-
-		bool CanLoad
-		{
-			get;
-		}
 		int Count
 		{
 			get;
 		}
-		T this[int Index]
+		/*T this[int Index]
 		{
 			get;
-		}
+		}*/
 
+
+		IEnumerable<T> GetBuffer();
 		void Load();
 	}
 }

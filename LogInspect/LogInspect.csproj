@@ -85,13 +85,11 @@
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\IBaseModule.cs" />
+    <Compile Include="Modules\IEventBuilderModule.cs" />
     <Compile Include="Modules\ILoaderModule.cs" />
-    <Compile Include="Modules\ILineLoaderModule.cs" />
-    <Compile Include="Modules\IEventLoaderModule.cs" />
     <Compile Include="Modules\ILogLoaderModule.cs" />
+    <Compile Include="Modules\EventBuilderModule.cs" />
     <Compile Include="Modules\LoaderModule.cs" />
-    <Compile Include="Modules\LineLoaderModule.cs" />
-    <Compile Include="Modules\EventLoaderModule.cs" />
     <Compile Include="Modules\LogLoaderModule.cs" />
     <Compile Include="Modules\RateMeter.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
@@ -106,7 +104,7 @@
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
     <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
-    <Compile Include="ViewModels\EventsViewModel.cs" />
+    <Compile Include="ViewModels\FilteredEventsViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterItemViewModel.cs" />
     <Compile Include="ViewModels\Filters\MultiChoicesFilterViewModel.cs" />

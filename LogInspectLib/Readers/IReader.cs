@@ -4,9 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLib.Loaders
+namespace LogInspectLib.Readers
 {
-	public interface IEventLoader:ILoader<Event>
+	public interface IReader<T>
+		where T : class
 	{
+		bool CanRead
+		{
+			get;
+		}
+		T Read();
 	}
 }

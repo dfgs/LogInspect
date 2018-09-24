@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLib.Loaders
+namespace LogInspectLib.Readers
 {
-	public interface ILineLoader:ILoader<Line>
+	public interface ILineReader:IReader<Line>
 	{
 	}
 }

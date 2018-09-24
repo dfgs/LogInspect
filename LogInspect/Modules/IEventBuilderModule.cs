@@ -1,5 +1,4 @@
-﻿using LogInspectLib;
-using LogInspectLib.Loaders;
+﻿using LogInspectLib.Loaders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public interface ILineLoaderModule: ILoaderModule<ILineLoader, Line>
+	public interface IEventBuilderModule:IBaseModule
 	{
+		
+
 	}
 }

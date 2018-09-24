@@ -13,7 +13,6 @@ namespace LogInspectLibTest.Mocks
 	{
 		public static IRegexBuilder EmptyRegexBuilder = new RegexBuilder();
 		public static IStringMatcher EmptyStringMatcher = new StringMatcher();
-		public static ILineLoader EmptyLineLoader = new LineLoader(new MemoryStream(), Encoding.Default, Utils.EmptyStringMatcher);
-		public static ILogLoader EmptyLogLoader = new LogLoader(Utils.EmptyLineLoader,Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
+		public static ILogLoader EmptyLogLoader = new LogLoader(new MockedLineReader(),Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
 	}
 }

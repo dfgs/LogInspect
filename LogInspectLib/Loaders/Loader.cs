@@ -11,25 +11,33 @@ namespace LogInspectLib.Loaders
 	{
 		private List<T> items;
 
-		//public abstract long Position { get; }
-		//public abstract long Length { get; }
-
-		public abstract bool CanLoad
+		/*public abstract bool CanLoad
 		{
 			get;
-		}
+		}*/
 
 
-		public T this[int Index]
+		/*public T this[int Index]
 		{
 			get
 			{
-				if (Index >= items.Count) throw new EndOfStreamException();
-				return items[Index];
+				lock (items)
+				{
+					return items[Index];
+				}
+			}
+		}*/
+
+		public int Count
+		{
+			get
+			{
+				lock(items)
+				{
+					return items.Count;
+				}
 			}
 		}
-
-		public int Count => items.Count;
 
 
 		public Loader()
@@ -43,7 +51,21 @@ namespace LogInspectLib.Loaders
 		{
 			T item;
 			item = OnLoad();
-			items.Add(item);
+			lock (items)
+			{
+				items.Add(item);
+			}
+		}
+
+		public IEnumerable<T> GetBuffer()
+		{
+			IEnumerable<T> result;
+			lock (items)
+			{
+				result = items;
+				items = new List<T>();
+			}
+			return items;
 		}
 
 	}

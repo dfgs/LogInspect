@@ -12,7 +12,7 @@ namespace LogInspect.Modules
 {
 	public class LogLoaderModule : LoaderModule<ILogLoader, Log>, ILogLoaderModule
 	{
-		public LogLoaderModule( ILogger Logger, ILogLoader Loader, WaitHandle LookUpRetryEvent, int LookupRetryDelay) : base("LogLoader", Logger, Loader,LookUpRetryEvent, LookupRetryDelay)
+		public LogLoaderModule( ILogger Logger, ILogLoader Loader,  int LookupRetryDelay) : base("LogLoader", Logger, Loader, LookupRetryDelay)
 		{
 		}
 
