@@ -102,8 +102,6 @@ namespace LogInspect.ViewModels
 			{
 				properties[column.Name] = column.CreatePropertyViewModel(this);
 			}
-			
-
 		}
 
 		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules,Event Event)

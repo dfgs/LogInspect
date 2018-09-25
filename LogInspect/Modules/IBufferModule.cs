@@ -4,25 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLib.Loaders
+namespace LogInspect.Modules
 {
-	public interface ILoader<T>
+	public interface IBufferModule<T>:IBaseModule
 	{
-		/*bool CanLoad
-		{
-			get;
-		}*/
-		int Count
+	
+
+		T this[int Index]
 		{
 			get;
 		}
-		/*T this[int Index]
-		{
-			get;
-		}*/
-
 
 		IEnumerable<T> GetBuffer();
-		void Load();
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using LogInspectLib;
-using LogInspectLib.Loaders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +12,5 @@ namespace LogInspectLibTest.Mocks
 	{
 		public static IRegexBuilder EmptyRegexBuilder = new RegexBuilder();
 		public static IStringMatcher EmptyStringMatcher = new StringMatcher();
-		public static ILogLoader EmptyLogLoader = new LogLoader(new MockedLineReader(),Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
 	}
 }

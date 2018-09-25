@@ -2,9 +2,8 @@
 using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
-using LogInspect.ViewModels.Loaders;
+using LogInspect.ViewModels.Modules;
 using LogInspectLib;
-using LogInspectLib.Loaders;
 using LogInspectLib.Parsers;
 using LogInspectLib.Readers;
 using LogLib;
@@ -85,17 +84,20 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		private ILogLoader logLoader;
-		private ILineReader lineReader;
 
-		private ILogLoaderModule logLoaderModule;
-		public ILoaderViewModel LogLoader
+		private ILogBufferModule logBufferModule;
+		public IModuleViewModel LogBuffer
 		{
 			get;
 			private set;
 		}
 
-		private IEventBuilderModule eventBuilderModule;
+		private EventListModule eventListModule;
+		public IModuleViewModel EventList
+		{
+			get;
+			private set;
+		}
 
 		public StreamViewModel Stream
 		{
@@ -110,6 +112,8 @@ namespace LogInspect.ViewModels
 			IStringMatcher appendLineToPreviousMatcher;
 			IStringMatcher appendLineToNextMatcher;
 			ILogParser logParser;
+			ILineReader lineReader;
+			ILogReader logReader;
 
 			this.FileName = FileName;
 			this.Name = Path.GetFileName(FileName);
@@ -127,10 +131,10 @@ namespace LogInspect.ViewModels
 			logParser = FormatHandler.CreateLogParser(RegexBuilder);
 			
 			lineReader = new LineReader(stream, Encoding.Default, discardLineMatcher);
-			logLoader = new LogLoader(lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
+			logReader = new LogReader(lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
 
-			logLoaderModule = new LogLoaderModule(Logger, logLoader, LoaderModuleLookupRetryDelay);
-			eventBuilderModule = new EventBuilderModule(Logger, LoaderModuleLookupRetryDelay, logLoader,logParser, Columns, FormatHandler.EventColoringRules);
+			logBufferModule = new LogBufferModule(Logger,  LoaderModuleLookupRetryDelay, logReader);
+			eventListModule = new EventListModule(Logger, LoaderModuleLookupRetryDelay, logBufferModule,logParser);
 
 			Log(LogLevels.Information, "Creating viewmodels");
 
@@ -139,21 +143,22 @@ namespace LogInspect.ViewModels
 
 			Stream = new StreamViewModel(Logger, ViewModelRefreshInterval, stream);
 
-			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshInterval, logLoader, FormatHandler.Columns);
+			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshInterval, eventListModule, FormatHandler.Columns);
 			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshInterval, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
 			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel);
 
-			Events = new FilteredEventsViewModel(Logger, ViewModelRefreshInterval, logLoader,Columns,FormatHandler.EventColoringRules);
+			Events = new FilteredEventsViewModel(Logger, ViewModelRefreshInterval, eventListModule,Columns,FormatHandler.EventColoringRules);
 			Markers = new MarkersViewModel(Logger, ViewModelRefreshInterval,  Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
 
 
-			LogLoader = new LoaderViewModel(Logger, ViewModelRefreshInterval, logLoaderModule);
+			LogBuffer = new ModuleViewModel(Logger, ViewModelRefreshInterval, logBufferModule);
+			EventList = new ModuleViewModel(Logger, ViewModelRefreshInterval, eventListModule);
 
 
 			Log(LogLevels.Information, "Starting modules");
-			logLoaderModule.Start();
-
+			logBufferModule.Start();
+			eventListModule.Start();
 		}
 
 
@@ -161,7 +166,8 @@ namespace LogInspect.ViewModels
 		{
 
 			Log(LogLevels.Information, "Stopping modules");
-			logLoaderModule.Stop();
+			eventListModule.Stop();
+			logBufferModule.Stop();
 
 			filterItemSourcesViewModel.Dispose();//*/
 

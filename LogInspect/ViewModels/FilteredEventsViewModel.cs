@@ -3,7 +3,6 @@ using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
-using LogInspectLib.Loaders;
 using LogLib;
 using System;
 using System.Collections;
@@ -19,11 +18,11 @@ namespace LogInspect.ViewModels
 {
 	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel>
 	{
-
-		private ILogLoader logLoader;
+		private int position;
+		private IEventListModule eventList;
 
 		private IEnumerable<ColumnViewModel> columns;
-		private IEnumerable<EventColoringRule> coloringRules;
+		private IEnumerable<EventColoringRule> eventColoringRules;
 
 		public static readonly DependencyProperty TailProperty = DependencyProperty.Register("Tail", typeof(bool), typeof(FilteredEventsViewModel));
 		public bool Tail
@@ -34,36 +33,37 @@ namespace LogInspect.ViewModels
 
 		private Filter[] filters;
 
-		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, ILogLoader LogLoader,IEnumerable<ColumnViewModel> Columns,IEnumerable<EventColoringRule> ColoringRules) : base(Logger, RefreshInterval)
+		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, IEventListModule EventList, IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules) : base(Logger, RefreshInterval)
 		{
-			this.columns = Columns;
-			this.coloringRules = ColoringRules;
-
-			this.logLoader = LogLoader;
-			
+			this.eventList = EventList;
+			this.columns = Columns;this.eventColoringRules = EventColoringRules;
 		}
+
 		protected override void OnRefresh()
 		{
 			int count;
+			int index;
 			EventViewModel vm;
 
-			/*lock (this)
+			lock (this)
 			{
+				index = this.Count;
 				List<EventViewModel> list = new List<EventViewModel>();
-				count = logLoader.Count;
+				count = eventList.Count;
 
 				for (int t = position; t < count; t++)
 				{
-					vm = new EventViewModel(Logger, columns, coloringRules, logLoader[t]);
-					vm.EventIndex = t;
+					vm = new EventViewModel(Logger,columns,eventColoringRules,  eventList[t]);
+					vm.EventIndex = index; ;
 					if (MustDiscard(vm)) continue;
 					list.Add(vm);
+					index++;
 				}
 				position = count;
 				AddRange(list);
 				if (Tail) Select(Count - 1);
 
-			}*/
+			}
 		}
 		private bool MustDiscard(EventViewModel Event)
 		{

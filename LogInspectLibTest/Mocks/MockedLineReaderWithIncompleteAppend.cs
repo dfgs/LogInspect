@@ -11,7 +11,6 @@ namespace LogInspectLibTest.Mocks
 {
 	public class MockedLineReaderWithIncompleteAppend : Reader<Line>, ILineReader
 	{
-		private int count;
 
 		private bool canRead;
 		public override bool CanRead
@@ -28,7 +27,7 @@ namespace LogInspectLibTest.Mocks
 			Line result;
 
 			if (!CanRead) throw new EndOfStreamException();
-			result = new Line() { Index = count, Value = $"Item " };
+			result = new Line() { Index = 0, Value = $"Item " };
 			canRead = false;
 			return result;
 		}

@@ -45,10 +45,6 @@
     <Compile Include="InlineColoringRule.cs" />
     <Compile Include="IRegexBuilder.cs" />
     <Compile Include="IStringMatcher.cs" />
-    <Compile Include="Loaders\ILogLoader.cs" />
-    <Compile Include="Loaders\ILoader.cs" />
-    <Compile Include="Loaders\LogLoader.cs" />
-    <Compile Include="Loaders\Loader.cs" />
     <Compile Include="Parsers\IInlineParser.cs" />
     <Compile Include="Parsers\InlineParser.cs" />
     <Compile Include="Parsers\ILogParser.cs" />

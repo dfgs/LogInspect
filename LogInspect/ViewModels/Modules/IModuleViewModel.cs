@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.ViewModels.Loaders
+namespace LogInspect.ViewModels.Modules
 {
-	public interface ILoaderViewModel:IViewModel
+	public interface IModuleViewModel:IViewModel
 	{
 		int Rate
 		{

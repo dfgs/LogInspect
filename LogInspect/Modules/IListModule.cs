@@ -4,9 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLib.Loaders
+namespace LogInspect.Modules
 {
-	public interface ILogLoader:ILoader<Log>
+	public interface IListModule<T>:IBaseModule
 	{
+		
+
+		T this[int Index]
+		{
+			get;
+		}
+
 	}
 }

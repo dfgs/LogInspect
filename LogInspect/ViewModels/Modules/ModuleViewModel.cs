@@ -5,15 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.Modules;
-using LogInspectLib.Loaders;
 using LogLib;
 
-namespace LogInspect.ViewModels.Loaders
+namespace LogInspect.ViewModels.Modules
 {
-	public class LoaderViewModel : ViewModel,ILoaderViewModel
+	public class ModuleViewModel : ViewModel,IModuleViewModel
 	{
 
-		public static readonly DependencyProperty RateProperty = DependencyProperty.Register("Rate", typeof(int), typeof(LoaderViewModel));
+		public static readonly DependencyProperty RateProperty = DependencyProperty.Register("Rate", typeof(int), typeof(ModuleViewModel));
 		public int Rate
 		{
 			get { return (int)GetValue(RateProperty); }
@@ -21,7 +20,7 @@ namespace LogInspect.ViewModels.Loaders
 		}
 
 
-		public static readonly DependencyProperty CountProperty = DependencyProperty.Register("Count", typeof(int), typeof(LoaderViewModel));
+		public static readonly DependencyProperty CountProperty = DependencyProperty.Register("Count", typeof(int), typeof(ModuleViewModel));
 		public int Count
 		{
 			get { return (int)GetValue(CountProperty); }
@@ -30,7 +29,7 @@ namespace LogInspect.ViewModels.Loaders
 
 		private IBaseModule module;
 
-		public LoaderViewModel(ILogger Logger, int RefreshInterval, IBaseModule Module) : base(Logger, RefreshInterval)
+		public ModuleViewModel(ILogger Logger, int RefreshInterval, IBaseModule Module) : base(Logger, RefreshInterval)
 		{
 			this.module = Module;
 		}

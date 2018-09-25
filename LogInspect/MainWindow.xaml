@@ -89,22 +89,16 @@
 			<TextBlock Text="{Binding SelectedItem.Stream.Length,FallbackValue=NA}"/>
 			<ProgressBar VerticalAlignment="Center" Height="8" Width="100" Value="{Binding SelectedItem.Stream.Position,Mode=OneWay, FallbackValue=0}" Maximum="{Binding SelectedItem.Stream.Length,Mode=OneWay, FallbackValue=0}"/>
 			<Separator/>
-			<TextBlock Text="Lines:"/>
-			<TextBlock Text="{Binding SelectedItem.LineLoader.Count,FallbackValue=NA}"/>
+			<TextBlock Text="Logs buffer:"/>
+			<TextBlock Text="{Binding SelectedItem.LogBuffer.Count,FallbackValue=NA}"/>
 			<TextBlock Text="Rate:"/>
-			<TextBlock Text="{Binding SelectedItem.LineLoader.Rate,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.LogBuffer.Rate,FallbackValue=NA}"/>
 			<TextBlock Text="/s"/>
 			<Separator/>
-			<TextBlock Text="Logs:"/>
-			<TextBlock Text="{Binding SelectedItem.LogLoader.Count,FallbackValue=NA}"/>
+			<TextBlock Text="Events list:"/>
+			<TextBlock Text="{Binding SelectedItem.EventList.Count,FallbackValue=NA}"/>
 			<TextBlock Text="Rate:"/>
-			<TextBlock Text="{Binding SelectedItem.LogLoader.Rate,FallbackValue=NA}"/>
-			<TextBlock Text="/s"/>
-			<Separator/>
-			<TextBlock Text="Events:"/>
-			<TextBlock Text="{Binding SelectedItem.EventLoader.Count,FallbackValue=NA}"/>
-			<TextBlock Text="Rate:"/>
-			<TextBlock Text="{Binding SelectedItem.EventLoader.Rate,FallbackValue=NA}"/>
+			<TextBlock Text="{Binding SelectedItem.EventList.Rate,FallbackValue=NA}"/>
 			<TextBlock Text="/s"/>
 			<Separator/>
 			<TextBlock Text="Status:"/>

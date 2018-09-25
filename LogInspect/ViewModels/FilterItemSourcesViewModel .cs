@@ -2,7 +2,6 @@
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
-using LogInspectLib.Loaders;
 using LogLib;
 using System;
 using System.Collections;
@@ -21,7 +20,7 @@ namespace LogInspect.ViewModels
 	{
 		private int position;
 
-		private ILogLoader eventLoader;
+		private IEventListModule eventList;
 
 		private string[] columns;
 		private Dictionary<string, List<string>> items;
@@ -31,7 +30,7 @@ namespace LogInspect.ViewModels
 			get { return items[Column]; }
 		}
 
-		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,ILogLoader EventLoader, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
+		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,IEventListModule EventList, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
 		{
 			items = new Dictionary<string, List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
@@ -40,24 +39,24 @@ namespace LogInspect.ViewModels
 				items.Add(column, new List<string>());
 			}
 
-			this.eventLoader = EventLoader;
+			this.eventList = EventList;
 
 			
 		}
 
-		/*protected override void OnRefresh()
+		protected override void OnRefresh()
 		{
 			List<string> values;
 			string value;
 			int count;
 
-			count = eventLoader.Count;
+			count = eventList.Count;
 			for (int t = position ; t < count; t++)
 			{
 				foreach (string property in columns)
 				{
 					values = items[property];
-					value = eventLoader[t][property];
+					value = eventList[t][property];//.GetEventValue(property);
 					if (!values.Contains(value))
 					{
 						values.Add(value);

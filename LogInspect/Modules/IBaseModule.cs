@@ -13,16 +13,19 @@ namespace LogInspect.Modules
 		{
 			get;
 		}
-
 		int Count
 		{
 			get;
 		}
 
+
 		AutoResetEvent ProceededEvent
 		{
 			get;
 		}
+
+		bool Start();
+		bool Stop();
 
 	}
 }

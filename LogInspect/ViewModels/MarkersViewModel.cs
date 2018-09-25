@@ -2,7 +2,6 @@
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
-using LogInspectLib.Loaders;
 using LogLib;
 using System;
 using System.Collections;
