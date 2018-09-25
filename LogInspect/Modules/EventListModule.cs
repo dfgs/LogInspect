@@ -26,7 +26,7 @@ namespace LogInspect.Modules
 		
 
 
-		public EventListModule(ILogger Logger, int LookupRetryDelay, ILogBufferModule LogBuffer, ILogParser LogParser) :base("EventList",Logger,LookupRetryDelay)
+		public EventListModule(ILogger Logger, int LookupRetryDelay, ILogBufferModule LogBuffer, ILogParser LogParser) :base("EventList",Logger,LookupRetryDelay,LogBuffer.ProceededEvent)
 		{
 			this.logBuffer = LogBuffer;
 			this.logParser = LogParser;

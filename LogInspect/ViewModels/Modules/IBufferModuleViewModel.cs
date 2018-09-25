@@ -6,19 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogInspect.ViewModels.Modules
 {
-	public interface IModuleViewModel:IViewModel
+	public interface IBufferModuleViewModel:IModuleViewModel
 	{
-		int Rate
-		{
-			get;
-		}
-		int Count
-		{
-			get;
-		}
-		int ProceededCount
-		{
-			get;
-		}
+		
+		
 	}
 }

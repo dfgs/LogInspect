@@ -8,8 +8,7 @@ namespace LogInspect.Modules
 {
 	public interface IBufferModule<T>:IBaseModule
 	{
-	
-
+		
 		T this[int Index]
 		{
 			get;

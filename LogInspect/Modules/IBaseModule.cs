@@ -13,7 +13,15 @@ namespace LogInspect.Modules
 		{
 			get;
 		}
+		int MaxRate
+		{
+			get;
+		}
 		int Count
+		{
+			get;
+		}
+		int ProceededCount
 		{
 			get;
 		}

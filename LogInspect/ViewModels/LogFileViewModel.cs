@@ -86,14 +86,14 @@ namespace LogInspect.ViewModels
 
 
 		private ILogBufferModule logBufferModule;
-		public IModuleViewModel LogBuffer
+		public IBufferModuleViewModel LogBuffer
 		{
 			get;
 			private set;
 		}
 
 		private EventListModule eventListModule;
-		public IModuleViewModel EventList
+		public IListModuleViewModel EventList
 		{
 			get;
 			private set;
@@ -152,8 +152,8 @@ namespace LogInspect.ViewModels
 			Markers = new MarkersViewModel(Logger, ViewModelRefreshInterval,  Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
 
 
-			LogBuffer = new ModuleViewModel(Logger, ViewModelRefreshInterval, logBufferModule);
-			EventList = new ModuleViewModel(Logger, ViewModelRefreshInterval, eventListModule);
+			LogBuffer = new BufferModuleViewModel<Log>(Logger, ViewModelRefreshInterval, logBufferModule);
+			EventList = new ListModuleViewModel<Event>(Logger, ViewModelRefreshInterval, eventListModule);
 
 
 			Log(LogLevels.Information, "Starting modules");
@@ -187,7 +187,7 @@ namespace LogInspect.ViewModels
 			Filter[] filters;
 			
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			Events.SetFilters(filters  );
+			Events.SetFilters(filters);
 			Markers.Clear();
 		}
 

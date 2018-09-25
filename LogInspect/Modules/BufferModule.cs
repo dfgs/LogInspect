@@ -27,6 +27,12 @@ namespace LogInspect.Modules
 			}
 		}
 
+		private int proceededCount;
+		public override int ProceededCount
+		{
+			get { return proceededCount; }
+		}
+
 		public T this[int Index]
 		{
 			get
@@ -37,6 +43,8 @@ namespace LogInspect.Modules
 				}
 			}
 		}
+
+		
 
 		public BufferModule(string Name,ILogger Logger,int LookupRetryDelay) :base(Name,Logger,LookupRetryDelay, null, System.Threading.ThreadPriority.Lowest)
 		{
@@ -56,7 +64,7 @@ namespace LogInspect.Modules
 			}
 			return result;
 		}
-		protected override bool OnProcess()
+		protected override int OnProcess()
 		{
 			T item;
 
@@ -66,13 +74,14 @@ namespace LogInspect.Modules
 				lock(items)
 				{
 					items.Add(item);
+					proceededCount++;
 				}
-				return true;
+				return 1;
 			}
 			catch(Exception ex)
 			{
 				Log(ex);
-				return false;
+				return 0;
 			}
 			
 		}

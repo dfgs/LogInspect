@@ -79,7 +79,8 @@ namespace LogInspect.ViewModels
 			lock (this)
 			{
 				this.filters = Filters;
-				Reset();
+				position = 0;
+				Clear();
 			}
 		}
 

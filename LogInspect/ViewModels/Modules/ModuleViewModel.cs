@@ -9,7 +9,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Modules
 {
-	public class ModuleViewModel : ViewModel,IModuleViewModel
+	public abstract class ModuleViewModel : ViewModel,IModuleViewModel
 	{
 
 		public static readonly DependencyProperty RateProperty = DependencyProperty.Register("Rate", typeof(int), typeof(ModuleViewModel));
@@ -20,6 +20,15 @@ namespace LogInspect.ViewModels.Modules
 		}
 
 
+		public static readonly DependencyProperty MaxRateProperty = DependencyProperty.Register("MaxRate", typeof(int), typeof(ModuleViewModel));
+		public int MaxRate
+		{
+			get { return (int)GetValue(MaxRateProperty); }
+			private set { SetValue(MaxRateProperty, value); }
+		}
+
+
+
 		public static readonly DependencyProperty CountProperty = DependencyProperty.Register("Count", typeof(int), typeof(ModuleViewModel));
 		public int Count
 		{
@@ -27,17 +36,31 @@ namespace LogInspect.ViewModels.Modules
 			private set { SetValue(CountProperty, value); }
 		}
 
-		private IBaseModule module;
+
+		public static readonly DependencyProperty ProceededCountProperty = DependencyProperty.Register("ProceededCount", typeof(int), typeof(ModuleViewModel));
+		public int ProceededCount
+		{
+			get { return (int)GetValue(ProceededCountProperty); }
+			set { SetValue(ProceededCountProperty, value); }
+		}
+
+		protected IBaseModule Module
+		{
+			get;
+			private set;
+		}
 
 		public ModuleViewModel(ILogger Logger, int RefreshInterval, IBaseModule Module) : base(Logger, RefreshInterval)
 		{
-			this.module = Module;
+			this.Module = Module;
 		}
 
 		protected override void OnRefresh()
 		{
-			this.Rate = module.Rate;
-			this.Count = module.Count;
+			this.Rate = Module.Rate;
+			this.MaxRate = Module.MaxRate;
+			this.Count = Module.Count;
+			this.ProceededCount = Module.ProceededCount;
 		}
 	}
 }

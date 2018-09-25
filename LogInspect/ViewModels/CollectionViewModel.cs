@@ -51,7 +51,7 @@ namespace LogInspect.ViewModels
 			CollectionChanged?.Invoke(this, e);
 		}
 
-		public void Reset()
+		public void Clear()
 		{
 			items.Clear();
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));

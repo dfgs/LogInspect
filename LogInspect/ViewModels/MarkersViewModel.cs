@@ -81,7 +81,7 @@ namespace LogInspect.ViewModels
 			lock(this)
 			{
 				this.position = 0;
-				Reset();
+				base.Clear();
 			}
 		}
 

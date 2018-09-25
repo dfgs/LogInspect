@@ -25,11 +25,20 @@ namespace LogInspect.Modules
 		{
 			get { return rateMeter.Rate; }
 		}
+
+		public int MaxRate
+		{
+			get { return rateMeter.MaxRate; }
+		}
+
 		public abstract int Count
 		{
 			get;
 		}
-
+		public abstract int ProceededCount
+		{
+			get;
+		}
 		public AutoResetEvent ProceededEvent
 		{
 			get;
@@ -50,11 +59,11 @@ namespace LogInspect.Modules
 			ProceededEvent = new AutoResetEvent(false);
 		}
 
-		protected abstract bool OnProcess();
+		protected abstract int OnProcess();
 
 		protected override sealed void ThreadLoop()
 		{
-			bool result;
+			int result;
 
 			startTime = DateTime.Now;rateMeter.Start();
 			while(State == ModuleStates.Started)
@@ -62,9 +71,9 @@ namespace LogInspect.Modules
 				while((State == ModuleStates.Started) && (CanProcess))
 				{
 					result=OnProcess();
-					if (!result) break;
+					if (result<=0) break;
 					ProceededEvent.Set();
-					rateMeter.Refresh(1);
+					rateMeter.Refresh(result);
 				}
 
 				rateMeter.Refresh(0);

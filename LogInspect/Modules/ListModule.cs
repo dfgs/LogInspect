@@ -21,51 +21,52 @@ namespace LogInspect.Modules
 		{
 			get
 			{
-				lock(items)
-				{
-					return items.Count;
-				}
+				return items.Count;
 			}
+		}
+
+		private int proceededCount;
+		public override int ProceededCount
+		{
+			get { return proceededCount; }
 		}
 
 		public T this[int Index]
 		{
 			get
 			{
-				lock (items)
-				{
-					return items[Index];
-				}
+				return items[Index];
 			}
 		}
 
-		public ListModule(string Name,ILogger Logger,int LookupRetryDelay) :base(Name,Logger,LookupRetryDelay, null, System.Threading.ThreadPriority.Lowest)
+		public ListModule(string Name,ILogger Logger,int LookupRetryDelay,WaitHandle LookUpRetryEvent) :base(Name,Logger,LookupRetryDelay, LookUpRetryEvent, System.Threading.ThreadPriority.Lowest)
 		{
 			this.items = new List<T>();
 		}
 
 		protected abstract IEnumerable<T> OnGetItems();
 
-		protected override bool OnProcess()
+		protected override int OnProcess()
 		{
+			int result;
 
+			result = 0;
 			try
 			{
-				lock (items)
+				foreach (T item in OnGetItems())
 				{
-					foreach (T item in OnGetItems())
-					{
-						items.Add(item);
-					}
+					items.Add(item);
+					result++;
+					proceededCount++;
 				}
-				return true;
+				return result;
 			}
 			catch(Exception ex)
 			{
 				Log(ex);
-				return false;
+				return result;
 			}
-			
+
 		}
 		
 

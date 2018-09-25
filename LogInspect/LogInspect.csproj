@@ -101,7 +101,11 @@
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\FindOptions.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\Modules\IListModuleViewModel.cs" />
+    <Compile Include="ViewModels\Modules\IBufferModuleViewModel.cs" />
     <Compile Include="ViewModels\Modules\IModuleViewModel.cs" />
+    <Compile Include="ViewModels\Modules\BufferModuleViewModel.cs" />
+    <Compile Include="ViewModels\Modules\ListModuleViewModel.cs" />
     <Compile Include="ViewModels\Modules\ModuleViewModel.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
@@ -154,6 +158,10 @@
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Compile Include="Views\MarkerPanel.cs" />
+    <Compile Include="Views\ProgressPanel.cs" />
+    <Compile Include="Views\ProgressView.xaml.cs">
+      <DependentUpon>ProgressView.xaml</DependentUpon>
+    </Compile>
     <Page Include="FilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -193,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FindView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
