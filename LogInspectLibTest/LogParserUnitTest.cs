@@ -15,6 +15,13 @@ namespace LogInspectLibTest
 		private static string log1 = "1|2|3|4";
 
 		[TestMethod]
+		public void ShouldHaveCorrectConstructorParameters()
+		{
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogParser(null); });
+		}
+
+
+		[TestMethod]
 		public void ShouldRead()
 		{
 			LogParser parser;

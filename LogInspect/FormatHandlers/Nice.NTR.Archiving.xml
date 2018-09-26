@@ -20,17 +20,9 @@
       <InlineColoringRules />
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
-      <InlineColoringRules>
-        <InlineColoringRule Pattern="CVSKEY=\d+" Foreground="Green" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="AudioFragment:\d+" Foreground="Olive" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+" Foreground="Blue" Underline="true" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="Error num=\d+" Foreground="Red" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="Error = [^\.]+" Foreground="Red" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="'[^']+'" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="\d+(\.\d+)? ms" Foreground="Black" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern=" \d+ " Foreground="Black" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="Connected|CorrectMediumFound" Foreground="RosyBrown" Underline="false" Bold="false" Italic="true" />
-      </InlineColoringRules>
+      <InlinePatternNames>
+        <string>Nice.NTR.CVSKey</string>
+      </InlinePatternNames>
     </Column>
   </Columns>
   <Rules>

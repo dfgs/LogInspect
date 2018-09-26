@@ -3,6 +3,7 @@ using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 using System;
 using System.Collections;

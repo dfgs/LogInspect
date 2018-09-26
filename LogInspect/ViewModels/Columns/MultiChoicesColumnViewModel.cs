@@ -11,11 +11,12 @@ using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class MultiChoicesColumnViewModel : ColumnViewModel
+	public class MultiChoicesColumnViewModel : TextPropertyColumnViewModel
 	{
 		public override bool AllowsResize => true;
 		public override bool AllowsFilter => true;
@@ -26,17 +27,14 @@ namespace LogInspect.ViewModels.Columns
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 
-		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment,null)
+		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, IInlineParser InlineParser, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,  InlineParser)
 		{
 
 			this.filterItemSourcesViewModel = FilterChoicesViewModel;
 
 		}
 
-		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
-		{
-			return new TextPropertyViewModel(Logger, Name,Alignment, Event.GetEventValue(Name));
-		}
+		
 
 		public override FilterViewModel CreateFilterViewModel()
 		{

@@ -47,6 +47,24 @@ namespace LogInspectLib
 				Add(NameSpace,item);
 			}
 		}
+
+		public Pattern GetPattern(string FullName)
+		{
+			Pattern subPattern;
+
+			if (!fullNamedPatterns.TryGetValue(FullName, out subPattern)) throw new KeyNotFoundException($"Pattern {FullName} doesn't exist in regex builder");
+			return subPattern;
+		}
+		public Pattern GetPattern(string NameSpace,string Name)
+		{
+			string fullName;
+			Pattern subPattern;
+
+			fullName = GetFullPatterName(NameSpace, Name);
+			if ((!fullNamedPatterns.TryGetValue(fullName, out subPattern)) && (!fullNamedPatterns.TryGetValue(Name, out subPattern)) && (!patterns.TryGetValue(Name, out subPattern))) throw new KeyNotFoundException($"Pattern {Name} doesn't exist in regex builder");
+			return subPattern;
+		}
+
 		public string BuildRegexPattern(string DefaultNameSpace,string Pattern)
 		{
 			MatchCollection matches;
@@ -73,7 +91,7 @@ namespace LogInspectLib
 					fullName = group.Value;
 					if (!cache.TryGetValue(fullName, out regex))
 					{
-						if  (!fullNamedPatterns.TryGetValue(fullName, out subPattern)) throw new KeyNotFoundException($"Pattern {fullName} doesn't exist in regex builder");
+						subPattern = GetPattern(fullName);
 						regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
 						cache.Add(fullName, regex);
 					}
@@ -83,10 +101,10 @@ namespace LogInspectLib
 				group = match.Groups["Pattern"];
 				if (!string.IsNullOrEmpty(group.Value))
 				{
-					fullName = GetFullPatterName(DefaultNameSpace,group.Value);
+					fullName = GetFullPatterName(DefaultNameSpace, group.Value);
 					if (!cache.TryGetValue(fullName, out regex))
 					{
-						if ( (!fullNamedPatterns.TryGetValue(fullName, out subPattern))  && (!patterns.TryGetValue(group.Value, out subPattern))) throw new KeyNotFoundException($"Pattern {fullName} doesn't exist in regex builder");
+						subPattern = GetPattern(DefaultNameSpace,group.Value);
 						regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
 						cache.Add(fullName, regex);
 					}

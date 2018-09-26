@@ -12,6 +12,7 @@ using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -23,14 +24,14 @@ namespace LogInspect.ViewModels.Columns
 		
 
 
-		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,FilterChoicesViewModel)
+		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment,IInlineParser InlineParser, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,InlineParser,FilterChoicesViewModel)
 		{
 		
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new SeverityPropertyViewModel(Logger, Name,Alignment,Event.GetEventValue(Name),Event.Background,Event.Foreground);
+			return new SeverityPropertyViewModel(Logger, Name,Alignment, InlineParser, Event.GetEventValue(Name),Event.Background,Event.Foreground);
 		}
 
 

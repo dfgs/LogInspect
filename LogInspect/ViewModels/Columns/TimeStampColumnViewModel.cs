@@ -13,6 +13,7 @@ using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -28,7 +29,7 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment,string Format) : base(Logger,Name,Name,Alignment,Format)
+		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment, string Format) : base(Logger,Name,Name,Alignment,Format)
 		{
 		
 		}
@@ -37,7 +38,7 @@ namespace LogInspect.ViewModels.Columns
 		{
 			DateTime value;
 			DateTime.TryParseExact(Event.GetEventValue(Name), Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out value) ;
-			return new TimeStampPropertyViewModel(Logger, Name,Alignment,value);
+			return new TimeStampPropertyViewModel(Logger, Name,Alignment, value);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties
@@ -15,9 +16,10 @@ namespace LogInspect.ViewModels.Properties
 	{
 		
 
-		public TimeStampPropertyViewModel(ILogger Logger, string Name,TextAlignment Alignment,DateTime Value) : base(Logger, Name,Alignment)
+		public TimeStampPropertyViewModel(ILogger Logger, string Name,TextAlignment Alignment, DateTime Value) : base(Logger, Name,Alignment)
 		{
 			this.Value = Value;
+
 		}
 	}
 }

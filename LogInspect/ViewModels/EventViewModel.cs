@@ -9,6 +9,7 @@ using System.Windows.Media;
 using LogInspect.ViewModels.Columns;
 using LogInspect.ViewModels.Properties;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels
@@ -71,7 +72,7 @@ namespace LogInspect.ViewModels
 		}
 
 
-
+		//TODO Add property to event
 		public static readonly DependencyProperty IsBookMarkedProperty = DependencyProperty.Register("IsBookMarked", typeof(bool), typeof(EventViewModel));
 		public bool IsBookMarked
 		{
@@ -87,7 +88,7 @@ namespace LogInspect.ViewModels
 			
 			this.ev = Event;
 
-
+		
 
 			Background = GetBackground(ColoringRules,Event );
 			if (Background == null)

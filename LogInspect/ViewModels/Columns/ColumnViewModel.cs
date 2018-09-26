@@ -9,6 +9,7 @@ using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -83,13 +84,12 @@ namespace LogInspect.ViewModels.Columns
 			set { SetValue(WidthProperty, value); }
 		}
 
-
+		
 
 
 		public ColumnViewModel(ILogger Logger, string Name, string Description, string Alignment,string Format) : base(Logger,-1)
 		{
 			TextAlignment alignment;
-
 
 			if (Enum.TryParse<TextAlignment>(Alignment, out alignment)) this.Alignment = alignment;
 			else this.Alignment = TextAlignment.Left;
@@ -97,6 +97,7 @@ namespace LogInspect.ViewModels.Columns
 			this.Name = Name;
 			this.Description = Description;
 			this.Format = Format;
+
 		}
 
 		

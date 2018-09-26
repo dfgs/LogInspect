@@ -11,17 +11,23 @@ namespace LogInspectLib.Parsers
 	{
 		private static Comparer<int> comparer=Comparer<int>.Default;
 
-		private Column column;
-		private Regex[] regexes;
-
-		public InlineParser(Column Column, IRegexBuilder RegexBuilder, string DefaultNameSpace)
+		private List<Tuple<Pattern,Regex>> items;
+		private IRegexBuilder regexBuilder;
+		
+		public InlineParser(IRegexBuilder RegexBuilder)
 		{
-			this.column = Column;
-			regexes = new Regex[Column.InlineColoringRules.Count];
-			for(int t=0;t<Column.InlineColoringRules.Count;t++)
-			{
-				regexes[t] = RegexBuilder.Build(DefaultNameSpace, Column.InlineColoringRules[t].Pattern);
-			}
+			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
+			items = new List<Tuple< Pattern, Regex>>();
+			this.regexBuilder = RegexBuilder;
+		}
+		public void Add(string DefaultNameSpace,string PatternName)
+		{
+			Pattern pattern;
+			Regex regex;
+
+			pattern = regexBuilder.GetPattern(DefaultNameSpace, PatternName);
+			regex = regexBuilder.Build(DefaultNameSpace, "{"+PatternName+"}");
+			items.Add(new Tuple<Pattern, Regex>(pattern,regex));
 		}
 
 		public IEnumerable<Inline> Parse(string Value)
@@ -30,18 +36,17 @@ namespace LogInspectLib.Parsers
 			int index;
 			List<Inline> inlines;
 			Inline inline;
-			InlineColoringRule coloringRule;
 
+			
 			if (Value == null) yield break;
 
 			inlines = new List<Inline>();
-			for (int t = 0; t < column.InlineColoringRules.Count; t++)
+			foreach (Tuple<Pattern,Regex> item in items)
 			{
-				match = regexes[t].Match(Value);
-				coloringRule = column.InlineColoringRules[t];
+				match = item.Item2.Match(Value);
 				while (match.Success)
 				{
-					inlines.Add(new Inline() { Index = match.Index, Length = match.Length, Foreground = coloringRule.Foreground, Underline = coloringRule.Underline, Bold= coloringRule.Bold,Italic= coloringRule.Italic, Value = match.Value });
+					inlines.Add(new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold= item.Item1.Bold,Italic= item.Item1.Italic, Value = match.Value });
 					match = match.NextMatch();
 				}
 			}
@@ -58,7 +63,7 @@ namespace LogInspectLib.Parsers
 					inline.Index = index;
 					inline.Length = matchedInline.Index - index;
 					inline.Foreground = "Black";
-					
+
 
 					inline.Value = Value.Substring(inline.Index, inline.Length);
 
@@ -78,6 +83,7 @@ namespace LogInspectLib.Parsers
 				inline.Value = Value.Substring(inline.Index, inline.Length);
 				yield return inline;
 			}
+
 		}
 
 

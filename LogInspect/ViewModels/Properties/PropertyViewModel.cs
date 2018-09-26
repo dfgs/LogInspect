@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties
@@ -30,6 +31,7 @@ namespace LogInspect.ViewModels.Properties
 			protected set;
 		}
 
+		
 		public PropertyViewModel(ILogger Logger,string Name,TextAlignment Alignment) : base(Logger,-1)
 		{
 			this.Name = Name;

@@ -8,9 +8,9 @@
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
-		<DataTemplate DataType="{x:Type lil:InlineColoringRule}">
+		<!--DataTemplate DataType="{x:Type lil:InlineColoringRule}">
 			<TextBlock Text="{Binding Pattern}"/>
-		</DataTemplate>
+		</-->
 	</UserControl.Resources>
 	
 	<StackPanel Grid.IsSharedSizeScope="True">

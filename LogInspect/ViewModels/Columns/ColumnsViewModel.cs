@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.Modules;
 using LogInspectLib;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -16,11 +17,11 @@ namespace LogInspect.ViewModels.Columns
 		private List<ColumnViewModel> items;
 
 
-		
 
-
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel) : base(Logger,-1)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel,IRegexBuilder RegexBuilder) : base(Logger,-1)
 		{
+			IInlineParser inlineParser;
+
 
 			items = new List<ColumnViewModel>();
 
@@ -29,13 +30,26 @@ namespace LogInspect.ViewModels.Columns
 
 			foreach (Column column in FormatHandler.Columns)
 			{
+				inlineParser = new InlineParser(RegexBuilder);
+				foreach(string patternName in column.InlinePatternNames)
+				{
+					try
+					{
+						inlineParser.Add(FormatHandler.DefaultNameSpace, patternName);
+					}
+					catch(Exception ex)
+					{
+						Log(LogLevels.Warning, ex.Message);
+					}
+				}
+
 				if (column.Name == FormatHandler.TimeStampColumn)
 				{
 					AddColumn(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment,column.Format) { Width = column.Width });
 				}
-				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment, FilterItemSourcesViewModel) { Width = column.Width });
-				else if (column.IsFilterItemSource) AddColumn(new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment, FilterItemSourcesViewModel) { Width = column.Width });
-				else AddColumn(new TextPropertyColumnViewModel(Logger, column.Name, column.Alignment) { Width = column.Width });
+				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment,inlineParser, FilterItemSourcesViewModel) { Width = column.Width });
+				else if (column.IsFilterItemSource) AddColumn(new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment,inlineParser, FilterItemSourcesViewModel) { Width = column.Width });
+				else AddColumn(new TextPropertyColumnViewModel(Logger, column.Name, column.Alignment,inlineParser) { Width = column.Width });
 			}
 			
 			

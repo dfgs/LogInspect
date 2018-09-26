@@ -71,9 +71,9 @@
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
-				<!--
 				<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis" TextAlignment="{Binding Alignment}" ToolTip="{Binding}"/>
+				<!--
+				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
 				-->
 			</DataTemplate>
 			<!-- -->

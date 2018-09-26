@@ -54,7 +54,7 @@ namespace LogInspectLib
 		}
 
 		[XmlArray]
-		public List<InlineColoringRule> InlineColoringRules
+		public List<string> InlinePatternNames
 		{
 			get;
 			set;
@@ -62,7 +62,7 @@ namespace LogInspectLib
 
 		public Column()
 		{
-			InlineColoringRules = new List<InlineColoringRule>();
+			InlinePatternNames = new List<string>();
 		}
 
 		

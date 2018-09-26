@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using LogInspect.ViewModels.Columns;
+using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties
@@ -23,7 +24,7 @@ namespace LogInspect.ViewModels.Properties
 			private set;
 		}
 
-		public SeverityPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment,string Value,Brush Background,Brush Foreground) : base(Logger, Name,Alignment,Value)
+		public SeverityPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment, IInlineParser InlineParser, string Value,Brush Background,Brush Foreground) : base(Logger, Name,Alignment,InlineParser,Value)
 		{
 			this.Background = Background;this.Foreground = Foreground;
 		}

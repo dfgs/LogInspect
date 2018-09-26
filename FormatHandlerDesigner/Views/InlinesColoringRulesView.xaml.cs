@@ -28,7 +28,7 @@ namespace FormatHandlerDesigner.Views
 
 		private void list_AddItem(object sender, AddItemEventArgs e)
 		{
-			e.AddedItem=new InlineColoringRule() { Pattern=".*" };
+			//e.AddedItem=new InlineColoringRule() { PatternName=".*" };
 		}
 	}
 }

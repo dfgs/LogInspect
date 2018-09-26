@@ -16,6 +16,9 @@ namespace LogInspectLib
 		string BuildRegexPattern(string DefaultNameSpace, string Pattern);
 		Regex Build(string DefaultNameSpace,string Pattern);
 
+		Pattern GetPattern(string FullName);
+		Pattern GetPattern(string NameSpace, string Name);
+
 
 	}
 }

@@ -102,7 +102,7 @@ namespace LogInspect.ViewModels
 						Log(ex);
 						continue;
 					}
-					regexBuilder.Add(lib.NameSpace,lib);
+					regexBuilder.Add(lib.NameSpace,lib.Items);
 				}
 			}
 			catch (Exception ex)

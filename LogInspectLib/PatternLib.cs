@@ -8,8 +8,8 @@ using System.Xml.Serialization;
 
 namespace LogInspectLib
 {
-	[Serializable,XmlRoot("PatternLib")]
-	public class PatternLib:List<Pattern>
+	[Serializable]
+	public class PatternLib
 	{
 		[XmlAttribute]
 		public string NameSpace
@@ -18,7 +18,17 @@ namespace LogInspectLib
 			set;
 		}
 
+		[XmlArray]
+		public List<Pattern> Items
+		{
+			get;
+			set;
+		}
 
+		public PatternLib()
+		{
+			Items = new List<Pattern>();
+		}
 		public void SaveToFile(string FileName)
 		{
 			using (FileStream stream = new FileStream(FileName, FileMode.Create))
@@ -48,5 +58,7 @@ namespace LogInspectLib
 			serializer = new XmlSerializer(typeof(PatternLib));
 			return (PatternLib)serializer.Deserialize(Stream);
 		}
+
+
 	}
 }

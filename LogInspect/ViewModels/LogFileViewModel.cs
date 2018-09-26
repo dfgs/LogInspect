@@ -146,7 +146,7 @@ namespace LogInspect.ViewModels
 			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshInterval, eventListModule, FormatHandler.Columns);
 			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshInterval, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
-			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel);
+			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel,RegexBuilder);
 
 			Events = new FilteredEventsViewModel(Logger, ViewModelRefreshInterval, eventListModule,Columns,FormatHandler.EventColoringRules);
 			Markers = new MarkersViewModel(Logger, ViewModelRefreshInterval,  Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);

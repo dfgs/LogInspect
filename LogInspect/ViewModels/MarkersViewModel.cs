@@ -76,7 +76,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public void Clear()
+		public override void Clear()
 		{
 			lock(this)
 			{

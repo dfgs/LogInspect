@@ -33,6 +33,9 @@ namespace LogInspect
 
 		public MainWindow()
 		{
+			PatternLib lib = new PatternLib() { NameSpace = "toto" };
+			lib.Items.Add(new Pattern() { Name = "titi", Bold = true });
+			lib.SaveToFile(@"e:\test.txt");
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
 			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.PatternLibsFolder, 

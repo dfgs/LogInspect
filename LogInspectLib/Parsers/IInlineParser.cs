@@ -9,6 +9,7 @@ namespace LogInspectLib.Parsers
 	public interface IInlineParser:IParser
 	{
 		IEnumerable<Inline> Parse(string Value);
+		void Add(string DefaultNameSpace, string PatternName);
 
 	}
 }
