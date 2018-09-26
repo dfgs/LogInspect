@@ -151,16 +151,25 @@
     <Compile Include="Views\FindView.xaml.cs">
       <DependentUpon>FindView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GaugeView.xaml.cs">
+      <DependentUpon>GaugeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Inlines.cs" />
     <Compile Include="Views\GridViewColumns.cs" />
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
+    <Compile Include="Views\ModuleStatusView.xaml.cs">
+      <DependentUpon>ModuleStatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Compile Include="Views\MarkerPanel.cs" />
     <Compile Include="Views\ProgressPanel.cs" />
     <Compile Include="Views\ProgressView.xaml.cs">
       <DependentUpon>ProgressView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RateView.xaml.cs">
+      <DependentUpon>RateView.xaml</DependentUpon>
     </Compile>
     <Page Include="FilterWindow.xaml">
       <SubType>Designer</SubType>
@@ -204,7 +213,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\GaugeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModuleStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProgressView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

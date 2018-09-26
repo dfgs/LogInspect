@@ -7,6 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="800" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
     <Border BorderThickness="1,1,0,0" BorderBrush="#30000000">
+		<Border.ToolTip>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="{Binding Stream.Position,StringFormat='File position: {0}'}"/>
+				<TextBlock Text="{Binding Stream.Length,StringFormat='/{0}'}"/>
+			</StackPanel>
+		</Border.ToolTip>
 		<views:ProgressPanel>
 			<Border Background="LightSteelBlue" views:ProgressPanel.Value="{Binding Stream.Position}" views:ProgressPanel.Maximum="{Binding Stream.Length,FallbackValue=100}" />
 			<Border Background="SteelBlue" views:ProgressPanel.Value="{Binding EventList.ProceededCount}" views:ProgressPanel.Maximum="{Binding LogBuffer.ProceededCount,FallbackValue=100}" />
