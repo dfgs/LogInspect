@@ -3,6 +3,7 @@
   <Items>
     <Pattern Name="Const" Value="[A-Z]+(_[A-Z]+)+"/>
     <Pattern Name="EmptyLine" Value="^$" />
+    <Pattern Name="Comment" Value="^//.*$" />
     <Pattern Name="WholeLine" Value="^.*$" />
     <Pattern Name="Spaces" Value=" +" />
     <Pattern Name="Date" Value="\d\d\d\d-\d\d-\d\d" />

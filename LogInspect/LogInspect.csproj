@@ -412,7 +412,7 @@
     <Resource Include="Images\magnifier_previous.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.CallController.xml">
+    <None Include="FormatHandlers\Nice.NTR.CallControllerCore.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -443,6 +443,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="InlineColoringRuleLibs\Generic.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.CallController.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.ConnectivityCaptureApiService.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.ConnectivityMediaDeliveryService.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

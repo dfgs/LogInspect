@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.NTR.Archiving" FileNamePattern="^CyberTech\.ContentManager\.Archiving\.WindowsService-{Date}(_{Number}hr)?\.log$"
+               Name="Nice.NTR.CallControllerCore" FileNamePattern="^CallController\.Core-{Date}(_{Number}hr)?\.log$"
                NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns>
     <string>^[^\[]</string>
@@ -16,21 +16,33 @@
     <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
       <InlineColoringRules />
     </Column>
+    <Column Name="Thread" Width="300" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
-      <InlineColoringRules>
-        <string>Const</string>
-        <string>Nice.NTR.CVSKey</string>
-      </InlineColoringRules>
+      <InlineColoringRules />
     </Column>
   </Columns>
   <Rules>
-    <Rule Name="Event" Discard="false">
+    <Rule Name="Event with thread" Discard="false">
       <Tokens>
         <Token Pattern="^\[" />
         <Token Pattern="{Date} {Time}" Name="Date" />
         <Token Pattern="{Spaces}" />
         <Token Pattern="{Severity}" Name="Severity" />
-        <Token Pattern=" *\] " />
+        <Token Pattern=" *\]{Spaces}\[" />
+        <Token Pattern="[^\]]+" Name="Thread" />
+        <Token Pattern="\] *" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Event without thread" Discard="false">
+      <Tokens>
+        <Token Pattern="^\[" />
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern="{Spaces}" />
+        <Token Pattern="{Severity}" Name="Severity" />
+        <Token Pattern=" *\] *" />
         <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>

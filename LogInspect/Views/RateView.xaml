@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
              mc:Ignorable="d" 
-			 d:DesignHeight="40" d:DesignWidth="800" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
-	<Border BorderThickness="1,1,0,0" BorderBrush="#30000000">
+			 d:DesignHeight="40" d:DesignWidth="800" >
+	<Border BorderThickness="1,1,0,0" BorderBrush="#30000000" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
 		<Border.ToolTip>
 			<StackPanel>
 				<TextBlock Text="{Binding Rate,FallbackValue=NA,StringFormat='Rate {0}/s'}"/>
