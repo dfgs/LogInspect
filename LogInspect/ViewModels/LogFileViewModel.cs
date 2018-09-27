@@ -105,7 +105,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, int LoaderModuleLookupRetryDelay,int ViewModelRefreshInterval) :base(Logger,-1)
+		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, IInlineColoringRuleDictionary InlineColoringRuleDictionary, int LoaderModuleLookupRetryDelay,int ViewModelRefreshInterval) :base(Logger,-1)
 		{
 			Stream stream;
 			IStringMatcher discardLineMatcher;
@@ -146,7 +146,7 @@ namespace LogInspect.ViewModels
 			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshInterval, eventListModule, FormatHandler.Columns);
 			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshInterval, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
-			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel,RegexBuilder);
+			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel,RegexBuilder,InlineColoringRuleDictionary);
 
 			Events = new FilteredEventsViewModel(Logger, ViewModelRefreshInterval, eventListModule,Columns,FormatHandler.EventColoringRules);
 			Markers = new MarkersViewModel(Logger, ViewModelRefreshInterval,  Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);

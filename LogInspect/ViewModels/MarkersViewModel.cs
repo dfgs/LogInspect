@@ -41,7 +41,7 @@ namespace LogInspect.ViewModels
 		}
 		protected override void OnRefresh()
 		{
-			int count;
+			int target;
 			EventViewModel item;
 			string severity;
 			MarkerViewModel range = null;
@@ -49,10 +49,10 @@ namespace LogInspect.ViewModels
 
 			lock (this)
 			{
-				count = events.Count;
+				target = events.Count;
 
 			
-				for (int t = position; t < count; t++)
+				for (int t = position; t < target; t++)
 				{
 					item = events[t];
 					brush = EventViewModel.GetBackground(coloringRules, item);
@@ -72,7 +72,7 @@ namespace LogInspect.ViewModels
 
 					range.Size++;
 				}
-				position = count;
+				position = target;
 			}
 		}
 

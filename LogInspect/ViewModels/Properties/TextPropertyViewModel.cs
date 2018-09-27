@@ -23,7 +23,6 @@ namespace LogInspect.ViewModels.Properties
 		public TextPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment, IInlineParser InlineParser, string Value) : base(Logger, Name,Alignment)
 		{
 			this.Value = Value;this.Inlines = InlineParser.Parse(Value);
-			int t = 0;
 		}
 	}
 }

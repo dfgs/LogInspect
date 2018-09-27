@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public interface IRegexBuilder
+	public interface IRegexBuilder:INameSpaceDictionary<Pattern>
 	{
 
 		void Add(string NameSpace,Pattern Pattern);
@@ -15,9 +15,6 @@ namespace LogInspectLib
 
 		string BuildRegexPattern(string DefaultNameSpace, string Pattern);
 		Regex Build(string DefaultNameSpace,string Pattern);
-
-		Pattern GetPattern(string FullName);
-		Pattern GetPattern(string NameSpace, string Name);
 
 
 	}

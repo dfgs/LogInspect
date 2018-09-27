@@ -11,23 +11,22 @@ namespace LogInspectLib.Parsers
 	{
 		private static Comparer<int> comparer=Comparer<int>.Default;
 
-		private List<Tuple<Pattern,Regex>> items;
+		private List<Tuple<InlineColoringRule,Regex>> items;
 		private IRegexBuilder regexBuilder;
 		
 		public InlineParser(IRegexBuilder RegexBuilder)
 		{
 			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
-			items = new List<Tuple< Pattern, Regex>>();
+			items = new List<Tuple< InlineColoringRule, Regex>>();
 			this.regexBuilder = RegexBuilder;
 		}
-		public void Add(string DefaultNameSpace,string PatternName)
+
+		public void Add(string NameSpace,InlineColoringRule InlineColoringRule)
 		{
-			Pattern pattern;
 			Regex regex;
 
-			pattern = regexBuilder.GetPattern(DefaultNameSpace, PatternName);
-			regex = regexBuilder.Build(DefaultNameSpace, "{"+PatternName+"}");
-			items.Add(new Tuple<Pattern, Regex>(pattern,regex));
+			regex = regexBuilder.Build(NameSpace, InlineColoringRule.Pattern);
+			items.Add(new Tuple<InlineColoringRule, Regex>(InlineColoringRule,regex));
 		}
 
 		public IEnumerable<Inline> Parse(string Value)
@@ -41,7 +40,7 @@ namespace LogInspectLib.Parsers
 			if (Value == null) yield break;
 
 			inlines = new List<Inline>();
-			foreach (Tuple<Pattern,Regex> item in items)
+			foreach (Tuple<InlineColoringRule,Regex> item in items)
 			{
 				match = item.Item2.Match(Value);
 				while (match.Success)

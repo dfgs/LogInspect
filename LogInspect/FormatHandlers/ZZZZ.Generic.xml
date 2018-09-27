@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Generic format handler" FileNamePattern=".*"
-               DefaultNameSpace="Generic" DefaultColumn="Message">
+               Name="Generic format handler" FileNamePattern="{WholeLine}"
+               NameSpace="Generic" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns />
   <DiscardLinePatterns />
@@ -13,7 +13,7 @@
   <Rules>
     <Rule Name="Generic rule" Discard="false">
       <Tokens>
-        <Token Pattern=".*" Name="Message" />
+        <Token Pattern="{WholeLine}" Name="Message" />
       </Tokens>
     </Rule>
   </Rules>

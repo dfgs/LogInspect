@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="LogInspect" FileNamePattern="^LogInspect.log$"
-               DefaultNameSpace="Generic" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns />
+               NameSpace="Generic" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
+  <AppendLineToPreviousPatterns>
+    <string>^[^\d]</string>
+  </AppendLineToPreviousPatterns>
   <AppendLineToNextPatterns />
   <DiscardLinePatterns />
   <Columns>

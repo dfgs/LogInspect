@@ -23,7 +23,7 @@ namespace LogInspect.ViewModels
 		private IEventListModule eventList;
 
 		private string[] columns;
-		private Dictionary<string, List<string>> items;
+		private PropertyCollection<List<string>> items;
 
 		public IEnumerable<string> this[string Column]
 		{
@@ -32,11 +32,11 @@ namespace LogInspect.ViewModels
 
 		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,IEventListModule EventList, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
 		{
-			items = new Dictionary<string, List<string>>();
+			items = new PropertyCollection<List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
 			foreach (string column in columns)
 			{
-				items.Add(column, new List<string>());
+				items[column]= new List<string>();
 			}
 
 			this.eventList = EventList;
@@ -48,10 +48,11 @@ namespace LogInspect.ViewModels
 		{
 			List<string> values;
 			string value;
-			int count;
+			int target;
 
-			count = eventList.Count;
-			for (int t = position ; t < count; t++)
+			if (eventList.Count - position > 100) target = position + 100;      // smooth list loading
+			else target = eventList.Count;
+			for (int t = position ; t < target; t++)
 			{
 				foreach (string property in columns)
 				{
@@ -64,7 +65,7 @@ namespace LogInspect.ViewModels
 					}
 				}
 			}
-			position = count;
+			position = target;
 
 		}//*/
 

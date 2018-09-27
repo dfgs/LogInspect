@@ -55,6 +55,7 @@
     <Compile Include="Mocks\MockedLineReaderWithAppend.cs" />
     <Compile Include="Mocks\MockedLineReader.cs" />
     <Compile Include="Mocks\Utils.cs" />
+    <Compile Include="NameSpaceDictionaryUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogParserUnitTest.cs" />
     <Compile Include="RegexBuilderUnitTest.cs" />

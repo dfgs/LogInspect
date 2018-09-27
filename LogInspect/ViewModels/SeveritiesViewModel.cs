@@ -25,6 +25,7 @@ namespace LogInspect.ViewModels
 		{
 			
 			int count;
+			if (items == null) return;
 
 			count = items.Count();
 

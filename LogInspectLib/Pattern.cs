@@ -24,7 +24,7 @@ namespace LogInspectLib
 			set;
 		}
 
-		[XmlAttribute]
+		/*[XmlAttribute]
 		public string Foreground
 		{
 			get;
@@ -50,7 +50,7 @@ namespace LogInspectLib
 		{
 			get;
 			set;
-		}
+		}*/
 
 		public Pattern()
 		{

@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Nice.NTR.Alcatel-Lucent" FileNamePattern="^Alcatel-Lucent-\d+-{Date}(_{Number}hr)?\.log$"
-               DefaultNameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
+               NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
+    <string>^[^\[]</string>
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
     <string>{EmptyLine}</string>
@@ -19,13 +20,12 @@
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineColoringRules>
-        <InlineColoringRule Pattern="(\[|')DR_S{Number}_B{Number}_TS{Number}(\]|')" Foreground="BlueViolet" Underline="false" Bold="false" Italic="true" />
-        <InlineColoringRule Pattern="{Const}" Foreground="Brown" Underline="false" Bold="true" Italic="false" />
-        <InlineColoringRule Pattern="\[{Number}\]" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="(T|t)arget:? *{Number}" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="(D|d)evice:? *{Number}" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="CallState: \w+" Foreground="Chocolate" Underline="false" Bold="false" Italic="false" />
-        <InlineColoringRule Pattern="\[SUCCESS\]" Foreground="Green" Underline="false" Bold="true" Italic="false" />
+        <string>Nice.NTR.CVSKey</string>
+        <string>Nice.NTR.DRLinkTimeSlot</string>
+        <string>Nice.NTR.Target</string>
+        <string>Nice.NTR.Device</string>
+        <string>Nice.NTR.CallState</string>
+        <string>Const</string>
       </InlineColoringRules>
     </Column>
   </Columns>
@@ -33,21 +33,20 @@
     <Rule Name="NTR Event" Discard="false">
       <Tokens>
         <Token Pattern="{Date} {Time}" Name="Date" />
-        <Token Pattern=" " />
+        <Token Pattern="{Spaces}" />
         <Token Pattern="{Severity}" Name="Severity" />
-        <Token Pattern=" +" />
-        <Token Pattern="\[" />
+        <Token Pattern=" +\[" />
         <Token Pattern="[^\]]+" Name="Event" />
-        <Token Pattern="\] " />
+        <Token Pattern="\] +" />
         <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>
     <Rule Name="CSTA Event" Discard="false">
       <Tokens>
         <Token Pattern="{Date} {Time}" Name="Date" />
-        <Token Pattern=" " />
+        <Token Pattern="{Spaces}" />
         <Token Pattern="{Severity}" Name="Severity" />
-        <Token Pattern=" +" />
+        <Token Pattern="{Spaces}" />
         <Token Pattern="CSTA EVENT" Name="Event" />
         <Token Pattern=" *- *" />
         <Token Pattern=".*" />
@@ -57,9 +56,9 @@
     <Rule Name="NTR Message" Discard="false">
       <Tokens>
         <Token Pattern="{Date} {Time}" Name="Date" />
-        <Token Pattern=" " />
+        <Token Pattern="{Spaces}" />
         <Token Pattern="{Severity}" Name="Severity" />
-        <Token Pattern=" +" />
+        <Token Pattern="{Spaces}" />
         <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>

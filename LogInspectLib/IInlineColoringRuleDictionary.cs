@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLib.Parsers
+namespace LogInspectLib
 {
-	public interface IInlineParser:IParser
+	public interface IInlineColoringRuleDictionary:INameSpaceDictionary<InlineColoringRule>
 	{
-		IEnumerable<Inline> Parse(string Value);
 		void Add(string NameSpace, InlineColoringRule InlineColoringRule);
+		void Add(string NameSpace, IEnumerable<InlineColoringRule> InlineColoringRules);
+
 
 	}
 }

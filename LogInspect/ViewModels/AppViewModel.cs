@@ -17,6 +17,7 @@ namespace LogInspect.ViewModels
 	{
 		private List<FormatHandler> formatHandlers;
 		private IRegexBuilder regexBuilder;
+		private IInlineColoringRuleDictionary inlineColoringRuleDictionary;
 
 		public ObservableCollection<LogFileViewModel> LogFiles
 		{
@@ -33,13 +34,16 @@ namespace LogInspect.ViewModels
 		private int loaderModuleLookupRetryDelay;
 		private int viewModelRefreshInterval;
 
-		public AppViewModel(ILogger Logger,string FormatHandlersPath,string PatternLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval) : base(Logger,-1)
+		public AppViewModel(ILogger Logger,string FormatHandlersPath, string PatternLibsPath, string InlineColoringLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval) : base(Logger,-1)
 		{
 			this.loaderModuleLookupRetryDelay = LoaderModuleLookupRetryDelay;
 			this.viewModelRefreshInterval = ViewModelRefreshInterval;
 
 			this.regexBuilder = new RegexBuilder();
 			LoadPatternLibs(PatternLibsPath);
+
+			this.inlineColoringRuleDictionary = new InlineColoringRuleDictionary();
+			LoadInlineColoringRuleLibs(InlineColoringLibsPath);
 
 			LogFiles = new ObservableCollection<LogFileViewModel>();
 			formatHandlers = new List<FormatHandler>();
@@ -63,7 +67,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,loaderModuleLookupRetryDelay,viewModelRefreshInterval);
+				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,inlineColoringRuleDictionary, loaderModuleLookupRetryDelay,viewModelRefreshInterval);
 			}
 			catch(Exception ex)
 			{
@@ -103,6 +107,35 @@ namespace LogInspect.ViewModels
 						continue;
 					}
 					regexBuilder.Add(lib.NameSpace,lib.Items);
+				}
+			}
+			catch (Exception ex)
+			{
+				Log(ex);
+			}
+		}
+
+		public void LoadInlineColoringRuleLibs(string Path)
+		{
+			InlineColoringRuleLib lib;
+
+			Log(LogLevels.Information, "Parsing inline coloring rule libs directory...");
+			try
+			{
+				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((item) => item))
+				{
+					Log(LogLevels.Information, $"Loading file {FileName}");
+					try
+					{
+						lib = InlineColoringRuleLib.LoadFromFile(FileName);
+					}
+					catch (Exception ex)
+					{
+						Log(ex);
+						continue;
+					}
+					inlineColoringRuleDictionary.Add(lib.NameSpace, lib.Items);
+					//regexBuilder.Add(lib.NameSpace, lib.Items);
 				}
 			}
 			catch (Exception ex)
@@ -162,7 +195,7 @@ namespace LogInspect.ViewModels
 
 			shortName = Path.GetFileName(FileName);
 			Log(LogLevels.Information, $"Try to find a format handler for file {shortName}");
-			formatHandler = formatHandlers.FirstOrDefault(item => MatchFileName(shortName,item.FileNamePattern,item.DefaultNameSpace) );
+			formatHandler = formatHandlers.FirstOrDefault(item => MatchFileName(shortName,item.FileNamePattern,item.NameSpace) );
 			if (formatHandler == null)
 			{
 				Log(LogLevels.Warning, $"Format of log file {shortName} is unmanaged");

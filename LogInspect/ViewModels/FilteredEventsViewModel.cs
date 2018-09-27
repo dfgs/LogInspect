@@ -42,7 +42,7 @@ namespace LogInspect.ViewModels
 
 		protected override void OnRefresh()
 		{
-			int count;
+			int target;
 			int index;
 			EventViewModel vm;
 
@@ -50,9 +50,10 @@ namespace LogInspect.ViewModels
 			{
 				index = this.Count;
 				List<EventViewModel> list = new List<EventViewModel>();
-				count = eventList.Count;
+				if (eventList.Count-position > 100) target = position+100;		// smooth list loading
+				else target = eventList.Count;
 
-				for (int t = position; t < count; t++)
+				for (int t = position; t < target; t++)
 				{
 					vm = new EventViewModel(Logger,columns,eventColoringRules,  eventList[t]);
 					vm.EventIndex = index; ;
@@ -60,7 +61,7 @@ namespace LogInspect.ViewModels
 					list.Add(vm);
 					index++;
 				}
-				position = count;
+				position = target;
 				AddRange(list);
 				if (Tail) Select(Count - 1);
 

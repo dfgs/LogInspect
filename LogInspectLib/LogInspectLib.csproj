@@ -41,7 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseComponent.cs" />
+    <Compile Include="INameSpaceDictionary.cs" />
     <Compile Include="Inline.cs" />
+    <Compile Include="IInlineColoringRuleDictionary.cs" />
+    <Compile Include="InlineColoringRuleDictionary.cs" />
     <Compile Include="IRegexBuilder.cs" />
     <Compile Include="IStringMatcher.cs" />
     <Compile Include="Parsers\IInlineParser.cs" />
@@ -49,7 +52,9 @@
     <Compile Include="Parsers\ILogParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\List.cs" />
+    <Compile Include="InlineColoringRule.cs" />
     <Compile Include="Pattern.cs" />
+    <Compile Include="InlineColoringRuleLib.cs" />
     <Compile Include="PatternLib.cs" />
     <Compile Include="PropertyCollection.cs" />
     <Compile Include="Event.cs" />
@@ -64,6 +69,7 @@
     <Compile Include="Readers\LogReader.cs" />
     <Compile Include="Readers\LineReader.cs" />
     <Compile Include="Readers\Reader.cs" />
+    <Compile Include="NameSpaceDictionary.cs" />
     <Compile Include="RegexBuilder.cs" />
     <Compile Include="StringMatcher.cs" />
     <Compile Include="Rule.cs" />
@@ -84,6 +90,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PatternLibs\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InlineColoringRuleLibs\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

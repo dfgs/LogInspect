@@ -138,7 +138,6 @@ namespace LogInspectLibTest
 			rb.Add("NA", new Pattern() { Name = "B", Value = "c" });
 			regex = rb.BuildRegexPattern("NS", "{A}");
 			Assert.AreEqual("abc", regex);
-			rb.ClearCache();
 			regex = rb.BuildRegexPattern("NA", "{NS.A}");
 			Assert.AreEqual("acc", regex);
 		}

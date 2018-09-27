@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <PatternLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
   <Items>
-    <Pattern Name="Severity" Value="[A-Z]+" />
-    <Pattern Name="CVSKey" Value="CVSKEY={Number}" Foreground="Red"/>
+    <Pattern Name="Severity" Value="{Word}"/>
+    <Pattern Name="CVSKey" Value="CVSKEY={Number}"/>
   </Items>
 </PatternLib>

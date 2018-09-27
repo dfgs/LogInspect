@@ -20,6 +20,7 @@ namespace LogInspectLib
 		{
 			get
 			{
+				if (Name == null) return default(T);
 				T result;
 				items.TryGetValue(Name, out result);
 				return result;

@@ -72,12 +72,10 @@ namespace LogInspect.ViewModels
 		}
 
 
-		//TODO Add property to event
-		public static readonly DependencyProperty IsBookMarkedProperty = DependencyProperty.Register("IsBookMarked", typeof(bool), typeof(EventViewModel));
 		public bool IsBookMarked
 		{
-			get { return (bool)GetValue(IsBookMarkedProperty); }
-			set { SetValue(IsBookMarkedProperty, value); }
+			get { return this.ev.IsBookMarked; }
+			set { this.ev.IsBookMarked=value;OnPropertyChanged(); }
 		}
 
 

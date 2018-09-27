@@ -18,10 +18,10 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel,IRegexBuilder RegexBuilder) : base(Logger,-1)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger,-1)
 		{
 			IInlineParser inlineParser;
-
+			InlineColoringRule inlineColoringRule;
 
 			items = new List<ColumnViewModel>();
 
@@ -31,15 +31,25 @@ namespace LogInspect.ViewModels.Columns
 			foreach (Column column in FormatHandler.Columns)
 			{
 				inlineParser = new InlineParser(RegexBuilder);
-				foreach(string patternName in column.InlinePatternNames)
+				foreach(string ruleName in column.InlineColoringRules)
 				{
 					try
 					{
-						inlineParser.Add(FormatHandler.DefaultNameSpace, patternName);
+						inlineColoringRule = InlineColoringRuleDictionary.GetItem(FormatHandler.NameSpace, ruleName);
 					}
 					catch(Exception ex)
 					{
 						Log(LogLevels.Warning, ex.Message);
+						continue;
+					}
+					try
+					{
+						inlineParser.Add(FormatHandler.NameSpace, inlineColoringRule);
+					}
+					catch(Exception ex)
+					{
+						Log(LogLevels.Warning, ex.Message);
+						continue;
 					}
 				}
 

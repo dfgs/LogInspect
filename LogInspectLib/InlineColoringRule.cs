@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +8,8 @@ using System.Xml.Serialization;
 namespace LogInspectLib
 {
 	[Serializable]
-	public class Column
+	public class InlineColoringRule	
 	{
-		
 		[XmlAttribute]
 		public string Name
 		{
@@ -20,52 +18,46 @@ namespace LogInspectLib
 		}
 
 		[XmlAttribute]
-		public string Type
+		public string Pattern
 		{
 			get;
 			set;
 		}
 
 		[XmlAttribute]
-		public string Format
+		public string Foreground
 		{
 			get;
 			set;
 		}
 
 		[XmlAttribute]
-		public double Width
-		{
-			get;
-			set;
-		}
-		[XmlAttribute]
-		public string Alignment
+		public bool Italic
 		{
 			get;
 			set;
 		}
 
 		[XmlAttribute]
-		public bool IsFilterItemSource
+		public bool Bold
 		{
 			get;
 			set;
 		}
 
-		[XmlArray]
-		public List<string> InlineColoringRules
+		[XmlAttribute]
+		public bool Underline
 		{
 			get;
 			set;
 		}
 
-		public Column()
+		public InlineColoringRule()
 		{
-			InlineColoringRules = new List<string>();
-		}
 
+		}
 		
-
 	}
+
+
 }

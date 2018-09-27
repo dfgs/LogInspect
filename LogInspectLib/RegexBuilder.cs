@@ -7,63 +7,28 @@ using System.Threading.Tasks;
 
 namespace LogInspectLib
 {
-	public class RegexBuilder:IRegexBuilder
+	public class RegexBuilder:NameSpaceDictionary<Pattern>, IRegexBuilder
 	{
-		private static Regex patternExtract=new Regex(@"{(?<NameSpacePattern>\w+(\.\w+)+)}|{(?<Pattern>\w+)}|(?<Regex>.[^{]*)");
-
-		private Dictionary<string, Pattern> patterns;
-		private Dictionary<string, Pattern> fullNamedPatterns;
-		public Dictionary<string, string> cache;
-
+		private static Regex patternExtract=new Regex(@"{(?<Pattern>[\w\.]+)}|(?<Regex>.[^{]*)");
 
 		public RegexBuilder()
 		{
-			fullNamedPatterns = new Dictionary<string, Pattern>();
-			patterns = new Dictionary<string, Pattern>();
-			cache = new Dictionary<string, string>();
 		}
 
-		private string GetFullPatterName(string NameSpace,string PatternName)
+
+		public void Add(string NameSpace, Pattern Pattern)
 		{
-			return $"{NameSpace}.{PatternName}";
+			Add(NameSpace, Pattern.Name, Pattern);
 		}
-
-		public void Add(string NameSpace,Pattern Pattern)
-		{
-			string fullName;
-
-			fullName = GetFullPatterName(NameSpace, Pattern.Name);
-			cache.Clear();
-			if (fullNamedPatterns.ContainsKey(fullName)) fullNamedPatterns.Remove(fullName);
-			fullNamedPatterns.Add(fullName, Pattern);
-			if (patterns.ContainsKey(Pattern.Name)) patterns.Remove(Pattern.Name);
-			patterns.Add(Pattern.Name, Pattern);
-		}
-
 		public void Add(string NameSpace, IEnumerable<Pattern> Patterns)
 		{
 			foreach (Pattern item in Patterns)
 			{
-				Add(NameSpace,item);
+				Add(NameSpace, item.Name, item);
 			}
 		}
 
-		public Pattern GetPattern(string FullName)
-		{
-			Pattern subPattern;
-
-			if (!fullNamedPatterns.TryGetValue(FullName, out subPattern)) throw new KeyNotFoundException($"Pattern {FullName} doesn't exist in regex builder");
-			return subPattern;
-		}
-		public Pattern GetPattern(string NameSpace,string Name)
-		{
-			string fullName;
-			Pattern subPattern;
-
-			fullName = GetFullPatterName(NameSpace, Name);
-			if ((!fullNamedPatterns.TryGetValue(fullName, out subPattern)) && (!fullNamedPatterns.TryGetValue(Name, out subPattern)) && (!patterns.TryGetValue(Name, out subPattern))) throw new KeyNotFoundException($"Pattern {Name} doesn't exist in regex builder");
-			return subPattern;
-		}
+	
 
 		public string BuildRegexPattern(string DefaultNameSpace,string Pattern)
 		{
@@ -71,7 +36,6 @@ namespace LogInspectLib
 			StringBuilder sb;
 			Group group;
 			string regex;
-			string fullName;
 			Pattern subPattern;
 
 			sb = new StringBuilder();
@@ -85,29 +49,13 @@ namespace LogInspectLib
 					sb.Append(regex);
 					continue;
 				}
-				group = match.Groups["NameSpacePattern"];
-				if (!string.IsNullOrEmpty(group.Value))
-				{
-					fullName = group.Value;
-					if (!cache.TryGetValue(fullName, out regex))
-					{
-						subPattern = GetPattern(fullName);
-						regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
-						cache.Add(fullName, regex);
-					}
-					sb.Append(regex);
-					continue;
-				}
+
 				group = match.Groups["Pattern"];
 				if (!string.IsNullOrEmpty(group.Value))
 				{
-					fullName = GetFullPatterName(DefaultNameSpace, group.Value);
-					if (!cache.TryGetValue(fullName, out regex))
-					{
-						subPattern = GetPattern(DefaultNameSpace,group.Value);
-						regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
-						cache.Add(fullName, regex);
-					}
+					subPattern = GetItem(DefaultNameSpace,group.Value);
+					regex = BuildRegexPattern(DefaultNameSpace, subPattern.Value);
+					
 					sb.Append(regex);
 					continue;
 				}
@@ -120,9 +68,7 @@ namespace LogInspectLib
 			return new Regex(BuildRegexPattern(DefaultNameSpace, Pattern),RegexOptions.Compiled, TimeSpan.FromSeconds(2));
 		}
 
-		public void ClearCache()
-		{
-			cache.Clear();
-		}
+		
+
 	}
 }

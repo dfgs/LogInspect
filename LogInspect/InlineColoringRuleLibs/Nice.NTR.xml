@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<InlineColoringRuleLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
+  <Items>
+    <InlineColoringRule Name="CVSKey" Pattern="CVSKEY={Number}" Foreground="Red"/>
+    <InlineColoringRule Name="DRLinkTimeSlot" Pattern="DR_S{Number}_B{Number}_TS{Number}" Foreground="BlueViolet" Underline="false" Bold="false" Italic="true" />
+    <InlineColoringRule Name="Target" Pattern="(T|t)arget:? *{Number}" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="Device" Pattern="(D|d)evice:? *{Number}" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="CallState" Pattern="CallState: \w+" Foreground="Chocolate" Underline="false" Bold="false" Italic="false" />
+  </Items>
+</InlineColoringRuleLib>

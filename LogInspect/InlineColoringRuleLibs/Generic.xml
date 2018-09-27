@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<InlineColoringRuleLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
+  <Items>
+    <InlineColoringRule Name="Const" Pattern="{Const}" Foreground="Brown" Bold="true"  />
+  </Items>
+</InlineColoringRuleLib>
