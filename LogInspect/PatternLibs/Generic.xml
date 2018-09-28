@@ -7,7 +7,7 @@
     <Pattern Name="WholeLine" Value="^.*$" />
     <Pattern Name="Spaces" Value=" +" />
     <Pattern Name="Date" Value="\d\d\d\d-\d\d-\d\d" />
-    <Pattern Name="Time" Value="\d\d:\d\d:\d\d\.\d+"  />
+    <Pattern Name="Time" Value="\d\d?:\d\d:\d\d(\.\d+)?( (A|P)?M)?"  />
     <Pattern Name="Number" Value="\d+" />
     <Pattern Name="RestOfTheLine" Value=".*$" />
     <Pattern Name="Word" Value="\w+" />
