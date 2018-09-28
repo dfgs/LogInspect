@@ -25,6 +25,8 @@ namespace LogInspect.ViewModels
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> eventColoringRules;
 
+		private int chunkSize;
+
 		public static readonly DependencyProperty TailProperty = DependencyProperty.Register("Tail", typeof(bool), typeof(FilteredEventsViewModel));
 		public bool Tail
 		{
@@ -34,9 +36,10 @@ namespace LogInspect.ViewModels
 
 		private Filter[] filters;
 
-		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, IEventListModule EventList, IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules) : base(Logger, RefreshInterval)
+		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, IEventListModule EventList, IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules, int ChunkSize) : base(Logger, RefreshInterval)
 		{
 			this.eventList = EventList;
+			this.chunkSize = ChunkSize;
 			this.columns = Columns;this.eventColoringRules = EventColoringRules;
 		}
 
@@ -50,7 +53,7 @@ namespace LogInspect.ViewModels
 			{
 				index = this.Count;
 				List<EventViewModel> list = new List<EventViewModel>();
-				if (eventList.Count-position > 100) target = position+100;		// smooth list loading
+				if (eventList.Count-position > chunkSize) target = position+ chunkSize;		// smooth list loading
 				else target = eventList.Count;
 
 				for (int t = position; t < target; t++)

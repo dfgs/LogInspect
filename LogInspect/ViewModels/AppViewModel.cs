@@ -33,11 +33,15 @@ namespace LogInspect.ViewModels
 
 		private int loaderModuleLookupRetryDelay;
 		private int viewModelRefreshInterval;
+		private int eventsViewModelRefreshInterval;
+		private int maxEventsViewModelChunkSize;
 
-		public AppViewModel(ILogger Logger,string FormatHandlersPath, string PatternLibsPath, string InlineColoringLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval) : base(Logger,-1)
+		public AppViewModel(ILogger Logger,string FormatHandlersPath, string PatternLibsPath, string InlineColoringLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval,int EventsViewModelRefreshInterval,int MaxEventsViewModelChunkSize) : base(Logger,-1)
 		{
 			this.loaderModuleLookupRetryDelay = LoaderModuleLookupRetryDelay;
 			this.viewModelRefreshInterval = ViewModelRefreshInterval;
+			this.eventsViewModelRefreshInterval = EventsViewModelRefreshInterval;
+			this.maxEventsViewModelChunkSize = MaxEventsViewModelChunkSize;
 
 			this.regexBuilder = new RegexBuilder();
 			LoadPatternLibs(PatternLibsPath);
@@ -67,7 +71,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,inlineColoringRuleDictionary, loaderModuleLookupRetryDelay,viewModelRefreshInterval);
+				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,inlineColoringRuleDictionary, loaderModuleLookupRetryDelay,viewModelRefreshInterval,eventsViewModelRefreshInterval,maxEventsViewModelChunkSize);
 			}
 			catch(Exception ex)
 			{

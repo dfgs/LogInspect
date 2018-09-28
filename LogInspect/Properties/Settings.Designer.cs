@@ -67,5 +67,26 @@ namespace LogInspect.Properties {
                 return ((string)(this["InlineColoringRuleLibsFolder"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int EventsViewModelRefreshInterval {
+            get {
+                return ((int)(this["EventsViewModelRefreshInterval"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int MaxEventsViewModelChunkSize {
+            get {
+                return ((int)(this["MaxEventsViewModelChunkSize"]));
+            }
+            set {
+                this["MaxEventsViewModelChunkSize"] = value;
+            }
+        }
     }
 }

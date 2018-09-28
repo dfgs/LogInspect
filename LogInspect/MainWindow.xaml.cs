@@ -36,7 +36,7 @@ namespace LogInspect
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
 			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.PatternLibsFolder, Properties.Settings.Default.InlineColoringRuleLibsFolder,
-				 Properties.Settings.Default.LoaderModuleLookupRetryDelay,  Properties.Settings.Default.ViewModelRefreshInterval);
+				 Properties.Settings.Default.LoaderModuleLookupRetryDelay,  Properties.Settings.Default.ViewModelRefreshInterval, Properties.Settings.Default.EventsViewModelRefreshInterval, Properties.Settings.Default.MaxEventsViewModelChunkSize);
 
 			InitializeComponent();
 			DataContext = appViewModel;
