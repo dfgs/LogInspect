@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.NTR.ControllerService" FileNamePattern="^ControlerService-{Date}(_{Number}hr)?\.log$"
+               Name="Nice.NTR.PrtVoIP" FileNamePattern="^PrtVoIP{Number}_{Number}.txt$"
                NameSpace="Nice.NTR" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns>
-    <string>^[^\d]</string>
   </AppendLineToPreviousPatterns>
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>
-    <Column Name="Date" Type="DateTime" Format="h:mm:ss tt" Width="200" Alignment="Center" IsFilterItemSource="false">
+    <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd  HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
       <InlineColoringRules />
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
@@ -23,8 +22,9 @@
   <Rules>
     <Rule Name="Event" Discard="false">
       <Tokens>
-        <Token Pattern="{Time}" Name="Date" />
-        <Token Pattern=":{Spaces}" />
+        <Token Pattern="^{Number}\>" />
+        <Token Pattern="{Date}{Spaces}{Time}" Name="Date" />
+        <Token Pattern="{Spaces}:{Spaces}" />
         <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>

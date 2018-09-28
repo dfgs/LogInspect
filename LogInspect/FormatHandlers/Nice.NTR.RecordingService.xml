@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               Name="Nice.NTR.RecordingService" FileNamePattern="^RecordingService-{Date}(_{Number}hr)?\.log$"
+               NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
+  <AppendLineToPreviousPatterns>
+    <string>^[^\d]</string>
+  </AppendLineToPreviousPatterns>
+  <AppendLineToNextPatterns />
+  <DiscardLinePatterns>
+    <string>{EmptyLine}</string>
+  </DiscardLinePatterns>
+  <Columns>
+    <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Channel" Width="100" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Message" Width="600" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+  </Columns>
+  <Rules>
+    <Rule Name="Event with one channel" Discard="false">
+      <Tokens>
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern="{Spaces}" />
+        <Token Pattern="{Severity}" Name="Severity" />
+        <Token Pattern="{Spaces}\[" />
+        <Token Pattern="{Number}" Name="Channel" />
+        <Token Pattern="\] *" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Event with two channels" Discard="false">
+      <Tokens>
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern="{Spaces}" />
+        <Token Pattern="{Severity}" Name="Severity" />
+        <Token Pattern="{Spaces}\[\{ *" />
+        <Token Pattern="{Number}" Name="Channel" />
+        <Token Pattern=", *{Number}"/>
+        <Token Pattern="\}\] *" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Event with malformed channels" Discard="false">
+      <Tokens>
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern="{Spaces}" />
+        <Token Pattern="{Severity}" Name="Severity" />
+        <Token Pattern="{Spaces}\[\{ *" />
+        <Token Pattern="{Number}" Name="Channel" />
+        <Token Pattern=", *{Number}" />
+        <Token Pattern="\} *" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Event without thread" Discard="false">
+      <Tokens>
+        <Token Pattern="{Date} {Time}" Name="Date" />
+        <Token Pattern="{Spaces}" />
+        <Token Pattern="{Severity}" Name="Severity" />
+        <Token Pattern="{Spaces}" />
+        <Token Pattern="{RestOfTheLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Default" Discard="false">
+      <Tokens>
+        <Token Pattern="{WholeLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+  </Rules>
+  <EventColoringRules>
+    <EventColoringRule Column="Severity" Pattern="ERROR" Background="OrangeRed" />
+    <EventColoringRule Column="Severity" Pattern="WARN" Background="Orange" />
+  </EventColoringRules>
+</FormatHandler>

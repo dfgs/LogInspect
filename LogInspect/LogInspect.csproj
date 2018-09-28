@@ -502,9 +502,30 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="FormatHandlers\Nice.NTR.ControllerService - Copier.xml">
+    <None Include="FormatHandlers\Nice.NTR.NRLogfileManager.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.DatabaseInterfaceServer.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.ModularLicensing.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.PrtVoIP.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.RecordingService.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,7 +16,7 @@ namespace LogInspectLib.Readers
 
 		public override bool CanRead
 		{
-			get { return lineReader.CanRead; }
+			get { return (line!=null) || (lineReader.CanRead); }
 		}
 
 		public LogReader(ILineReader LineReader, IStringMatcher AppendLineToPreviousMatcher, IStringMatcher AppendLineToNextMatcher)
