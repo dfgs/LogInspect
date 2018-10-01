@@ -365,7 +365,7 @@
     <None Include="FormatHandlers\Nice.NIM.RCM.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="FormatHandlers\Nice.NTR.Archiving.xml">
+    <None Include="FormatHandlers\Nice.NTR.MonitorTool.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -524,6 +524,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FormatHandlers\Nice.NTR.RecordingService.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.ControllerService.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.Archiving.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.FPSLink.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.w3wp.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NTR.Web.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

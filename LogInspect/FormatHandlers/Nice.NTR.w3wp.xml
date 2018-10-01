@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.NTR.ConnectivityMediaDeliveryService" FileNamePattern="^Connectivity\.MediaDelivery\.Service-{Date}(\.{Number})?\.log$" 
+               Name="Nice.NTR.w3wp" FileNamePattern="^w3wp-{Date}(_{Number}hr)?\.log$"  
                NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns>
-    <string>^[^\d]</string>
+    <string>^[^\[]</string>
   </AppendLineToPreviousPatterns>
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
     <string>{EmptyLine}</string>
-    <string>{Comment}</string>
   </DiscardLinePatterns>
   <Columns>
     <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
@@ -25,22 +24,13 @@
     </Column>
   </Columns>
   <Rules>
-    <Rule Name="Event with noise" Discard="false">
-      <Tokens>
-        <Token Pattern="{Date} {Time}" Name="Date" />
-        <Token Pattern=" *\| *" />
-        <Token Pattern="{Severity}" Name="Severity" />
-        <Token Pattern=" *\| *" />
-        <Token Pattern="([^\|]+ *\| *)([^\|]+ *\| *)([^\|]+ *\| *)([^\|]+ *\| *)" />
-        <Token Pattern="{RestOfTheLine}" Name="Message" />
-      </Tokens>
-    </Rule>
     <Rule Name="Event" Discard="false">
       <Tokens>
+        <Token Pattern="^\[" />
         <Token Pattern="{Date} {Time}" Name="Date" />
-        <Token Pattern=" *\| *" />
+        <Token Pattern="{Spaces}" />
         <Token Pattern="{Severity}" Name="Severity" />
-        <Token Pattern=" *\| *" />
+        <Token Pattern=" *\] " />
         <Token Pattern="{RestOfTheLine}" Name="Message" />
       </Tokens>
     </Rule>
