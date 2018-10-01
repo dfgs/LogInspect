@@ -32,24 +32,26 @@
 			<Grid ToolTip="{Binding Value}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" SharedSizeGroup="Header"/>
-					<ColumnDefinition Width="Auto" SharedSizeGroup="Content"/>
+					<ColumnDefinition Width="*" SharedSizeGroup="Content"/>
 				</Grid.ColumnDefinitions>
 				<StackPanel Grid.Column="0" Orientation="Horizontal" >
 					<Image Source="/LogInspect;component/Images/Bullet_blue.png" Stretch="None" />
 					<TextBlock FontWeight="Bold" Text="{Binding Name}"/>
 					<TextBlock FontWeight="Bold" Text=": "/>
 				</StackPanel>
-				<ContentPresenter Grid.Column="1" Content="{Binding}"/>
+				<TextBox Grid.Column="1" BorderThickness="0"  Text="{Binding Value,Mode=OneWay}"/>
 			</Grid>
 		</DataTemplate>
 	</UserControl.Resources>
 
-	<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-		<ItemsControl.ItemsPanel>
-			<ItemsPanelTemplate>
-				<StackPanel />
-			</ItemsPanelTemplate>
-		</ItemsControl.ItemsPanel>
-	</ItemsControl>
+	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+		<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True" >
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+		</ItemsControl>
+	</ScrollViewer>
 
 </UserControl>
