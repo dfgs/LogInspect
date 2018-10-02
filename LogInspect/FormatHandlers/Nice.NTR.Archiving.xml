@@ -20,6 +20,11 @@
       <InlineColoringRules>
         <string>Const</string>
         <string>Nice.NTR.CVSKey</string>
+        <string>UNCPath</string>
+        <string>LocationStateOK</string>
+        <string>LocationStateNOK</string>
+        <string>MediumStateOK</string>
+        <string>MediumStateNOK</string>
       </InlineColoringRules>
     </Column>
   </Columns>

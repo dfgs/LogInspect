@@ -45,7 +45,7 @@ namespace LogInspectLib.Parsers
 
 				foreach(string column in columns)
 				{
-					ev[column] = match.Groups[column].Value;
+					ev[column] = match.Groups[column].Value.Trim();
 				}
 
 				return ev;

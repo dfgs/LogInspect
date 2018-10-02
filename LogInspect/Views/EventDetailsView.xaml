@@ -9,23 +9,23 @@
              d:DesignHeight="450" d:DesignWidth="800" >
 	<UserControl.Resources>
 		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-			<TextBlock Text="{Binding Value.IsBookMarked}"/>
+			<TextBox BorderThickness="0" Text="{Binding Value.IsBookMarked,Mode=OneWay}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
-			<TextBlock Text="{Binding Value}"/>
+			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
-			<TextBlock Text="{Binding Value}"/>
+			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
-			<TextBlock Text="{Binding Value}"/>
+			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-			<TextBlock views:Inlines.InlineSource="{Binding Inlines}" />
+			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}" />
 		</DataTemplate>
 		
 		<DataTemplate x:Key="propertyTemplate">
@@ -39,7 +39,7 @@
 					<TextBlock FontWeight="Bold" Text="{Binding Name}"/>
 					<TextBlock FontWeight="Bold" Text=": "/>
 				</StackPanel>
-				<TextBox Grid.Column="1" BorderThickness="0"  Text="{Binding Value,Mode=OneWay}"/>
+				<ContentPresenter Grid.Column="1" Content="{Binding}"/>
 			</Grid>
 		</DataTemplate>
 	</UserControl.Resources>

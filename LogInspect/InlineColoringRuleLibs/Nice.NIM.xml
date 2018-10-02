@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<InlineColoringRuleLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NIM">
+  <Items>
+    <InlineColoringRule Name="Logger" Pattern="L(og)?ge?r(=| )\d+" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="Interaction" Pattern="[iI]nteractionID(=| )\d+" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="Channel" Pattern="Ch=\d+" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="Device" Pattern="D(N|EV)=&quot;\d+&quot; " Foreground="Goldenrod" Underline="false" Bold="false" Italic="true" />
+    <InlineColoringRule Name="Agent" Pattern="(agent|user)ID=\d*" Foreground="Goldenrod" Underline="false" Bold="false" Italic="true" />
+  </Items>
+</InlineColoringRuleLib>

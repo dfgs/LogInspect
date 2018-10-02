@@ -77,6 +77,7 @@ namespace LogInspectLibTest
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
 		}
+
 		
 		[TestMethod]
 		public void ShouldFailIfCannotAppendToNext()

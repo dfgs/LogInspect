@@ -25,6 +25,7 @@
         <string>Nice.NTR.Target</string>
         <string>Nice.NTR.Device</string>
         <string>Nice.NTR.CallState</string>
+        <string>Nice.NTR.CallID</string>
         <string>Const</string>
       </InlineColoringRules>
     </Column>

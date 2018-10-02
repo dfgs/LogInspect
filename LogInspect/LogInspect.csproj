@@ -364,6 +364,7 @@
   <ItemGroup>
     <None Include="FormatHandlers\Nice.NIM.RCM.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="FormatHandlers\Nice.NTR.MonitorTool.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -385,6 +386,7 @@
   <ItemGroup>
     <None Include="FormatHandlers\Nice.NIM.ConnectionManager.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -549,6 +551,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FormatHandlers\Nice.NTR.Web.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InlineColoringRuleLibs\Nice.NIM.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PatternLibs\Nice.NIM.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
