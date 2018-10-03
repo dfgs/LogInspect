@@ -20,12 +20,18 @@
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineColoringRules>
-        <string>Nice.NTR.CVSKey</string>
         <string>Nice.NTR.DRLinkTimeSlot</string>
         <string>Nice.NTR.Target</string>
+        <string>Nice.NTR.TargetID</string>
+        <string>Nice.NTR.TargetID2</string>
         <string>Nice.NTR.Device</string>
+        <string>Nice.NTR.DeviceID</string>
+        <string>Nice.NTR.Reference</string>
+        <string>Nice.NTR.ReferenceID</string>
         <string>Nice.NTR.CallState</string>
+        <string>Nice.NTR.CallStateValue</string>
         <string>Nice.NTR.CallID</string>
+        <string>Nice.NTR.CallIDValue</string>
         <string>Const</string>
       </InlineColoringRules>
     </Column>

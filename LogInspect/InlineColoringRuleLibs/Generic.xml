@@ -3,5 +3,6 @@
   <Items>
     <InlineColoringRule Name="Const" Pattern="{Const}" Foreground="Brown" Bold="true"  />
     <InlineColoringRule Name="UNCPath" Pattern="{UNCPath}" Foreground="Blue" Underline="true" Bold="false" Italic="false" />
+    <InlineColoringRule Name="QuotedString" Pattern="'[^']+'" Foreground="Black" Underline="false" Bold="false" Italic="true" />
   </Items>
 </InlineColoringRuleLib>

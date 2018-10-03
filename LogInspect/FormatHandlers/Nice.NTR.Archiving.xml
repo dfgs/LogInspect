@@ -19,12 +19,20 @@
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineColoringRules>
         <string>Const</string>
-        <string>Nice.NTR.CVSKey</string>
         <string>UNCPath</string>
+        <string>QuotedString</string>
+        <string>CVSKey</string>
+        <string>CVSKeyID</string>
+        <string>LocationState</string>
+        <string>MediumState</string>
         <string>LocationStateOK</string>
         <string>LocationStateNOK</string>
         <string>MediumStateOK</string>
         <string>MediumStateNOK</string>
+        <string>Generated</string>
+        <string>Completed</string>
+        <string>GeneratedCount</string>
+        <string>CompletedCount</string>
       </InlineColoringRules>
     </Column>
   </Columns>

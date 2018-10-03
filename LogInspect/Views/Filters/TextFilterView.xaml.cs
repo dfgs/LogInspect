@@ -33,7 +33,7 @@ namespace LogInspect.Views.Filters
 
 			filter = DataContext as TextFilterViewModel;
 			if (filter == null) return;
-			filter.ItemsSource.Add(new TextFilterItem() { Condition=TextConditions.Equals });
+			filter.ItemsSource.Add(new TextFilterItem() { Condition=TextConditions.Contains});
 		}
 
 		private void DeleteCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)

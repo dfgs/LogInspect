@@ -26,9 +26,10 @@
       <InlineColoringRules>
         <string>Const</string>
         <string>Logger</string>
-        <string>Interaction</string>
-        <string>Compound</string>
-        <string>CLSCall</string>
+        <string>InteractionID</string>
+        <string>CompoundID</string>
+        <string>CallID</string>
+        <string>IID</string>
         <string>Channel</string>
         <string>Device</string>
         <string>Extension</string>

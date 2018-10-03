@@ -32,7 +32,7 @@ namespace LogInspect.ViewModels.Filters
 			}
 			else
 			{
-				ItemsSource.Add(new TextFilterItem() {Condition=TextConditions.Equals }) ;
+				ItemsSource.Add(new TextFilterItem() {Condition=TextConditions.Contains }) ;
 			}
 		}
 

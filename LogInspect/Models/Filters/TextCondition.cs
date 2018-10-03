@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Models.Filters
 {
-	public enum TextConditions { Equals,Contains,StartsWith }
+	public enum TextConditions { Contains,Equals,StartsWith }
 }
