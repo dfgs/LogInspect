@@ -34,7 +34,7 @@ namespace LogInspectLib.Parsers
 			Match match;
 			int index;
 			List<Inline> inlines;
-			Inline inline;
+			Inline inline,newInline,existing;
 
 			
 			if (Value == null) yield break;
@@ -45,7 +45,9 @@ namespace LogInspectLib.Parsers
 				match = item.Item2.Match(Value);
 				while (match.Success)
 				{
-					inlines.Add(new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold= item.Item1.Bold,Italic= item.Item1.Italic, Value = match.Value });
+					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold = item.Item1.Bold, Italic = item.Item1.Italic, Value = match.Value };
+					existing = inlines.FirstOrDefault(i => i.Intersect(newInline));// in order to priorize matching rules
+					if (existing == null) inlines.Add(newInline);
 					match = match.NextMatch();
 				}
 			}
@@ -55,7 +57,7 @@ namespace LogInspectLib.Parsers
 			index = 0;
 			foreach(Inline matchedInline in inlines)
 			{
-				if (matchedInline.Index < index) continue;	// several coloring rules can apply to one property
+				//if (matchedInline.Index < index) continue;	// several coloring rules can apply to one property
 				if (matchedInline.Index != index)
 				{
 					inline = new Inline();

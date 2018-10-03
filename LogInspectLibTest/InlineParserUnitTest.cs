@@ -252,6 +252,140 @@ namespace LogInspectLibTest
 			Assert.AreEqual("White", inlines[4].Value);
 		}
 
+		[TestMethod]
+		public void ShouldReadWhenAIsPrioritaryAndIntersectType1()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("A");
+			column.InlineColoringRules.Add("B");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "4567" });
+
+			inlines = parser.Parse("01234567890").ToArray();
+			Assert.AreEqual(3, inlines.Length);
+			Assert.AreEqual("01", inlines[0].Value);
+			Assert.AreEqual("2345678", inlines[1].Value);
+			Assert.AreEqual("90", inlines[2].Value);
+		}
+		[TestMethod]
+		public void ShouldReadWhenAIsPrioritaryAndIntersectType2()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("A");
+			column.InlineColoringRules.Add("B");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "1234" });
+
+			inlines = parser.Parse("01234567890").ToArray();
+			Assert.AreEqual(3, inlines.Length);
+			Assert.AreEqual("01", inlines[0].Value);
+			Assert.AreEqual("2345678", inlines[1].Value);
+			Assert.AreEqual("90", inlines[2].Value);
+		}
+		[TestMethod]
+		public void ShouldReadWhenAIsPrioritaryAndIntersectType3()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("A");
+			column.InlineColoringRules.Add("B");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "6789" });
+
+			inlines = parser.Parse("01234567890").ToArray();
+			Assert.AreEqual(3, inlines.Length);
+			Assert.AreEqual("01", inlines[0].Value);
+			Assert.AreEqual("2345678", inlines[1].Value);
+			Assert.AreEqual("90", inlines[2].Value);
+		}
+
+
+		[TestMethod]
+		public void ShouldReadWhenBIsPrioritaryAndIntersectType1()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("A");
+			column.InlineColoringRules.Add("B");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "4567" });
+			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+
+			inlines = parser.Parse("01234567890").ToArray();
+			Assert.AreEqual(3, inlines.Length);
+			Assert.AreEqual("0123", inlines[0].Value);
+			Assert.AreEqual("4567", inlines[1].Value);
+			Assert.AreEqual("890", inlines[2].Value);
+		}
+		[TestMethod]
+		public void ShouldReadWhenBIsPrioritaryAndIntersectType2()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("B");
+			column.InlineColoringRules.Add("A");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "1234" });
+			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+
+			inlines = parser.Parse("01234567890").ToArray();
+			Assert.AreEqual(3, inlines.Length);
+			Assert.AreEqual("0", inlines[0].Value);
+			Assert.AreEqual("1234", inlines[1].Value);
+			Assert.AreEqual("567890", inlines[2].Value);
+		}
+		[TestMethod]
+		public void ShouldReadWhenBIsPrioritaryAndIntersectType3()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("B");
+			column.InlineColoringRules.Add("A");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "6789" });
+			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+
+			inlines = parser.Parse("01234567890").ToArray();
+			Assert.AreEqual(3, inlines.Length);
+			Assert.AreEqual("012345", inlines[0].Value);
+			Assert.AreEqual("6789", inlines[1].Value);
+			Assert.AreEqual("0", inlines[2].Value);
+		}
 
 
 	}

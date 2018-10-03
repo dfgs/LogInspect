@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.NTR.Alcatel-Lucent" FileNamePattern="^Alcatel-Lucent-\d+-{Date}(_{Number}hr)?\.log$"
+               Name="Nice.NTR.Alcatel-Lucent" FileNamePattern="^Alcatel-Lucent-{Number}-{Date}(_{Number}hr)?\.log$"
                NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
     <string>^[^\[]</string>

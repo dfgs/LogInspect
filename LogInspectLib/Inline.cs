@@ -49,5 +49,10 @@ namespace LogInspectLib
 			return $"{Index}: {Value}";
 		}
 
+		public bool Intersect(Inline Other)
+		{
+			return !((Index >= Other.Index + Other.Length) || (Index + Length < Other.Index));
+		}
+
 	}
 }

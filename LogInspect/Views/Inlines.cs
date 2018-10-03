@@ -58,7 +58,7 @@ namespace LogInspect.Views
 				{
 					run.Foreground = (Brush)converter.ConvertFromString(inline.Foreground);
 				}
-				catch(Exception ex)
+				catch
 				{
 					run.Foreground = Brushes.Black;
 				}
