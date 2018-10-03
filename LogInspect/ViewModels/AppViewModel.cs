@@ -181,7 +181,7 @@ namespace LogInspect.ViewModels
 
 			try
 			{
-				regex = regexBuilder.Build(DefaultNameSpace, FileNamePattern);
+				regex = regexBuilder.Build(DefaultNameSpace, FileNamePattern,false);
 				return regex.Match(FileName).Success;
 			}
 			catch(Exception ex)

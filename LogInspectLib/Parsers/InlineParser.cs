@@ -25,7 +25,7 @@ namespace LogInspectLib.Parsers
 		{
 			Regex regex;
 
-			regex = regexBuilder.Build(NameSpace, InlineColoringRule.Pattern);
+			regex = regexBuilder.Build(NameSpace, InlineColoringRule.Pattern,InlineColoringRule.IgnoreCase);
 			items.Add(new Tuple<InlineColoringRule, Regex>(InlineColoringRule,regex));
 		}
 

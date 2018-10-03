@@ -4,5 +4,6 @@
     <Pattern Name="EOL" Value="\u0003"/>
     <Pattern Name="ShortDate" Value="\d\d/\d\d/\d\d" />
     <Pattern Name="Pipe" Value=" *\| +" />
+    <Pattern Name="IDSuffix" Value="(id)? *(:| |=) *{Number}"/>
   </Items>
 </PatternLib>

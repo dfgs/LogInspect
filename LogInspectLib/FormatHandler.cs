@@ -147,7 +147,7 @@ namespace LogInspectLib
 			matcher = new StringMatcher();
 			foreach (string pattern in Patterns)
 			{
-				matcher.Add(RegexBuilder.Build(NameSpace, pattern));
+				matcher.Add(RegexBuilder.Build(NameSpace, pattern,false));
 			}
 			return matcher;
 		}
@@ -160,7 +160,7 @@ namespace LogInspectLib
 			logParser = new LogParser(Columns.Select(item=>item.Name));
 			foreach (Rule rule in Rules)
 			{
-				logParser.Add(RegexBuilder.Build(NameSpace, rule.GetPattern()),rule.Discard );
+				logParser.Add(RegexBuilder.Build(NameSpace, rule.GetPattern(),false),rule.Discard );
 			}
 
 			return logParser;

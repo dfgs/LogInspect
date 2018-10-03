@@ -25,11 +25,13 @@
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineColoringRules>
         <string>Const</string>
-        <string>UNCPath</string>
         <string>Logger</string>
         <string>Interaction</string>
+        <string>Compound</string>
+        <string>CLSCall</string>
         <string>Channel</string>
         <string>Device</string>
+        <string>Extension</string>
         <string>Agent</string>
       </InlineColoringRules>
     </Column>

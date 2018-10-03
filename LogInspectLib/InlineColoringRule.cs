@@ -25,6 +25,13 @@ namespace LogInspectLib
 		}
 
 		[XmlAttribute]
+		public bool IgnoreCase
+		{
+			get;
+			set;
+		}
+
+		[XmlAttribute]
 		public string Foreground
 		{
 			get;

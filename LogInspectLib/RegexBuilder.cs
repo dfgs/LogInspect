@@ -63,9 +63,10 @@ namespace LogInspectLib
 			return sb.ToString();
 		}
 
-		public Regex Build(string DefaultNameSpace, string Pattern)
+		public Regex Build(string DefaultNameSpace, string Pattern, bool IgnoreCase)
 		{
-			return new Regex(BuildRegexPattern(DefaultNameSpace, Pattern),RegexOptions.Compiled, TimeSpan.FromSeconds(2));
+			if (IgnoreCase)	return new Regex(BuildRegexPattern(DefaultNameSpace, Pattern),RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2));
+			else return new Regex(BuildRegexPattern(DefaultNameSpace, Pattern), RegexOptions.Compiled , TimeSpan.FromSeconds(2));
 		}
 
 		

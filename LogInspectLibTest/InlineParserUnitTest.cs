@@ -219,7 +219,40 @@ namespace LogInspectLibTest
 			Assert.AreEqual("White", inlines[8].Value);
 			Assert.AreEqual("__", inlines[9].Value);
 		}
-		
+
+
+		[TestMethod]
+		public void ShouldIgnoreCase()
+		{
+			InlineParser parser;
+			Column column;
+			Inline[] inlines;
+
+
+			column = new Column() { Name = "C1" };
+			column.InlineColoringRules.Add("Red");
+			column.InlineColoringRules.Add("Green");
+			column.InlineColoringRules.Add("Blue");
+			column.InlineColoringRules.Add("White");
+			column.InlineColoringRules.Add("Black");
+
+			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "red",IgnoreCase=true });
+			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "grEen", IgnoreCase = true });
+			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "blUE", IgnoreCase = true });
+			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "wHitE", IgnoreCase = true });
+			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "BLACK", IgnoreCase = true });
+
+			inlines = parser.Parse("RedGreenBlueBlackWhite").ToArray();
+			Assert.AreEqual(5, inlines.Length);
+			Assert.AreEqual("Red", inlines[0].Value);
+			Assert.AreEqual("Green", inlines[1].Value);
+			Assert.AreEqual("Blue", inlines[2].Value);
+			Assert.AreEqual("Black", inlines[3].Value);
+			Assert.AreEqual("White", inlines[4].Value);
+		}
+
+
 
 	}
 }

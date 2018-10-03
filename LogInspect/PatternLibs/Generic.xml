@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <PatternLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Generic">
   <Items>
-    <Pattern Name="Const" Value="[A-Z]+(_[A-Z]+)+"/>
+    <Pattern Name="Const" Value="\b[A-Z]+(_[A-Z]+)+\b"/>
     <Pattern Name="EmptyLine" Value="^$" />
     <Pattern Name="Comment" Value="^//.*$" />
     <Pattern Name="WholeLine" Value="^.*$" />
