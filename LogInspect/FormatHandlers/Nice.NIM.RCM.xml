@@ -19,18 +19,25 @@
     <Column Name="Thread" Width="150" Alignment="" IsFilterItemSource="true">
       <InlineColoringRules />
     </Column>
-    <Column Name="Module" Width="100" Alignment="" IsFilterItemSource="true">
+    <Column Name="Module" Width="100" Alignment="Center" IsFilterItemSource="true">
       <InlineColoringRules />
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineColoringRules>
         <string>Const</string>
-        <string>UNCPath</string>
-        <string>Logger</string>
         <string>Interaction</string>
+        <string>InteractionID</string>
+        <string>Logger</string>
+        <string>LoggerID</string>
         <string>Channel</string>
-        <string>Device</string>
-        <string>Agent</string>
+        <string>ChannelID</string>
+        <string>UDI</string>
+        <string>UDIID</string>
+        <string>DN</string>
+        <string>DNID</string>
+        <string>DEV</string>
+        <string>DEVID</string>
+
       </InlineColoringRules>
     </Column>
   </Columns>

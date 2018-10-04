@@ -45,7 +45,7 @@ namespace LogInspect
 			string[] args = Environment.GetCommandLineArgs();
 			if (args!=null)
 			{
-				foreach (string arg in args)
+				foreach (string arg in args.Skip(1))
 				{
 					if (arg.StartsWith("-"))
 					{
