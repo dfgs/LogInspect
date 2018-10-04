@@ -48,6 +48,10 @@ namespace LogInspectLib.Parsers
 					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold = item.Item1.Bold, Italic = item.Item1.Italic, Value = match.Value };
 					existing = inlines.FirstOrDefault(i => i.Intersect(newInline));// in order to priorize matching rules
 					if (existing == null) inlines.Add(newInline);
+					/*else
+					{
+						int t = 0;
+					}*/
 					match = match.NextMatch();
 				}
 			}

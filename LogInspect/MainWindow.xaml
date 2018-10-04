@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:LogInspect" Closing="Window_Closing"
 		xmlns:views="clr-namespace:LogInspect.Views"
 		xmlns:viewModels="clr-namespace:LogInspect.ViewModels"
-		xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
 		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"  WindowState="Maximized"
         Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	

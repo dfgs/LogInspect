@@ -19,7 +19,7 @@
 		</StackPanel>
 		<StackPanel Margin="4">
 			<TextBlock Text="Start time:" FontWeight="Bold"/>
-			<xtk:TimeSpanUpDown Text="{Binding StartTime}" TextAlignment="Left"/>
+			<TextBox Text="{Binding StartTime}" TextAlignment="Left"/>
 		</StackPanel>
 		<StackPanel>
 			<StackPanel.Style>
@@ -38,7 +38,7 @@
 			</StackPanel>
 			<StackPanel Margin="4">
 				<TextBlock Text="End time:" FontWeight="Bold"/>
-				<xtk:TimeSpanUpDown Text="{Binding EndTime}" TextAlignment="Left"/>
+				<TextBox Text="{Binding EndTime}" TextAlignment="Left"/>
 			</StackPanel>
 		</StackPanel>
 	</StackPanel>

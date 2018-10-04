@@ -1,14 +1,32 @@
 <?xml version="1.0"?>
 <InlineColoringRuleLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NIM">
   <Items>
-    <InlineColoringRule Name="Logger" Pattern="L(og)?ge?r{IDSuffix}}" Foreground="Black" Underline="false" Bold="true" Italic="false" />
-    <InlineColoringRule Name="InteractionID" Pattern="(?&lt;=interaction{IDSuffix}){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
-    <InlineColoringRule Name="CompoundID" Pattern="(?&lt;=compound{IDSuffix}){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
-    <InlineColoringRule Name="CallID" Pattern="(?&lt;=call{IDSuffix}){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
-    <InlineColoringRule Name="IID" Pattern="(?&lt;=I{IDSuffix}){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+
+
+    <InlineColoringRule Name="Interaction" Pattern="(original)?interaction{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="InteractionID" Pattern="(?&lt;=Interaction{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="Compound" Pattern="compound{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="CompoundID" Pattern="(?&lt;=compound{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="CLSCall" Pattern="clscall{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="CLSCallID" Pattern="(?&lt;=clscall{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="EndCallID" Pattern="(?&lt;=endcall{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+
+    <InlineColoringRule Name="Agent" Pattern="[^ ]*agent{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="AgentID" Pattern="(?&lt;=agent{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="Extension" Pattern="ext(ension)?{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="ExtensionID" Pattern="(?&lt;=ext(ension)?{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="Device" Pattern="[^ ]*device{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="DeviceID" Pattern="(?&lt;=device{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineColoringRule Name="Station" Pattern="station{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="StationID" Pattern="(?&lt;=station{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+
+
+    <InlineColoringRule Name="Logger" Pattern="Logger\d?{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineColoringRule Name="LoggerID" Pattern="(?&lt;=Logger\d?{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="GoldenRod" Underline="false" Bold="false" Italic="false" />
+
     <InlineColoringRule Name="Channel" Pattern="Ch={Number}" Foreground="Black" IgnoreCase="false" Underline="false" Bold="true" Italic="false" />
-    <InlineColoringRule Name="Device" Pattern="D(N|EV)=&quot;{Number}&quot; " Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-    <InlineColoringRule Name="Extension" Pattern="(extension|station){IDSuffix}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
-    <InlineColoringRule Name="Agent" Pattern="(agent|user){IDSuffix}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+
+
+
   </Items>
 </InlineColoringRuleLib>

@@ -30,11 +30,11 @@ namespace LogInspect.Models.Filters
 			switch (Condition)
 			{
 				case TextConditions.Equals:
-					return (Value == this.Value) ;
+					return (Value.ToLower() == this.Value.ToLower()) ;
 				case TextConditions.Contains:
-					return Value.Contains(this.Value);
+					return Value.ToLower().Contains(this.Value.ToLower());
 				case TextConditions.StartsWith:
-					return Value.StartsWith(this.Value);
+					return Value.ToLower().StartsWith(this.Value.ToLower());
 				default:
 					return false;
 			}

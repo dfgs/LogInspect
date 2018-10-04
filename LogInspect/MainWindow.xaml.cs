@@ -45,7 +45,17 @@ namespace LogInspect
 			string[] args = Environment.GetCommandLineArgs();
 			if (args!=null)
 			{
-				if (args.Contains("-SelfLogging")) appViewModel.Open("LogInspect.log");
+				foreach (string arg in args)
+				{
+					if (arg.StartsWith("-"))
+					{
+						if (arg == "-SelfLogging") appViewModel.Open("LogInspect.log");
+					}
+					else
+					{
+						appViewModel.Open(arg);
+					}
+				}
 			}
 		}
 
