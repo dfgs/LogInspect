@@ -7,7 +7,7 @@
 		xmlns:views="clr-namespace:LogInspect.Views"
 		xmlns:viewModels="clr-namespace:LogInspect.ViewModels"
 		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"  WindowState="Maximized"
-        Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        Title="Log Inspect" Height="768" Width="1024" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Icon="Images/page_white_magnify.png">
 	
 	<Window.Resources>
 		<views:IntPlusOneValueConverter x:Key="intPlusOneValueConverter"/>

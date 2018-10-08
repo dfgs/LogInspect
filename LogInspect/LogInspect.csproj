@@ -555,5 +555,26 @@
     <Resource Include="Images\time_add.png" />
     <Resource Include="Images\time_delete.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\page_white_magnify.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NIM.Logger.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NIM.IPCapture.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormatHandlers\Nice.NIM.Driver.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
