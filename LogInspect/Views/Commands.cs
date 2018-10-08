@@ -16,5 +16,9 @@ namespace LogInspect.Views
 		public static RoutedUICommand FindPreviousBookMark = new RoutedUICommand();
 		public static RoutedUICommand FindNextBookMark = new RoutedUICommand();
 		public static RoutedUICommand ToogleBookMark = new RoutedUICommand();
+		public static RoutedUICommand DecMinutes = new RoutedUICommand();
+		public static RoutedUICommand IncMinutes = new RoutedUICommand();
+		public static RoutedUICommand DecHours = new RoutedUICommand();
+		public static RoutedUICommand IncHours = new RoutedUICommand();
 	}
 }

@@ -19,7 +19,7 @@ namespace LogInspect.ViewModels
 		private List<T> items;
 
 
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(T), typeof(CollectionViewModel<T>));
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(T), typeof(CollectionViewModel<T>),new PropertyMetadata(SelectedItemPropertyChanged));
 		public T SelectedItem
 		{
 			get { return (T)GetValue(SelectedItemProperty); }
@@ -44,7 +44,16 @@ namespace LogInspect.ViewModels
 			items = new List<T>();
 		}
 
-	
+
+		private static void SelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((CollectionViewModel<T>)d).OnSelectedItemChanged();
+		}
+		protected virtual void OnSelectedItemChanged()
+		{
+
+		}
+
 
 		protected void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
 		{

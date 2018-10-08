@@ -134,7 +134,7 @@ namespace LogInspect
 		#endregion
 
 		#region bookmarks
-		private void SetBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private void ToogleBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle) && (appViewModel.SelectedItem.Events.SelectedItem != null); e.Handled = true;
 		}
@@ -171,6 +171,60 @@ namespace LogInspect
 
 
 		#endregion
+
+		#region timeline
+		private void DecMinutesCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
+		}
+
+		private async void DecMinutesCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			int index;
+			index = await appViewModel.SelectedItem.DecMinutesAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+		}
+
+		private void IncMinutesCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
+		}
+
+		private async void IncMinutesCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			int index;
+			index = await appViewModel.SelectedItem.IncMinutesAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+		}
+
+		private void DecHoursCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
+		}
+
+		private async void DecHoursCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			int index;
+			index = await appViewModel.SelectedItem.DecHoursAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+		}
+
+		private void IncHoursCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
+		}
+
+		private async void IncHoursCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			int index;
+			index = await appViewModel.SelectedItem.IncHoursAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
+			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+		}
+
+
+
+		#endregion
+
 
 		#region find
 		private void FindCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -279,6 +279,60 @@ namespace LogInspect.ViewModels
 
 		#endregion
 
+		#region timeline
+		public async Task<int> DecMinutesAsync(int StartIndex)
+		{
+			int index;
+			DateTime newTime;
+
+			if (StartIndex < 0) newTime = DateTime.MinValue;
+			else newTime = Events[StartIndex].TimeStamp.AddMinutes(-1);
+
+			Status = Statuses.Searching;
+			index = await FindPreviousAsync(StartIndex, (item) => item.TimeStamp<=newTime);
+			Status = Statuses.Idle;
+			return index;
+		}
+		public async Task<int> IncMinutesAsync(int StartIndex)
+		{
+			int index;
+			DateTime newTime;
+
+			if (StartIndex < 0) newTime = DateTime.MinValue;
+			else newTime = Events[StartIndex].TimeStamp.AddMinutes(1);
+
+			Status = Statuses.Searching;
+			index = await FindNextAsync(StartIndex, (item) => item.TimeStamp>=newTime);
+			Status = Statuses.Idle;
+			return index;
+		}
+		public async Task<int> DecHoursAsync(int StartIndex)
+		{
+			int index;
+			DateTime newTime;
+
+			if (StartIndex < 0) newTime = DateTime.MinValue;
+			else newTime = Events[StartIndex].TimeStamp.AddHours(-1);
+
+			Status = Statuses.Searching;
+			index = await FindPreviousAsync(StartIndex, (item) => item.TimeStamp <= newTime);
+			Status = Statuses.Idle;
+			return index;
+		}
+		public async Task<int> IncHoursAsync(int StartIndex)
+		{
+			int index;
+			DateTime newTime;
+
+			if (StartIndex < 0) newTime = DateTime.MinValue;
+			else newTime = Events[StartIndex].TimeStamp.AddHours(1);
+
+			Status = Statuses.Searching;
+			index = await FindNextAsync(StartIndex, (item) => item.TimeStamp >= newTime);
+			Status = Statuses.Idle;
+			return index;
+		}
+		#endregion
 
 
 

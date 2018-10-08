@@ -122,7 +122,6 @@
 
 			</Grid>
 
-
 			<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
 					 SelectedItem="{Binding Events.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
@@ -154,7 +153,6 @@
 					</GridView>
 				</ListView.View>
 			</ListView>
-
 		</DockPanel>
 		
 		

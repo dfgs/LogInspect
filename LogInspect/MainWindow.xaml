@@ -68,7 +68,7 @@
 		<CommandBinding Command="{x:Static views:Commands.FindPreviousSeverity}" CanExecute="FindPreviousSeverityCommandBinding_CanExecute" Executed="FindPreviousSeverityCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static views:Commands.FindNextSeverity}" CanExecute="FindNextSeverityCommandBinding_CanExecute" Executed="FindNextSeverityCommandBinding_Executed"/>
 
-		<CommandBinding Command="{x:Static views:Commands.ToogleBookMark}" CanExecute="SetBookMarkCommandBinding_CanExecute" Executed="ToogleBookMarkCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.ToogleBookMark}" CanExecute="ToogleBookMarkCommandBinding_CanExecute" Executed="ToogleBookMarkCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static views:Commands.FindPreviousBookMark}" CanExecute="FindPreviousBookMarkCommandBinding_CanExecute" Executed="FindPreviousBookMarkCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static views:Commands.FindNextBookMark}" CanExecute="FindNextBookMarkCommandBinding_CanExecute" Executed="FindNextBookMarkCommandBinding_Executed"/>
 
@@ -77,6 +77,12 @@
 		<CommandBinding Command="Find" CanExecute="FindCommandBinding_CanExecute" Executed="FindCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static views:Commands.FindPrevious}" CanExecute="FindPreviousCommandBinding_CanExecute" Executed="FindPreviousCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static views:Commands.FindNext}" CanExecute="FindNextCommandBinding_CanExecute" Executed="FindNextCommandBinding_Executed"/>
+
+		<CommandBinding Command="{x:Static views:Commands.DecMinutes}" CanExecute="DecMinutesCommandBinding_CanExecute" Executed="DecMinutesCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.IncMinutes}" CanExecute="IncMinutesCommandBinding_CanExecute" Executed="IncMinutesCommandBinding_Executed"/>
+
+		<CommandBinding Command="{x:Static views:Commands.DecHours}" CanExecute="DecHoursCommandBinding_CanExecute" Executed="DecHoursCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static views:Commands.IncHours}" CanExecute="IncHoursCommandBinding_CanExecute" Executed="IncHoursCommandBinding_Executed"/>
 
 	</Window.CommandBindings>
 	
@@ -131,6 +137,20 @@
 				</Button>
 				<Button Command="{x:Static views:Commands.FindNextBookMark}" ToolTip="Find next">
 					<Image Source="Images\bullet_arrow_right.png" Stretch="None"  />
+				</Button>
+			</ToolBar>
+			<ToolBar>
+				<Button Command="{x:Static views:Commands.DecMinutes}" ToolTip="One minute backward">
+					<Image Source="Images/time_delete.png" Stretch="None"  />
+				</Button>
+				<Button Command="{x:Static views:Commands.IncMinutes}" ToolTip="One minute forward">
+					<Image Source="Images/time_add.png" Stretch="None"  />
+				</Button>
+				<Button Command="{x:Static views:Commands.DecHours}" ToolTip="One hour backward">
+					<Image Source="Images/time_delete.png" Stretch="None"  />
+				</Button>
+				<Button Command="{x:Static views:Commands.IncHours}" ToolTip="One hour forward">
+					<Image Source="Images/time_add.png" Stretch="None"  />
 				</Button>
 			</ToolBar>
 			<ToolBar>

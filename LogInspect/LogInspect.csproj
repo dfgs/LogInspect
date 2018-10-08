@@ -545,5 +545,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bullet_arrow_bottom.png" />
+    <Resource Include="Images\bullet_arrow_down.png" />
+    <Resource Include="Images\bullet_arrow_top.png" />
+    <Resource Include="Images\bullet_arrow_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\time_add.png" />
+    <Resource Include="Images\time_delete.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

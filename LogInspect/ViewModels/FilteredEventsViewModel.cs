@@ -34,6 +34,9 @@ namespace LogInspect.ViewModels
 			set { SetValue(TailProperty, value); }
 		}
 
+
+	
+
 		private Filter[] filters;
 
 		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, IEventListModule EventList, IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules, int ChunkSize) : base(Logger, RefreshInterval)
@@ -65,7 +68,10 @@ namespace LogInspect.ViewModels
 					index++;
 				}
 				position = target;
+				if (list.Count == 0) return;
+
 				AddRange(list);
+
 				if (Tail) Select(Count - 1);
 
 			}
@@ -88,6 +94,11 @@ namespace LogInspect.ViewModels
 				Clear();
 			}
 		}
+
+
+
+
+	
 
 
 	}

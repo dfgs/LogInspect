@@ -44,8 +44,15 @@ namespace LogInspect.ViewModels
 			get { return ev.LineIndex; }
 		}
 
-		
-		
+
+		private TimeStampPropertyViewModel timeStamp;
+		public DateTime TimeStamp
+		{
+			get
+			{
+				return (DateTime)(timeStamp?.Value??DateTime.MinValue);
+			}
+		}
 
 		public Brush Background
 		{
@@ -86,8 +93,6 @@ namespace LogInspect.ViewModels
 			
 			this.ev = Event;
 
-		
-
 			Background = GetBackground(ColoringRules,Event );
 			if (Background == null)
 			{
@@ -101,6 +106,7 @@ namespace LogInspect.ViewModels
 			{
 				properties[column.Name] = column.CreatePropertyViewModel(this);
 			}
+			timeStamp = properties.FirstOrDefault(item => item is TimeStampPropertyViewModel) as TimeStampPropertyViewModel;
 		}
 
 		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules,Event Event)
