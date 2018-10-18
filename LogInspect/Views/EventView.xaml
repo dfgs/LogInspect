@@ -121,8 +121,8 @@
 				</ItemsControl>
 
 			</Grid>
-
-			<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+			<Grid>
+				<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
 					 SelectedItem="{Binding Events.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
 				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" >
@@ -153,6 +153,19 @@
 					</GridView>
 				</ListView.View>
 			</ListView>
+				<TextBlock Text="Filtering..." FontSize="24" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" >
+					<TextBlock.Style>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Events.Count}" Value="0">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+			</Grid>
 		</DockPanel>
 		
 		
