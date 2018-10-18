@@ -12,6 +12,7 @@
 
 	<UserControl.InputBindings>
 		<KeyBinding Key="Esc" Command="{StaticResource close}"/>
+		<KeyBinding Key="Enter" Command="{x:Static views:Commands.FindNext}"/>
 	</UserControl.InputBindings>
 	
 	<UserControl.CommandBindings>

@@ -74,7 +74,10 @@ namespace LogInspect
 		{
 			MessageBox.Show(Message, "Unexpected error", MessageBoxButton.OK);
 		}
-
+		private void ShowNotFound()
+		{
+			MessageBox.Show("No more item found", "Not found", MessageBoxButton.OK);
+		}
 		private void OpenCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = true;e.Handled = true;
@@ -118,6 +121,7 @@ namespace LogInspect
 			int index;
 			index=await appViewModel.SelectedItem.FindPreviousSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem,appViewModel.SelectedItem.Events.SelectedItem?.EventIndex??-1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 		private void FindNextSeverityCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -130,6 +134,7 @@ namespace LogInspect
 			int index;
 			index = await appViewModel.SelectedItem.FindNextSeverityAsync(appViewModel.SelectedItem.Severities.SelectedItem, appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 		#endregion
 
@@ -153,6 +158,7 @@ namespace LogInspect
 			int index;
 			index = await appViewModel.SelectedItem.FindPreviousBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 		private void FindNextBookMarkCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -165,6 +171,7 @@ namespace LogInspect
 			int index;
 			index=await appViewModel.SelectedItem.FindNextBookMarkAsync( appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 
@@ -183,6 +190,7 @@ namespace LogInspect
 			int index;
 			index = await appViewModel.SelectedItem.DecMinutesAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 		private void IncMinutesCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -195,6 +203,7 @@ namespace LogInspect
 			int index;
 			index = await appViewModel.SelectedItem.IncMinutesAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 		private void DecHoursCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -207,6 +216,7 @@ namespace LogInspect
 			int index;
 			index = await appViewModel.SelectedItem.DecHoursAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 		private void IncHoursCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -219,6 +229,7 @@ namespace LogInspect
 			int index;
 			index = await appViewModel.SelectedItem.IncHoursAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 
@@ -247,6 +258,7 @@ namespace LogInspect
 
 			index = await appViewModel.SelectedItem.FindPreviousAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1, appViewModel.SelectedItem.FindOptions.Match);
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 
 		private void FindNextCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -260,6 +272,7 @@ namespace LogInspect
 
 			index = await appViewModel.SelectedItem.FindNextAsync(appViewModel.SelectedItem.Events.SelectedItem?.EventIndex ?? -1, appViewModel.SelectedItem.FindOptions.Match );
 			if (index >= 0) appViewModel.SelectedItem.Events.Select(index);
+			else ShowNotFound();
 		}
 		#endregion
 

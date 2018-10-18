@@ -31,6 +31,11 @@ namespace LogInspect.Views
 			
 		}
 
+		/*protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			base.OnPreviewKeyDown(e);
+		}*/
+
 		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 		{
 			base.OnPropertyChanged(e);

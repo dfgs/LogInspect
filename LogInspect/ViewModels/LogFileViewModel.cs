@@ -197,9 +197,10 @@ namespace LogInspect.ViewModels
 		#region generic search methods
 		public async Task<int> FindPreviousAsync(int Index, Func<EventViewModel, bool> Predicate)
 		{
+			int result;
 			EventViewModel ev;
-					
-			return await Task.Run<int>(() =>
+			Status = Statuses.Searching;
+			result= await Task.Run<int>(() =>
 			{
 				while (Index > 0)
 				{
@@ -210,12 +211,15 @@ namespace LogInspect.ViewModels
 				}
 				return -1;
 			});
+			Status = Statuses.Idle;
+			return result;
 		}
 		public async Task<int> FindNextAsync(int Index, Func<EventViewModel, bool> Predicate)
 		{
+			int result;
 			EventViewModel ev;
-
-			return await Task.Run<int>(() =>
+			Status = Statuses.Searching;
+			result = await Task.Run<int>(() =>
 			{
 				while (Index < Events.Count- 1)
 				{
@@ -226,7 +230,8 @@ namespace LogInspect.ViewModels
 				}
 				return -1;
 			});
-			
+			Status = Statuses.Idle;
+			return result;
 		}
 		#endregion
 
@@ -235,18 +240,14 @@ namespace LogInspect.ViewModels
 		{
 			int index;
 
-			Status = Statuses.Searching;
 			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item.GetEventValue(severityColumn));
-			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> FindNextSeverityAsync(string Severity, int StartIndex)
 		{
 			int index ;
 
-			Status = Statuses.Searching;
 			index = await  FindNextAsync(StartIndex, (item) => Severity == item.GetEventValue(severityColumn));
-			Status = Statuses.Idle;
 			return index;
 		}
 		#endregion
@@ -262,18 +263,14 @@ namespace LogInspect.ViewModels
 		{
 			int index;
 
-			Status = Statuses.Searching;
 			index = await FindPreviousAsync(StartIndex, (item) => item.IsBookMarked );
-			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> FindNextBookMarkAsync(int StartIndex)
 		{
 			int index;
 
-			Status = Statuses.Searching;
 			index = await FindNextAsync(StartIndex, (item) => item.IsBookMarked );
-			Status = Statuses.Idle;
 			return index;
 		}
 
@@ -288,9 +285,7 @@ namespace LogInspect.ViewModels
 			if (StartIndex < 0) newTime = DateTime.MinValue;
 			else newTime = Events[StartIndex].TimeStamp.AddMinutes(-1);
 
-			Status = Statuses.Searching;
 			index = await FindPreviousAsync(StartIndex, (item) => item.TimeStamp<=newTime);
-			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> IncMinutesAsync(int StartIndex)
@@ -301,9 +296,7 @@ namespace LogInspect.ViewModels
 			if (StartIndex < 0) newTime = DateTime.MinValue;
 			else newTime = Events[StartIndex].TimeStamp.AddMinutes(1);
 
-			Status = Statuses.Searching;
 			index = await FindNextAsync(StartIndex, (item) => item.TimeStamp>=newTime);
-			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> DecHoursAsync(int StartIndex)
@@ -314,9 +307,7 @@ namespace LogInspect.ViewModels
 			if (StartIndex < 0) newTime = DateTime.MinValue;
 			else newTime = Events[StartIndex].TimeStamp.AddHours(-1);
 
-			Status = Statuses.Searching;
 			index = await FindPreviousAsync(StartIndex, (item) => item.TimeStamp <= newTime);
-			Status = Statuses.Idle;
 			return index;
 		}
 		public async Task<int> IncHoursAsync(int StartIndex)
@@ -327,9 +318,7 @@ namespace LogInspect.ViewModels
 			if (StartIndex < 0) newTime = DateTime.MinValue;
 			else newTime = Events[StartIndex].TimeStamp.AddHours(1);
 
-			Status = Statuses.Searching;
 			index = await FindNextAsync(StartIndex, (item) => item.TimeStamp >= newTime);
-			Status = Statuses.Idle;
 			return index;
 		}
 		#endregion
