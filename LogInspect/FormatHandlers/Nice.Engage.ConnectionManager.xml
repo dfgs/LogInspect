@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               Name="Nice.Engage.ConnectionManager" FileNamePattern="^ConnectionMangService.log$"
+               NameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
+  <AppendLineToPreviousPatterns />
+  <AppendLineToNextPatterns>
+    <string>[^{EOL}]$</string>
+  </AppendLineToNextPatterns>
+  <DiscardLinePatterns>
+    <string>{EmptyLine}</string>
+  </DiscardLinePatterns>
+  <Columns>
+    <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss,fff" Width="200" Alignment="Center" IsFilterItemSource="false">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Thread" Width="150" Alignment="Center" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Module" Width="100" Alignment="" IsFilterItemSource="true">
+      <InlineColoringRules />
+    </Column>
+    <Column Name="Message" Width="600" IsFilterItemSource="false">
+      <InlineColoringRules>
+        <string>Const</string>
+        <string>Agent</string>
+        <string>AgentID</string>
+        <string>Device</string>
+        <string>DeviceID</string>
+        <string>Station</string>
+        <string>StationID</string>
+      </InlineColoringRules>
+    </Column>
+  </Columns>
+  <Rules>
+   <Rule Name="Event" Discard="false">
+      <Tokens>
+        <Token Pattern="^{Date} {Time}" Name="Date" />
+        <Token Pattern="{Pipe}" />
+        <Token Pattern="{Word}" Name="Severity" />
+        <Token Pattern="{Pipe}" />
+        <Token Pattern="[^|]+" Name="Thread" />
+        <Token Pattern="{Pipe}" />
+        <Token Pattern="[^|]+" />
+        <Token Pattern="{Pipe}" />
+        <Token Pattern="[^|]+" />
+        <Token Pattern="{Pipe}" />
+        <Token Pattern="[^|]+" Name="Module" />
+        <Token Pattern="{Pipe}" />
+        <Token Pattern="[^{EOL}]+" Name="Message" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Comment" Discard="true">
+      <Tokens>
+        <Token Pattern="^//" />
+      </Tokens>
+    </Rule>
+    <Rule Name="Default" Discard="false">
+      <Tokens>
+        <Token Pattern="{WholeLine}" Name="Message" />
+      </Tokens>
+    </Rule>
+  </Rules>
+  <EventColoringRules>
+    <EventColoringRule Column="Severity" Pattern="ERROR" Background="OrangeRed" />
+    <EventColoringRule Column="Severity" Pattern="WARN" Background="Orange" />
+  </EventColoringRules>
+</FormatHandler>
