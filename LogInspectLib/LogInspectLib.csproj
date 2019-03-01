@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseComponent.cs" />
     <Compile Include="INameSpaceDictionary.cs" />
     <Compile Include="Inline.cs" />
     <Compile Include="IInlineColoringRuleDictionary.cs" />

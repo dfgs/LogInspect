@@ -22,10 +22,7 @@ namespace LogInspect.Modules
 
 		private ILogBufferModule logBuffer;
 		private ILogParser logParser;
-
 		
-
-
 		public EventListModule(ILogger Logger, int LookupRetryDelay, ILogBufferModule LogBuffer, ILogParser LogParser) :base(Logger,LookupRetryDelay,LogBuffer.ProceededEvent)
 		{
 			this.logBuffer = LogBuffer;

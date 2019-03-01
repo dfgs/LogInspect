@@ -33,13 +33,15 @@ namespace LogInspectLib.Parsers
 		{
 			Match match;
 			Event ev;
+			string logLine;
 
 			ev = new Event();
 			ev.LineIndex = Log.LineIndex;
+			logLine = Log.ToSingleLine();
 
 			foreach (Tuple<Regex,bool> tuple in items)
 			{
-				match = tuple.Item1.Match(Log.ToSingleLine());
+				match = tuple.Item1.Match(logLine);
 				if (!match.Success) continue;
 				if (tuple.Item2) return null;
 
