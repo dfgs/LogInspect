@@ -46,7 +46,7 @@ namespace LogInspect.Modules
 
 		
 
-		public BufferModule(string Name,ILogger Logger,int LookupRetryDelay) :base(Name,Logger,LookupRetryDelay, null, System.Threading.ThreadPriority.Lowest)
+		public BufferModule(ILogger Logger,int LookupRetryDelay) :base(Logger,LookupRetryDelay, null, System.Threading.ThreadPriority.Lowest)
 		{
 			this.items = new List<T>();
 		}

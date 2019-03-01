@@ -50,7 +50,7 @@ namespace LogInspect.Modules
 		private RateMeter rateMeter;
 		private WaitHandle[] events;
 
-		public BaseModule(string Name, ILogger Logger, int LookupRetryDelay,WaitHandle LookUpRetryEvent,ThreadPriority Priority) : base(Name, Logger,Priority)
+		public BaseModule(ILogger Logger, int LookupRetryDelay,WaitHandle LookUpRetryEvent,ThreadPriority Priority) : base(Logger,Priority)
 		{
 			this.lookupRetryDelay = LookupRetryDelay;
 			rateMeter = new RateMeter(1);

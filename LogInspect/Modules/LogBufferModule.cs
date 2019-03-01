@@ -15,7 +15,7 @@ namespace LogInspect.Modules
 		private ILogReader reader;
 		public override bool CanProcess => reader.CanRead;
 
-		public LogBufferModule( ILogger Logger, int LookupRetryDelay,ILogReader Reader) : base("LogBuffer", Logger, LookupRetryDelay)
+		public LogBufferModule( ILogger Logger, int LookupRetryDelay,ILogReader Reader) : base( Logger, LookupRetryDelay)
 		{
 			this.reader = Reader;
 		}

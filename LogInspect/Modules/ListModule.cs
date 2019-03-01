@@ -39,7 +39,7 @@ namespace LogInspect.Modules
 			}
 		}
 
-		public ListModule(string Name,ILogger Logger,int LookupRetryDelay,WaitHandle LookUpRetryEvent) :base(Name,Logger,LookupRetryDelay, LookUpRetryEvent, System.Threading.ThreadPriority.Lowest)
+		public ListModule(ILogger Logger,int LookupRetryDelay,WaitHandle LookUpRetryEvent) :base(Logger,LookupRetryDelay, LookUpRetryEvent, System.Threading.ThreadPriority.Lowest)
 		{
 			this.items = new List<T>();
 		}
