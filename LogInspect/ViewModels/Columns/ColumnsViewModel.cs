@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using LogInspect.Modules;
+
 using LogInspectLib;
 using LogInspectLib.Parsers;
 using LogLib;
@@ -18,7 +18,7 @@ namespace LogInspect.ViewModels.Columns
 
 
 
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger,-1)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger)
 		{
 			IInlineParser inlineParser;
 			InlineColoringRule inlineColoringRule;

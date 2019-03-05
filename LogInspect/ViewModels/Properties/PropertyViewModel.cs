@@ -32,7 +32,7 @@ namespace LogInspect.ViewModels.Properties
 		}
 
 		
-		public PropertyViewModel(ILogger Logger,string Name,TextAlignment Alignment) : base(Logger,-1)
+		public PropertyViewModel(ILogger Logger,string Name,TextAlignment Alignment) : base(Logger)
 		{
 			this.Name = Name;
 			this.Alignment = Alignment;

@@ -29,19 +29,13 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		private DispatcherTimer timer;
+		//private DispatcherTimer timer;
 
-		public ViewModel(ILogger Logger,int RefreshInterval)
+		public ViewModel(ILogger Logger)
 		{
 			this.ID = counter;counter++;
 			this.Logger = Logger;
-			if (RefreshInterval>0)
-			{
-				timer = new DispatcherTimer();
-				timer.Interval = TimeSpan.FromMilliseconds(RefreshInterval);
-				timer.Tick += Timer_Tick;
-				timer.Start();
-			}
+			
 		}
 
 		protected virtual void OnRefresh()
@@ -49,11 +43,7 @@ namespace LogInspect.ViewModels
 
 		}
 
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			OnRefresh();
-		}
-
+		
 		public virtual void Dispose()
 		{
 

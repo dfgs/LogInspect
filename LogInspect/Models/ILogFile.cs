@@ -5,9 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Modules
+namespace LogInspect.Models
 {
-	public interface ILogBufferModule:IBufferModule<Log>
+	public interface ILogFile
 	{
+		string FileName
+		{
+			get;
+		}
+		IEnumerable<Event> Events
+		{
+			get;
+		}
+
+
+
 	}
 }

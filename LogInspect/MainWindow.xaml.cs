@@ -1,4 +1,5 @@
-﻿using LogInspect.ViewModels;
+﻿using LogInspect.Models;
+using LogInspect.ViewModels;
 using LogInspectLib;
 using LogLib;
 using Microsoft.Win32;
@@ -35,8 +36,7 @@ namespace LogInspect
 		{
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
-			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.PatternLibsFolder, Properties.Settings.Default.InlineColoringRuleLibsFolder,
-				 Properties.Settings.Default.LoaderModuleLookupRetryDelay,  Properties.Settings.Default.ViewModelRefreshInterval, Properties.Settings.Default.EventsViewModelRefreshInterval, Properties.Settings.Default.MaxEventsViewModelChunkSize);
+			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.PatternLibsFolder, Properties.Settings.Default.InlineColoringRuleLibsFolder);
 
 			InitializeComponent();
 			DataContext = appViewModel;
@@ -49,11 +49,11 @@ namespace LogInspect
 				{
 					if (arg.StartsWith("-"))
 					{
-						if (arg == "-SelfLogging") appViewModel.Open("LogInspect.log");
+						if (arg == "-SelfLogging") Open("LogInspect.log");
 					}
 					else
 					{
-						appViewModel.Open(arg);
+						Open(arg);
 					}
 				}
 			}
@@ -91,9 +91,26 @@ namespace LogInspect
 			dialog.Title = "Open log file";
 			dialog.Filter = "Log files|*.log|Text files|*.txt|All files|*.*";
 
-			if (dialog.ShowDialog(this)??false)
+			if (dialog.ShowDialog(this) ?? false) Open(dialog.FileName);
+		}
+
+		private void Open(string FileName)
+		{
+			LogFile logFile;
+			ILogFileLoaderModule logFileLoaderModule;
+			LoadWindow loadWindow;
+			FormatHandler formatHandler;
+			IRegexBuilder regexBuilder;
+
+			formatHandler = appViewModel.GetFormatHandler(FileName);
+			
+
+			logFile = new LogFile(FileName);
+			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,regexBuilder,formatHandler);
+			loadWindow = new LoadWindow(logFileLoaderModule);
+			if (loadWindow.Load() ?? false)
 			{
-				appViewModel.Open(dialog.FileName);
+				appViewModel.Open(logFile);
 			}
 		}
 

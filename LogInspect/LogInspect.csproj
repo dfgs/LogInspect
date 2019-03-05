@@ -62,6 +62,11 @@
     <Compile Include="FilterWindow.xaml.cs">
       <DependentUpon>FilterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ILogFileLoaderModule.cs" />
+    <Compile Include="LoadWindow.xaml.cs">
+      <DependentUpon>LoadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LogFileLoaderModule.cs" />
     <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\Filters\Filter.cs" />
     <Compile Include="Models\Filters\MultiChoicesFilter.cs" />
@@ -70,17 +75,8 @@
     <Compile Include="Models\Filters\TextFilterItem.cs" />
     <Compile Include="Models\Filters\TimeStampConditions.cs" />
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
-    <Compile Include="Modules\BaseModule.cs" />
-    <Compile Include="Modules\ListModule.cs" />
-    <Compile Include="Modules\IBaseModule.cs" />
-    <Compile Include="Modules\IListModule.cs" />
-    <Compile Include="Modules\IEventListModule.cs" />
-    <Compile Include="Modules\IBufferModule.cs" />
-    <Compile Include="Modules\EventListModule.cs" />
-    <Compile Include="Modules\ILogBufferModule.cs" />
-    <Compile Include="Modules\BufferModule.cs" />
-    <Compile Include="Modules\LogBufferModule.cs" />
-    <Compile Include="Modules\RateMeter.cs" />
+    <Compile Include="Models\ILogFile.cs" />
+    <Compile Include="Models\LogFile.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
@@ -88,12 +84,6 @@
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\FindOptions.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
-    <Compile Include="ViewModels\Modules\IListModuleViewModel.cs" />
-    <Compile Include="ViewModels\Modules\IBufferModuleViewModel.cs" />
-    <Compile Include="ViewModels\Modules\IModuleViewModel.cs" />
-    <Compile Include="ViewModels\Modules\BufferModuleViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ListModuleViewModel.cs" />
-    <Compile Include="ViewModels\Modules\ModuleViewModel.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
     <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
@@ -116,7 +106,6 @@
     <Compile Include="ViewModels\Properties\PropertyViewModel.cs" />
     <Compile Include="ViewModels\SeveritiesViewModel.cs" />
     <Compile Include="ViewModels\Statuses.cs" />
-    <Compile Include="ViewModels\StreamViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
     <Compile Include="Views\Commands.cs" />
@@ -159,6 +148,10 @@
       <DependentUpon>RateView.xaml</DependentUpon>
     </Compile>
     <Page Include="FilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,5 @@
-﻿using LogInspectLib;
+﻿using LogInspect.Models;
+using LogInspectLib;
 using LogInspectLib.Parsers;
 using LogLib;
 using System;
@@ -31,17 +32,9 @@ namespace LogInspect.ViewModels
 			set { SetValue(SelectedItemProperty, value); }
 		}
 
-		private int loaderModuleLookupRetryDelay;
-		private int viewModelRefreshInterval;
-		private int eventsViewModelRefreshInterval;
-		private int maxEventsViewModelChunkSize;
 
-		public AppViewModel(ILogger Logger,string FormatHandlersPath, string PatternLibsPath, string InlineColoringLibsPath, int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval,int EventsViewModelRefreshInterval,int MaxEventsViewModelChunkSize) : base(Logger,-1)
+		public AppViewModel(ILogger Logger,string FormatHandlersPath, string PatternLibsPath, string InlineColoringLibsPath) : base(Logger)
 		{
-			this.loaderModuleLookupRetryDelay = LoaderModuleLookupRetryDelay;
-			this.viewModelRefreshInterval = ViewModelRefreshInterval;
-			this.eventsViewModelRefreshInterval = EventsViewModelRefreshInterval;
-			this.maxEventsViewModelChunkSize = MaxEventsViewModelChunkSize;
 
 			this.regexBuilder = new RegexBuilder();
 			LoadPatternLibs(PatternLibsPath);
@@ -62,16 +55,16 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public void Open(string FileName)
+		public void Open(LogFile LogFile)
 		{
 			LogFileViewModel logFile;
 			FormatHandler formatHandler;
 
-			formatHandler = GetFormatHandler(FileName);
+			formatHandler = GetFormatHandler(LogFile.FileName);
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,FileName, formatHandler,regexBuilder,inlineColoringRuleDictionary, loaderModuleLookupRetryDelay,viewModelRefreshInterval,eventsViewModelRefreshInterval,maxEventsViewModelChunkSize);
+				logFile = new LogFileViewModel(Logger,LogFile);
 			}
 			catch(Exception ex)
 			{

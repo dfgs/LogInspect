@@ -87,7 +87,7 @@ namespace LogInspect.ViewModels.Columns
 		
 
 
-		public ColumnViewModel(ILogger Logger, string Name, string Description, string Alignment,string Format) : base(Logger,-1)
+		public ColumnViewModel(ILogger Logger, string Name, string Description, string Alignment,string Format) : base(Logger)
 		{
 			TextAlignment alignment;
 

@@ -1,5 +1,5 @@
 ﻿using LogInspect.Models;
-using LogInspect.Modules;
+
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogLib;
@@ -20,7 +20,7 @@ namespace LogInspect.ViewModels
 	{
 		private int position;
 
-		private IEventListModule eventList;
+		//private IEventListModule eventList;
 
 		private string[] columns;
 		private PropertyCollection<List<string>> items;
@@ -30,7 +30,7 @@ namespace LogInspect.ViewModels
 			get { return items[Column]; }
 		}
 
-		public FilterItemSourcesViewModel(ILogger Logger , int RefreshInterval,IEventListModule EventList, IEnumerable<Column> Columns) : base(Logger,RefreshInterval)
+		public FilterItemSourcesViewModel(ILogger Logger ,IEnumerable<Column> Columns) : base(Logger)
 		{
 			items = new PropertyCollection<List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
@@ -39,14 +39,13 @@ namespace LogInspect.ViewModels
 				items[column]= new List<string>();
 			}
 
-			this.eventList = EventList;
 
 			
 		}
 
 		protected override void OnRefresh()
 		{
-			List<string> values;
+			/*List<string> values;
 			string value;
 			int target;
 
@@ -65,7 +64,7 @@ namespace LogInspect.ViewModels
 					}
 				}
 			}
-			position = target;
+			position = target;*/
 
 		}//*/
 

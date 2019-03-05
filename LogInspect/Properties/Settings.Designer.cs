@@ -34,24 +34,6 @@ namespace LogInspect.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int LoaderModuleLookupRetryDelay {
-            get {
-                return ((int)(this["LoaderModuleLookupRetryDelay"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public int ViewModelRefreshInterval {
-            get {
-                return ((int)(this["ViewModelRefreshInterval"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PatternLibs")]
         public string PatternLibsFolder {
             get {
@@ -65,27 +47,6 @@ namespace LogInspect.Properties {
         public string InlineColoringRuleLibsFolder {
             get {
                 return ((string)(this["InlineColoringRuleLibsFolder"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int EventsViewModelRefreshInterval {
-            get {
-                return ((int)(this["EventsViewModelRefreshInterval"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int MaxEventsViewModelChunkSize {
-            get {
-                return ((int)(this["MaxEventsViewModelChunkSize"]));
-            }
-            set {
-                this["MaxEventsViewModelChunkSize"] = value;
             }
         }
     }

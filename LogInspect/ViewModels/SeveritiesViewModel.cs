@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using LogInspect.Modules;
+
 using LogLib;
 
 namespace LogInspect.ViewModels
@@ -16,7 +16,7 @@ namespace LogInspect.ViewModels
 		private int position;
 		private IEnumerable<string> items;
 
-		public SeveritiesViewModel(ILogger Logger, int RefreshInterval, string SeverityColumn, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,RefreshInterval)
+		public SeveritiesViewModel(ILogger Logger,  string SeverityColumn, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger)
 		{
 			items = FilterChoicesViewModel[SeverityColumn];//.Cast<string>();
 		}

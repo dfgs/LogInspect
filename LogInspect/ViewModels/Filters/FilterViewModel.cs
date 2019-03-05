@@ -16,7 +16,7 @@ namespace LogInspect.ViewModels.Filters
 			private set;
 		}
 
-		public FilterViewModel(ILogger Logger,string PropertyName) : base(Logger,-1)
+		public FilterViewModel(ILogger Logger,string PropertyName) : base(Logger)
 		{
 			this.PropertyName = PropertyName;
 		}

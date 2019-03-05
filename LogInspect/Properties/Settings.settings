@@ -5,23 +5,11 @@
     <Setting Name="FormatHandlersFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">FormatHandlers</Value>
     </Setting>
-    <Setting Name="LoaderModuleLookupRetryDelay" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="ViewModelRefreshInterval" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">300</Value>
-    </Setting>
     <Setting Name="PatternLibsFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PatternLibs</Value>
     </Setting>
     <Setting Name="InlineColoringRuleLibsFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">InlineColoringRuleLibs</Value>
-    </Setting>
-    <Setting Name="EventsViewModelRefreshInterval" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">100</Value>
-    </Setting>
-    <Setting Name="MaxEventsViewModelChunkSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

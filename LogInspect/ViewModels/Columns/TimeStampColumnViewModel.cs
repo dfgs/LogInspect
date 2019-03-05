@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using LogInspect.Models;
 using LogInspect.Models.Filters;
-using LogInspect.Modules;
+
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Views;

@@ -1,8 +1,6 @@
 ﻿using LogInspect.Models;
 using LogInspect.Models.Filters;
-using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
-using LogInspect.ViewModels.Modules;
 using LogInspectLib;
 using LogInspectLib.Parsers;
 using LogInspectLib.Readers;
@@ -24,12 +22,11 @@ namespace LogInspect.ViewModels
 {
 	public class LogFileViewModel:ViewModel
 	{
-
+		private LogFile logFile;
 
 		public string FileName
 		{
-			get;
-			private set;
+			get { return logFile.FileName; }
 		}
 		public string Name
 		{
@@ -37,11 +34,11 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public string FormatHandlerName
+		/*public string FormatHandlerName
 		{
 			get;
 			private set;
-		}
+		}*/
 
 		private string severityColumn;
 
@@ -72,6 +69,7 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
+		private List<Event> events;
 		public FilteredEventsViewModel Events
 		{
 			get;
@@ -85,92 +83,42 @@ namespace LogInspect.ViewModels
 		}
 
 
-		private ILogBufferModule logBufferModule;
-		public IBufferModuleViewModel LogBuffer
+		
+
+		
+
+		public LogFileViewModel(ILogger Logger,LogFile LogFile) :base(Logger)
 		{
-			get;
-			private set;
-		}
-
-		private EventListModule eventListModule;
-		public IListModuleViewModel EventList
-		{
-			get;
-			private set;
-		}
-
-		public StreamViewModel Stream
-		{
-			get;
-			private set;
-		}
-
-		public LogFileViewModel(ILogger Logger,string FileName,FormatHandler FormatHandler,IRegexBuilder RegexBuilder, IInlineColoringRuleDictionary InlineColoringRuleDictionary, 
-			int LoaderModuleLookupRetryDelay, int ViewModelRefreshInterval, int EventsViewModelRefreshInterval, int MaxEventsViewModelChunkSize) :base(Logger,-1)
-		{
-			Stream stream;
-			IStringMatcher discardLineMatcher;
-			IStringMatcher appendLineToPreviousMatcher;
-			IStringMatcher appendLineToNextMatcher;
-			ILogParser logParser;
-			ILineReader lineReader;
-			ILogReader logReader;
-
-			this.FileName = FileName;
-			this.Name = Path.GetFileName(FileName);
-			this.FormatHandlerName = FormatHandler.Name;
-			this.severityColumn = FormatHandler.SeverityColumn;
-
-			Log(LogLevels.Information, "Creating modules");
-
-			stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
-
-			discardLineMatcher = FormatHandler.CreateDiscardLinesMatcher(RegexBuilder);
-			appendLineToPreviousMatcher = FormatHandler.CreateAppendLineToPreviousMatcher(RegexBuilder);
-			appendLineToNextMatcher = FormatHandler.CreateAppendLineToNextMatcher(RegexBuilder) ;
-
-			logParser = FormatHandler.CreateLogParser(RegexBuilder);
 			
-			lineReader = new LineReader(stream, Encoding.Default, discardLineMatcher);
-			logReader = new LogReader(lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
+			this.logFile = LogFile;
 
-			logBufferModule = new LogBufferModule(Logger,  LoaderModuleLookupRetryDelay, logReader);
-			eventListModule = new EventListModule(Logger, LoaderModuleLookupRetryDelay, logBufferModule,logParser);
+
+
+			this.Name = Path.GetFileName(LogFile.FileName);
+			//this.severityColumn = FormatHandler.SeverityColumn;
 
 			Log(LogLevels.Information, "Creating viewmodels");
 
-			FindOptions = new FindOptions();
-			FindOptions.Column = FormatHandler.DefaultColumn;
+			//FindOptions = new FindOptions();
+			//FindOptions.Column = FormatHandler.DefaultColumn;
 
-			Stream = new StreamViewModel(Logger, ViewModelRefreshInterval, stream);
 
-			filterItemSourcesViewModel =  new FilterItemSourcesViewModel(Logger, ViewModelRefreshInterval, eventListModule, FormatHandler.Columns);
-			Severities = new SeveritiesViewModel(Logger, ViewModelRefreshInterval, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
+			/*Severities = new SeveritiesViewModel(Logger, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
 			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel,RegexBuilder,InlineColoringRuleDictionary);
 
-			Events = new FilteredEventsViewModel(Logger, EventsViewModelRefreshInterval, eventListModule,Columns,FormatHandler.EventColoringRules,MaxEventsViewModelChunkSize);
-			Markers = new MarkersViewModel(Logger, EventsViewModelRefreshInterval,  Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);
+			Markers = new MarkersViewModel(Logger,   Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);*/
 
 
-			LogBuffer = new BufferModuleViewModel<Log>(Logger, ViewModelRefreshInterval, logBufferModule);
-			EventList = new ListModuleViewModel<Event>(Logger, ViewModelRefreshInterval, eventListModule);
 
 
-			Log(LogLevels.Information, "Starting modules");
-			logBufferModule.Start();
-			eventListModule.Start();
 		}
 
 
 		public override void Dispose()
 		{
 
-			Log(LogLevels.Information, "Stopping modules");
-			eventListModule.Stop();
-			logBufferModule.Stop();
-
-			filterItemSourcesViewModel.Dispose();//*/
+			//filterItemSourcesViewModel.Dispose();//*/
 
 		}
 

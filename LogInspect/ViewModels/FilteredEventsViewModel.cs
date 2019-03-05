@@ -1,6 +1,6 @@
 ﻿using LogInspect.Models;
 using LogInspect.Models.Filters;
-using LogInspect.Modules;
+
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogInspectLib.Parsers;
@@ -20,7 +20,6 @@ namespace LogInspect.ViewModels
 	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel>
 	{
 		private int position;
-		private IEventListModule eventList;
 
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> eventColoringRules;
@@ -39,16 +38,15 @@ namespace LogInspect.ViewModels
 
 		private Filter[] filters;
 
-		public FilteredEventsViewModel(ILogger Logger , int RefreshInterval, IEventListModule EventList, IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules, int ChunkSize) : base(Logger, RefreshInterval)
+		public FilteredEventsViewModel(ILogger Logger ,  IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules, int ChunkSize) : base(Logger)
 		{
-			this.eventList = EventList;
 			this.chunkSize = ChunkSize;
 			this.columns = Columns;this.eventColoringRules = EventColoringRules;
 		}
 
 		protected override void OnRefresh()
 		{
-			int target;
+			/*int target;
 			int index;
 			EventViewModel vm;
 
@@ -74,7 +72,7 @@ namespace LogInspect.ViewModels
 
 				if (Tail) Select(Count - 1);
 
-			}
+			}*/
 		}
 		private bool MustDiscard(EventViewModel Event)
 		{

@@ -1,5 +1,5 @@
 ﻿using LogInspect.Models;
-using LogInspect.Modules;
+
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogLib;
@@ -33,7 +33,7 @@ namespace LogInspect.ViewModels
 		}
 		
 
-		public MarkersViewModel(ILogger Logger , int RefreshInterval, FilteredEventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger, RefreshInterval)
+		public MarkersViewModel(ILogger Logger ,  FilteredEventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger)
 		{
 			this.severityColumn = SeverityColumn;
 			this.coloringRules = ColoringRules;

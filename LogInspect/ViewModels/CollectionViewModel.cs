@@ -1,5 +1,4 @@
 ﻿using LogInspect.Models;
-using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogLib;
@@ -39,7 +38,7 @@ namespace LogInspect.ViewModels
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 	
-		public CollectionViewModel(ILogger Logger,int RefreshInterval) : base(Logger, RefreshInterval)
+		public CollectionViewModel(ILogger Logger) : base(Logger)
 		{
 			items = new List<T>();
 		}
