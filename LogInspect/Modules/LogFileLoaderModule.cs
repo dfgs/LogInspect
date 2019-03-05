@@ -12,54 +12,77 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LogInspect
+namespace LogInspect.Modules
 {
 	public class LogFileLoaderModule : ThreadModule, ILogFileLoaderModule
 	{
 		private LogFile logFile;
 		private IRegexBuilder regexBuilder;
-		private FormatHandler formatHandler;
+		private FileStream stream;
 
-		public LogFileLoaderModule(ILogger Logger, LogFile LogFile, IRegexBuilder RegexBuilder, FormatHandler FormatHandler) : base(Logger)
+		public long Position
+		{
+			get;
+			private set;
+		}
+		public long Length
+		{
+			get;
+			private set;
+		}
+
+		public int Count
+		{
+			get { return logFile.Events.Count; }
+		}
+
+		public LogFileLoaderModule(ILogger Logger, LogFile LogFile, IRegexBuilder RegexBuilder) : base(Logger)
 		{
 			AssertParameterNotNull("LogFile", LogFile);
 			AssertParameterNotNull("RegexBuilder", RegexBuilder);
-			AssertParameterNotNull("FormatHandler", FormatHandler);
 			this.logFile = LogFile;
 			this.regexBuilder = RegexBuilder;
-			this.formatHandler = FormatHandler;
 		}
 
 		protected override void ThreadLoop()
 		{
-			FileStream stream;
 			IStringMatcher discardLineMatcher;
 			IStringMatcher appendLineToPreviousMatcher;
 			IStringMatcher appendLineToNextMatcher;
 			ILogParser logParser;
 			ILineReader lineReader;
 			ILogReader logReader;
+			Log log;
+			Event ev;
+
+			LogEnter();
+
+			discardLineMatcher = logFile.FormatHandler.CreateDiscardLinesMatcher(regexBuilder);
+			appendLineToPreviousMatcher = logFile.FormatHandler.CreateAppendLineToPreviousMatcher(regexBuilder);
+			appendLineToNextMatcher = logFile.FormatHandler.CreateAppendLineToNextMatcher(regexBuilder);
+
+			logParser = logFile.FormatHandler.CreateLogParser(regexBuilder);
+
 
 			Log(LogLevels.Information, $"Open file name {logFile.FileName}");
 			if (!Try(() => new FileStream(logFile.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).OrAlert(out stream, "Failed to open file")) return;
+			Length = stream.Length;
 
 			using (stream)
 			{
-
-				discardLineMatcher = formatHandler.CreateDiscardLinesMatcher(regexBuilder);
-				appendLineToPreviousMatcher = formatHandler.CreateAppendLineToPreviousMatcher(regexBuilder);
-				appendLineToNextMatcher = formatHandler.CreateAppendLineToNextMatcher(regexBuilder);
-
-				logParser = formatHandler.CreateLogParser(regexBuilder);
-
 				lineReader = new LineReader(stream, Encoding.Default, discardLineMatcher);
 				logReader = new LogReader(lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
-
+				while((State==ModuleStates.Started) && logReader.CanRead)
+				{
+					Position = stream.Position;
+					if (!Try(() => logReader.Read()).OrAlert(out log, "Error occured while reading log")) break;
+					if (!Try(() => logParser.Parse(log)).OrAlert(out ev, $"Failed to parse log at line {log.LineIndex}")) continue;
+					if (ev!=null) logFile.Events.Add(ev);
+				}
 			}
+			
 
 
-
-			Thread.Sleep(5000);
 		}
 	}
 }

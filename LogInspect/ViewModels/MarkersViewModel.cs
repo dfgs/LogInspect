@@ -20,9 +20,6 @@ namespace LogInspect.ViewModels
 		private string severityColumn;
 		private IEnumerable<EventColoringRule> coloringRules;
 
-		private int position;
-
-
 		private FilteredEventsViewModel events;
 
 
@@ -35,11 +32,15 @@ namespace LogInspect.ViewModels
 
 		public MarkersViewModel(ILogger Logger ,  FilteredEventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger)
 		{
+			AssertParameterNotNull("Events", Events);
+			AssertParameterNotNull("ColoringRules", ColoringRules);
+			AssertParameterNotNull("SeverityColumn", SeverityColumn);
+
 			this.severityColumn = SeverityColumn;
 			this.coloringRules = ColoringRules;
 			this.events = Events;
 		}
-		protected override void OnRefresh()
+		/*protected override void OnRefresh()
 		{
 			int target;
 			EventViewModel item;
@@ -74,16 +75,9 @@ namespace LogInspect.ViewModels
 				}
 				position = target;
 			}
-		}
+		}*/
 
-		public override void Clear()
-		{
-			lock(this)
-			{
-				this.position = 0;
-				base.Clear();
-			}
-		}
+		
 
 	}
 }

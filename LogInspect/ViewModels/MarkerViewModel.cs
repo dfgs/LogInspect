@@ -13,34 +13,30 @@ namespace LogInspect.ViewModels
 	{
 
 
-		public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(int), typeof(MarkerViewModel));
 		public int Position
 		{
-			get { return (int)GetValue(PositionProperty); }
-			set { SetValue(PositionProperty, value); }
+			get;
+			set;
 		}
 
-		public static readonly DependencyProperty SizeProperty = DependencyProperty.Register("Size", typeof(int), typeof(MarkerViewModel));
 		public int Size
 		{
-			get { return (int)GetValue(SizeProperty); }
-			set { SetValue(SizeProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register("Background", typeof(Brush), typeof(MarkerViewModel));
 		public Brush Background
 		{
-			get { return (Brush)GetValue(BackgroundProperty); }
-			set { SetValue(BackgroundProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty SeverityProperty = DependencyProperty.Register("Severity", typeof(string), typeof(MarkerViewModel));
 		public string Severity
 		{
-			get { return (string)GetValue(SeverityProperty); }
-			set { SetValue(SeverityProperty, value); }
+			get;
+			set;
 		}
 
 

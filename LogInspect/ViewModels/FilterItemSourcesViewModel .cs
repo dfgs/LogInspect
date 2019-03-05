@@ -18,10 +18,6 @@ namespace LogInspect.ViewModels
 {
 	public class FilterItemSourcesViewModel:ViewModel
 	{
-		private int position;
-
-		//private IEventListModule eventList;
-
 		private string[] columns;
 		private PropertyCollection<List<string>> items;
 
@@ -32,20 +28,20 @@ namespace LogInspect.ViewModels
 
 		public FilterItemSourcesViewModel(ILogger Logger ,IEnumerable<Column> Columns) : base(Logger)
 		{
+			AssertParameterNotNull("Columns", Columns);
+
 			items = new PropertyCollection<List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
 			foreach (string column in columns)
 			{
 				items[column]= new List<string>();
 			}
-
-
-			
+					   	
 		}
 
-		protected override void OnRefresh()
+		/*protected override void OnRefresh()
 		{
-			/*List<string> values;
+			List<string> values;
 			string value;
 			int target;
 
@@ -64,7 +60,7 @@ namespace LogInspect.ViewModels
 					}
 				}
 			}
-			position = target;*/
+			position = target;
 
 		}//*/
 

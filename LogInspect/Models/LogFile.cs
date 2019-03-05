@@ -15,7 +15,11 @@ namespace LogInspect.Models
 			get;
 			private set;
 		}
-
+		public FormatHandler FormatHandler
+		{
+			get;
+			private set;
+		}
 		public List<Event> Events
 		{
 			get;
@@ -25,9 +29,15 @@ namespace LogInspect.Models
 
 
 
-		public LogFile(string FileName)
+		public LogFile(string FileName,FormatHandler FormatHandler)
 		{
-			this.FileName = FileName;this.Events = new List<Event>();
+			if (FileName == null) throw new ArgumentNullException("FileName");
+			if (FormatHandler == null) throw new ArgumentNullException("FormatHandler");
+
+			this.FileName = FileName;
+			this.FormatHandler = FormatHandler;
+
+			this.Events = new List<Event>();
 		}
 
 		

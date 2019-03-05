@@ -13,15 +13,16 @@ namespace LogInspect.ViewModels
 {
 	public class SeveritiesViewModel : CollectionViewModel<string>
 	{
-		private int position;
 		private IEnumerable<string> items;
 
 		public SeveritiesViewModel(ILogger Logger,  string SeverityColumn, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger)
 		{
+			AssertParameterNotNull("SeverityColumn", SeverityColumn);
+			AssertParameterNotNull("FilterChoicesViewModel", FilterChoicesViewModel);
 			items = FilterChoicesViewModel[SeverityColumn];//.Cast<string>();
 		}
 
-		protected override void OnRefresh()
+		/*protected override void OnRefresh()
 		{
 			
 			int count;
@@ -36,7 +37,7 @@ namespace LogInspect.ViewModels
 			if ((Count > 0) && (SelectedItem == null)) SelectedItem = this[0];
 			position = count;
 			
-		}
+		}*/
 		/*private void FilterChoicesViewModel_FilterChoiceAdded(object sender, FilterItemAddedEventArgs e)
 		{
 			if (e.Property != severityProperty) return;

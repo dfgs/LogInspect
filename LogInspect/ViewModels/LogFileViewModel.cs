@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
@@ -34,26 +35,23 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		/*public string FormatHandlerName
+		public string FormatHandlerName
 		{
 			get;
 			private set;
-		}*/
-
-		private string severityColumn;
-
-		public static readonly DependencyProperty FindOptionsProperty = DependencyProperty.Register("FindOptions", typeof(FindOptions), typeof(LogFileViewModel));
-		public FindOptions FindOptions
-		{
-			get { return (FindOptions)GetValue(FindOptionsProperty); }
-			set { SetValue(FindOptionsProperty, value); }
 		}
 
-		public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(Statuses), typeof(LogFileViewModel),new PropertyMetadata(Statuses.Idle));
+
+		public FindOptions FindOptions
+		{
+			get;
+			set;
+		}
+
 		public Statuses Status
 		{
-			get { return (Statuses)GetValue(StatusProperty); }
-			private set { SetValue(StatusProperty, value); }
+			get;
+			set;
 		}
 
 		public ColumnsViewModel Columns
@@ -69,7 +67,6 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		private List<Event> events;
 		public FilteredEventsViewModel Events
 		{
 			get;
@@ -87,43 +84,38 @@ namespace LogInspect.ViewModels
 
 		
 
-		public LogFileViewModel(ILogger Logger,LogFile LogFile) :base(Logger)
+		public LogFileViewModel(ILogger Logger,LogFile LogFile,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary) :base(Logger)
 		{
-			
+			AssertParameterNotNull("LogFile", LogFile);
+			AssertParameterNotNull("RegexBuilder", RegexBuilder);
+			AssertParameterNotNull("InlineColoringRuleDictionary", InlineColoringRuleDictionary);
+
 			this.logFile = LogFile;
 
 
-
 			this.Name = Path.GetFileName(LogFile.FileName);
-			//this.severityColumn = FormatHandler.SeverityColumn;
+			FindOptions = new FindOptions();
+			FindOptions.Column = LogFile.FormatHandler.DefaultColumn;
+			FormatHandlerName = LogFile.FormatHandler.Name;
 
-			Log(LogLevels.Information, "Creating viewmodels");
+			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, LogFile.FormatHandler.Columns);
+			Columns = new ColumnsViewModel(Logger, LogFile.FormatHandler, filterItemSourcesViewModel, RegexBuilder, InlineColoringRuleDictionary);
 
-			//FindOptions = new FindOptions();
-			//FindOptions.Column = FormatHandler.DefaultColumn;
+			this.Events = new FilteredEventsViewModel(Logger,logFile.Events, Columns, LogFile.FormatHandler.EventColoringRules);
 
 
-			/*Severities = new SeveritiesViewModel(Logger, FormatHandler.SeverityColumn, filterItemSourcesViewModel);
+			Severities = new SeveritiesViewModel(Logger, LogFile.FormatHandler.SeverityColumn, filterItemSourcesViewModel);
 
-			Columns = new ColumnsViewModel(Logger, FormatHandler,filterItemSourcesViewModel,RegexBuilder,InlineColoringRuleDictionary);
-
-			Markers = new MarkersViewModel(Logger,   Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);*/
+	
+			//Markers = new MarkersViewModel(Logger,   Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);*/
 
 
 
 
 		}
 
-
-		public override void Dispose()
-		{
-
-			//filterItemSourcesViewModel.Dispose();//*/
-
-		}
 
 		
-
 
 
 		#region filter events
@@ -136,8 +128,8 @@ namespace LogInspect.ViewModels
 			Filter[] filters;
 			
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			Events.SetFilters(filters);
-			Markers.Clear();
+			Events.Refresh(filters);
+			//Markers.Clear();
 		}
 
 		#endregion
@@ -154,8 +146,7 @@ namespace LogInspect.ViewModels
 				{
 					Index--;
 					ev = Events[Index];
-					if (Dispatcher.Invoke<bool>(()=> Predicate(ev))) return Index;
-					//if (Predicate(ev)) return Index;
+					if (Predicate(ev)) return Index;
 				}
 				return -1;
 			});
@@ -173,8 +164,7 @@ namespace LogInspect.ViewModels
 				{
 					Index++;
 					ev = Events[Index];
-					if (Dispatcher.Invoke<bool>(() => Predicate(ev))) return Index;
-					//if (Predicate(ev)) return Index;
+					if (Predicate(ev)) return Index;
 				}
 				return -1;
 			});
@@ -188,14 +178,14 @@ namespace LogInspect.ViewModels
 		{
 			int index;
 
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item.GetEventValue(severityColumn));
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item.GetEventValue(logFile.FormatHandler.SeverityColumn));
 			return index;
 		}
 		public async Task<int> FindNextSeverityAsync(string Severity, int StartIndex)
 		{
 			int index ;
 
-			index = await  FindNextAsync(StartIndex, (item) => Severity == item.GetEventValue(severityColumn));
+			index = await  FindNextAsync(StartIndex, (item) => Severity == item.GetEventValue(logFile.FormatHandler.SeverityColumn));
 			return index;
 		}
 		#endregion

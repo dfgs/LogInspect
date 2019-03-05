@@ -17,12 +17,11 @@ namespace LogInspect.ViewModels
 	{
 		private List<T> items;
 
-
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(T), typeof(CollectionViewModel<T>),new PropertyMetadata(SelectedItemPropertyChanged));
+		private T selectedItem;
 		public T SelectedItem
 		{
-			get { return (T)GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
+			get { return selectedItem; }
+			set { selectedItem = value; OnPropertyChanged(); }
 		}
 
 		public T this[int Index]
@@ -44,14 +43,7 @@ namespace LogInspect.ViewModels
 		}
 
 
-		private static void SelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((CollectionViewModel<T>)d).OnSelectedItemChanged();
-		}
-		protected virtual void OnSelectedItemChanged()
-		{
-
-		}
+		
 
 
 		protected void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
@@ -73,8 +65,18 @@ namespace LogInspect.ViewModels
 			items.RemoveAt(Index);
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, Index));
 			OnPropertyChanged("Count");
+			if (item.Equals(selectedItem )) SelectedItem = items.FirstOrDefault();
 		}
-		
+		public void Remove(T Item)
+		{
+			int index;
+
+			index = items.IndexOf(Item);
+			items.RemoveAt(index);
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, Item, index));
+			OnPropertyChanged("Count");
+			if (Item.Equals(selectedItem)) SelectedItem = items.FirstOrDefault();
+		}
 		public void Add(T Item)
 		{
 			int index;
@@ -84,7 +86,21 @@ namespace LogInspect.ViewModels
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Item, index));
 			OnPropertyChanged("Count");
 		}
-		public void AddRange(IList<T> Items)
+		public void Insert(int Index, T Item)
+		{
+			items.Insert(Index, Item);
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Item, Index));
+			OnPropertyChanged("Count");
+		}
+		public void Load(IEnumerable<T> Items)
+		{
+			items.Clear();
+			items.AddRange(Items);
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+			OnPropertyChanged("Count");
+		}
+
+		/*public void AddRange(IList<T> Items)
 		{
 			int index;
 
@@ -92,13 +108,8 @@ namespace LogInspect.ViewModels
 			items.AddRange(Items);
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,(IList)Items, index));
 			OnPropertyChanged("Count");
-		}
-		public void Insert(int Index, T Item)
-		{
-			items.Insert(Index, Item);
-			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Item, Index));
-			OnPropertyChanged("Count");
-		}
+		}*/
+
 
 		public void Select(int Index)
 		{

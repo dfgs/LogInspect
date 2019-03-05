@@ -5,24 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models
+namespace LogInspect.Modules
 {
-	public interface ILogFile
+	public interface IPatternLibraryModule:ILibraryModule<FormatHandler>
 	{
-		string FileName
+		IRegexBuilder RegexBuilder
 		{
 			get;
 		}
-		FormatHandler FormatHandler
-		{
-			get;
-		}
-		IEnumerable<Event> Events
-		{
-			get;
-		}
-
-
 
 	}
 }

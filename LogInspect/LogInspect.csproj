@@ -62,11 +62,18 @@
     <Compile Include="FilterWindow.xaml.cs">
       <DependentUpon>FilterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ILogFileLoaderModule.cs" />
+    <Compile Include="Modules\FormatHandlerLibraryModule.cs" />
+    <Compile Include="Modules\IInlineColoringRuleLibraryModule.cs" />
+    <Compile Include="Modules\IPatternLibraryModule.cs" />
+    <Compile Include="Modules\IFormatHandlerLibraryModule.cs" />
+    <Compile Include="Modules\ILibraryModule.cs" />
+    <Compile Include="Modules\ILogFileLoaderModule.cs" />
     <Compile Include="LoadWindow.xaml.cs">
       <DependentUpon>LoadWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogFileLoaderModule.cs" />
+    <Compile Include="Modules\LibraryModule.cs" />
+    <Compile Include="Modules\InfiniteLogFileLoader.cs" />
+    <Compile Include="Modules\LogFileLoaderModule.cs" />
     <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\Filters\Filter.cs" />
     <Compile Include="Models\Filters\MultiChoicesFilter.cs" />
@@ -77,6 +84,8 @@
     <Compile Include="Models\Filters\TimeStampFilter.cs" />
     <Compile Include="Models\ILogFile.cs" />
     <Compile Include="Models\LogFile.cs" />
+    <Compile Include="Modules\InlineColoringRuleLibraryModule.cs" />
+    <Compile Include="Modules\PatternLibraryModule.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
@@ -127,26 +136,13 @@
     <Compile Include="Views\FindView.xaml.cs">
       <DependentUpon>FindView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GaugeView.xaml.cs">
-      <DependentUpon>GaugeView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Inlines.cs" />
     <Compile Include="Views\GridViewColumns.cs" />
     <Compile Include="Views\IntPlusOneValueConverter.cs" />
     <Compile Include="Views\Layout.cs" />
-    <Compile Include="Views\ModuleStatusView.xaml.cs">
-      <DependentUpon>ModuleStatusView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Compile Include="Views\MarkerPanel.cs" />
-    <Compile Include="Views\ProgressPanel.cs" />
-    <Compile Include="Views\ProgressView.xaml.cs">
-      <DependentUpon>ProgressView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RateView.xaml.cs">
-      <DependentUpon>RateView.xaml</DependentUpon>
-    </Compile>
     <Page Include="FilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -190,22 +186,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FindView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\GaugeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ModuleStatusView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ProgressView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,11 +13,10 @@ namespace LogInspect.ViewModels.Filters
 	public class TextFilterViewModel:FilterViewModel
 	{
 
-		public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<TextFilterItem>), typeof(TextFilterViewModel));
 		public ObservableCollection<TextFilterItem> ItemsSource
 		{
-			get { return (ObservableCollection<TextFilterItem>)GetValue(ItemsSourceProperty); }
-			private set { SetValue(ItemsSourceProperty, value); }
+			get;
+			private set;
 		}
 
 		public TextFilterViewModel(ILogger Logger, string PropertyName, TextFilter Model):base(Logger,PropertyName)

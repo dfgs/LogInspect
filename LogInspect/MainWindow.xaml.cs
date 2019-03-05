@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogInspect.Modules;
 using LogInspect.ViewModels;
 using LogInspectLib;
 using LogLib;
@@ -30,18 +31,32 @@ namespace LogInspect
 
 
 		private ILogger logger;
+		private IPatternLibraryModule patternLibraryModule;
+		private IInlineColoringRuleLibraryModule inlineColoringRuleLibraryModule;
+		private IFormatHandlerLibraryModule formatHandlerLibraryModule;
+
 		private AppViewModel appViewModel;
 
 		public MainWindow()
 		{
 
-			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
-			appViewModel = new AppViewModel(logger, Properties.Settings.Default.FormatHandlersFolder, Properties.Settings.Default.PatternLibsFolder, Properties.Settings.Default.InlineColoringRuleLibsFolder);
+			//logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
+			logger = new ConsoleLogger(new DefaultLogFormatter());
 
+			appViewModel = new AppViewModel(logger);
+
+			patternLibraryModule = new PatternLibraryModule(logger, new RegexBuilder());
+			inlineColoringRuleLibraryModule = new InlineColoringRuleLibraryModule(logger, new InlineColoringRuleDictionary());
+			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, patternLibraryModule.RegexBuilder);
+
+			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternLibsFolder);
+			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineColoringRuleLibsFolder);
+			formatHandlerLibraryModule.LoadDirectory(Properties.Settings.Default.FormatHandlersFolder);
+			
 			InitializeComponent();
 			DataContext = appViewModel;
 
-
+			//-NoSelfLogging "E:\FTP\BNP\8202573775\RuleEngine.txt.3"
 			string[] args = Environment.GetCommandLineArgs();
 			if (args!=null)
 			{
@@ -99,18 +114,14 @@ namespace LogInspect
 			LogFile logFile;
 			ILogFileLoaderModule logFileLoaderModule;
 			LoadWindow loadWindow;
-			FormatHandler formatHandler;
-			IRegexBuilder regexBuilder;
 
-			formatHandler = appViewModel.GetFormatHandler(FileName);
-			
-
-			logFile = new LogFile(FileName);
-			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,regexBuilder,formatHandler);
-			loadWindow = new LoadWindow(logFileLoaderModule);
+			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
+			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule.RegexBuilder);
+			//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
+			loadWindow = new LoadWindow(logFileLoaderModule);loadWindow.Owner = this;
 			if (loadWindow.Load() ?? false)
 			{
-				appViewModel.Open(logFile);
+				appViewModel.Open(logFile,patternLibraryModule.RegexBuilder,inlineColoringRuleLibraryModule.InlineColoringRuleDictionary);
 			}
 		}
 

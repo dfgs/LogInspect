@@ -1,14 +1,15 @@
 ﻿using ModuleLib;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.ViewModels
+namespace LogInspect.Modules
 {
-	public interface IViewModel: IModule, INotifyPropertyChanged, IDisposable
+	public interface ILibraryModule<T>:IModule
 	{
+		void LoadDirectory(string Path);
+
 	}
 }

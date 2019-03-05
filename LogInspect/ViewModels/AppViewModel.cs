@@ -14,200 +14,44 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-	public class AppViewModel : ViewModel
+	public class AppViewModel : CollectionViewModel<LogFileViewModel>
 	{
-		private List<FormatHandler> formatHandlers;
-		private IRegexBuilder regexBuilder;
-		private IInlineColoringRuleDictionary inlineColoringRuleDictionary;
 
-		public ObservableCollection<LogFileViewModel> LogFiles
+		
+		
+		public AppViewModel(ILogger Logger) : base(Logger)
 		{
-			get;
-			private set;
-		}
-		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(LogFileViewModel), typeof(AppViewModel));
-		public LogFileViewModel SelectedItem
-		{
-			get { return (LogFileViewModel)GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
 		}
 
+		
 
-		public AppViewModel(ILogger Logger,string FormatHandlersPath, string PatternLibsPath, string InlineColoringLibsPath) : base(Logger)
-		{
-
-			this.regexBuilder = new RegexBuilder();
-			LoadPatternLibs(PatternLibsPath);
-
-			this.inlineColoringRuleDictionary = new InlineColoringRuleDictionary();
-			LoadInlineColoringRuleLibs(InlineColoringLibsPath);
-
-			LogFiles = new ObservableCollection<LogFileViewModel>();
-			formatHandlers = new List<FormatHandler>();
-			LoadSchemas(FormatHandlersPath);
-		}
-
-		public override void Dispose()
-		{
-			foreach(LogFileViewModel logFile in LogFiles)
-			{
-				logFile.Dispose();
-			}
-		}
-
-		public void Open(LogFile LogFile)
+		public void Open(LogFile LogFile,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary)
 		{
 			LogFileViewModel logFile;
-			FormatHandler formatHandler;
-
-			formatHandler = GetFormatHandler(LogFile.FileName);
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,LogFile);
+				logFile = new LogFileViewModel(Logger,LogFile,RegexBuilder, InlineColoringRuleDictionary);
+				logFile.Refresh();
 			}
 			catch(Exception ex)
 			{
 				Log(ex);
 				return;
 			}
-			LogFiles.Add(logFile);
+			Add(logFile);
 			SelectedItem = logFile;
 		}
 
 		public void CloseCurrent()
 		{
 			if (SelectedItem == null) return;
-			SelectedItem.Dispose();
-			LogFiles.Remove(SelectedItem);
-			SelectedItem = LogFiles.FirstOrDefault();
+			Remove(SelectedItem);
 		}
 
-
-		public void LoadPatternLibs(string Path)
-		{
-			PatternLib lib;
-
-			Log(LogLevels.Information, "Parsing pattern libs directory...");
-			try
-			{
-				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((item) => item))
-				{
-					Log(LogLevels.Information, $"Loading file {FileName}");
-					try
-					{
-						lib = PatternLib.LoadFromFile(FileName);
-					}
-					catch (Exception ex)
-					{
-						Log(ex);
-						continue;
-					}
-					regexBuilder.Add(lib.NameSpace,lib.Items);
-				}
-			}
-			catch (Exception ex)
-			{
-				Log(ex);
-			}
-		}
-
-		public void LoadInlineColoringRuleLibs(string Path)
-		{
-			InlineColoringRuleLib lib;
-
-			Log(LogLevels.Information, "Parsing inline coloring rule libs directory...");
-			try
-			{
-				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((item) => item))
-				{
-					Log(LogLevels.Information, $"Loading file {FileName}");
-					try
-					{
-						lib = InlineColoringRuleLib.LoadFromFile(FileName);
-					}
-					catch (Exception ex)
-					{
-						Log(ex);
-						continue;
-					}
-					inlineColoringRuleDictionary.Add(lib.NameSpace, lib.Items);
-					//regexBuilder.Add(lib.NameSpace, lib.Items);
-				}
-			}
-			catch (Exception ex)
-			{
-				Log(ex);
-			}
-		}
-		public void LoadSchemas(string Path)
-		{
-			FormatHandler formatHandler;
-
-			Log(LogLevels.Information, "Parsing format handlers directory...");
-			try
-			{
-				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((item)=>item) )
-				{
-					Log(LogLevels.Information, $"Loading file {FileName}");
-					try
-					{
-						formatHandler = FormatHandler.LoadFromFile(FileName);
-					}
-					catch (Exception ex)
-					{
-						Log(ex);
-						continue;
-					}
-					formatHandlers.Add(formatHandler);
-				}
-			}
-			catch (Exception ex)
-			{
-				Log(ex);
-			}
-		}
-
-		private bool MatchFileName(string FileName, string FileNamePattern,string DefaultNameSpace)
-		{
-			Regex regex;
-
-			try
-			{
-				regex = regexBuilder.Build(DefaultNameSpace, FileNamePattern,false);
-				return regex.Match(FileName).Success;
-			}
-			catch(Exception ex)
-			{
-				Log(ex);
-				return false;
-			}
-		}
-
-		public FormatHandler GetFormatHandler(string FileName)
-		{
-			FormatHandler formatHandler;
-			string shortName;
-
-
-			shortName = Path.GetFileName(FileName);
-			Log(LogLevels.Information, $"Try to find a format handler for file {shortName}");
-			formatHandler = formatHandlers.FirstOrDefault(item => MatchFileName(shortName,item.FileNamePattern,item.NameSpace) );
-			if (formatHandler == null)
-			{
-				Log(LogLevels.Warning, $"Format of log file {shortName} is unmanaged");
-				formatHandler = new FormatHandler();    // create a default handler
-			}
-			else
-			{
-				Log(LogLevels.Information, $"Format handler {formatHandler.Name} found for log file {shortName}");
-			}
-
-			return formatHandler;
-		}
 
 		
-		
+
 
 
 

@@ -12,47 +12,42 @@ namespace LogInspect.ViewModels.Filters
 	{
 		
 
-		public static readonly DependencyProperty StartDateProperty = DependencyProperty.Register("StartDate", typeof(DateTime), typeof(TimeStampFilterViewModel));
 		public DateTime StartDate
 		{
-			get { return (DateTime)GetValue(StartDateProperty); }
-			set { SetValue(StartDateProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime", typeof(TimeSpan), typeof(TimeStampFilterViewModel));
 		public TimeSpan StartTime
 		{
-			get { return (TimeSpan)GetValue(StartTimeProperty); }
-			set { SetValue(StartTimeProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty EndDateProperty = DependencyProperty.Register("EndDate", typeof(DateTime), typeof(TimeStampFilterViewModel));
 		public DateTime EndDate
 		{
-			get { return (DateTime)GetValue(EndDateProperty); }
-			set { SetValue(EndDateProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty EndTimeProperty = DependencyProperty.Register("EndTime", typeof(TimeSpan), typeof(TimeStampFilterViewModel));
 		public TimeSpan EndTime
 		{
-			get { return (TimeSpan)GetValue(EndTimeProperty); }
-			set { SetValue(EndTimeProperty, value); }
+			get;
+			set;
 		}
 
 
 
-		public static readonly DependencyProperty ConditionProperty = DependencyProperty.Register("Condition", typeof(TimeStampConditions), typeof(TimeStampFilterViewModel));
 		public TimeStampConditions Condition
 		{
-			get { return (TimeStampConditions)GetValue(ConditionProperty); }
-			set { SetValue(ConditionProperty, value); }
+			get;
+			set;
 		}
 
-		
+
 
 
 		public TimeStampFilterViewModel(ILogger Logger,string PropertyName,TimeStampFilter Model) : base(Logger,PropertyName)

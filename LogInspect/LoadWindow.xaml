@@ -4,13 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInspect"
-        mc:Ignorable="d"
-		Title="Loading..." MinHeight="100" Width="480" SizeToContent="Height" WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Icon="Images/page_white_magnify.png">
+        mc:Ignorable="d" x:Name="root"
+		Title="Loading..." MinHeight="100" Width="320" SizeToContent="Height" ResizeMode="NoResize" 
+		WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Icon="Images/page_white_magnify.png">
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
 			<Button Content="Stop" Width="75" Margin="4" Click="ButtonStop_Click"/>
 			<Button Content="Cancel" Width="75" Margin="4" Click="ButtonCancel_Click"/>
 		</StackPanel>
-		<ContentPresenter/>
+		<StackPanel DataContext="{Binding ElementName=root}" Margin="4">
+			<TextBlock Text="Progress:" FontWeight="Bold"/>
+			<ProgressBar Height="16" Margin="4" Value="{Binding Position}" Maximum="{Binding Length}" />
+			<TextBlock Text="{Binding Count,StringFormat='Events: {0}',FallbackValue='No events'}"/>
+		</StackPanel>
 	</DockPanel>
 </Window>

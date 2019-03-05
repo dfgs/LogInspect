@@ -89,8 +89,10 @@ namespace LogInspect.ViewModels
 
 		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event) : base(Logger)
 		{
-			//string severity;
-			
+			AssertParameterNotNull("Columns", Columns);
+			AssertParameterNotNull("ColoringRules", ColoringRules);
+			AssertParameterNotNull("Event", Event);
+
 			this.ev = Event;
 
 			Background = GetBackground(ColoringRules,Event );

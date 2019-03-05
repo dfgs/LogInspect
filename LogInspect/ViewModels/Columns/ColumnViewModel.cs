@@ -77,11 +77,10 @@ namespace LogInspect.ViewModels.Columns
 			get { return Filter != null; }
 		}
 
-		public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(ColumnViewModel),new PropertyMetadata(100d));
 		public double Width
 		{
-			get { return (double)GetValue(WidthProperty); }
-			set { SetValue(WidthProperty, value); }
+			get;
+			set;
 		}
 
 		

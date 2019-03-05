@@ -12,11 +12,10 @@ namespace LogInspect.ViewModels.Filters
 	public class MultiChoicesFilterViewModel:FilterViewModel
 	{
 
-		public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable<FilterItemViewModel>), typeof(MultiChoicesFilterViewModel));
 		public IEnumerable<FilterItemViewModel> ItemsSource
 		{
-			get { return (IEnumerable<FilterItemViewModel>)GetValue(ItemsSourceProperty); }
-			private set { SetValue(ItemsSourceProperty, value); }
+			get;
+			private set;
 		}
 
 
