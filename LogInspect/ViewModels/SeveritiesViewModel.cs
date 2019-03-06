@@ -13,38 +13,21 @@ namespace LogInspect.ViewModels
 {
 	public class SeveritiesViewModel : CollectionViewModel<string>
 	{
-		private IEnumerable<string> items;
+		private IEnumerable<EventViewModel> events;
+		private string severityColumn;
 
-		public SeveritiesViewModel(ILogger Logger,  string SeverityColumn, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger)
+		public SeveritiesViewModel(ILogger Logger, IEnumerable<EventViewModel> Events, string SeverityColumn) : base(Logger)
 		{
+			AssertParameterNotNull("Events", Events);
 			AssertParameterNotNull("SeverityColumn", SeverityColumn);
-			AssertParameterNotNull("FilterChoicesViewModel", FilterChoicesViewModel);
-			items = FilterChoicesViewModel[SeverityColumn];//.Cast<string>();
+			this.events = Events;
+			this.severityColumn = SeverityColumn;
 		}
 
-		/*protected override void OnRefresh()
+		public void Refresh()
 		{
-			
-			int count;
-			if (items == null) return;
-
-			count = items.Count();
-
-			for (int t = position; t < count; t++)
-			{
-				Add(items.ElementAt(t));
-			}
-			if ((Count > 0) && (SelectedItem == null)) SelectedItem = this[0];
-			position = count;
-			
-		}*/
-		/*private void FilterChoicesViewModel_FilterChoiceAdded(object sender, FilterItemAddedEventArgs e)
-		{
-			if (e.Property != severityProperty) return;
-			Add(e.Value);
-			if (Count == 1) SelectedItem = e.Value;
-			
-		}*/
+			this.Load(events.Select((vm) => vm[severityColumn].Value.ToString()).Distinct());
+		}
 
 
 

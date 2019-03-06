@@ -16,20 +16,26 @@ using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
+	/// <summary>
+	///  Track a list of unique log value per column. Ex: Maintain list of severities without duplicate
+	/// </summary>
 	public class FilterItemSourcesViewModel:ViewModel
 	{
 		private string[] columns;
 		private PropertyCollection<List<string>> items;
+		private IEnumerable<Event> events;
 
 		public IEnumerable<string> this[string Column]
 		{
 			get { return items[Column]; }
 		}
 
-		public FilterItemSourcesViewModel(ILogger Logger ,IEnumerable<Column> Columns) : base(Logger)
+		public FilterItemSourcesViewModel(ILogger Logger , IEnumerable<Event> Events,IEnumerable<Column> Columns) : base(Logger)
 		{
+			AssertParameterNotNull("Events", Events);
 			AssertParameterNotNull("Columns", Columns);
 
+			this.events = Events;
 			items = new PropertyCollection<List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
 			foreach (string column in columns)
@@ -39,31 +45,23 @@ namespace LogInspect.ViewModels
 					   	
 		}
 
-		/*protected override void OnRefresh()
+		
+		public void Refresh()
 		{
 			List<string> values;
 			string value;
-			int target;
-
-			if (eventList.Count - position > 100) target = position + 100;      // smooth list loading
-			else target = eventList.Count;
-			for (int t = position ; t < target; t++)
+			
+			foreach(Event ev in events)
 			{
 				foreach (string property in columns)
 				{
 					values = items[property];
-					value = eventList[t][property];//.GetEventValue(property);
-					if (!values.Contains(value))
-					{
-						values.Add(value);
-						//FilterChoiceAdded?.Invoke(this, new FilterItemAddedEventArgs(property, value));
-					}
+					value = ev[property];//.GetEventValue(property);
+					if (!values.Contains(value)) values.Add(value);
 				}
 			}
-			position = target;
 
-		}//*/
-
+		}
 		public IEnumerable<object> GetFilterChoices(string Property)
 		{
 			return items[Property];

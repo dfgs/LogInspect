@@ -91,11 +91,12 @@
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
+    <Compile Include="ViewModels\EventCollectionViewModel.cs" />
     <Compile Include="ViewModels\FindOptions.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
     <Compile Include="ViewModels\MarkerViewModel.cs" />
-    <Compile Include="ViewModels\FilterItemSourcesViewModel .cs" />
+    <Compile Include="ViewModels\FilterItemSourcesViewModel.cs" />
     <Compile Include="ViewModels\FilteredEventsViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\FilterItemViewModel.cs" />

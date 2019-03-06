@@ -14,6 +14,7 @@ using System.Windows;
 namespace LogInspect.ViewModels
 {
 	public class CollectionViewModel<T>:ViewModel,IEnumerable<T>,INotifyCollectionChanged
+		where T:class
 	{
 		private List<T> items;
 
@@ -53,6 +54,7 @@ namespace LogInspect.ViewModels
 
 		public virtual void Clear()
 		{
+			SelectedItem = null;
 			items.Clear();
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			OnPropertyChanged("Count");
@@ -98,6 +100,7 @@ namespace LogInspect.ViewModels
 			items.AddRange(Items);
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			OnPropertyChanged("Count");
+			SelectedItem = items.FirstOrDefault();
 		}
 
 		/*public void AddRange(IList<T> Items)

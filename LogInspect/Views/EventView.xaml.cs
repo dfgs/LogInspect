@@ -86,7 +86,7 @@ namespace LogInspect.Views
 			marker = border.DataContext as MarkerViewModel;
 			if (marker == null) return;
 
-			logFileViewModel.Events.Select(marker.Position);
+			logFileViewModel.FilteredEvents.Select(marker.Position);
 		}
 
 		private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)

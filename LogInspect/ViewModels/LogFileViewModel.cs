@@ -67,7 +67,8 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-		public FilteredEventsViewModel Events
+		private EventCollectionViewModel events;
+		public FilteredEventsViewModel FilteredEvents
 		{
 			get;
 			private set;
@@ -98,24 +99,27 @@ namespace LogInspect.ViewModels
 			FindOptions.Column = LogFile.FormatHandler.DefaultColumn;
 			FormatHandlerName = LogFile.FormatHandler.Name;
 
-			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, LogFile.FormatHandler.Columns);
+
+			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger,LogFile.Events, LogFile.FormatHandler.Columns);
+
+			events = new EventCollectionViewModel(Logger);
+			this.FilteredEvents = new FilteredEventsViewModel(Logger, events);
+
 			Columns = new ColumnsViewModel(Logger, LogFile.FormatHandler, filterItemSourcesViewModel, RegexBuilder, InlineColoringRuleDictionary);
 
-			this.Events = new FilteredEventsViewModel(Logger,logFile.Events, Columns, LogFile.FormatHandler.EventColoringRules);
+			Severities = new SeveritiesViewModel(Logger, FilteredEvents, LogFile.FormatHandler.SeverityColumn);
 
 
-			Severities = new SeveritiesViewModel(Logger, LogFile.FormatHandler.SeverityColumn, filterItemSourcesViewModel);
-
-	
 			//Markers = new MarkersViewModel(Logger,   Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);*/
 
+			events.Load(logFile.Events.Select((ev) => new EventViewModel(Logger, Columns, logFile.FormatHandler.EventColoringRules, ev)));
 
 
 
 		}
 
 
-		
+
 
 
 		#region filter events
@@ -128,8 +132,8 @@ namespace LogInspect.ViewModels
 			Filter[] filters;
 			
 			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			Events.Refresh(filters);
-			//Markers.Clear();
+			FilteredEvents.Refresh(filters);
+			Severities.Refresh();
 		}
 
 		#endregion
@@ -145,7 +149,7 @@ namespace LogInspect.ViewModels
 				while (Index > 0)
 				{
 					Index--;
-					ev = Events[Index];
+					ev = FilteredEvents[Index];
 					if (Predicate(ev)) return Index;
 				}
 				return -1;
@@ -160,10 +164,10 @@ namespace LogInspect.ViewModels
 			Status = Statuses.Searching;
 			result = await Task.Run<int>(() =>
 			{
-				while (Index < Events.Count- 1)
+				while (Index < FilteredEvents.Count- 1)
 				{
 					Index++;
-					ev = Events[Index];
+					ev = FilteredEvents[Index];
 					if (Predicate(ev)) return Index;
 				}
 				return -1;
@@ -193,8 +197,8 @@ namespace LogInspect.ViewModels
 		#region bookmark
 		public void ToogleBookMark()
 		{
-			if (Events.SelectedItem == null) return;
-			Events.SelectedItem.IsBookMarked = !Events.SelectedItem.IsBookMarked;
+			if (FilteredEvents.SelectedItem == null) return;
+			FilteredEvents.SelectedItem.IsBookMarked = !FilteredEvents.SelectedItem.IsBookMarked;
 		}
 
 		public async Task<int> FindPreviousBookMarkAsync(int StartIndex)
@@ -221,7 +225,7 @@ namespace LogInspect.ViewModels
 			DateTime newTime;
 
 			if (StartIndex < 0) newTime = DateTime.MinValue;
-			else newTime = Events[StartIndex].TimeStamp.AddMinutes(-1);
+			else newTime = FilteredEvents[StartIndex].TimeStamp.AddMinutes(-1);
 
 			index = await FindPreviousAsync(StartIndex, (item) => item.TimeStamp<=newTime);
 			return index;
@@ -232,7 +236,7 @@ namespace LogInspect.ViewModels
 			DateTime newTime;
 
 			if (StartIndex < 0) newTime = DateTime.MinValue;
-			else newTime = Events[StartIndex].TimeStamp.AddMinutes(1);
+			else newTime = FilteredEvents[StartIndex].TimeStamp.AddMinutes(1);
 
 			index = await FindNextAsync(StartIndex, (item) => item.TimeStamp>=newTime);
 			return index;
@@ -243,7 +247,7 @@ namespace LogInspect.ViewModels
 			DateTime newTime;
 
 			if (StartIndex < 0) newTime = DateTime.MinValue;
-			else newTime = Events[StartIndex].TimeStamp.AddHours(-1);
+			else newTime = FilteredEvents[StartIndex].TimeStamp.AddHours(-1);
 
 			index = await FindPreviousAsync(StartIndex, (item) => item.TimeStamp <= newTime);
 			return index;
@@ -254,7 +258,7 @@ namespace LogInspect.ViewModels
 			DateTime newTime;
 
 			if (StartIndex < 0) newTime = DateTime.MinValue;
-			else newTime = Events[StartIndex].TimeStamp.AddHours(1);
+			else newTime = FilteredEvents[StartIndex].TimeStamp.AddHours(1);
 
 			index = await FindNextAsync(StartIndex, (item) => item.TimeStamp >= newTime);
 			return index;

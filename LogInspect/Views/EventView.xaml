@@ -110,7 +110,7 @@
 					</ItemsControl.ItemContainerStyle>
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
-							<views:MarkerPanel TotalSize="{Binding Events.Count}" MinItemHeight="5"/>
+							<views:MarkerPanel TotalSize="{Binding FilteredEvents.Count}" MinItemHeight="5"/>
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
@@ -122,8 +122,8 @@
 
 			</Grid>
 			<Grid>
-				<ListView ItemsSource="{Binding Events}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-					 SelectedItem="{Binding Events.SelectedItem}" 
+				<ListView ItemsSource="{Binding FilteredEvents}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+					 SelectedItem="{Binding FilteredEvents.SelectedItem}" 
 				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
 				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" >
 				<ListView.CommandBindings>
@@ -158,7 +158,7 @@
 						<Style TargetType="{x:Type TextBlock}">
 							<Setter Property="Visibility" Value="Hidden"/>
 							<Style.Triggers>
-								<DataTrigger Binding="{Binding Events.Count}" Value="0">
+								<DataTrigger Binding="{Binding FilteredEvents.Count}" Value="0">
 									<Setter Property="Visibility" Value="Visible"/>
 								</DataTrigger>
 							</Style.Triggers>
@@ -170,7 +170,7 @@
 		
 		
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<TabControl Grid.Row="3" DataContext="{Binding Events.SelectedItem}">
+		<TabControl Grid.Row="3" DataContext="{Binding FilteredEvents.SelectedItem}">
 			<TabItem >
 				<TabItem.Header>
 					<StackPanel Orientation="Horizontal">

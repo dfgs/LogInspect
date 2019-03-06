@@ -148,7 +148,7 @@
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<ToggleButton ToolTip="Tail logs" IsChecked="{Binding Events.Tail}">
+				<ToggleButton ToolTip="Tail logs" IsChecked="{Binding FilteredEvents.Tail}">
 					<Image Source="Images/script_go.png" Stretch="None"   />
 				</ToggleButton>
 				<ToggleButton ToolTip="Find" IsChecked="{Binding FindOptions.IsVisible}">

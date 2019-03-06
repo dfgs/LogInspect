@@ -20,21 +20,15 @@ namespace LogInspect.ViewModels
 	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel>
 	{
 
-		private IEnumerable<ColumnViewModel> columns;
-		private IEnumerable<EventColoringRule> eventColoringRules;
-		private IEnumerable<Event> events;
+		private IEnumerable<EventViewModel> events;
 
 
 		private Filter[] filters;
 
-		public FilteredEventsViewModel(ILogger Logger , IEnumerable<Event> Events, IEnumerable<ColumnViewModel> Columns, IEnumerable<EventColoringRule> EventColoringRules) : base(Logger)
+		public FilteredEventsViewModel(ILogger Logger , IEnumerable<EventViewModel> Events) : base(Logger)
 		{
 			AssertParameterNotNull("Events", Events);
-			AssertParameterNotNull("Columns", Columns);
-			AssertParameterNotNull("EventColoringRules", EventColoringRules);
 			this.events = Events;
-			this.columns = Columns;
-			this.eventColoringRules = EventColoringRules;
 		}
 
 		private bool MustDiscard(EventViewModel Event)
@@ -50,7 +44,7 @@ namespace LogInspect.ViewModels
 		{
 
 			this.filters = Filters;
-			Load( events.Select((ev)=>new EventViewModel(Logger, columns, eventColoringRules, ev)).Where((vm)=>!MustDiscard(vm))  );
+			Load( events.Where((vm)=>!MustDiscard(vm))  );
 
 		}
 
