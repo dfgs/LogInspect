@@ -60,8 +60,8 @@ namespace LogInspect.ViewModels
 					if (!values.Contains(value)) values.Add(value);
 				}
 			}
-
 		}
+
 		public IEnumerable<object> GetFilterChoices(string Property)
 		{
 			return items[Property];

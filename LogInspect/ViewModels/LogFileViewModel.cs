@@ -102,19 +102,16 @@ namespace LogInspect.ViewModels
 
 			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger,LogFile.Events, LogFile.FormatHandler.Columns);
 
-			events = new EventCollectionViewModel(Logger);
-			this.FilteredEvents = new FilteredEventsViewModel(Logger, events);
 
 			Columns = new ColumnsViewModel(Logger, LogFile.FormatHandler, filterItemSourcesViewModel, RegexBuilder, InlineColoringRuleDictionary);
 
-			Severities = new SeveritiesViewModel(Logger, FilteredEvents, LogFile.FormatHandler.SeverityColumn);
+			events = new EventCollectionViewModel(Logger,Columns,logFile.FormatHandler.EventColoringRules);
 
+			this.FilteredEvents = new FilteredEventsViewModel(Logger);
 
-			//Markers = new MarkersViewModel(Logger,   Events, FormatHandler.EventColoringRules, FormatHandler.SeverityColumn);*/
-
-			events.Load(logFile.Events.Select((ev) => new EventViewModel(Logger, Columns, logFile.FormatHandler.EventColoringRules, ev)));
-
-
+			Severities = new SeveritiesViewModel(Logger, LogFile.FormatHandler.SeverityColumn);
+			
+			Markers = new MarkersViewModel(Logger,LogFile.FormatHandler.SeverityColumn);
 
 		}
 
@@ -123,17 +120,19 @@ namespace LogInspect.ViewModels
 
 
 		#region filter events
-		/*private void Columns_FilterChanged(object sender, EventArgs e)
+		public async void Load()
 		{
-			Refresh();
-		}*/
-		public void Refresh()
+			await events.Load(logFile.Events);
+			filterItemSourcesViewModel.Refresh();
+			await Refresh();
+		}
+
+		public async Task Refresh()
 		{
-			Filter[] filters;
-			
-			filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			FilteredEvents.Refresh(filters);
-			Severities.Refresh();
+			FilteredEvents.Filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
+			await FilteredEvents.Load(events);
+			await Severities.Load(FilteredEvents);
+			await Markers.Load(FilteredEvents);
 		}
 
 		#endregion

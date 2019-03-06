@@ -32,7 +32,7 @@ namespace LogInspect.ViewModels
 			try
 			{
 				logFile = new LogFileViewModel(Logger,LogFile,RegexBuilder, InlineColoringRuleDictionary);
-				logFile.Refresh();
+				logFile.Load();
 			}
 			catch(Exception ex)
 			{

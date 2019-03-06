@@ -36,7 +36,7 @@ namespace LogInspect.Views
 			listView.ScrollIntoView(listView.SelectedItem);
 		}
 
-		private void ListView_Click(object sender, RoutedEventArgs e)
+		private async void ListView_Click(object sender, RoutedEventArgs e)
 		{
 			ListView listView;
 			GridViewColumnHeader columnHeader;
@@ -67,7 +67,7 @@ namespace LogInspect.Views
 			if (result == true) column.Filter = window.Filter.CreateFilter();
 			else column.Filter = null;
 
-			logFile.Refresh();
+			await logFile.Refresh();
 
 		}
 

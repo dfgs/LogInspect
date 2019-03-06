@@ -11,23 +11,22 @@ using LogLib;
 
 namespace LogInspect.ViewModels
 {
-	public class SeveritiesViewModel : CollectionViewModel<string>
+	public class SeveritiesViewModel : FilteredCollectionViewModel<EventViewModel, string>
 	{
-		private IEnumerable<EventViewModel> events;
 		private string severityColumn;
 
-		public SeveritiesViewModel(ILogger Logger, IEnumerable<EventViewModel> Events, string SeverityColumn) : base(Logger)
+		public SeveritiesViewModel(ILogger Logger,  string SeverityColumn) : base(Logger)
 		{
-			AssertParameterNotNull("Events", Events);
+			//AssertParameterNotNull("Events", Events);
 			AssertParameterNotNull("SeverityColumn", SeverityColumn);
-			this.events = Events;
+			//this.events = Events;
 			this.severityColumn = SeverityColumn;
 		}
-
-		public void Refresh()
+		protected override IEnumerable<string> Filter(IEnumerable<EventViewModel> Items)
 		{
-			this.Load(events.Select((vm) => vm[severityColumn].Value.ToString()).Distinct());
+			return Items.Select((item) => item[severityColumn].Value.ToString()).Distinct();
 		}
+	
 
 
 

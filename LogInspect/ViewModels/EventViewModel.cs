@@ -33,11 +33,11 @@ namespace LogInspect.ViewModels
 			}
 		}
 		
-		public int EventIndex
+		/*public int EventIndex
 		{
 			get;
 			set;
-		}
+		}*/
 
 		public int LineIndex
 		{
@@ -54,6 +54,11 @@ namespace LogInspect.ViewModels
 			}
 		}
 
+		public Brush SeverityBrush
+		{
+			get;
+			private set;
+		}
 		public Brush Background
 		{
 			get;
@@ -95,13 +100,17 @@ namespace LogInspect.ViewModels
 
 			this.ev = Event;
 
-			Background = GetBackground(ColoringRules,Event );
-			if (Background == null)
+			SeverityBrush = GetBackground(ColoringRules,Event );
+			if (SeverityBrush == null)
 			{
 				Background = Brushes.LightGray;
 				Foreground = Brushes.Black;
 			}
-			else Foreground = Background;
+			else
+			{
+				Background = SeverityBrush;
+				Foreground = SeverityBrush;
+			}
 
 			properties = new PropertyCollection<PropertyViewModel>();
 			foreach(ColumnViewModel column in Columns)

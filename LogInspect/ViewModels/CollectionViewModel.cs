@@ -25,6 +25,11 @@ namespace LogInspect.ViewModels
 			set { selectedItem = value; OnPropertyChanged(); }
 		}
 
+		public int SelectedIndex
+		{
+			get { return selectedItem == null ? -1 : items.IndexOf(selectedItem); }
+		}
+
 		public T this[int Index]
 		{
 			get { return items[Index]; }

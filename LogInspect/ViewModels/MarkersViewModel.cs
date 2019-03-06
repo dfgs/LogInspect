@@ -5,6 +5,7 @@ using LogInspectLib;
 using LogLib;
 using System;
 using System.Collections;
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -15,68 +16,50 @@ using System.Windows.Media;
 
 namespace LogInspect.ViewModels
 {
-	public class MarkersViewModel:CollectionViewModel<MarkerViewModel>
+	public class MarkersViewModel:FilteredCollectionViewModel<EventViewModel, MarkerViewModel>
 	{
 		private string severityColumn;
-		private IEnumerable<EventColoringRule> coloringRules;
-
-		private FilteredEventsViewModel events;
 
 
-		public int Maximum
+		public MarkersViewModel(ILogger Logger ,string SeverityColumn) : base(Logger)
 		{
-			get;
-			private set;
-		}
-		
-
-		public MarkersViewModel(ILogger Logger ,  FilteredEventsViewModel Events, IEnumerable<EventColoringRule> ColoringRules,string SeverityColumn) : base(Logger)
-		{
-			AssertParameterNotNull("Events", Events);
-			AssertParameterNotNull("ColoringRules", ColoringRules);
+			//AssertParameterNotNull("Events", Events);
 			AssertParameterNotNull("SeverityColumn", SeverityColumn);
 
 			this.severityColumn = SeverityColumn;
-			this.coloringRules = ColoringRules;
-			this.events = Events;
+			//this.events = Events;
 		}
-		/*protected override void OnRefresh()
+
+		protected override IEnumerable<MarkerViewModel> Filter(IEnumerable<EventViewModel> Items)
 		{
-			int target;
-			EventViewModel item;
 			string severity;
 			MarkerViewModel range = null;
-			Brush brush;
+			int index = 0;
+			List<MarkerViewModel> items;
 
-			lock (this)
+			items = new List<MarkerViewModel>();
+			foreach (EventViewModel item in Items)
 			{
-				target = events.Count;
-
-			
-				for (int t = position; t < target; t++)
+				if (item.SeverityBrush != null)
 				{
-					item = events[t];
-					brush = EventViewModel.GetBackground(coloringRules, item);
-					if (brush == null) continue;
-
 					severity = item.GetEventValue(severityColumn);
-					if (this.Count > 0) range = this[Count - 1];
-
-					if ((range == null) || (severity != range.Severity) || (t != range.Position + range.Size))
+					if ((range == null) || (severity != range.Severity) || (index != range.Position + range.Size))
 					{
 						range = new MarkerViewModel(Logger);
-						range.Position = t;
-						range.Background = brush;
+						range.Position = index;
+						range.Background = item.SeverityBrush;
 						range.Severity = severity;
-						Add(range);
+						items.Add(range);
 					}
-
 					range.Size++;
 				}
-				position = target;
-			}
-		}*/
 
+				index++;
+			}
+
+			return items;
+		}
+		
 		
 
 	}

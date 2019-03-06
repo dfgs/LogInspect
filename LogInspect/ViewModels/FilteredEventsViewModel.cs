@@ -17,36 +17,36 @@ using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
-	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel>
+	public class FilteredEventsViewModel:FilteredCollectionViewModel<EventViewModel,EventViewModel>
 	{
 
-		private IEnumerable<EventViewModel> events;
-
-
-		private Filter[] filters;
-
-		public FilteredEventsViewModel(ILogger Logger , IEnumerable<EventViewModel> Events) : base(Logger)
+		public Filter[] Filters
 		{
-			AssertParameterNotNull("Events", Events);
-			this.events = Events;
+			get;
+			set;
+		}
+
+		public FilteredEventsViewModel(ILogger Logger ) : base(Logger)
+		{
+			//AssertParameterNotNull("Events", Events);
+			//this.events = Events;
 		}
 
 		private bool MustDiscard(EventViewModel Event)
 		{
-			if (filters == null) return false;
-			foreach(Filter filter in filters)
+			if (Filters == null) return false;
+			foreach(Filter filter in Filters)
 			{
 				if (filter.MustDiscard(Event)) return true;
 			}
 			return false;
 		}
-		public void Refresh(Filter[] Filters)
+
+		protected override IEnumerable<EventViewModel> Filter(IEnumerable<EventViewModel> Items)
 		{
-
-			this.filters = Filters;
-			Load( events.Where((vm)=>!MustDiscard(vm))  );
-
+			return Items.Where((item) => !MustDiscard(item));
 		}
+		
 
 
 
