@@ -33,7 +33,7 @@ namespace LogInspect.ViewModels
 		}
 
 
-		public string Severity
+		public object Severity
 		{
 			get;
 			set;

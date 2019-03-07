@@ -13,7 +13,8 @@ namespace LogInspect.ViewModels.Properties
 	public class BookMarkPropertyViewModel : PropertyViewModel
 	{
 		
-		public BookMarkPropertyViewModel(ILogger Logger, string Name,  EventViewModel Event) : base(Logger,Name,Event)
+
+		public BookMarkPropertyViewModel(ILogger Logger, string Name) : base(Logger,Name,false)
 		{
 		}
 

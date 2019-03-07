@@ -1,11 +1,10 @@
 ﻿using LogInspect.Models;
-
+using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogLib;
 using System;
 using System.Collections;
-using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -13,47 +12,50 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
 	public class MarkersViewModel:CollectionViewModel<EventViewModel, MarkerViewModel>
 	{
 		private string severityColumn;
+		private IColorProviderModule colorProviderModule;
 
-
-		public MarkersViewModel(ILogger Logger ,string SeverityColumn) : base(Logger)
+		public MarkersViewModel(ILogger Logger , IColorProviderModule ColorProviderModule,string SeverityColumn) : base(Logger)
 		{
-			//AssertParameterNotNull("Events", Events);
 			AssertParameterNotNull("SeverityColumn", SeverityColumn);
+			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
 
+			this.colorProviderModule = ColorProviderModule;
 			this.severityColumn = SeverityColumn;
-			//this.events = Events;
 		}
 
 		protected override IEnumerable<MarkerViewModel> GenerateItems(IEnumerable<EventViewModel> Items)
 		{
-			string severity;
-			MarkerViewModel range = null;
+			object severity;
+			MarkerViewModel marker = null;
 			int index = 0;
 			List<MarkerViewModel> items;
+			Brush background;
 
 			items = new List<MarkerViewModel>();
 			foreach (EventViewModel item in Items)
 			{
-				if (item.SeverityBrush != null)
+				background= colorProviderModule.GetBackground(item);
+				if (background != null)
 				{
-					severity = item.GetEventValue(severityColumn);
-					if ((range == null) || (severity != range.Severity) || (index != range.Position + range.Size))
+					severity = item[severityColumn].Value;
+					if ((marker == null) || (!ValueType.Equals(severity , marker.Severity)) || (index != marker.Position + marker.Size))
 					{
-						range = new MarkerViewModel(Logger);
-						range.Position = index;
-						range.Background = item.SeverityBrush;
-						range.Severity = severity;
-						items.Add(range);
+						marker = new MarkerViewModel(Logger);
+						marker.Position = index;
+						marker.Background =  background;
+						marker.Background.Freeze(); // mandatory for UI binding and avoid thread synchronisation exceptions
+						marker.Severity = severity;
+						items.Add(marker);
 					}
-					range.Size++;
+					marker.Size++;
 				}
-
 				index++;
 			}
 

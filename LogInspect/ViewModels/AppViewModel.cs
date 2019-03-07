@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogInspect.Modules;
 using LogInspectLib;
 using LogInspectLib.Parsers;
 using LogLib;
@@ -28,22 +29,27 @@ namespace LogInspect.ViewModels
 			throw new NotImplementedException();
 		}
 
-		public void Open(LogFile LogFile,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary)
+		public async Task Open(LogFile LogFile, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule)
 		{
 			LogFileViewModel logFile;
 
+			AssertParameterNotNull("LogFile", LogFile);
+			AssertParameterNotNull("InlineParserBuilderModule", InlineParserBuilderModule);
+			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
+
 			try
 			{
-				logFile = new LogFileViewModel(Logger,LogFile,RegexBuilder, InlineColoringRuleDictionary);
-				logFile.Load();
+				logFile = new LogFileViewModel(Logger,LogFile,InlineParserBuilderModule,ColorProviderModule);
+				Add(logFile);
+				SelectedItem = logFile;
+				//await Task.Delay(5000);
+				await logFile.Load();
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Log(ex);
 				return;
 			}
-			Add(logFile);
-			SelectedItem = logFile;
 		}
 
 		public void CloseCurrent()

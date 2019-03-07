@@ -18,12 +18,12 @@ namespace LogInspect.ViewModels.Properties
 			get;
 			private set;
 		}
-		
 
-		public  object Value
+		private object value;
+		public object Value
 		{
-			get;
-			private set;
+			get { return value; }
+			set { this.value = value; OnPropertyChanged(); }
 		}
 
 		

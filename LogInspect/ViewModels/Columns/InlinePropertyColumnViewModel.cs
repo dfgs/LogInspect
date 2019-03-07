@@ -31,14 +31,14 @@ namespace LogInspect.ViewModels.Columns
 			private set;
 		}
 
-		public InlinePropertyColumnViewModel(ILogger Logger, string Name,string Alignment, IInlineParser InlineParser) : base(Logger,Name,Name,Alignment,null)
+		public InlinePropertyColumnViewModel(ILogger Logger, string Name,string Alignment, IInlineParser InlineParser) : base(Logger,Name,Name,Alignment)
 		{
 			this.InlineParser = InlineParser;
 		}
 
-		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
+		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			return new InlinePropertyViewModel(Logger, Name, InlineParser.Parse(Event.GetEventValue(Name)));
+			return new InlinePropertyViewModel(Logger, Name, InlineParser.Parse(Event[Name]));
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

@@ -52,7 +52,7 @@
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None"  Visibility="{Binding Value.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
+				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None"  Visibility="{Binding Value,Converter={StaticResource booleanToVisibilityConverter}}"/>
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
@@ -104,8 +104,8 @@
 				<ItemsControl Grid.Row="1"  ItemsSource="{Binding Markers}" >
 					<ItemsControl.ItemContainerStyle>
 						<Style TargetType="{x:Type ContentPresenter}">
-							<Setter Property="views:MarkerPanel.Position" Value="{Binding Position}"/>
-							<Setter Property="views:MarkerPanel.Size" Value="{Binding Size}"/>
+							<Setter Property="views:MarkerPanel.Position" Value="{Binding Position,Mode=OneWay}"/>
+							<Setter Property="views:MarkerPanel.Size" Value="{Binding Size,Mode=OneWay}"/>
 						</Style>
 					</ItemsControl.ItemContainerStyle>
 					<ItemsControl.ItemsPanel>
@@ -115,7 +115,7 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Border Background="{Binding Background}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MouseDown="Marker_MouseDown" Cursor="Hand"/>
+							<Border Background="{Binding Background,Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MouseDown="Marker_MouseDown" Cursor="Hand"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

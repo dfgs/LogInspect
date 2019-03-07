@@ -27,13 +27,13 @@ namespace LogInspect.ViewModels.Columns
 
 		
 
-		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Name,Alignment,null)
+		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Name,Alignment)
 		{
 		}
 
-		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
+		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			return new TextPropertyViewModel(Logger, Name, Event.GetEventValue(Name));
+			return new TextPropertyViewModel(Logger, Name, Event[Name]);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

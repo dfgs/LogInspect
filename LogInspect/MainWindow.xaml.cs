@@ -64,11 +64,11 @@ namespace LogInspect
 				{
 					if (arg.StartsWith("-"))
 					{
-						if (arg == "-SelfLogging") Open("LogInspect.log");
+						if (arg == "-SelfLogging") Open("LogInspect.log").Wait();
 					}
 					else
 					{
-						Open(arg);
+						Open(arg).Wait();
 					}
 				}
 			}
@@ -98,7 +98,7 @@ namespace LogInspect
 			e.CanExecute = true;e.Handled = true;
 		}
 
-		private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private async void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			OpenFileDialog dialog;
 
@@ -106,22 +106,29 @@ namespace LogInspect
 			dialog.Title = "Open log file";
 			dialog.Filter = "Log files|*.log|Text files|*.txt|All files|*.*";
 
-			if (dialog.ShowDialog(this) ?? false) Open(dialog.FileName);
+			if (dialog.ShowDialog(this) ?? false) await Open(dialog.FileName);
 		}
 
-		private void Open(string FileName)
+		private async Task Open(string FileName)
 		{
 			LogFile logFile;
 			ILogFileLoaderModule logFileLoaderModule;
 			LoadWindow loadWindow;
+			IColorProviderModule colorProviderModule;
+			IInlineParserBuilderModule inlineParserBuilderModule;
 
 			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
+			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
+			inlineParserBuilderModule = new InlineParserBuilderModule(logger,patternLibraryModule.RegexBuilder,inlineColoringRuleLibraryModule.InlineColoringRuleDictionary);
+
 			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule.RegexBuilder);
 			//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
+
+
 			loadWindow = new LoadWindow(logFileLoaderModule);loadWindow.Owner = this;
 			if (loadWindow.Load() ?? false)
 			{
-				appViewModel.Open(logFile,patternLibraryModule.RegexBuilder,inlineColoringRuleLibraryModule.InlineColoringRuleDictionary);
+				await appViewModel.Open(logFile,inlineParserBuilderModule,colorProviderModule);
 			}
 		}
 

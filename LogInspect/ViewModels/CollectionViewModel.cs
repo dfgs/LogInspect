@@ -113,7 +113,8 @@ namespace LogInspect.ViewModels
 		{
 			IEnumerable<T> filteredItems;
 
-			filteredItems = await Task.Run(() => GenerateItems(Items));
+			filteredItems = await Task.Run( () => GenerateItems(Items));
+			
 			items.Clear();
 			items.AddRange(filteredItems);
 

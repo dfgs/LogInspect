@@ -27,16 +27,16 @@ namespace LogInspect.ViewModels.Columns
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 
-		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment,null)
+		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment)
 		{
 
 			this.filterItemSourcesViewModel = FilterChoicesViewModel;
 
 		}
 
-		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
+		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			return new TextPropertyViewModel(Logger, Name, Event.GetEventValue(Name));
+			return new TextPropertyViewModel(Logger, Name, Event[Name]);
 		}
 		public override FilterViewModel CreateFilterViewModel()
 		{

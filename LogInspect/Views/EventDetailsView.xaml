@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800" >
 	<UserControl.Resources>
 		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-			<TextBox BorderThickness="0" Text="{Binding Value.IsBookMarked,Mode=OneWay}"/>
+			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">

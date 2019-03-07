@@ -45,12 +45,7 @@ namespace LogInspect.ViewModels.Columns
 			private set;
 		}
 
-		public string Format
-		{
-			get;
-			private set;
-		}
-
+		
 		public abstract bool AllowsFilter
 		{
 			get;
@@ -86,7 +81,7 @@ namespace LogInspect.ViewModels.Columns
 		
 
 
-		public ColumnViewModel(ILogger Logger, string Name, string Description, string Alignment,string Format) : base(Logger)
+		public ColumnViewModel(ILogger Logger, string Name, string Description, string Alignment) : base(Logger)
 		{
 			TextAlignment alignment;
 
@@ -95,13 +90,12 @@ namespace LogInspect.ViewModels.Columns
 
 			this.Name = Name;
 			this.Description = Description;
-			this.Format = Format;
 
 		}
 
 		
 
-		public abstract PropertyViewModel CreatePropertyViewModel(EventViewModel Event);
+		public abstract PropertyViewModel CreatePropertyViewModel(Event Event);
 		public abstract FilterViewModel CreateFilterViewModel();
 
 		

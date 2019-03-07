@@ -21,11 +21,11 @@ namespace LogInspectLib
 			set;
 		}
 
-		public bool IsBookMarked
+		/*public bool IsBookMarked
 		{
 			get;
 			set;
-		}
+		}*/
 
 		public PropertyCollection<string> Properties
 		{

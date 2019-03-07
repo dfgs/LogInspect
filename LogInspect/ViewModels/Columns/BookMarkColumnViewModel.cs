@@ -23,13 +23,13 @@ namespace LogInspect.ViewModels.Columns
 		public override Visibility ImageVisibility => Visibility.Visible;
 		public override string ImageSource => "/LogInspect;component/Images/flag_blue.png";
 
-		public BookMarkColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"","Center",null)
+		public BookMarkColumnViewModel(ILogger Logger,string Name) : base(Logger,Name,"","Center")
 		{
 		}
 
-		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
+		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			return new BookMarkPropertyViewModel(Logger,Name,Event);
+			return new BookMarkPropertyViewModel(Logger,Name);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

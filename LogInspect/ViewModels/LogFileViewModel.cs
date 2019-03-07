@@ -1,23 +1,12 @@
 ﻿using LogInspect.Models;
-using LogInspect.Models.Filters;
+using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspectLib;
-using LogInspectLib.Parsers;
-using LogInspectLib.Readers;
 using LogLib;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
@@ -85,14 +74,14 @@ namespace LogInspect.ViewModels
 
 		
 
-		public LogFileViewModel(ILogger Logger,LogFile LogFile,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary) :base(Logger)
+		public LogFileViewModel(ILogger Logger,LogFile LogFile, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule) :base(Logger)
 		{
 			AssertParameterNotNull("LogFile", LogFile);
-			AssertParameterNotNull("RegexBuilder", RegexBuilder);
-			AssertParameterNotNull("InlineColoringRuleDictionary", InlineColoringRuleDictionary);
+			AssertParameterNotNull("InlineParserBuilderModule", InlineParserBuilderModule);
+			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
 
 			this.logFile = LogFile;
-
+			
 
 			this.Name = Path.GetFileName(LogFile.FileName);
 			FindOptions = new FindOptions();
@@ -101,13 +90,13 @@ namespace LogInspect.ViewModels
 
 			// loaded on opening
 			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, LogFile.FormatHandler.Columns);
-			Columns = new ColumnsViewModel(Logger, LogFile.FormatHandler, filterItemSourcesViewModel, RegexBuilder, InlineColoringRuleDictionary);
-			events = new EventCollectionViewModel(Logger,Columns,logFile.FormatHandler.EventColoringRules);
+			Columns = new ColumnsViewModel(Logger, LogFile.FormatHandler, filterItemSourcesViewModel, InlineParserBuilderModule, ColorProviderModule);
+			events = new EventCollectionViewModel(Logger,Columns);
 
 			// loaded on refresh
 			this.FilteredEvents = new FilteredEventsViewModel(Logger);
 			Severities = new SeveritiesViewModel(Logger, LogFile.FormatHandler.SeverityColumn);
-			Markers = new MarkersViewModel(Logger,LogFile.FormatHandler.SeverityColumn);
+			Markers = new MarkersViewModel(Logger,ColorProviderModule, LogFile.FormatHandler.SeverityColumn);
 		}
 
 
@@ -115,7 +104,7 @@ namespace LogInspect.ViewModels
 
 
 		#region filter events
-		public async void Load()
+		public async Task Load()
 		{
 			await filterItemSourcesViewModel.Load(logFile.Events);
 			await Columns.LoadModels(logFile.FormatHandler.Columns);
@@ -178,14 +167,14 @@ namespace LogInspect.ViewModels
 		{
 			int index;
 
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item.GetEventValue(logFile.FormatHandler.SeverityColumn));
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item[logFile.FormatHandler.SeverityColumn].Value?.ToString());
 			return index;
 		}
 		public async Task<int> FindNextSeverityAsync(string Severity, int StartIndex)
 		{
 			int index ;
 
-			index = await  FindNextAsync(StartIndex, (item) => Severity == item.GetEventValue(logFile.FormatHandler.SeverityColumn));
+			index = await  FindNextAsync(StartIndex, (item) => Severity == item[logFile.FormatHandler.SeverityColumn].Value?.ToString());
 			return index;
 		}
 		#endregion
@@ -194,21 +183,21 @@ namespace LogInspect.ViewModels
 		public void ToogleBookMark()
 		{
 			if (FilteredEvents.SelectedItem == null) return;
-			FilteredEvents.SelectedItem.IsBookMarked = !FilteredEvents.SelectedItem.IsBookMarked;
+			FilteredEvents.SelectedItem["BookMarked"].Value = !(bool)FilteredEvents.SelectedItem["BookMarked"].Value;
 		}
 
 		public async Task<int> FindPreviousBookMarkAsync(int StartIndex)
 		{
 			int index;
 
-			index = await FindPreviousAsync(StartIndex, (item) => item.IsBookMarked );
+			index = await FindPreviousAsync(StartIndex, (item) => (bool)item["BookMarked"].Value);
 			return index;
 		}
 		public async Task<int> FindNextBookMarkAsync(int StartIndex)
 		{
 			int index;
 
-			index = await FindNextAsync(StartIndex, (item) => item.IsBookMarked );
+			index = await FindNextAsync(StartIndex, (item) => (bool)item["BookMarked"].Value );
 			return index;
 		}
 

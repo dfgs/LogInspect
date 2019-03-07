@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
 using LogInspect.ViewModels.Properties;
 using LogInspectLib;
@@ -17,7 +18,7 @@ namespace LogInspect.ViewModels
 	public class EventViewModel : ViewModel
 	{
 
-		private Event ev;
+		//private readonly Event ev;
 
 		private PropertyCollection<PropertyViewModel> properties;
 		public IEnumerable<PropertyViewModel> Properties
@@ -34,10 +35,11 @@ namespace LogInspect.ViewModels
 		}
 		
 		
-		public int LineIndex
+		/*public int LineIndex
 		{
-			get { return ev.LineIndex; }
-		}
+			get;
+			private set;
+		}*/
 
 
 		private TimeStampPropertyViewModel timeStamp;
@@ -49,7 +51,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public Brush SeverityBrush
+		/*public Brush SeverityBrush
 		{
 			get;
 			private set;
@@ -67,7 +69,7 @@ namespace LogInspect.ViewModels
 		public string RawLog
 		{
 			get { return "TODO"; }
-		}
+		}*/
 
 		
 		public string Lines
@@ -79,23 +81,22 @@ namespace LogInspect.ViewModels
 		}
 
 
+		/*private bool isBookMarked;
 		public bool IsBookMarked
 		{
-			get { return this.ev.IsBookMarked; }
-			set { this.ev.IsBookMarked=value;OnPropertyChanged(); }
-		}
+			get { return isBookMarked; }
+			set { isBookMarked=value;OnPropertyChanged(); }
+		}*/
 
 
 
-		public EventViewModel(ILogger Logger, IEnumerable<ColumnViewModel> Columns,  IEnumerable<EventColoringRule> ColoringRules, Event Event) : base(Logger)
+		public EventViewModel(ILogger Logger,  IEnumerable<PropertyViewModel> Properties) : base(Logger)
 		{
-			AssertParameterNotNull("Columns", Columns);
-			AssertParameterNotNull("ColoringRules", ColoringRules);
-			AssertParameterNotNull("Event", Event);
+			AssertParameterNotNull("Properties", Properties);
 
-			this.ev = Event;
+			/*this.LineIndex = LineIndex;
+			this.SeverityBrush = SeverityBrush;
 
-			SeverityBrush = GetBackground(ColoringRules,Event );
 			if (SeverityBrush == null)
 			{
 				Background = Brushes.LightGray;
@@ -105,50 +106,25 @@ namespace LogInspect.ViewModels
 			{
 				Background = SeverityBrush;
 				Foreground = SeverityBrush;
-			}
+			}*/
 
 			properties = new PropertyCollection<PropertyViewModel>();
-			foreach(ColumnViewModel column in Columns)
+			foreach(PropertyViewModel property in Properties)
 			{
-				properties[column.Name] = column.CreatePropertyViewModel(this);
+				properties[property.Name] = property;
 			}
 			
 			timeStamp = properties.FirstOrDefault(item => item is TimeStampPropertyViewModel) as TimeStampPropertyViewModel;
 			if (timeStamp == null) timeStamp = new TimeStampPropertyViewModel(Logger, "Date",  DateTime.MinValue);
 		}
 
-		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules,Event Event)
-		{
-			string value;
-
-			foreach (EventColoringRule coloringRule in ColoringRules)
-			{
-				value = Event[coloringRule.Column];
-				if (value == null) continue;
-
-				if (Regex.Match(value, coloringRule.Pattern).Success)
-				{
-					try
-					{
-						Brush Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
-						return Background;
-					}
-					catch 
-					{
-						//Log(LogLevels.Error, $"Invalid background {coloringRule.Background}");
-					}
-
-				}
-			}
-			return null;
-		}
 
 
 
-		public string GetEventValue(string Column)
+		/*public string GetEventValue(string Column)
 		{
 			return ev[Column];
-		}
+		}*/
 		
 
 		
