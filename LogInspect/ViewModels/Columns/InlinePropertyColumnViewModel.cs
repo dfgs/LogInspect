@@ -16,7 +16,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class TextPropertyColumnViewModel : ColumnViewModel
+	public class InlinePropertyColumnViewModel : ColumnViewModel
 	{
 		public override bool AllowsResize => true;
 		public override bool AllowsFilter => true;
@@ -25,15 +25,20 @@ namespace LogInspect.ViewModels.Columns
 		public override Visibility ImageVisibility => Visibility.Collapsed;
 		public override string ImageSource => "/LogInspect;component/Images/Calendar.png"; // define a default image souce to avoid converter exceptions
 
-		
-
-		public TextPropertyColumnViewModel(ILogger Logger, string Name,string Alignment) : base(Logger,Name,Name,Alignment,null)
+		public IInlineParser InlineParser
 		{
+			get;
+			private set;
+		}
+
+		public InlinePropertyColumnViewModel(ILogger Logger, string Name,string Alignment, IInlineParser InlineParser) : base(Logger,Name,Name,Alignment,null)
+		{
+			this.InlineParser = InlineParser;
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new TextPropertyViewModel(Logger, Name, Event.GetEventValue(Name));
+			return new InlinePropertyViewModel(Logger, Name, InlineParser.Parse(Event.GetEventValue(Name)));
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

@@ -16,10 +16,9 @@ namespace LogInspect.ViewModels.Properties
 	{
 		
 
-		public TimeStampPropertyViewModel(ILogger Logger, string Name,TextAlignment Alignment, DateTime Value) : base(Logger, Name,Alignment)
+		public TimeStampPropertyViewModel(ILogger Logger, string Name, DateTime Value) : base(Logger, Name,Value)
 		{
-			this.Value = Value;
-
 		}
+
 	}
 }

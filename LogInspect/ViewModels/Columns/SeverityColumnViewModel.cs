@@ -20,18 +20,14 @@ namespace LogInspect.ViewModels.Columns
 	public class SeverityColumnViewModel : MultiChoicesColumnViewModel
 	{
 
-
-		
-
-
-		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment,IInlineParser InlineParser, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,InlineParser,FilterChoicesViewModel)
+		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,FilterChoicesViewModel)
 		{
 		
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new SeverityPropertyViewModel(Logger, Name,Alignment, InlineParser, Event.GetEventValue(Name),Event.Background,Event.Foreground);
+			return new SeverityPropertyViewModel(Logger, Name,  Event.GetEventValue(Name),Event.Background,Event.Foreground);
 		}
 
 

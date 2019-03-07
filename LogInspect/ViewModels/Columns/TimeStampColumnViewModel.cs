@@ -38,7 +38,7 @@ namespace LogInspect.ViewModels.Columns
 		{
 			DateTime value;
 			DateTime.TryParseExact(Event.GetEventValue(Name), Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out value) ;
-			return new TimeStampPropertyViewModel(Logger, Name,Alignment, value);
+			return new TimeStampPropertyViewModel(Logger, Name, value);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

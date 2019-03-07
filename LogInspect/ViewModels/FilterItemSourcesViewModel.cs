@@ -23,19 +23,16 @@ namespace LogInspect.ViewModels
 	{
 		private string[] columns;
 		private PropertyCollection<List<string>> items;
-		private IEnumerable<Event> events;
-
+	
 		public IEnumerable<string> this[string Column]
 		{
 			get { return items[Column]; }
 		}
 
-		public FilterItemSourcesViewModel(ILogger Logger , IEnumerable<Event> Events,IEnumerable<Column> Columns) : base(Logger)
+		public FilterItemSourcesViewModel(ILogger Logger , IEnumerable<Column> Columns) : base(Logger)
 		{
-			AssertParameterNotNull("Events", Events);
 			AssertParameterNotNull("Columns", Columns);
 
-			this.events = Events;
 			items = new PropertyCollection<List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
 			foreach (string column in columns)
@@ -46,22 +43,28 @@ namespace LogInspect.ViewModels
 		}
 
 		
-		public void Refresh()
+
+		public async Task Load(IEnumerable<Event> Items)
 		{
 			List<string> values;
 			string value;
-			
-			foreach(Event ev in events)
+
+			await Task.Run(() =>
 			{
-				foreach (string property in columns)
+				foreach (Event ev in Items)
 				{
-					values = items[property];
-					value = ev[property];//.GetEventValue(property);
-					if (!values.Contains(value)) values.Add(value);
+					foreach (string property in columns)
+					{
+						values = items[property];
+						value = ev[property];//.GetEventValue(property);
+						if (!values.Contains(value)) values.Add(value);
+					}
 				}
-			}
+			});
 		}
 
+
+	
 		public IEnumerable<object> GetFilterChoices(string Property)
 		{
 			return items[Property];

@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-	public class CollectionViewModel<T>:ViewModel,IEnumerable<T>,INotifyCollectionChanged
+	public abstract class CollectionViewModel<TModel, T>:ViewModel,IEnumerable<T>,INotifyCollectionChanged
 		where T:class
 	{
 		private List<T> items;
@@ -107,17 +107,22 @@ namespace LogInspect.ViewModels
 			OnPropertyChanged("Count");
 			SelectedItem = items.FirstOrDefault();
 		}
+		protected abstract IEnumerable<T> GenerateItems(IEnumerable<TModel> Items);
 
-		/*public void AddRange(IList<T> Items)
+		public async Task LoadModels(IEnumerable<TModel> Items)
 		{
-			int index;
+			IEnumerable<T> filteredItems;
 
-			index = items.Count;
-			items.AddRange(Items);
-			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,(IList)Items, index));
+			filteredItems = await Task.Run(() => GenerateItems(Items));
+			items.Clear();
+			items.AddRange(filteredItems);
+
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 			OnPropertyChanged("Count");
-		}*/
+			SelectedItem = items.FirstOrDefault();
+		}
 
+		
 
 		public void Select(int Index)
 		{

@@ -99,20 +99,15 @@ namespace LogInspect.ViewModels
 			FindOptions.Column = LogFile.FormatHandler.DefaultColumn;
 			FormatHandlerName = LogFile.FormatHandler.Name;
 
-
-			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger,LogFile.Events, LogFile.FormatHandler.Columns);
-
-
+			// loaded on opening
+			filterItemSourcesViewModel = new FilterItemSourcesViewModel(Logger, LogFile.FormatHandler.Columns);
 			Columns = new ColumnsViewModel(Logger, LogFile.FormatHandler, filterItemSourcesViewModel, RegexBuilder, InlineColoringRuleDictionary);
-
 			events = new EventCollectionViewModel(Logger,Columns,logFile.FormatHandler.EventColoringRules);
 
+			// loaded on refresh
 			this.FilteredEvents = new FilteredEventsViewModel(Logger);
-
 			Severities = new SeveritiesViewModel(Logger, LogFile.FormatHandler.SeverityColumn);
-			
 			Markers = new MarkersViewModel(Logger,LogFile.FormatHandler.SeverityColumn);
-
 		}
 
 
@@ -122,17 +117,19 @@ namespace LogInspect.ViewModels
 		#region filter events
 		public async void Load()
 		{
-			await events.Load(logFile.Events);
-			filterItemSourcesViewModel.Refresh();
+			await filterItemSourcesViewModel.Load(logFile.Events);
+			await Columns.LoadModels(logFile.FormatHandler.Columns);
+			await events.LoadModels(logFile.Events);
+
 			await Refresh();
 		}
 
 		public async Task Refresh()
 		{
 			FilteredEvents.Filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
-			await FilteredEvents.Load(events);
-			await Severities.Load(FilteredEvents);
-			await Markers.Load(FilteredEvents);
+			await FilteredEvents.LoadModels(events);
+			await Severities.LoadModels(FilteredEvents);
+			await Markers.LoadModels(FilteredEvents);
 		}
 
 		#endregion

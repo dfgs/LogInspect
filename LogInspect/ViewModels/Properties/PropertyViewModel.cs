@@ -18,24 +18,18 @@ namespace LogInspect.ViewModels.Properties
 			get;
 			private set;
 		}
+		
 
-		public TextAlignment Alignment
+		public  object Value
 		{
 			get;
 			private set;
 		}
 
-		public  object Value
-		{
-			get;
-			protected set;
-		}
-
 		
-		public PropertyViewModel(ILogger Logger,string Name,TextAlignment Alignment) : base(Logger)
+		public PropertyViewModel(ILogger Logger,string Name,object Value) : base(Logger)
 		{
-			this.Name = Name;
-			this.Alignment = Alignment;
+			this.Name = Name;this.Value = Value;
 		}
 
 

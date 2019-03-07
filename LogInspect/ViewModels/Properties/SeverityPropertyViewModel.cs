@@ -11,7 +11,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Properties
 {
-	public class SeverityPropertyViewModel : TextPropertyViewModel
+	public class SeverityPropertyViewModel : PropertyViewModel
 	{
 		public Brush Background
 		{
@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels.Properties
 			private set;
 		}
 
-		public SeverityPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment, IInlineParser InlineParser, string Value,Brush Background,Brush Foreground) : base(Logger, Name,Alignment,InlineParser,Value)
+		public SeverityPropertyViewModel(ILogger Logger, string Name,   string Value,Brush Background,Brush Foreground) : base(Logger, Name,Value)
 		{
 			this.Background = Background;this.Foreground = Foreground;
 		}

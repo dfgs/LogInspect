@@ -14,15 +14,12 @@ namespace LogInspect.ViewModels.Properties
 	public class TextPropertyViewModel : PropertyViewModel
 	{
 		
-		public IEnumerable<Inline> Inlines
+		
+
+		public TextPropertyViewModel(ILogger Logger, string Name,  string Value) : base(Logger, Name,Value)
 		{
-			get;
-			private set;
 		}
 
-		public TextPropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment, IInlineParser InlineParser, string Value) : base(Logger, Name,Alignment)
-		{
-			this.Value = Value;this.Inlines = InlineParser.Parse(Value);
-		}
+
 	}
 }

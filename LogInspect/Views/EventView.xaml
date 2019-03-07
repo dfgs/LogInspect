@@ -52,29 +52,29 @@
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">
-				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None" HorizontalAlignment="Center" Visibility="{Binding Value.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
+				<Image Source="/LogInspect;component/Images/flag_blue.png" Stretch="None"  Visibility="{Binding Value.IsBookMarked,Converter={StaticResource booleanToVisibilityConverter}}"/>
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
-				<TextBlock  Text="{Binding Value}" FontWeight="Bold" TextAlignment="{Binding Alignment}" Foreground="Gray" ToolTip="{Binding}"/>
+				<TextBlock  Text="{Binding Value}" FontWeight="Bold"  Foreground="Gray" ToolTip="{Binding}"/>
 			</DataTemplate>
 			
 			<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
-				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
+				<TextBlock Text="{Binding Value}"  TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
 			</DataTemplate>
 		
 			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
 				<DockPanel ToolTip="{Binding}" >
 					<Border Width="4" DockPanel.Dock="Left" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>
-					<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis"/>
+					<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextTrimming="CharacterEllipsis"/>
 				</DockPanel>
 			</DataTemplate>
-		
+
 			<DataTemplate DataType="{x:Type propertyVM:TextPropertyViewModel}">
-				<TextBlock views:Inlines.InlineSource="{Binding Inlines}" TextTrimming="CharacterEllipsis" TextAlignment="{Binding Alignment}" ToolTip="{Binding}"/>
-				<!--
-				<TextBlock Text="{Binding Value}" TextAlignment="{Binding Alignment}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
-				-->
+				<TextBlock Text="{Binding Value}" TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type propertyVM:InlinePropertyViewModel}">
+				<TextBlock views:Inlines.InlineSource="{Binding Value}" TextTrimming="CharacterEllipsis"  ToolTip="{Binding}"/>
 			</DataTemplate>
 			<!-- -->
 		</ResourceDictionary>
@@ -123,36 +123,35 @@
 			</Grid>
 			<Grid>
 				<ListView ItemsSource="{Binding FilteredEvents}" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-					 SelectedItem="{Binding FilteredEvents.SelectedItem}" 
-				  SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
-				 VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" >
-				<ListView.CommandBindings>
-					<CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
-				</ListView.CommandBindings>
-				<ListView.Style>
-					<Style TargetType="{x:Type ListView}">
-						<Setter Property="IsEnabled" Value="False"/>
-						<Style.Triggers>
-							<DataTrigger Binding="{Binding Status}" Value="Idle">
-								<Setter Property="IsEnabled" Value="True"/>
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</ListView.Style>
-				<ListView.ItemContainerStyle>
-					<Style TargetType="{x:Type ListViewItem}">
-						<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-						<Setter Property="Margin" Value="0"/>
-						<Setter Property="Padding" Value="0"/>
-						<!--Setter Property="Background" Value="{Binding Background}"/-->
-					</Style>
-				</ListView.ItemContainerStyle>
-				<ListView.View>
-					<GridView   views:GridViewColumns.ColumnsSource="{Binding Columns}" ColumnHeaderTemplate="{StaticResource columnHeaderTemplate}" ColumnHeaderContainerStyle="{StaticResource columnHeaderStyle}"  >
+						SelectedItem="{Binding FilteredEvents.SelectedItem}" 
+						SelectionChanged="ListView_Selected"  GridViewColumnHeader.Click="ListView_Click"
+						VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" >
+					<ListView.CommandBindings>
+						<CommandBinding Command="Copy" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
+					</ListView.CommandBindings>
+					<ListView.Style>
+						<Style TargetType="{x:Type ListView}">
+							<Setter Property="IsEnabled" Value="False"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Status}" Value="Idle">
+									<Setter Property="IsEnabled" Value="True"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ListView.Style>
+					<ListView.ItemContainerStyle>
+						<Style TargetType="{x:Type ListViewItem}">
+							<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+							<Setter Property="Margin" Value="0"/>
+							<Setter Property="Padding" Value="0"/>
+						</Style>
+					</ListView.ItemContainerStyle>
+					<ListView.View>
+						<GridView   views:GridViewColumns.ColumnsSource="{Binding Columns}" ColumnHeaderTemplate="{StaticResource columnHeaderTemplate}" ColumnHeaderContainerStyle="{StaticResource columnHeaderStyle}"  >
+						</GridView>
+					</ListView.View>
+				</ListView>
 
-					</GridView>
-				</ListView.View>
-			</ListView>
 				<TextBlock Text="Filtering..." FontSize="24" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" >
 					<TextBlock.Style>
 						<Style TargetType="{x:Type TextBlock}">

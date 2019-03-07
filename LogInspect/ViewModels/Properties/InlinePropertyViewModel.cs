@@ -5,17 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.ViewModels.Columns;
+using LogInspectLib;
 using LogInspectLib.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties
 {
-	public class BookMarkPropertyViewModel : PropertyViewModel
+	public class InlinePropertyViewModel : PropertyViewModel
 	{
 		
-		public BookMarkPropertyViewModel(ILogger Logger, string Name,  EventViewModel Event) : base(Logger,Name,Event)
+		
+
+		public InlinePropertyViewModel(ILogger Logger, string Name,  IEnumerable<Inline> Inlines) : base(Logger, Name,Inlines)
 		{
 		}
+
 
 	}
 }

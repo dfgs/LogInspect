@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-	public class AppViewModel : CollectionViewModel<LogFileViewModel>
+	public class AppViewModel : CollectionViewModel<LogFile,LogFileViewModel>
 	{
 
 		
@@ -23,7 +23,10 @@ namespace LogInspect.ViewModels
 		{
 		}
 
-		
+		protected override IEnumerable<LogFileViewModel> GenerateItems(IEnumerable<LogFile> Items)
+		{
+			throw new NotImplementedException();
+		}
 
 		public void Open(LogFile LogFile,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary)
 		{
@@ -49,11 +52,6 @@ namespace LogInspect.ViewModels
 			Remove(SelectedItem);
 		}
 
-
 		
-
-
-
-
 	}
 }

@@ -9,7 +9,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels
 {
-	public class EventCollectionViewModel : FilteredCollectionViewModel<Event,EventViewModel>
+	public class EventCollectionViewModel : CollectionViewModel<Event,EventViewModel>
 	{
 		private IEnumerable<ColumnViewModel> columns;
 		private IEnumerable<EventColoringRule> eventColoringRules;
@@ -20,8 +20,9 @@ namespace LogInspect.ViewModels
 			this.columns = Columns;
 			this.eventColoringRules = EventColoringRules;
 		}
+		
 
-		protected override IEnumerable<EventViewModel> Filter(IEnumerable<Event> Items)
+		protected override IEnumerable<EventViewModel> GenerateItems(IEnumerable<Event> Items)
 		{
 			return Items.Select((item) => new EventViewModel(Logger, columns ,eventColoringRules, item));
 		}

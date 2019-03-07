@@ -92,10 +92,10 @@
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
+    <Compile Include="ViewModels\Columns\InlinePropertyColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\EventCollectionViewModel.cs" />
-    <Compile Include="ViewModels\FilteredCollectionViewModel.cs" />
     <Compile Include="ViewModels\FindOptions.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MarkersViewModel.cs" />
@@ -113,6 +113,7 @@
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\Properties\SeverityPropertyViewModel.cs" />
+    <Compile Include="ViewModels\Properties\InlinePropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TimeStampPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TextPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\BookMarkPropertyViewModel.cs" />

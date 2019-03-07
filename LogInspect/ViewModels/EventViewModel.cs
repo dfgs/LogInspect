@@ -33,12 +33,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 		
-		/*public int EventIndex
-		{
-			get;
-			set;
-		}*/
-
+		
 		public int LineIndex
 		{
 			get { return ev.LineIndex; }
@@ -50,7 +45,7 @@ namespace LogInspect.ViewModels
 		{
 			get
 			{
-				return (DateTime)(timeStamp?.Value??DateTime.MinValue);
+				return (DateTime)(timeStamp.Value);
 			}
 		}
 
@@ -117,7 +112,9 @@ namespace LogInspect.ViewModels
 			{
 				properties[column.Name] = column.CreatePropertyViewModel(this);
 			}
+			
 			timeStamp = properties.FirstOrDefault(item => item is TimeStampPropertyViewModel) as TimeStampPropertyViewModel;
+			if (timeStamp == null) timeStamp = new TimeStampPropertyViewModel(Logger, "Date",  DateTime.MinValue);
 		}
 
 		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules,Event Event)
@@ -146,41 +143,14 @@ namespace LogInspect.ViewModels
 			return null;
 		}
 
-		public static Brush GetBackground(IEnumerable<EventColoringRule> ColoringRules, EventViewModel Event)
-		{
-			string value;
-
-			foreach (EventColoringRule coloringRule in ColoringRules)
-			{
-				value = Event.GetEventValue( coloringRule.Column);
-				if (value == null) continue;
-
-				if (Regex.Match(value, coloringRule.Pattern).Success)
-				{
-					try
-					{
-						Brush Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
-						return Background;
-					}
-					catch
-					{
-						//Log(LogLevels.Error, $"Invalid background {coloringRule.Background}");
-					}
-
-				}
-			}
-			return null;
-		}
 
 
 		public string GetEventValue(string Column)
 		{
 			return ev[Column];
 		}
-		/*public Inline[] GetPropertyInlines(string PropertyName)
-		{
-			return ev.GetProperty(PropertyName)?.Inlines;
-		}*/
+		
+
 		
 
 	}

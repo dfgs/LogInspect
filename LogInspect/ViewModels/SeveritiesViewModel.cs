@@ -11,7 +11,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels
 {
-	public class SeveritiesViewModel : FilteredCollectionViewModel<EventViewModel, string>
+	public class SeveritiesViewModel : CollectionViewModel<EventViewModel, string>
 	{
 		private string severityColumn;
 
@@ -22,7 +22,7 @@ namespace LogInspect.ViewModels
 			//this.events = Events;
 			this.severityColumn = SeverityColumn;
 		}
-		protected override IEnumerable<string> Filter(IEnumerable<EventViewModel> Items)
+		protected override IEnumerable<string> GenerateItems(IEnumerable<EventViewModel> Items)
 		{
 			return Items.Select((item) => item[severityColumn].Value.ToString()).Distinct();
 		}

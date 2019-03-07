@@ -81,7 +81,7 @@ namespace LogInspect.Views
 		
 			column.Width = Column.Width;
 			column.Header = Column;
-			column.CellTemplate = CreateDataTemplate(Column.Name);
+			column.CellTemplate = CreateDataTemplate(Column);
 			column.HeaderTemplate = GetHeaderTemplate(gridView);
 			
 			//column.DisplayMemberBinding = new Binding($"[{Column.Name}]");
@@ -90,11 +90,11 @@ namespace LogInspect.Views
 			return column;
 		}
 
-		public static DataTemplate CreateDataTemplate(string PropertyName)
+		private static DataTemplate CreateDataTemplate(ColumnViewModel Column)
 		{
 			StringReader stringReader = new StringReader(
 			@"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""> 
-            <ContentPresenter HorizontalAlignment=""Stretch"" Content=""{Binding [" + PropertyName + @"]}""/> 
+            <ContentPresenter HorizontalAlignment="""+Column.Alignment+@""" Content=""{Binding [" + Column.Name + @"]}""/> 
 			</DataTemplate>");
 			XmlReader xmlReader = XmlReader.Create(stringReader);
 			return XamlReader.Load(xmlReader) as DataTemplate;

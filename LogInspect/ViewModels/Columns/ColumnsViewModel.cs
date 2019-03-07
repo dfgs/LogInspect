@@ -12,79 +12,78 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class ColumnsViewModel : ViewModel,IEnumerable<ColumnViewModel>
+	public class ColumnsViewModel : CollectionViewModel<Column,ColumnViewModel>
 	{
-		private List<ColumnViewModel> items;
 
-
+		private FormatHandler formatHandler;
+		private IRegexBuilder regexBuilder;
+		private IInlineColoringRuleDictionary inlineColoringRuleDictionary;
+		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 
 		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel,IRegexBuilder RegexBuilder,IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger)
+		{
+			AssertParameterNotNull("RegexBuilder", RegexBuilder);
+			AssertParameterNotNull("FormatHandler", FormatHandler);
+			AssertParameterNotNull("InlineColoringRuleDictionary", InlineColoringRuleDictionary);
+			AssertParameterNotNull("FilterItemSourcesViewModel", FilterItemSourcesViewModel);
+
+			this.regexBuilder = RegexBuilder;
+			this.formatHandler = FormatHandler;
+			this.inlineColoringRuleDictionary = InlineColoringRuleDictionary;
+			this.filterItemSourcesViewModel = FilterItemSourcesViewModel;
+		}
+
+		protected override IEnumerable<ColumnViewModel> GenerateItems(IEnumerable<Column> Items)
 		{
 			IInlineParser inlineParser;
 			InlineColoringRule inlineColoringRule;
 
-			items = new List<ColumnViewModel>();
+			yield return new BookMarkColumnViewModel(Logger, "BookMarked") { Width = 30 };
+			yield return new LineColumnViewModel(Logger, "Line number") { Width = 50 };
 
-			AddColumn(new BookMarkColumnViewModel(Logger, "BookMarked") { Width = 30 });
-			AddColumn(new LineColumnViewModel(Logger, "Line number") { Width = 50 });
-
-			foreach (Column column in FormatHandler.Columns)
+			foreach (Column column in Items)
 			{
-				inlineParser = new InlineParser(RegexBuilder);
-				foreach(string ruleName in column.InlineColoringRules)
+				inlineParser = new InlineParser(regexBuilder);
+				foreach (string ruleName in column.InlineColoringRules)
 				{
 					try
 					{
-						inlineColoringRule = InlineColoringRuleDictionary.GetItem(FormatHandler.NameSpace, ruleName);
+						inlineColoringRule = inlineColoringRuleDictionary.GetItem(formatHandler.NameSpace, ruleName);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						Log(LogLevels.Warning, ex.Message);
 						continue;
 					}
 					try
 					{
-						inlineParser.Add(FormatHandler.NameSpace, inlineColoringRule);
+						inlineParser.Add(formatHandler.NameSpace, inlineColoringRule);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						Log(LogLevels.Warning, ex.Message);
 						continue;
 					}
 				}
 
-				if (column.Name == FormatHandler.TimeStampColumn)
+				if (column.Name == formatHandler.TimeStampColumn)
 				{
-					AddColumn(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment,column.Format) { Width = column.Width });
+					yield return new TimeStampColumnViewModel(Logger, column.Name, column.Alignment, column.Format) { Width = column.Width };
 				}
-				else if (column.Name == FormatHandler.SeverityColumn) AddColumn(new SeverityColumnViewModel(Logger, column.Name, column.Alignment,inlineParser, FilterItemSourcesViewModel) { Width = column.Width });
-				else if (column.IsFilterItemSource) AddColumn(new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment,inlineParser, FilterItemSourcesViewModel) { Width = column.Width });
-				else AddColumn(new TextPropertyColumnViewModel(Logger, column.Name, column.Alignment,inlineParser) { Width = column.Width });
+				else if (column.Name == formatHandler.SeverityColumn) yield return new SeverityColumnViewModel(Logger, column.Name, column.Alignment,  filterItemSourcesViewModel) { Width = column.Width };
+				else if (column.IsFilterItemSource) yield return new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment, filterItemSourcesViewModel) { Width = column.Width };
+				else yield return new InlinePropertyColumnViewModel(Logger, column.Name, column.Alignment, inlineParser) { Width = column.Width };
 			}
-			
-			
+
+
 		}
 
-		private void AddColumn(ColumnViewModel Column)
-		{
-			//Column.WidthChanged += Column_WidthChanged;
-			//Column.FilterChanged += Column_FilterChanged;
-			items.Add(Column);
-		}
-
-		
-
-		
 
 
-		public IEnumerator<ColumnViewModel> GetEnumerator()
-		{
-			foreach (ColumnViewModel item in items) yield return item;
-		}
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+
+
+
+
 	}
 }

@@ -16,7 +16,7 @@ using LogLib;
 
 namespace LogInspect.ViewModels.Columns
 {
-	public class MultiChoicesColumnViewModel : TextPropertyColumnViewModel
+	public  class MultiChoicesColumnViewModel : ColumnViewModel
 	{
 		public override bool AllowsResize => true;
 		public override bool AllowsFilter => true;
@@ -27,15 +27,17 @@ namespace LogInspect.ViewModels.Columns
 
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 
-		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, IInlineParser InlineParser, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Alignment,  InlineParser)
+		public MultiChoicesColumnViewModel(ILogger Logger, string Name,string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel) : base(Logger,Name,Name,Alignment,null)
 		{
 
 			this.filterItemSourcesViewModel = FilterChoicesViewModel;
 
 		}
 
-		
-
+		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
+		{
+			return new TextPropertyViewModel(Logger, Name, Event.GetEventValue(Name));
+		}
 		public override FilterViewModel CreateFilterViewModel()
 		{
 			return new MultiChoicesFilterViewModel(Logger,Name, filterItemSourcesViewModel.GetFilterChoices(Name),(MultiChoicesFilter)Filter);

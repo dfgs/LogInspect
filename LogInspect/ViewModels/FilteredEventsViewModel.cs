@@ -17,7 +17,7 @@ using System.Windows.Threading;
 
 namespace LogInspect.ViewModels
 {
-	public class FilteredEventsViewModel:FilteredCollectionViewModel<EventViewModel,EventViewModel>
+	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel,EventViewModel>
 	{
 
 		public Filter[] Filters
@@ -42,7 +42,7 @@ namespace LogInspect.ViewModels
 			return false;
 		}
 
-		protected override IEnumerable<EventViewModel> Filter(IEnumerable<EventViewModel> Items)
+		protected override IEnumerable<EventViewModel> GenerateItems(IEnumerable<EventViewModel> Items)
 		{
 			return Items.Where((item) => !MustDiscard(item));
 		}

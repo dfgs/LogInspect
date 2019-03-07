@@ -30,7 +30,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override PropertyViewModel CreatePropertyViewModel(EventViewModel Event)
 		{
-			return new LinePropertyViewModel(Logger,Name,Alignment, Event.LineIndex+1);
+			return new LinePropertyViewModel(Logger,Name, Event.LineIndex+1);
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

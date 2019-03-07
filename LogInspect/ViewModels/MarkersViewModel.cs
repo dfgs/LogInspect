@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace LogInspect.ViewModels
 {
-	public class MarkersViewModel:FilteredCollectionViewModel<EventViewModel, MarkerViewModel>
+	public class MarkersViewModel:CollectionViewModel<EventViewModel, MarkerViewModel>
 	{
 		private string severityColumn;
 
@@ -30,7 +30,7 @@ namespace LogInspect.ViewModels
 			//this.events = Events;
 		}
 
-		protected override IEnumerable<MarkerViewModel> Filter(IEnumerable<EventViewModel> Items)
+		protected override IEnumerable<MarkerViewModel> GenerateItems(IEnumerable<EventViewModel> Items)
 		{
 			string severity;
 			MarkerViewModel range = null;

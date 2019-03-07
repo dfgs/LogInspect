@@ -12,11 +12,9 @@ namespace LogInspect.ViewModels.Properties
 {
 	public class LinePropertyViewModel : PropertyViewModel
 	{
-		
 
-		public LinePropertyViewModel(ILogger Logger, string Name, TextAlignment Alignment, int Index) : base(Logger, Name,Alignment)
+		public LinePropertyViewModel(ILogger Logger, string Name,  int Index) : base(Logger, Name,Index)
 		{
-			this.Value = Index;
 		}
 	}
 }
