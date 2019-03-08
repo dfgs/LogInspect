@@ -20,5 +20,6 @@ namespace LogInspect.Views
 		public static RoutedUICommand IncMinutes = new RoutedUICommand();
 		public static RoutedUICommand DecHours = new RoutedUICommand();
 		public static RoutedUICommand IncHours = new RoutedUICommand();
+		public static RoutedUICommand EditColumnsFormat = new RoutedUICommand();
 	}
 }

@@ -27,11 +27,7 @@ namespace LogInspect.ViewModels.Columns
 		public override Visibility ImageVisibility => Visibility.Visible;
 		public override string ImageSource => "/LogInspect;component/Images/Calendar.png";
 
-		public string Format
-		{
-			get;
-			private set;
-		}
+		
 
 
 		public TimeStampColumnViewModel(ILogger Logger,string Name, string Alignment, string Format) : base(Logger,Name,Name,Alignment)
@@ -42,8 +38,14 @@ namespace LogInspect.ViewModels.Columns
 		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
 			DateTime value;
-			DateTime.TryParseExact(Event[Name], Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out value) ;
-			return new TimeStampPropertyViewModel(Logger, Name, value);
+			if (!DateTime.TryParseExact(Event[Name], Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out value))
+			{
+				return new InvalidTimeStampPropertyViewModel(Logger, Name, Event[Name]);
+			}
+			else
+			{
+				return new TimeStampPropertyViewModel(Logger, Name, value);
+			}
 		}
 
 		public override FilterViewModel CreateFilterViewModel()

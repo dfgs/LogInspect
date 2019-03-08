@@ -42,6 +42,8 @@ namespace LogInspect.Models.Filters
 		{
 			DateTime date;
 
+			if (Item[Column].Value is string) return false; // invalid date time
+
 			try
 			{
 				date = (DateTime)Item[Column].Value;

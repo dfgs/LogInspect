@@ -9,44 +9,39 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-    public class FindOptions:DependencyObject
+    public class FindOptions
     {
-		public static readonly DependencyProperty IsVisibleProperty = DependencyProperty.Register("IsVisible", typeof(bool), typeof(FindOptions));
 		public bool IsVisible
 		{
-			get { return (bool)GetValue(IsVisibleProperty); }
-			set { SetValue(IsVisibleProperty, value); }
+			get;
+			set;
 		}
 
-		public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(FindOptions));
 		public string Text
 		{
-			get { return (string)GetValue(TextProperty); }
-			set { SetValue(TextProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty MatchWholeWordProperty = DependencyProperty.Register("MatchWholeWord", typeof(bool), typeof(FindOptions));
 		public bool MatchWholeWord
 		{
-			get { return (bool)GetValue(MatchWholeWordProperty); }
-			set { SetValue(MatchWholeWordProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty CaseSensitiveProperty = DependencyProperty.Register("CaseSensitive", typeof(bool), typeof(FindOptions));
 		public bool CaseSensitive
 		{
-			get { return (bool)GetValue(CaseSensitiveProperty); }
-			set { SetValue(CaseSensitiveProperty, value); }
+			get;
+			set;
 		}
 
 
-		public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", typeof(string), typeof(FindOptions));
 		public string Column
 		{
-			get { return (string)GetValue(ColumnProperty); }
-			set { SetValue(ColumnProperty, value); }
+			get;
+			set;
 		}
 
 
@@ -57,7 +52,7 @@ namespace LogInspect.ViewModels
 			if (MatchWholeWord) pattern = $@"\b{Regex.Escape(Text)}\b";
 			else pattern = $@"{Regex.Escape(Text)}";
 
-			return Regex.Match(Event[Column].Value?.ToString()??"",pattern,CaseSensitive?RegexOptions.None: RegexOptions.IgnoreCase).Success;
+			return Regex.Match(Event[Column].ToString(),pattern,CaseSensitive?RegexOptions.None: RegexOptions.IgnoreCase).Success;
 		}
 		
 

@@ -20,6 +20,15 @@ namespace LogInspect.ViewModels.Properties
 		{
 		}
 
+		public override string ToString()
+		{
+			IEnumerable<Inline> inlines;
+
+			inlines=Value as IEnumerable<Inline>;
+
+			return string.Join(" ", inlines.Select((item) => item.Value));
+		}
+
 
 	}
 }

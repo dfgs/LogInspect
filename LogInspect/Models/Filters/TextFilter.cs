@@ -27,7 +27,7 @@ namespace LogInspect.Models.Filters
 
 			try
 			{
-				value = (string)Item[Column].Value;
+				value = Item[Column].ToString();
 			}
 			catch
 			{

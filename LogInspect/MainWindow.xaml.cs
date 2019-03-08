@@ -1,6 +1,7 @@
 ﻿using LogInspect.Models;
 using LogInspect.Modules;
 using LogInspect.ViewModels;
+using LogInspect.ViewModels.Columns;
 using LogInspectLib;
 using LogLib;
 using Microsoft.Win32;
@@ -311,7 +312,26 @@ namespace LogInspect
 		}
 		#endregion
 
+		private void EditColumnsFormatCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;
+		}
 
+		private async void EditColumnsFormatCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ColumnsFormatWindow window;
+
+			window = new ColumnsFormatWindow(); window.Owner = Application.Current.MainWindow; window.ColumnFormatViewModels = appViewModel.SelectedItem.Columns.Select(item=>item.CreateColumnFormatViewModel() ).ToArray() ;
+			if (window.ShowDialog() ?? false)
+			{
+				foreach (ColumnFormatViewModel vm in window.ColumnFormatViewModels)
+				{
+					vm.ApplyNewFormat();
+				}
+				await appViewModel.SelectedItem.ReloadEvents();
+			}
+
+		}
 		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = (appViewModel.SelectedItem != null) && (appViewModel.SelectedItem.Status == Statuses.Idle); e.Handled = true;

@@ -19,6 +19,10 @@
 		<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
 			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
 		</DataTemplate>
+		
+		<DataTemplate DataType="{x:Type propertyVM:InvalidTimeStampPropertyViewModel}">
+			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
+		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
 			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}"/>
@@ -28,6 +32,10 @@
 			<TextBox BorderThickness="0" Text="{Binding Value,Mode=OneWay}" />
 		</DataTemplate>
 		
+		<DataTemplate DataType="{x:Type propertyVM:InlinePropertyViewModel}">
+			<TextBox BorderThickness="0" Text="{Binding Mode=OneWay}" />
+		</DataTemplate>
+
 		<DataTemplate x:Key="propertyTemplate">
 			<Grid ToolTip="{Binding Value}">
 				<Grid.ColumnDefinitions>

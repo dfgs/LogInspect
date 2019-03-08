@@ -84,6 +84,8 @@
 		<CommandBinding Command="{x:Static views:Commands.DecHours}" CanExecute="DecHoursCommandBinding_CanExecute" Executed="DecHoursCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static views:Commands.IncHours}" CanExecute="IncHoursCommandBinding_CanExecute" Executed="IncHoursCommandBinding_Executed"/>
 
+		<CommandBinding Command="{x:Static views:Commands.EditColumnsFormat}" CanExecute="EditColumnsFormatCommandBinding_CanExecute" Executed="EditColumnsFormatCommandBinding_Executed"/>
+
 	</Window.CommandBindings>
 	
     <DockPanel>
@@ -148,12 +150,16 @@
 				</Button>
 			</ToolBar>
 			<ToolBar>
-				<ToggleButton ToolTip="Tail logs" IsChecked="{Binding FilteredEvents.Tail}">
+				<!--ToggleButton ToolTip="Tail logs" IsChecked="{Binding FilteredEvents.Tail}">
 					<Image Source="Images/script_go.png" Stretch="None"   />
-				</ToggleButton>
+				</ToggleButton-->
 				<ToggleButton ToolTip="Find" IsChecked="{Binding FindOptions.IsVisible}">
 					<Image Source="Images/page_find.png" Stretch="None"   />
 				</ToggleButton>
+				<Button Command="{x:Static views:Commands.EditColumnsFormat}" ToolTip="Edit columns format">
+					<Image Source="Images/page_white_code_red.png" Stretch="None"  />
+				</Button>
+
 			</ToolBar>
 		</ToolBarTray>
 

@@ -45,7 +45,11 @@ namespace LogInspect.ViewModels.Columns
 			private set;
 		}
 
-		
+		public string Format
+		{
+			get;
+			set;
+		}
 		public abstract bool AllowsFilter
 		{
 			get;
@@ -93,7 +97,10 @@ namespace LogInspect.ViewModels.Columns
 
 		}
 
-		
+		public ColumnFormatViewModel CreateColumnFormatViewModel()
+		{
+			return new ColumnFormatViewModel(Logger,this) { Name=this.Name,Format=this.Format };
+		}
 
 		public abstract PropertyViewModel CreatePropertyViewModel(Event Event);
 		public abstract FilterViewModel CreateFilterViewModel();

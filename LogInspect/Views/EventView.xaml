@@ -58,11 +58,15 @@
 			<DataTemplate DataType="{x:Type propertyVM:LinePropertyViewModel}">
 				<TextBlock  Text="{Binding Value}" FontWeight="Bold"  Foreground="Gray" ToolTip="{Binding}"/>
 			</DataTemplate>
-			
+
 			<DataTemplate DataType="{x:Type propertyVM:TimeStampPropertyViewModel}">
 				<TextBlock Text="{Binding Value}"  TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
 			</DataTemplate>
-		
+
+			<DataTemplate DataType="{x:Type propertyVM:InvalidTimeStampPropertyViewModel}">
+				<TextBlock Text="{Binding Value}" FontStyle="Italic"  TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="Undecoded date/time, filtering will not work"/>
+			</DataTemplate>
+			
 			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
 				<DockPanel ToolTip="{Binding}" >
 					<Border Width="4" DockPanel.Dock="Left" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>

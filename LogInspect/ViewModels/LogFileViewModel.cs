@@ -113,6 +113,14 @@ namespace LogInspect.ViewModels
 			await Refresh();
 		}
 
+		public async Task ReloadEvents()
+		{
+			await events.LoadModels(logFile.Events);
+
+			await Refresh();
+		}
+
+
 		public async Task Refresh()
 		{
 			FilteredEvents.Filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
@@ -167,14 +175,14 @@ namespace LogInspect.ViewModels
 		{
 			int index;
 
-			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item[logFile.FormatHandler.SeverityColumn].Value?.ToString());
+			index =  await  FindPreviousAsync(StartIndex, (item) => Severity == item[logFile.FormatHandler.SeverityColumn].ToString());
 			return index;
 		}
 		public async Task<int> FindNextSeverityAsync(string Severity, int StartIndex)
 		{
 			int index ;
 
-			index = await  FindNextAsync(StartIndex, (item) => Severity == item[logFile.FormatHandler.SeverityColumn].Value?.ToString());
+			index = await  FindNextAsync(StartIndex, (item) => Severity == item[logFile.FormatHandler.SeverityColumn].ToString());
 			return index;
 		}
 		#endregion

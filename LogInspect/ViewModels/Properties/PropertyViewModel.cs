@@ -32,6 +32,10 @@ namespace LogInspect.ViewModels.Properties
 			this.Name = Name;this.Value = Value;
 		}
 
+		public override string ToString()
+		{
+			return value?.ToString()??"";
+		}
 
 	}
 }

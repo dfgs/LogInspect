@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ColumnsFormatWindow.xaml.cs">
+      <DependentUpon>ColumnsFormatWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FilterWindow.xaml.cs">
       <DependentUpon>FilterWindow.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,7 @@
     <Compile Include="Models\LogFile.cs" />
     <Compile Include="Modules\InlineColoringRuleLibraryModule.cs" />
     <Compile Include="Modules\PatternLibraryModule.cs" />
+    <Compile Include="ViewModels\Columns\ColumnFormatViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
     <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
+    <Compile Include="ViewModels\Properties\InvalidTimeStampPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\SeverityPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\InlinePropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\TimeStampPropertyViewModel.cs" />
@@ -150,6 +155,10 @@
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Compile Include="Views\MarkerPanel.cs" />
+    <Page Include="ColumnsFormatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -585,6 +594,9 @@
     <None Include="FormatHandlers\Nice.Engage.StreamObserver.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\page_white_code_red.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
