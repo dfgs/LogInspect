@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LogInspect" Closing="Window_Closing"
+        xmlns:local="clr-namespace:LogInspect"
 		xmlns:views="clr-namespace:LogInspect.Views"
 		xmlns:viewModels="clr-namespace:LogInspect.ViewModels"
 		mc:Ignorable="d" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"  WindowState="Maximized"
@@ -169,9 +169,7 @@
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-						<Button Margin="8,0,0,0"  VerticalAlignment="Center" Command="Close" Style="{StaticResource tabCloseButtonStyle}"/>
-
-
+						<Button Margin="8,0,0,0"  VerticalAlignment="Center" Command="Close" CommandParameter="{Binding}" Style="{StaticResource tabCloseButtonStyle}"/>
 					</StackPanel>
 				</DataTemplate>
 			</TabControl.ItemTemplate>

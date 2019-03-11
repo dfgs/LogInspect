@@ -47,6 +47,7 @@
     <Compile Include="InlineColoringRuleDictionary.cs" />
     <Compile Include="IRegexBuilder.cs" />
     <Compile Include="IStringMatcher.cs" />
+    <Compile Include="DocumentTypes.cs" />
     <Compile Include="Parsers\IInlineParser.cs" />
     <Compile Include="Parsers\InlineParser.cs" />
     <Compile Include="Parsers\ILogParser.cs" />

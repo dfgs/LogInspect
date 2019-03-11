@@ -59,6 +59,13 @@ namespace LogInspectLib
 			set;
 		}
 
+		[XmlAttribute]
+		public DocumentTypes DocumentType
+		{
+			get;
+			set;
+		}
+
 		public InlineColoringRule()
 		{
 

@@ -27,5 +27,7 @@
     <InlineColoringRule Name="Completed" Pattern="Completed" Foreground="Black" Underline="false" Bold="true" Italic="false" />
     <InlineColoringRule Name="GeneratedCount" Pattern="(?&lt;=Generated ){Number}" Foreground="SteelBlue" Underline="false" Bold="false" Italic="false" />
     <InlineColoringRule Name="CompletedCount" Pattern="(?&lt;=Completed ){Number}" Foreground="SteelBlue" Underline="false" Bold="false" Italic="false" />
-  </Items>
+		<InlineColoringRule Name="FPSMessage" Pattern="&lt;\?xml version=&quot;1\.0&quot;\?&gt;&lt;recorder[\s\S]*?&lt;\/recorder&gt;" Foreground="Blue" Underline="true" Bold="false" Italic="false" DocumentType="Xml" />
+
+		</Items>
 </InlineColoringRuleLib>

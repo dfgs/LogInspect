@@ -6,6 +6,7 @@
              xmlns:views="clr-namespace:LogInspect.Views"
 			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties"
 			 xmlns:models="clr-namespace:LogInspectLib;assembly=LogInspectLib"
+			 xmlns:pages="clr-namespace:LogInspect.ViewModels.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -64,7 +65,7 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type propertyVM:InvalidTimeStampPropertyViewModel}">
-				<TextBlock Text="{Binding Value}" FontStyle="Italic"  TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="Undecoded date/time, filtering will not work"/>
+				<TextBlock Text="{Binding Value}" FontStyle="Italic"  TextTrimming="CharacterEllipsis" Foreground="Black" ToolTip="{Binding}"/>
 			</DataTemplate>
 			
 			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
@@ -81,6 +82,14 @@
 				<TextBlock views:Inlines.InlineSource="{Binding Value}" TextTrimming="CharacterEllipsis"  ToolTip="{Binding}"/>
 			</DataTemplate>
 			<!-- -->
+
+
+			<DataTemplate DataType="{x:Type pages:PropertiesPageViewModel}">
+				<views:EventDetailsView DataContext="{Binding Properties}"/>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type pages:XmlPageViewModel}">
+				<views:XmlViewer XmlDocument="{Binding Document}"/>
+			</DataTemplate>
 		</ResourceDictionary>
 
 	</UserControl.Resources>
@@ -173,15 +182,30 @@
 		
 		
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<TabControl Grid.Row="3" DataContext="{Binding FilteredEvents.SelectedItem}">
+		<TabControl Grid.Row="3" ItemsSource="{Binding FilteredEvents.SelectedItem.Pages}" SelectedIndex="1">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<Image Source="{Binding ImageSource}" Stretch="None" Margin="0,0,4,0"/>
+						<TextBlock Text="{Binding Name}"/>
+					</StackPanel>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+			
+			
+			<!--TabItem >
+				<TabItem.Header>
+				</TabItem.Header>
+				<views:EventDetailsView/>
+			</>
 			<TabItem >
 				<TabItem.Header>
 					<StackPanel Orientation="Horizontal">
-						<Image Source="/LogInspect;component/Images/information.png" Stretch="None" Margin="0,0,4,0"/>
-						<TextBlock Text="Details"/>
+						<Image Source="/LogInspect;component/Images/text_align_left.png" Stretch="None" Margin="0,0,4,0"/>
+						<TextBlock Text="Documents" TextWrapping="Wrap"/>
 					</StackPanel>
 				</TabItem.Header>
-				<views:EventDetailsView/>
+				<views:DocumentView />
 			</TabItem>
 			<TabItem >
 				<TabItem.Header>
@@ -191,8 +215,7 @@
 					</StackPanel>
 				</TabItem.Header>
 				<TextBox  IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}" VerticalScrollBarVisibility="Auto" />
-			</TabItem>
-			
+			</TabItem-->
 		</TabControl>
 	</Grid>
 </UserControl>

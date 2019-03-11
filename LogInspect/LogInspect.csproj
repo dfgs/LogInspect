@@ -117,6 +117,9 @@
     <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
+    <Compile Include="ViewModels\Pages\PageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\PropertiesPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\XmlPageViewModel.cs" />
     <Compile Include="ViewModels\Properties\InvalidTimeStampPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\SeverityPropertyViewModel.cs" />
     <Compile Include="ViewModels\Properties\InlinePropertyViewModel.cs" />
@@ -130,6 +133,9 @@
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
     <Compile Include="Views\Commands.cs" />
+    <Compile Include="Views\DocumentView.xaml.cs">
+      <DependentUpon>DocumentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EventDetailsView.xaml.cs">
       <DependentUpon>EventDetailsView.xaml</DependentUpon>
     </Compile>
@@ -155,6 +161,9 @@
     <Compile Include="Views\NotValueConverter.cs" />
     <Compile Include="Views\OffsetInverterConverter.cs" />
     <Compile Include="Views\MarkerPanel.cs" />
+    <Compile Include="Views\XmlViewer.xaml.cs">
+      <DependentUpon>XmlViewer.xaml</DependentUpon>
+    </Compile>
     <Page Include="ColumnsFormatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +190,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\DocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EventDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FindView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\XmlViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

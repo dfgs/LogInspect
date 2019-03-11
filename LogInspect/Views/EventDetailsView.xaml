@@ -53,7 +53,7 @@
 	</UserControl.Resources>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-		<ItemsControl ItemsSource="{Binding Properties}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True" >
+		<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource propertyTemplate}" Grid.IsSharedSizeScope="True" >
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel />

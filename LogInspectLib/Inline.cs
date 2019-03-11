@@ -43,6 +43,12 @@ namespace LogInspectLib
 			get;
 			set;
 		}
+		public DocumentTypes DocumentType
+		{
+			get;
+			set;
+		}
+
 
 		public override string ToString()
 		{

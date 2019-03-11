@@ -52,10 +52,9 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		public void CloseCurrent()
+		public void Close(LogFileViewModel LogFile)
 		{
-			if (SelectedItem == null) return;
-			Remove(SelectedItem);
+			Remove(LogFile);
 		}
 
 		

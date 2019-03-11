@@ -45,7 +45,7 @@ namespace LogInspectLib.Parsers
 				match = item.Item2.Match(Value);
 				while (match.Success)
 				{
-					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold = item.Item1.Bold, Italic = item.Item1.Italic, Value = match.Value };
+					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold = item.Item1.Bold, Italic = item.Item1.Italic, Value = match.Value,DocumentType=item.Item1.DocumentType };
 					existing = inlines.FirstOrDefault(i => i.Intersect(newInline));// in order to priorize matching rules
 					if (existing == null) inlines.Add(newInline);
 					/*else

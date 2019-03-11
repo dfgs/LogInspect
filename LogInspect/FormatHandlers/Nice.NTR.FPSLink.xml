@@ -20,6 +20,7 @@
       <InlineColoringRules>
         <string>Const</string>
         <string>Nice.NTR.CVSKey</string>
+				<string>Nice.NTR.FPSMessage</string>
       </InlineColoringRules>
     </Column>
   </Columns>

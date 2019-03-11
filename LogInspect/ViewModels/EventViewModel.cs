@@ -6,8 +6,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Xml;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Columns;
+using LogInspect.ViewModels.Pages;
 using LogInspect.ViewModels.Properties;
 using LogInspectLib;
 using LogInspectLib.Parsers;
@@ -26,6 +28,12 @@ namespace LogInspect.ViewModels
 			get { return properties; }
 		}
 
+		private List<PageViewModel> pages;
+		public IEnumerable<PageViewModel> Pages
+		{
+			get { return pages; }
+		}
+
 		public PropertyViewModel this[string Name]
 		{
 			get
@@ -34,13 +42,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 		
-		
-		/*public int LineIndex
-		{
-			get;
-			private set;
-		}*/
-
+	
 
 		private TimeStampPropertyViewModel timeStamp;
 		public DateTime TimeStamp
@@ -51,26 +53,7 @@ namespace LogInspect.ViewModels
 			}
 		}
 
-		/*public Brush SeverityBrush
-		{
-			get;
-			private set;
-		}
-		public Brush Background
-		{
-			get;
-			private set;
-		}
-		public Brush Foreground
-		{
-			get;
-			private set;
-		}
-		public string RawLog
-		{
-			get { return "TODO"; }
-		}*/
-
+		
 		
 		public string Lines
 		{
@@ -81,33 +64,14 @@ namespace LogInspect.ViewModels
 		}
 
 
-		/*private bool isBookMarked;
-		public bool IsBookMarked
-		{
-			get { return isBookMarked; }
-			set { isBookMarked=value;OnPropertyChanged(); }
-		}*/
-
+	
 
 
 		public EventViewModel(ILogger Logger,  IEnumerable<PropertyViewModel> Properties) : base(Logger)
 		{
 			AssertParameterNotNull("Properties", Properties);
 
-			/*this.LineIndex = LineIndex;
-			this.SeverityBrush = SeverityBrush;
-
-			if (SeverityBrush == null)
-			{
-				Background = Brushes.LightGray;
-				Foreground = Brushes.Black;
-			}
-			else
-			{
-				Background = SeverityBrush;
-				Foreground = SeverityBrush;
-			}*/
-
+			
 			properties = new PropertyCollection<PropertyViewModel>();
 			foreach(PropertyViewModel property in Properties)
 			{
@@ -116,15 +80,17 @@ namespace LogInspect.ViewModels
 			
 			timeStamp = properties.FirstOrDefault(item => item is TimeStampPropertyViewModel) as TimeStampPropertyViewModel;
 			if (timeStamp == null) timeStamp = new TimeStampPropertyViewModel(Logger, "Date",  DateTime.MinValue);
+
+			pages = new List<PageViewModel>();
+			pages.Add(new PropertiesPageViewModel(Logger,properties));
+			pages.AddRange(Properties.OfType<InlinePropertyViewModel>().SelectMany(item => item.Documents).Select(item => new XmlPageViewModel(Logger, item)));
+
 		}
 
 
 
 
-		/*public string GetEventValue(string Column)
-		{
-			return ev[Column];
-		}*/
+
 		
 
 		

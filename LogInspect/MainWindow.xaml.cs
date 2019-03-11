@@ -75,12 +75,7 @@ namespace LogInspect
 			}
 		}
 
-		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			//Dispatcher.InvokeShutdown();
-			appViewModel.Dispose();
-			
-		}
+		
 
 		private void ShowError(Exception ex)
 		{
@@ -340,7 +335,10 @@ namespace LogInspect
 
 		private void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			appViewModel.CloseCurrent();
+			LogFileViewModel logFile;
+
+			logFile = e.Parameter as LogFileViewModel;
+			if (logFile!=null) appViewModel.Close(logFile);
 		}
 
 
