@@ -12,18 +12,7 @@
 	</UserControl.Resources>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-		<ItemsControl ItemsSource="{Binding Documents}" >
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel/>
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<views:XmlViewer XmlDocument="{Binding}"/>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+		<views:XmlViewer XmlDocument="{Binding}"/>
 	</ScrollViewer>
 
 </UserControl>

@@ -28,10 +28,10 @@ namespace LogInspect.ViewModels
 			get { return properties; }
 		}
 
-		private List<PageViewModel> pages;
-		public IEnumerable<PageViewModel> Pages
+		public PagesViewModel Pages
 		{
-			get { return pages; }
+			get;
+			private set;
 		}
 
 		public PropertyViewModel this[string Name]
@@ -81,10 +81,10 @@ namespace LogInspect.ViewModels
 			timeStamp = properties.FirstOrDefault(item => item is TimeStampPropertyViewModel) as TimeStampPropertyViewModel;
 			if (timeStamp == null) timeStamp = new TimeStampPropertyViewModel(Logger, "Date",  DateTime.MinValue);
 
-			pages = new List<PageViewModel>();
-			pages.Add(new PropertiesPageViewModel(Logger,properties));
-			pages.AddRange(Properties.OfType<InlinePropertyViewModel>().SelectMany(item => item.Documents).Select(item => new XmlPageViewModel(Logger, item)));
-
+			Pages = new PagesViewModel(Logger);
+			Pages.Add(new PropertiesPageViewModel(Logger,properties));
+			Pages.AddRange(Properties.OfType<InlinePropertyViewModel>().SelectMany(item => item.Documents).Select(item => new XmlPageViewModel(Logger, item)));
+			Pages.SelectedItem = Pages.FirstOrDefault();
 		}
 
 

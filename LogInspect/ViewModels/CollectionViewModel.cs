@@ -93,6 +93,17 @@ namespace LogInspect.ViewModels
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Item, index));
 			OnPropertyChanged("Count");
 		}
+		public void AddRange(IEnumerable<T> Items)
+		{
+			int index;
+			foreach (T item in Items)
+			{
+				index = items.Count;
+				items.Add(item);
+				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
+				OnPropertyChanged("Count");
+			}
+		}
 		public void Insert(int Index, T Item)
 		{
 			items.Insert(Index, Item);

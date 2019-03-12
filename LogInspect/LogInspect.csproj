@@ -81,7 +81,6 @@
     <Compile Include="Modules\LibraryModule.cs" />
     <Compile Include="Modules\InfiniteLogFileLoader.cs" />
     <Compile Include="Modules\LogFileLoaderModule.cs" />
-    <Compile Include="Models\Cache.cs" />
     <Compile Include="Models\Filters\Filter.cs" />
     <Compile Include="Models\Filters\MultiChoicesFilter.cs" />
     <Compile Include="Models\Filters\TextFilter.cs" />
@@ -117,6 +116,7 @@
     <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
+    <Compile Include="ViewModels\PagesViewModel.cs" />
     <Compile Include="ViewModels\Pages\PageViewModel.cs" />
     <Compile Include="ViewModels\Pages\PropertiesPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\XmlPageViewModel.cs" />

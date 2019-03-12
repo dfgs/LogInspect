@@ -43,7 +43,7 @@ namespace LogInspectLib.Parsers
 			{
 				match = tuple.Item1.Match(logLine);
 				if (!match.Success) continue;
-				if (tuple.Item2) return null;
+				if (tuple.Item2) return null;	// discard
 
 				foreach(string column in columns)
 				{

@@ -28,15 +28,24 @@ namespace LogInspectLibTest
 			MemoryStream stream;
 			LineReader Reader;
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "" };
+			Line line;
+			int index=0;
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items)+"\r\n"));
-			Reader = new LineReader(stream,Encoding.Default,Utils.EmptyStringMatcher);
-
-			foreach (string item in items)
+			using (stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n")))
 			{
-				Assert.AreEqual(item, Reader.Read().Value);
+				Reader = new LineReader(stream, Encoding.Default, Utils.EmptyStringMatcher);
+
+				foreach (string item in items)
+				{
+					Assert.AreEqual(true, Reader.CanRead);
+					line = Reader.Read();
+					Assert.AreEqual(item,line.Value );
+					Assert.AreEqual(index, line.Index);
+					index++;
+				}
+				Assert.AreEqual(false, Reader.CanRead);
+				Assert.ThrowsException<EndOfStreamException>(() => Reader.Read());
 			}
-			Assert.ThrowsException<EndOfStreamException>(()=>Reader.Read());
 		}
 
 		[TestMethod]
@@ -45,15 +54,24 @@ namespace LogInspectLibTest
 			MemoryStream stream;
 			LineReader Reader;
 			string[] items = new string[] { "item1", "item2", "item3", "", "item4", "item5" };
+			Line line;
+			int index = 0;
 
-			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) ));
-			Reader = new LineReader(stream, Encoding.Default,Utils.EmptyStringMatcher);
-
-			foreach (string item in items)
+			using (stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items))))
 			{
-				Assert.AreEqual(item, Reader.Read().Value);
+				Reader = new LineReader(stream, Encoding.Default, Utils.EmptyStringMatcher);
+
+				foreach (string item in items)
+				{
+					Assert.AreEqual(true, Reader.CanRead);
+					line = Reader.Read();
+					Assert.AreEqual(item, line.Value);
+					Assert.AreEqual(index, line.Index);
+					index++;
+				}
+				Assert.AreEqual(false, Reader.CanRead);
+				Assert.ThrowsException<EndOfStreamException>(() => Reader.Read());
 			}
-			Assert.ThrowsException<EndOfStreamException>(() => Reader.Read());
 		}
 
 		[TestMethod]
@@ -63,18 +81,24 @@ namespace LogInspectLibTest
 			LineReader Reader;
 			IStringMatcher matcher;
 			string[] items = new string[] { "item1", "discard", "item2", "discard", "item3", "discard", "item4", "discard", "item5" };
+			Line line;
 
-			matcher = Utils.EmptyStringMatcher;
+			matcher = new StringMatcher() ;
 			matcher.Add( "discard");
-			stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items)));
-			Reader = new LineReader(stream, Encoding.Default, matcher);
-
-			for (int t = 0; t < 5; t++)
+			using (stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items))))
 			{
-				Assert.AreEqual(items[t*2], Reader.Read().Value);
-			}
-			Assert.ThrowsException<EndOfStreamException>(() => Reader.Read());
+				Reader = new LineReader(stream, Encoding.Default, matcher);
 
+				for (int t = 0; t < 5; t++)
+				{
+					Assert.AreEqual(true, Reader.CanRead);
+					line = Reader.Read();
+					Assert.AreEqual(items[t * 2], line.Value);
+					Assert.AreEqual(t*2, line.Index);
+				}
+				Assert.AreEqual(false, Reader.CanRead);
+				Assert.ThrowsException<EndOfStreamException>(() => Reader.Read());
+			}
 		}
 
 

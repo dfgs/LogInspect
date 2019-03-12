@@ -32,8 +32,10 @@ namespace LogInspectLibTest
 
 			for (int t = 0; t < 5; t++)
 			{
+				Assert.AreEqual(true, reader.CanRead);
 				Assert.AreEqual($"Item {t}", reader.Read().ToSingleLine());
 			}
+			Assert.AreEqual(false, reader.CanRead);
 			Assert.ThrowsException<EndOfStreamException>(()=> { reader.Read(); });
 			
 		}
@@ -52,9 +54,10 @@ namespace LogInspectLibTest
 
 			for (int t = 0; t < 3; t++)
 			{
+				Assert.AreEqual(true, reader.CanRead);
 				Assert.AreEqual($"Item {t*2+1}", reader.Read().ToSingleLine());
 			}
-
+			Assert.AreEqual(false, reader.CanRead);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 		}
 		
@@ -71,9 +74,10 @@ namespace LogInspectLibTest
 
 			for (int t = 0; t < 3; t++)
 			{
+				Assert.AreEqual(true, reader.CanRead);
 				Assert.AreEqual($"Item {t*2+1}", reader.Read().ToSingleLine());
 			}
-
+			Assert.AreEqual(false, reader.CanRead);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
 		}
@@ -93,6 +97,7 @@ namespace LogInspectLibTest
 
 			reader = new LogReader(lineReader, Utils.EmptyStringMatcher, matcher);
 
+			Assert.AreEqual(true, reader.CanRead);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });
 
 		}

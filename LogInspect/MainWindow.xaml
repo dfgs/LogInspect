@@ -154,6 +154,15 @@
 					<Image Source="Images/script_go.png" Stretch="None"   />
 				</ToggleButton-->
 				<ToggleButton ToolTip="Find" IsChecked="{Binding FindOptions.IsVisible}">
+					<ToggleButton.Style>
+						<Style TargetType="{x:Type ToggleButton}">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding}" Value="{x:Null}">
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ToggleButton.Style>
 					<Image Source="Images/page_find.png" Stretch="None"   />
 				</ToggleButton>
 				<Button Command="{x:Static views:Commands.EditColumnsFormat}" ToolTip="Edit columns format">

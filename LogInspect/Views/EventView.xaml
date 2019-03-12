@@ -182,7 +182,7 @@
 		
 		
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<TabControl Grid.Row="3" ItemsSource="{Binding FilteredEvents.SelectedItem.Pages}" SelectedIndex="1">
+		<TabControl Grid.Row="3" ItemsSource="{Binding FilteredEvents.SelectedItem.Pages}" SelectedItem="{Binding FilteredEvents.SelectedItem.Pages.SelectedItem}" >
 			<TabControl.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">

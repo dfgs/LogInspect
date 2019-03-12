@@ -52,7 +52,6 @@
     <Compile Include="Parsers\InlineParser.cs" />
     <Compile Include="Parsers\ILogParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
-    <Compile Include="Parsers\List.cs" />
     <Compile Include="InlineColoringRule.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="InlineColoringRuleLib.cs" />

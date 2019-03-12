@@ -69,7 +69,6 @@ namespace LogInspect.ViewModels
 			private set;
 		}
 
-
 		
 
 		
