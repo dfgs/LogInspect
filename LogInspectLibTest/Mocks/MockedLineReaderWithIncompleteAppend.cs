@@ -1,5 +1,5 @@
-﻿using LogInspectLib;
-using LogInspectLib.Readers;
+﻿using LogInspect.Models;
+using LogInspect.Models.Readers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspectLibTest.Mocks
+namespace LogInspect.ModelsTest.Mocks
 {
 	public class MockedLineReaderWithIncompleteAppend : Reader<Line>, ILineReader
 	{

@@ -65,72 +65,9 @@
     <Compile Include="FilterWindow.xaml.cs">
       <DependentUpon>FilterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ColorProviderModule.cs" />
-    <Compile Include="Modules\FormatHandlerLibraryModule.cs" />
-    <Compile Include="Modules\IColorProviderModule.cs" />
-    <Compile Include="Modules\IInlineColoringRuleLibraryModule.cs" />
-    <Compile Include="Modules\IInlineParserBuilderModule.cs" />
-    <Compile Include="Modules\InlineParserBuilderModule.cs" />
-    <Compile Include="Modules\IPatternLibraryModule.cs" />
-    <Compile Include="Modules\IFormatHandlerLibraryModule.cs" />
-    <Compile Include="Modules\ILibraryModule.cs" />
-    <Compile Include="Modules\ILogFileLoaderModule.cs" />
     <Compile Include="LoadWindow.xaml.cs">
       <DependentUpon>LoadWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\LibraryModule.cs" />
-    <Compile Include="Modules\InfiniteLogFileLoader.cs" />
-    <Compile Include="Modules\LogFileLoaderModule.cs" />
-    <Compile Include="Models\Filters\Filter.cs" />
-    <Compile Include="Models\Filters\MultiChoicesFilter.cs" />
-    <Compile Include="Models\Filters\TextFilter.cs" />
-    <Compile Include="Models\Filters\TextCondition.cs" />
-    <Compile Include="Models\Filters\TextFilterItem.cs" />
-    <Compile Include="Models\Filters\TimeStampConditions.cs" />
-    <Compile Include="Models\Filters\TimeStampFilter.cs" />
-    <Compile Include="Models\ILogFile.cs" />
-    <Compile Include="Models\LogFile.cs" />
-    <Compile Include="Modules\InlineColoringRuleLibraryModule.cs" />
-    <Compile Include="Modules\PatternLibraryModule.cs" />
-    <Compile Include="ViewModels\Columns\ColumnFormatViewModel.cs" />
-    <Compile Include="ViewModels\Columns\ColumnsViewModel.cs" />
-    <Compile Include="ViewModels\Columns\MultiChoicesColumnViewModel.cs" />
-    <Compile Include="ViewModels\Columns\SeverityColumnViewModel.cs" />
-    <Compile Include="ViewModels\Columns\InlinePropertyColumnViewModel.cs" />
-    <Compile Include="ViewModels\Columns\TimeStampColumnViewModel.cs" />
-    <Compile Include="ViewModels\CollectionViewModel.cs" />
-    <Compile Include="ViewModels\EventCollectionViewModel.cs" />
-    <Compile Include="ViewModels\FindOptions.cs" />
-    <Compile Include="ViewModels\IViewModel.cs" />
-    <Compile Include="ViewModels\MarkersViewModel.cs" />
-    <Compile Include="ViewModels\MarkerViewModel.cs" />
-    <Compile Include="ViewModels\FilterItemSourcesViewModel.cs" />
-    <Compile Include="ViewModels\FilteredEventsViewModel.cs" />
-    <Compile Include="ViewModels\Filters\FilterViewModel.cs" />
-    <Compile Include="ViewModels\Filters\FilterItemViewModel.cs" />
-    <Compile Include="ViewModels\Filters\MultiChoicesFilterViewModel.cs" />
-    <Compile Include="ViewModels\Filters\TextFilterViewModel.cs" />
-    <Compile Include="ViewModels\Filters\TimeStampFilterViewModel.cs" />
-    <Compile Include="ViewModels\Columns\BookMarkColumnViewModel.cs" />
-    <Compile Include="ViewModels\Columns\LineColumnViewModel.cs" />
-    <Compile Include="ViewModels\Columns\TextPropertyColumnViewModel.cs" />
-    <Compile Include="ViewModels\Columns\ColumnViewModel.cs" />
-    <Compile Include="ViewModels\EventViewModel.cs" />
-    <Compile Include="ViewModels\PagesViewModel.cs" />
-    <Compile Include="ViewModels\Pages\PageViewModel.cs" />
-    <Compile Include="ViewModels\Pages\PropertiesPageViewModel.cs" />
-    <Compile Include="ViewModels\Pages\XmlPageViewModel.cs" />
-    <Compile Include="ViewModels\Properties\InvalidTimeStampPropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\SeverityPropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\InlinePropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\TimeStampPropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\TextPropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\BookMarkPropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\LinePropertyViewModel.cs" />
-    <Compile Include="ViewModels\Properties\PropertyViewModel.cs" />
-    <Compile Include="ViewModels\SeveritiesViewModel.cs" />
-    <Compile Include="ViewModels\Statuses.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BooleanToVisibiltyConverter.cs" />
     <Compile Include="Views\Commands.cs" />
     <Compile Include="Views\DocumentView.xaml.cs">
@@ -184,8 +121,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\AppViewModel.cs" />
-    <Compile Include="ViewModels\LogFileViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -258,9 +193,17 @@
       <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
       <Name>ModuleLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogInspectLib\LogInspectLib.csproj">
-      <Project>{1aa10f6a-888f-4125-8754-c14409739a1b}</Project>
-      <Name>LogInspectLib</Name>
+    <ProjectReference Include="..\LogInspect.Models\LogInspect.Models.csproj">
+      <Project>{a5b0337b-af35-43e5-ab56-ac72106b1b88}</Project>
+      <Name>LogInspect.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogInspect.Modules\LogInspect.Modules.csproj">
+      <Project>{51bd23f5-c8dd-4ceb-a44c-f466759381a9}</Project>
+      <Name>LogInspect.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogInspect.ViewModels\LogInspect.ViewModels.csproj">
+      <Project>{5282a833-18a3-4ae2-858e-d8bb0e897507}</Project>
+      <Name>LogInspect.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

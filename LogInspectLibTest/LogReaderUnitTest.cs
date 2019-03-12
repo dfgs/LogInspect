@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using LogInspectLib;
-using LogInspectLib.Readers;
-using LogInspectLibTest.Mocks;
+using LogInspect.Models;
+using LogInspect.Models.Readers;
+using LogInspect.ModelsTest.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogInspectLibTest
+namespace LogInspect.ModelsTest
 {
 	[TestClass]
 	public class LogReaderUnitTest

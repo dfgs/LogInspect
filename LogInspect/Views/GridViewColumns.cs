@@ -127,9 +127,14 @@ namespace LogInspect.Views
 
 		private static DataTemplate CreateDataTemplate(ColumnViewModel Column)
 		{
+			string alignment;
+
+			alignment = Column.Alignment;
+			if (string.IsNullOrEmpty(alignment)) alignment = "Left";
+
 			StringReader stringReader = new StringReader(
 			@"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""> 
-            <ContentPresenter HorizontalAlignment="""+Column.Alignment+@""" Content=""{Binding [" + Column.Name + @"]}""/> 
+            <ContentPresenter HorizontalAlignment="""+alignment+@""" Content=""{Binding [" + Column.Name + @"]}""/> 
 			</DataTemplate>");
 			XmlReader xmlReader = XmlReader.Create(stringReader);
 			return XamlReader.Load(xmlReader) as DataTemplate;

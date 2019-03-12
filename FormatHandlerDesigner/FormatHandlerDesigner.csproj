@@ -184,12 +184,6 @@
     <Resource Include="Images\cross.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogInspectLib\LogInspectLib.csproj">
-      <Project>{1aa10f6a-888f-4125-8754-c14409739a1b}</Project>
-      <Name>LogInspectLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\page_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +207,12 @@
   <ItemGroup>
     <Resource Include="Images\arrow_down.png" />
     <Resource Include="Images\arrow_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogInspect.Models\LogInspect.Models.csproj">
+      <Project>{a5b0337b-af35-43e5-ab56-ac72106b1b88}</Project>
+      <Name>LogInspect.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

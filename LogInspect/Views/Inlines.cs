@@ -1,5 +1,5 @@
 ﻿using LogInspect.ViewModels.Columns;
-using LogInspectLib;
+using LogInspect.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

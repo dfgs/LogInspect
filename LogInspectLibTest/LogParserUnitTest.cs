@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using LogInspectLib;
-using LogInspectLib.Parsers;
+using LogInspect.Models;
+using LogInspect.Models.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogInspectLibTest
+namespace LogInspect.ModelsTest
 {
 	[TestClass]
 	public class LogParserUnitTest

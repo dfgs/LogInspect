@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using LogInspectLib;
-using LogInspectLib.Parsers;
-using LogInspectLibTest.Mocks;
+using LogInspect.Models;
+using LogInspect.Models.Parsers;
+using LogInspect.ModelsTest.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogInspectLibTest
+namespace LogInspect.ModelsTest
 {
 	[TestClass]
 	public class InlineParserUnitTest

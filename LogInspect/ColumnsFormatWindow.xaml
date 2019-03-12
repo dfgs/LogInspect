@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInspect"
-		xmlns:viewModels="clr-namespace:LogInspect.ViewModels.Columns"
+		xmlns:viewModels="clr-namespace:LogInspect.ViewModels.Columns;assembly=LogInspect.ViewModels"
         mc:Ignorable="d" x:Name="root"
         Title="Set columns format" MinHeight="100" Width="480" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Icon="Images/page_white_magnify.png">
 	<Window.Resources>

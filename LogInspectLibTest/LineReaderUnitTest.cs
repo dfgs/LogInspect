@@ -2,12 +2,12 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using LogInspectLib;
-using LogInspectLib.Readers;
-using LogInspectLibTest.Mocks;
+using LogInspect.Models;
+using LogInspect.Models.Readers;
+using LogInspect.ModelsTest.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogInspectLibTest
+namespace LogInspect.ModelsTest
 {
 	[TestClass]
 	public class LineReaderUnitTest

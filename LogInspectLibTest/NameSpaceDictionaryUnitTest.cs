@@ -1,4 +1,4 @@
-﻿using LogInspectLib;
+﻿using LogInspect.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace LogInspectLibTest
+namespace LogInspect.ModelsTest
 {
 	[TestClass]
 	public class NameSpaceDictionaryUnitTest

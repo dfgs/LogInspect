@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspectLibTest", "LogInspectLibTest\LogInspectLibTest.csproj", "{27817740-837A-4050-B824-1C00EB6F503F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspectLib", "LogInspectLib\LogInspectLib.csproj", "{1AA10F6A-888F-4125-8754-C14409739A1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogLib", "..\LogLib\LogLib\LogLib.csproj", "{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}"
 EndProject
@@ -15,10 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleLib", "..\ModuleLib\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormatHandlerDesigner", "FormatHandlerDesigner\FormatHandlerDesigner.csproj", "{E22B893A-F98F-494B-B1A5-4347DC78A36B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Models", "LogInspect.Models\LogInspect.Models.csproj", "{A5B0337B-AF35-43E5-AB56-AC72106B1B88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Modules", "LogInspect.Modules\LogInspect.Modules.csproj", "{51BD23F5-C8DD-4CEB-A44C-F466759381A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.ViewModels", "LogInspect.ViewModels\LogInspect.ViewModels.csproj", "{5282A833-18A3-4AE2-858E-D8BB0E897507}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -28,10 +29,6 @@ Global
 		{27817740-837A-4050-B824-1C00EB6F503F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27817740-837A-4050-B824-1C00EB6F503F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27817740-837A-4050-B824-1C00EB6F503F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AA10F6A-888F-4125-8754-C14409739A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AA10F6A-888F-4125-8754-C14409739A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AA10F6A-888F-4125-8754-C14409739A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AA10F6A-888F-4125-8754-C14409739A1B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,12 +45,27 @@ Global
 		{E22B893A-F98F-494B-B1A5-4347DC78A36B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E22B893A-F98F-494B-B1A5-4347DC78A36B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E22B893A-F98F-494B-B1A5-4347DC78A36B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B0337B-AF35-43E5-AB56-AC72106B1B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B0337B-AF35-43E5-AB56-AC72106B1B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B0337B-AF35-43E5-AB56-AC72106B1B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B0337B-AF35-43E5-AB56-AC72106B1B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51BD23F5-C8DD-4CEB-A44C-F466759381A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51BD23F5-C8DD-4CEB-A44C-F466759381A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51BD23F5-C8DD-4CEB-A44C-F466759381A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51BD23F5-C8DD-4CEB-A44C-F466759381A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87DE6CBF-2F2F-479F-8DCE-DA373A846145}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

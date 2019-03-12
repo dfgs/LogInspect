@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
-			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties"
-             mc:Ignorable="d" 
+			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties;assembly=LogInspect.ViewModels"
+              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
 	<UserControl.Resources>
 		<DataTemplate DataType="{x:Type propertyVM:BookMarkPropertyViewModel}">

@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:LogInspect.Views"
-			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties"
-			 xmlns:models="clr-namespace:LogInspectLib;assembly=LogInspectLib"
-			 xmlns:pages="clr-namespace:LogInspect.ViewModels.Pages"
+			 xmlns:propertyVM="clr-namespace:LogInspect.ViewModels.Properties;assembly=LogInspect.ViewModels"
+  			 xmlns:models="clr-namespace:LogInspect.Models;assembly=LogInspect.Models"
+			 xmlns:pages="clr-namespace:LogInspect.ViewModels.Pages;assembly=LogInspect.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -46,7 +46,7 @@
 						<Image Source="/LogInspect;component/Images/Filter_16x.png" Stretch="Uniform" Width="12" Height="12"/>
 					</Border>
 					<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-						<Image Source="{Binding ImageSource}" Visibility="{Binding ImageVisibility}" Stretch="Uniform" Width="12" Height="12" Margin="0,0,4,0"/>
+						<Image Source="{Binding ImageSource}" Visibility="{Binding IsImageVisible,Converter={StaticResource booleanToVisibilityConverter}}" Stretch="Uniform" Width="12" Height="12" Margin="0,0,4,0"/>
 						<TextBlock Text="{Binding Description}" />
 					</StackPanel>
 				</DockPanel>
@@ -71,7 +71,7 @@
 			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
 				<DockPanel ToolTip="{Binding}" >
 					<Border Width="4" DockPanel.Dock="Left" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>
-					<TextBlock  Text="{Binding Value}" Foreground="{Binding Foreground}" TextTrimming="CharacterEllipsis"/>
+					<TextBlock  Text="{Binding Value}"  TextTrimming="CharacterEllipsis"/>
 				</DockPanel>
 			</DataTemplate>
 
@@ -193,29 +193,6 @@
 			</TabControl.ItemTemplate>
 			
 			
-			<!--TabItem >
-				<TabItem.Header>
-				</TabItem.Header>
-				<views:EventDetailsView/>
-			</>
-			<TabItem >
-				<TabItem.Header>
-					<StackPanel Orientation="Horizontal">
-						<Image Source="/LogInspect;component/Images/text_align_left.png" Stretch="None" Margin="0,0,4,0"/>
-						<TextBlock Text="Documents" TextWrapping="Wrap"/>
-					</StackPanel>
-				</TabItem.Header>
-				<views:DocumentView />
-			</TabItem>
-			<TabItem >
-				<TabItem.Header>
-					<StackPanel Orientation="Horizontal">
-						<Image Source="/LogInspect;component/Images/text_align_left.png" Stretch="None" Margin="0,0,4,0"/>
-						<TextBlock Text="Raw data" TextWrapping="Wrap"/>
-					</StackPanel>
-				</TabItem.Header>
-				<TextBox  IsReadOnly="True"  AcceptsReturn="True" Text="{Binding Lines,Mode=OneWay}" VerticalScrollBarVisibility="Auto" />
-			</TabItem-->
 		</TabControl>
 	</Grid>
 </UserControl>
