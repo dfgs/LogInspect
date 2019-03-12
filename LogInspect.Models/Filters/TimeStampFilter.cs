@@ -55,6 +55,8 @@ namespace LogInspect.Models.Filters
 				default:
 					return false;
 			}
+
+
 		}
 
 	}

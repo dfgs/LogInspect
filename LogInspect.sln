@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Modules", "LogIn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.ViewModels", "LogInspect.ViewModels\LogInspect.ViewModels.csproj", "{5282A833-18A3-4AE2-858E-D8BB0E897507}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspectCLI", "LogInspectCLI\LogInspectCLI.csproj", "{E9A39DC9-804C-4273-8E29-3950F41F1579}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Resources", "LogInspect.Resources\LogInspect.Resources.csproj", "{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5282A833-18A3-4AE2-858E-D8BB0E897507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9A39DC9-804C-4273-8E29-3950F41F1579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9A39DC9-804C-4273-8E29-3950F41F1579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9A39DC9-804C-4273-8E29-3950F41F1579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9A39DC9-804C-4273-8E29-3950F41F1579}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

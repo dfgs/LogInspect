@@ -201,15 +201,14 @@
       <Project>{51bd23f5-c8dd-4ceb-a44c-f466759381a9}</Project>
       <Name>LogInspect.Modules</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogInspect.Resources\LogInspect.Resources.csproj">
+      <Project>{dfb80d89-9ea4-4d6b-8e2b-2b8d7e405670}</Project>
+      <Name>LogInspect.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogInspect.ViewModels\LogInspect.ViewModels.csproj">
       <Project>{5282a833-18a3-4ae2-858e-d8bb0e897507}</Project>
       <Name>LogInspect.ViewModels</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Question_16x.png" />
@@ -292,42 +291,7 @@
     <Resource Include="Images\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FormatHandlers\ZZZZ.Generic.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.RCM.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="FormatHandlers\Nice.NTR.MonitorTool.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\LogInspect.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\script_go.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.CallServer.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.ConnectionManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.Alcatel-Lucent.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\page_find.png" />
@@ -349,157 +313,6 @@
     <Resource Include="Images\magnifier_previous.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.CallControllerCore.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="PatternLibs\Nice.NTR.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="PatternLibs\readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="PatternLibs\Generic.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="InlineColoringRuleLibs\Nice.NTR.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="InlineColoringRuleLibs\readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="InlineColoringRuleLibs\Generic.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.CallController.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.ConnectivityCaptureApiService.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.ConnectivityMediaDeliveryService.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.DatabaseInterfaceClient.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.CTIReceiver.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.Storage.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.CoreApi.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.FaultManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.MediaManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.RecorderApi.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.UserManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.NRLogfileManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.DatabaseInterfaceServer.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.ModularLicensing.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.PrtVoIP.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.RecordingService.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.ControllerService.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.Archiving.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.FPSLink.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.w3wp.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NTR.Web.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="InlineColoringRuleLibs\Nice.NIM.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="PatternLibs\Nice.NIM.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\bullet_arrow_bottom.png" />
     <Resource Include="Images\bullet_arrow_down.png" />
     <Resource Include="Images\bullet_arrow_top.png" />
@@ -511,49 +324,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\page_white_magnify.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.Logger.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.IPCapture.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.Driver.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.NIM.RuleEngine.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.Engage.CallServer.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FormatHandlers\Nice.Engage.ConnectionManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="FormatHandlers\Nice.Engage.IPCapture.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="FormatHandlers\Nice.Engage.ScreenCapture.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="FormatHandlers\Nice.Engage.StreamObserver.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\page_white_code_red.png" />

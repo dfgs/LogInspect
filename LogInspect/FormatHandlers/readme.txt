@@ -1,1 +1,0 @@
-﻿You can place here custom formatter
