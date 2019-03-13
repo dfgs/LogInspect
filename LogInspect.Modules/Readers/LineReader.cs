@@ -1,4 +1,5 @@
 ﻿using LogInspect.Models;
+using LogLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Readers
+namespace LogInspect.Modules.Readers
 {
 	public class LineReader:Reader<Line>,ILineReader
 	{
@@ -19,13 +20,13 @@ namespace LogInspect.Models.Readers
 			get { return !reader.EndOfStream; }
 		}
 
-		public LineReader(Stream Stream, Encoding Encoding, IStringMatcher DiscardMatcher)
+		public LineReader(ILogger Logger,Stream Stream, Encoding Encoding, IStringMatcher DiscardMatcher):base(Logger)
 		{
-			if (Stream == null) throw new ArgumentNullException("Stream");
-			if (Encoding == null) throw new ArgumentNullException("Encoding");
-			if (DiscardMatcher == null) throw new ArgumentNullException("DiscardMatcher");
-			this.reader = new StreamReader(Stream, Encoding);
-			this.discardMatcher = DiscardMatcher;
+
+			AssertParameterNotNull(DiscardMatcher, "DiscardMatcher", out discardMatcher);
+			AssertParameterNotNull(Encoding, "Encoding", out Encoding encoding);
+			AssertParameterNotNull(Stream, "Stream", out Stream stream);
+			this.reader = new StreamReader(stream, encoding);
 		}
 
 		protected override Line OnRead()

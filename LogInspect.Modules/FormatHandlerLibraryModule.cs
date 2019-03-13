@@ -18,9 +18,8 @@ namespace LogInspect.Modules
 
 		public FormatHandlerLibraryModule(ILogger Logger,IRegexBuilder RegexBuilder) : base(Logger)
 		{
-			AssertParameterNotNull("RegexBuilder", RegexBuilder);
+			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
 			items = new List<FormatHandler>();
-			this.regexBuilder = RegexBuilder;
 		}
 
 		protected override FormatHandler OnLoadFile(string FileName)

@@ -14,16 +14,14 @@ namespace LogInspect.ViewModels.Pages
 
 		public override string Name => "Properties";
 
-
+		private IEnumerable<PropertyViewModel> properties;
 		public IEnumerable<PropertyViewModel> Properties
 		{
-			get;
-			private set;
+			get { return properties; }
 		}
 		public PropertiesPageViewModel(ILogger Logger, IEnumerable<PropertyViewModel> Properties) : base(Logger)
 		{
-			AssertParameterNotNull("Properties", Properties);
-			this.Properties = Properties;
+			AssertParameterNotNull(Properties,"Properties",  out properties);
 		}
 
 

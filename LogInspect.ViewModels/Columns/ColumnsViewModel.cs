@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.Modules;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -23,15 +22,12 @@ namespace LogInspect.ViewModels.Columns
 
 		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule) : base(Logger)
 		{
-			AssertParameterNotNull("FormatHandler", FormatHandler);
-			AssertParameterNotNull("FilterItemSourcesViewModel", FilterItemSourcesViewModel);
-			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
-			AssertParameterNotNull("InlineParserBuilderModule", InlineParserBuilderModule);
+			AssertParameterNotNull(FormatHandler,"FormatHandler", out formatHandler);
+			AssertParameterNotNull(FilterItemSourcesViewModel,"FilterItemSourcesViewModel", out filterItemSourcesViewModel);
+			AssertParameterNotNull(ColorProviderModule,"ColorProviderModule", out colorProviderModule);
+			AssertParameterNotNull(InlineParserBuilderModule,"InlineParserBuilderModule", out inlineParserBuilderModule);
 
-			this.formatHandler = FormatHandler;
-			this.filterItemSourcesViewModel = FilterItemSourcesViewModel;
-			this.inlineParserBuilderModule = InlineParserBuilderModule;
-			this.colorProviderModule = ColorProviderModule;
+		
 		}
 
 		protected override IEnumerable<ColumnViewModel> GenerateItems(IEnumerable<Column> Items)

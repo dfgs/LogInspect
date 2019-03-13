@@ -8,8 +8,8 @@ using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
 using LogLib;
+using LogInspect.Modules.Parsers;
 
 namespace LogInspect.ViewModels.Columns
 {

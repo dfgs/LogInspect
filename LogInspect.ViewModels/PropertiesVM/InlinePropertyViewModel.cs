@@ -7,7 +7,6 @@ using System.Windows;
 using System.Xml;
 using LogInspect.ViewModels.Columns;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties

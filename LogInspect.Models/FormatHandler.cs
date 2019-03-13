@@ -1,5 +1,4 @@
-﻿using LogInspect.Models.Parsers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -140,20 +139,10 @@ namespace LogInspect.Models
 		}
 
 
-		private IStringMatcher CreateStringMatcher(IRegexBuilder RegexBuilder,IEnumerable<string> Patterns)
-		{
-			IStringMatcher matcher;
-
-			matcher = new StringMatcher();
-			foreach (string pattern in Patterns)
-			{
-				matcher.Add(RegexBuilder.Build(NameSpace, pattern,false));
-			}
-			return matcher;
-		}
 
 
-		public ILogParser CreateLogParser(IRegexBuilder RegexBuilder)
+
+		/*public ILogParser CreateLogParser(IRegexBuilder RegexBuilder)
 		{
 			ILogParser logParser;
 
@@ -164,9 +153,9 @@ namespace LogInspect.Models
 			}
 
 			return logParser;
-		}
+		}*/
 
-		public IStringMatcher CreateDiscardLinesMatcher(IRegexBuilder RegexBuilder)
+		/*public IStringMatcher CreateDiscardLinesMatcher(IRegexBuilder RegexBuilder)
 		{
 			return CreateStringMatcher(RegexBuilder, DiscardLinePatterns);
 		}
@@ -177,7 +166,7 @@ namespace LogInspect.Models
 		public IStringMatcher CreateAppendLineToNextMatcher(IRegexBuilder RegexBuilder)
 		{
 			return CreateStringMatcher(RegexBuilder, AppendLineToNextPatterns);
-		}
+		}*/
 
 
 	}

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Readers
+namespace LogInspect.Modules.Readers
 {
 	public interface ILogReader:IReader<Log>
 	{

@@ -1,6 +1,5 @@
 ﻿using LogInspect.Models;
 using LogInspect.Modules;
-using LogInspect.Models.Parsers;
 using LogLib;
 using System;
 using System.Collections.Generic;
@@ -30,19 +29,19 @@ namespace LogInspect.ViewModels
 
 		public async Task Open(LogFile LogFile, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule)
 		{
-			LogFileViewModel logFile;
+			LogFileViewModel logFileViewModel;
 
-			AssertParameterNotNull("LogFile", LogFile);
-			AssertParameterNotNull("InlineParserBuilderModule", InlineParserBuilderModule);
-			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
+			AssertParameterNotNull(LogFile,"LogFile");
+			AssertParameterNotNull(InlineParserBuilderModule,"InlineParserBuilderModule");
+			AssertParameterNotNull(ColorProviderModule,"ColorProviderModule");
 
 			try
 			{
-				logFile = new LogFileViewModel(Logger,LogFile,InlineParserBuilderModule,ColorProviderModule);
-				Add(logFile);
-				SelectedItem = logFile;
+				logFileViewModel = new LogFileViewModel(Logger,LogFile,InlineParserBuilderModule,ColorProviderModule);
+				Add(logFileViewModel);
+				SelectedItem = logFileViewModel;
 				//await Task.Delay(5000);
-				await logFile.Load();
+				await logFileViewModel.Load();
 			}
 			catch (Exception ex)
 			{

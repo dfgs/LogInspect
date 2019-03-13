@@ -1,6 +1,4 @@
 ﻿using LogInspect.Models;
-using LogInspect.Models.Parsers;
-using LogInspect.Models.Readers;
 using LogInspect.Modules;
 using LogLib;
 using System;

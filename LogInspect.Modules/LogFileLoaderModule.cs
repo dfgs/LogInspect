@@ -1,6 +1,6 @@
 ﻿using LogInspect.Models;
-using LogInspect.Models.Parsers;
-using LogInspect.Models.Readers;
+using LogInspect.Modules.Parsers;
+using LogInspect.Modules.Readers;
 using LogLib;
 using ModuleLib;
 using System;
@@ -37,10 +37,21 @@ namespace LogInspect.Modules
 
 		public LogFileLoaderModule(ILogger Logger, LogFile LogFile, IRegexBuilder RegexBuilder) : base(Logger)
 		{
-			AssertParameterNotNull("LogFile", LogFile);
-			AssertParameterNotNull("RegexBuilder", RegexBuilder);
-			this.logFile = LogFile;
-			this.regexBuilder = RegexBuilder;
+			AssertParameterNotNull(LogFile,"LogFile", out logFile);
+			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
+		}
+
+
+		private IStringMatcher CreateStringMatcher(IRegexBuilder RegexBuilder,string NameSpace, IEnumerable<string> Patterns)
+		{
+			IStringMatcher matcher;
+
+			matcher = new StringMatcher();
+			foreach (string pattern in Patterns)
+			{
+				matcher.Add(RegexBuilder.Build(NameSpace, pattern, false));
+			}
+			return matcher;
 		}
 
 		protected override void ThreadLoop()
@@ -48,7 +59,7 @@ namespace LogInspect.Modules
 			IStringMatcher discardLineMatcher;
 			IStringMatcher appendLineToPreviousMatcher;
 			IStringMatcher appendLineToNextMatcher;
-			ILogParser logParser;
+			LogParser logParser;
 			ILineReader lineReader;
 			ILogReader logReader;
 			Log log;
@@ -56,11 +67,16 @@ namespace LogInspect.Modules
 
 			LogEnter();
 
-			discardLineMatcher = logFile.FormatHandler.CreateDiscardLinesMatcher(regexBuilder);
-			appendLineToPreviousMatcher = logFile.FormatHandler.CreateAppendLineToPreviousMatcher(regexBuilder);
-			appendLineToNextMatcher = logFile.FormatHandler.CreateAppendLineToNextMatcher(regexBuilder);
+			discardLineMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.DiscardLinePatterns);
+			appendLineToPreviousMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToPreviousPatterns);
+			appendLineToNextMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToNextPatterns);
 
-			logParser = logFile.FormatHandler.CreateLogParser(regexBuilder);
+
+			logParser = new LogParser(Logger,logFile.FormatHandler.Columns.Select(item => item.Name));
+			foreach (Rule rule in logFile.FormatHandler.Rules)
+			{
+				logParser.Add(regexBuilder.Build(logFile.FormatHandler.NameSpace, rule.GetPattern(), false), rule.Discard);
+			}
 
 
 			Log(LogLevels.Information, $"Open file name {logFile.FileName}");
@@ -69,8 +85,8 @@ namespace LogInspect.Modules
 
 			using (stream)
 			{
-				lineReader = new LineReader(stream, Encoding.Default, discardLineMatcher);
-				logReader = new LogReader(lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
+				lineReader = new LineReader(Logger, stream, Encoding.Default, discardLineMatcher);
+				logReader = new LogReader(Logger, lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
 				while((State==ModuleStates.Started) && logReader.CanRead)
 				{
 					Position = stream.Position;

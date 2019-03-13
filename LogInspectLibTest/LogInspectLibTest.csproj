@@ -65,9 +65,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj">
+      <Project>{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}</Project>
+      <Name>LogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
+      <Project>{F89B06C7-43CC-4589-9859-3A4656AAA4A6}</Project>
+      <Name>ModuleLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogInspect.Models\LogInspect.Models.csproj">
       <Project>{a5b0337b-af35-43e5-ab56-ac72106b1b88}</Project>
       <Name>LogInspect.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogInspect.Modules\LogInspect.Modules.csproj">
+      <Project>{51BD23F5-C8DD-4CEB-A44C-F466759381A9}</Project>
+      <Name>LogInspect.Modules</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

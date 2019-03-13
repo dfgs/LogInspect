@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ModuleLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Parsers
+namespace LogInspect.Modules.Parsers
 {
-	public interface IParser
+	public interface IParser:IModule
 	{
 	}
 }

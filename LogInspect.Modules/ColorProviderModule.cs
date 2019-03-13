@@ -17,8 +17,7 @@ namespace LogInspect.Modules
 
 		public ColorProviderModule(ILogger Logger, IEnumerable<EventColoringRule> ColoringRules) : base(Logger)
 		{
-			AssertParameterNotNull("ColoringRules", ColoringRules);
-			this.coloringRules = ColoringRules;
+			AssertParameterNotNull(ColoringRules,"ColoringRules", out coloringRules);
 		}
 
 		public string GetBackground( Event Event)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
+using LogInspect.Modules.Parsers;
 using LogLib;
 using ModuleLib;
 
@@ -17,19 +17,17 @@ namespace LogInspect.Modules
 
 		public InlineParserBuilderModule(ILogger Logger, IRegexBuilder RegexBuilder, IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger)
 		{
-			AssertParameterNotNull("RegexBuilder", RegexBuilder);
-			AssertParameterNotNull("InlineColoringRuleDictionary", InlineColoringRuleDictionary);
+			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder );
+			AssertParameterNotNull(InlineColoringRuleDictionary,"InlineColoringRuleDictionary", out inlineColoringRuleDictionary);
 
-			this.regexBuilder = RegexBuilder;
-			this.inlineColoringRuleDictionary = InlineColoringRuleDictionary;
 		}
 
 		public IInlineParser CreateParser(string NameSpace, Column Column)
 		{
-			IInlineParser inlineParser;
+			InlineParser inlineParser;
 			InlineColoringRule inlineColoringRule;
 
-			inlineParser = new InlineParser(regexBuilder);
+			inlineParser = new InlineParser(NullLogger.Instance, regexBuilder);
 			foreach (string ruleName in Column.InlineColoringRules)
 			{
 				try

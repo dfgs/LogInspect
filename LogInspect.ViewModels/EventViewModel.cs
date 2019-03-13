@@ -11,7 +11,6 @@ using LogInspect.ViewModels.Columns;
 using LogInspect.ViewModels.Pages;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels
@@ -73,7 +72,7 @@ namespace LogInspect.ViewModels
 
 		public EventViewModel(ILogger Logger,string Brush,  IEnumerable<PropertyViewModel> Properties) : base(Logger)
 		{
-			AssertParameterNotNull("Properties", Properties);
+			AssertParameterNotNull(Properties,"Properties");
 
 			this.Brush = Brush;
 			properties = new PropertyCollection<PropertyViewModel>();

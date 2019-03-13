@@ -9,7 +9,6 @@ using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
-using LogInspect.Models.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns
@@ -20,8 +19,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public SeverityColumnViewModel(ILogger Logger,string Name, string Alignment, FilterItemSourcesViewModel FilterChoicesViewModel, IColorProviderModule ColorProviderModule) : base(Logger,Name,Alignment,FilterChoicesViewModel)
 		{
-			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
-			this.colorProviderModule = ColorProviderModule;
+			AssertParameterNotNull(ColorProviderModule,"ColorProviderModule", out colorProviderModule);
 		}
 
 		public override PropertyViewModel CreatePropertyViewModel(Event Event)

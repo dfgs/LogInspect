@@ -17,10 +17,7 @@ namespace LogInspect.ViewModels
 
 		public SeveritiesViewModel(ILogger Logger,  string SeverityColumn) : base(Logger)
 		{
-			//AssertParameterNotNull("Events", Events);
-			AssertParameterNotNull("SeverityColumn", SeverityColumn);
-			//this.events = Events;
-			this.severityColumn = SeverityColumn;
+			AssertParameterNotNull(SeverityColumn,"SeverityColumn", out severityColumn);
 		}
 		protected override IEnumerable<string> GenerateItems(IEnumerable<EventViewModel> Items)
 		{

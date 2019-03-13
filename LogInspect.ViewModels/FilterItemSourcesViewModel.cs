@@ -29,7 +29,7 @@ namespace LogInspect.ViewModels
 
 		public FilterItemSourcesViewModel(ILogger Logger , IEnumerable<Column> Columns) : base(Logger)
 		{
-			AssertParameterNotNull("Columns", Columns);
+			AssertParameterNotNull(Columns,"Columns");
 
 			items = new PropertyCollection<List<string>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();

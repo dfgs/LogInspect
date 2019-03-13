@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using LogInspect.Models;
-using LogInspect.Models.Readers;
+using LogInspect.Modules.Readers;
 using LogInspect.ModelsTest.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LogLib;
 
 namespace LogInspect.ModelsTest
 {
@@ -17,9 +18,9 @@ namespace LogInspect.ModelsTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(null,Utils.EmptyStringMatcher,Utils.EmptyStringMatcher); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(new MockedLineReader(), null, Utils.EmptyStringMatcher); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(new MockedLineReader(), Utils.EmptyStringMatcher, null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(NullLogger.Instance, null,Utils.EmptyStringMatcher,Utils.EmptyStringMatcher); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(NullLogger.Instance, new MockedLineReader(), null, Utils.EmptyStringMatcher); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogReader(NullLogger.Instance, new MockedLineReader(), Utils.EmptyStringMatcher, null); });
 		}
 
 
@@ -28,7 +29,7 @@ namespace LogInspect.ModelsTest
 		{
 			LogReader reader;
 
-			reader = new LogReader(new MockedLineReader(5),Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
+			reader = new LogReader(NullLogger.Instance, new MockedLineReader(5),Utils.EmptyStringMatcher,Utils.EmptyStringMatcher);
 
 			for (int t = 0; t < 5; t++)
 			{
@@ -50,7 +51,7 @@ namespace LogInspect.ModelsTest
 			matcher = new StringMatcher();
 			matcher.Add("[0-9]");
 
-			reader = new LogReader(new MockedLineReaderWithAppend(6), matcher, Utils.EmptyStringMatcher);
+			reader = new LogReader(NullLogger.Instance, new MockedLineReaderWithAppend(6), matcher, Utils.EmptyStringMatcher);
 
 			for (int t = 0; t < 3; t++)
 			{
@@ -70,7 +71,7 @@ namespace LogInspect.ModelsTest
 			matcher = new StringMatcher();
 			matcher.Add(" $");
 
-			reader = new LogReader(new MockedLineReaderWithAppend(6), Utils.EmptyStringMatcher, matcher);
+			reader = new LogReader(NullLogger.Instance, new MockedLineReaderWithAppend(6), Utils.EmptyStringMatcher, matcher);
 
 			for (int t = 0; t < 3; t++)
 			{
@@ -95,7 +96,7 @@ namespace LogInspect.ModelsTest
 
 			lineReader = new MockedLineReaderWithIncompleteAppend();
 
-			reader = new LogReader(lineReader, Utils.EmptyStringMatcher, matcher);
+			reader = new LogReader(NullLogger.Instance, lineReader, Utils.EmptyStringMatcher, matcher);
 
 			Assert.AreEqual(true, reader.CanRead);
 			Assert.ThrowsException<EndOfStreamException>(() => { reader.Read(); });

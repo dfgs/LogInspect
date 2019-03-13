@@ -3,8 +3,9 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using LogInspect.Models;
-using LogInspect.Models.Readers;
 using LogInspect.ModelsTest.Mocks;
+using LogInspect.Modules.Readers;
+using LogLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogInspect.ModelsTest
@@ -17,9 +18,9 @@ namespace LogInspect.ModelsTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(null, Encoding.Default,Utils.EmptyStringMatcher); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(new MemoryStream(), null, Utils.EmptyStringMatcher); });
-			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(new MemoryStream(), Encoding.Default, null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(NullLogger.Instance, null, Encoding.Default,Utils.EmptyStringMatcher); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(NullLogger.Instance, new MemoryStream(), null, Utils.EmptyStringMatcher); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LineReader(NullLogger.Instance, new MemoryStream(), Encoding.Default, null); });
 		}
 
 		[TestMethod]
@@ -33,7 +34,7 @@ namespace LogInspect.ModelsTest
 
 			using (stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items) + "\r\n")))
 			{
-				Reader = new LineReader(stream, Encoding.Default, Utils.EmptyStringMatcher);
+				Reader = new LineReader(NullLogger.Instance, stream, Encoding.Default, Utils.EmptyStringMatcher);
 
 				foreach (string item in items)
 				{
@@ -59,7 +60,7 @@ namespace LogInspect.ModelsTest
 
 			using (stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items))))
 			{
-				Reader = new LineReader(stream, Encoding.Default, Utils.EmptyStringMatcher);
+				Reader = new LineReader(NullLogger.Instance, stream, Encoding.Default, Utils.EmptyStringMatcher);
 
 				foreach (string item in items)
 				{
@@ -87,7 +88,7 @@ namespace LogInspect.ModelsTest
 			matcher.Add( "discard");
 			using (stream = new MemoryStream(Encoding.Default.GetBytes(String.Join("\r\n", items))))
 			{
-				Reader = new LineReader(stream, Encoding.Default, matcher);
+				Reader = new LineReader(NullLogger.Instance, stream, Encoding.Default, matcher);
 
 				for (int t = 0; t < 5; t++)
 				{

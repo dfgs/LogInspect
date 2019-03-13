@@ -34,6 +34,9 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,8 +59,19 @@
     <Compile Include="IPatternLibraryModule.cs" />
     <Compile Include="LibraryModule.cs" />
     <Compile Include="LogFileLoaderModule.cs" />
+    <Compile Include="Parsers\IInlineParser.cs" />
+    <Compile Include="Parsers\ILogParser.cs" />
+    <Compile Include="Parsers\InlineParser.cs" />
+    <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Parsers\LogParser.cs" />
     <Compile Include="PatternLibraryModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\ILineReader.cs" />
+    <Compile Include="Readers\ILogReader.cs" />
+    <Compile Include="Readers\IReader.cs" />
+    <Compile Include="Readers\LineReader.cs" />
+    <Compile Include="Readers\LogReader.cs" />
+    <Compile Include="Readers\Reader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj">
@@ -72,6 +86,9 @@
       <Project>{a5b0337b-af35-43e5-ab56-ac72106b1b88}</Project>
       <Name>LogInspect.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

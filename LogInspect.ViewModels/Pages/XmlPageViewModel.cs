@@ -14,15 +14,14 @@ namespace LogInspect.ViewModels.Pages
 
 		public override string Name => "Xml document";
 
+		private XmlDocument document;
 		public XmlDocument Document
 		{
-			get;
-			private set;
+			get { return document; }
 		}
 		public XmlPageViewModel(ILogger Logger,XmlDocument Document) : base(Logger)
 		{
-			AssertParameterNotNull("Document", Document);
-			this.Document = Document;
+			AssertParameterNotNull(Document,"Document", out document);
 		}
 	}
 }

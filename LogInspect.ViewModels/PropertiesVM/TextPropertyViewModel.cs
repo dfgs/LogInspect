@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.ViewModels.Columns;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Properties

@@ -1,5 +1,5 @@
 ﻿using LogInspect.Models;
-using LogInspect.Models.Parsers;
+using LogInspect.Modules.Parsers;
 using ModuleLib;
 using System;
 using System.Collections.Generic;

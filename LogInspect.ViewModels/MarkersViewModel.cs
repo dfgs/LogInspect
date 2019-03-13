@@ -20,9 +20,8 @@ namespace LogInspect.ViewModels
 
 		public MarkersViewModel(ILogger Logger ,string SeverityColumn) : base(Logger)
 		{
-			AssertParameterNotNull("SeverityColumn", SeverityColumn);
+			AssertParameterNotNull(SeverityColumn,"SeverityColumn",out severityColumn);
 
-			this.severityColumn = SeverityColumn;
 		}
 
 		protected override IEnumerable<MarkerViewModel> GenerateItems(IEnumerable<EventViewModel> Items)

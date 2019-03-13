@@ -1,5 +1,6 @@
 ﻿using LogInspect.Models;
-using LogInspect.Models.Readers;
+using LogInspect.Modules.Readers;
+using LogLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,7 @@ namespace LogInspect.ModelsTest.Mocks
 
 		private int count;
 		private int max ;
-		public MockedLineReader(int Max=-1)
+		public MockedLineReader(int Max=-1):base(NullLogger.Instance)
 		{
 			this.max = Max;
 		}

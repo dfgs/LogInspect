@@ -16,10 +16,8 @@ namespace LogInspect.ViewModels
 		private IEnumerable<ColumnViewModel> columns;
 		public EventCollectionViewModel(ILogger Logger, IColorProviderModule ColorProviderModule,IEnumerable<ColumnViewModel> Columns) : base(Logger)
 		{
-			AssertParameterNotNull("ColorProviderModule", ColorProviderModule);
-			AssertParameterNotNull("Columns", Columns);
-			this.colorProviderModule = ColorProviderModule;
-			this.columns = Columns;
+			AssertParameterNotNull(ColorProviderModule,"ColorProviderModule", out colorProviderModule);
+			AssertParameterNotNull(Columns,"Columns",out columns );
 		}
 		
 

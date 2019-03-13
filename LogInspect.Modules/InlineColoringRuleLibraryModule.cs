@@ -10,16 +10,15 @@ namespace LogInspect.Modules
 {
 	public class InlineColoringRuleLibraryModule : LibraryModule<InlineColoringRuleLib>, IInlineColoringRuleLibraryModule
 	{
+		private IInlineColoringRuleDictionary inlineColoringRuleDictionary;
 		public IInlineColoringRuleDictionary InlineColoringRuleDictionary
 		{
-			get;
-			private set;
+			get { return inlineColoringRuleDictionary; }
 		}
 
 		public InlineColoringRuleLibraryModule(ILogger Logger, IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger)
 		{
-			AssertParameterNotNull("InlineColoringRuleDictionary", InlineColoringRuleDictionary);
-			this.InlineColoringRuleDictionary = InlineColoringRuleDictionary;
+			AssertParameterNotNull(InlineColoringRuleDictionary,"InlineColoringRuleDictionary", out inlineColoringRuleDictionary);
 		}
 
 		protected override InlineColoringRuleLib OnLoadFile(string FileName)

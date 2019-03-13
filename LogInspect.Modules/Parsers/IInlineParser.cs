@@ -1,15 +1,16 @@
-﻿using System;
+﻿using LogInspect.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Parsers
+namespace LogInspect.Modules.Parsers
 {
 	public interface IInlineParser:IParser
 	{
 		IEnumerable<Inline> Parse(string Value);
-		void Add(string NameSpace, InlineColoringRule InlineColoringRule);
+		//void Add(string NameSpace, InlineColoringRule InlineColoringRule);
 
 	}
 }

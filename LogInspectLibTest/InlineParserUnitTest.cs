@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Linq;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
 using LogInspect.ModelsTest.Mocks;
+using LogInspect.Modules.Parsers;
+using LogLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogInspect.ModelsTest
@@ -15,7 +16,7 @@ namespace LogInspect.ModelsTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new InlineParser(null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new InlineParser(NullLogger.Instance,null); });
 		}
 
 		
@@ -34,7 +35,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance,Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name="Red", Pattern = "Red" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
@@ -63,7 +64,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
@@ -94,7 +95,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
@@ -128,7 +129,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
@@ -163,7 +164,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
@@ -199,7 +200,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
@@ -236,7 +237,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("White");
 			column.InlineColoringRules.Add("Black");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "red",IgnoreCase=true });
 			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "grEen", IgnoreCase = true });
 			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "blUE", IgnoreCase = true });
@@ -264,7 +265,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("A");
 			column.InlineColoringRules.Add("B");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
 			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "4567" });
 
@@ -286,7 +287,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("A");
 			column.InlineColoringRules.Add("B");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
 			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "1234" });
 
@@ -308,7 +309,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("A");
 			column.InlineColoringRules.Add("B");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
 			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "6789" });
 
@@ -332,7 +333,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("A");
 			column.InlineColoringRules.Add("B");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "4567" });
 			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
 
@@ -354,7 +355,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("B");
 			column.InlineColoringRules.Add("A");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "1234" });
 			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
 
@@ -376,7 +377,7 @@ namespace LogInspect.ModelsTest
 			column.InlineColoringRules.Add("B");
 			column.InlineColoringRules.Add("A");
 
-			parser = new InlineParser(Utils.EmptyRegexBuilder);
+			parser = new InlineParser(NullLogger.Instance, Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "6789" });
 			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
 

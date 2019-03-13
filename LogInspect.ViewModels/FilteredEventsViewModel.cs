@@ -1,7 +1,6 @@
 ﻿using LogInspect.Models;
 using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Columns;
-using LogInspect.Models.Parsers;
 using LogLib;
 using System;
 using System.Collections;

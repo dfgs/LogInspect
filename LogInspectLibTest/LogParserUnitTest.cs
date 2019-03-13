@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Linq;
 using LogInspect.Models;
-using LogInspect.Models.Parsers;
+using LogInspect.Modules.Parsers;
+using LogLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogInspect.ModelsTest
@@ -17,7 +18,7 @@ namespace LogInspect.ModelsTest
 		[TestMethod]
 		public void ShouldHaveCorrectConstructorParameters()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => { new LogParser(null); });
+			Assert.ThrowsException<ArgumentNullException>(() => { new LogParser(NullLogger.Instance, null); });
 		}
 
 
@@ -31,7 +32,7 @@ namespace LogInspect.ModelsTest
 
 			columns = new Column[] { new Column() { Name = "C1" }, new Column() { Name = "C2" }, new Column() { Name = "C3" }, new Column() { Name = "C4" } };
 
-			parser = new LogParser(columns.Select(item=>item.Name));
+			parser = new LogParser(NullLogger.Instance, columns.Select(item=>item.Name));
 			parser.Add(@"(?<C1>\d)(\|)(?<C2>\d)(\|)(?<C3>\d)(\|)(?<C4>\d$)",false);
 
 			log = new Log();
@@ -58,7 +59,7 @@ namespace LogInspect.ModelsTest
 
 			columns = new Column[] { new Column() { Name = "C1" }, new Column() { Name = "C2" }, new Column() { Name = "C3" }, new Column() { Name = "C4" } };
 
-			parser = new LogParser(columns.Select(item => item.Name));
+			parser = new LogParser(NullLogger.Instance, columns.Select(item => item.Name));
 			parser.Add(@"(?<C1>\d)(\|)(?<C2>\d)(\|)(?<C3>\d)(\|)(?<C5>\d$)", false); // changed C4 to C5 to simulate missing column
 
 			log = new Log();
@@ -85,17 +86,56 @@ namespace LogInspect.ModelsTest
 
 			columns = new Column[] { new Column() { Name = "C1" }, new Column() { Name = "C2" }, new Column() { Name = "C3" }, new Column() { Name = "C4" } };
 	
-			parser = new LogParser(columns.Select(item => item.Name));
+			parser = new LogParser(NullLogger.Instance, columns.Select(item => item.Name));
 			parser.Add(@"\d\|\d\|\d\|\d$", true);
 
 			log = new Log();
 			log.Lines.Add(new Line() { Value = log1 });
 			ev = parser.Parse(log);
 
+			Assert.IsNull(ev);
+		}
+
+		[TestMethod]
+		public void ShouldReturnNullWhenNoPatternAppliesToLog()
+		{
+			LogParser parser;
+			Log log;
+			Event ev;
+			Column[] columns;
+
+			columns = new Column[] { new Column() { Name = "C1" }, new Column() { Name = "C2" }, new Column() { Name = "C3" }, new Column() { Name = "C4" } };
+
+			parser = new LogParser(NullLogger.Instance, columns.Select(item => item.Name));
+			//parser.Add(@"\d\|\d\|\d\|\d$", true); // no pattern
+
+			log = new Log();
+			log.Lines.Add(new Line() { Value = log1 });
+			ev = parser.Parse(log);
+
+			Assert.IsNull(ev);
+		}
+
+		[TestMethod]
+		public void ShouldReturnNullWhenLogIsNull()
+		{
+			LogParser parser;
+			Log log;
+			Event ev;
+			Column[] columns;
+
+			columns = new Column[] { new Column() { Name = "C1" }, new Column() { Name = "C2" }, new Column() { Name = "C3" }, new Column() { Name = "C4" } };
+
+			parser = new LogParser(NullLogger.Instance, columns.Select(item => item.Name));
+			parser.Add(@"(?<C1>\d)(\|)(?<C2>\d)(\|)(?<C3>\d)(\|)(?<C5>\d$)", false); // changed C4 to C5 to simulate missing column
+
+			log = null;
+			
+			ev = parser.Parse(log);
+
 
 			Assert.IsNull(ev);
 			
-
 		}
 
 

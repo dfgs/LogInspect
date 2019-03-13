@@ -9,7 +9,6 @@ using LogInspect.Models;
 using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
-using LogInspect.Models.Parsers;
 using LogLib;
 
 namespace LogInspect.ViewModels.Columns

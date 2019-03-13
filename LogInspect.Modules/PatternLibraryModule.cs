@@ -10,16 +10,15 @@ namespace LogInspect.Modules
 {
 	public class PatternLibraryModule : LibraryModule<PatternLib>, IPatternLibraryModule
 	{
+		private IRegexBuilder regexBuilder;
 		public IRegexBuilder RegexBuilder
 		{
-			get;
-			private set;
+			get { return regexBuilder; }
 		}
 
 		public PatternLibraryModule(ILogger Logger,IRegexBuilder RegexBuilder) : base(Logger)
 		{
-			AssertParameterNotNull("RegexBuilder", RegexBuilder);
-			this.RegexBuilder = RegexBuilder;
+			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
 		}
 
 		protected override PatternLib OnLoadFile(string FileName)

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using LogLib;
+using ModuleLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Readers
+namespace LogInspect.Modules.Readers
 {
-	public abstract class Reader<T>:IReader<T>
+	public abstract class Reader<T> : Module, IReader<T>
 		where T:class
 	{
 		public abstract bool CanRead
@@ -14,7 +16,7 @@ namespace LogInspect.Models.Readers
 			get;
 		}
 
-		public Reader()
+		public Reader(ILogger Logger):base(Logger)
 		{
 
 		}
@@ -23,7 +25,9 @@ namespace LogInspect.Models.Readers
 
 		public T Read()
 		{
-			return OnRead();
+			T result=null;
+			result = OnRead();
+			return result;
 		}
 
 	}

@@ -26,8 +26,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public ColumnFormatViewModel(ILogger Logger, ColumnViewModel Column) : base(Logger)
 		{
-			AssertParameterNotNull("Column", Column);
-			this.column = Column;
+			AssertParameterNotNull(Column,"Column",out column);
 		}
 
 		public void ApplyNewFormat()

@@ -1,32 +1,43 @@
-﻿using System;
+﻿using LogInspect.Models;
+using LogLib;
+using ModuleLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Parsers
+namespace LogInspect.Modules.Parsers
 {
-	public class InlineParser:IInlineParser
+	public class InlineParser:Module, IInlineParser
 	{
 		private static Comparer<int> comparer=Comparer<int>.Default;
 
-		private List<Tuple<InlineColoringRule,Regex>> items;
+		private List<(InlineColoringRule InlineColoringRule, Regex Regex)> items;
 		private IRegexBuilder regexBuilder;
 		
-		public InlineParser(IRegexBuilder RegexBuilder)
+		public InlineParser(ILogger Logger,IRegexBuilder RegexBuilder):base(Logger)
 		{
-			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
-			items = new List<Tuple< InlineColoringRule, Regex>>();
-			this.regexBuilder = RegexBuilder;
+			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
+			items = new List<(InlineColoringRule InlineColoringRule, Regex Regex)>();
 		}
 
 		public void Add(string NameSpace,InlineColoringRule InlineColoringRule)
 		{
 			Regex regex;
-
+			if (NameSpace == null)
+			{
+				Log(LogLevels.Error, "Inline coloring rule must be defined in a valid namespace");
+				return;
+			}
+			if (InlineColoringRule == null)
+			{
+				Log(LogLevels.Error, "Inline coloring rule must be defined in a valid namespace");
+				return;
+			}
 			regex = regexBuilder.Build(NameSpace, InlineColoringRule.Pattern,InlineColoringRule.IgnoreCase);
-			items.Add(new Tuple<InlineColoringRule, Regex>(InlineColoringRule,regex));
+			items.Add((InlineColoringRule,regex));
 		}
 
 		public IEnumerable<Inline> Parse(string Value)
@@ -40,12 +51,12 @@ namespace LogInspect.Models.Parsers
 			if (Value == null) yield break;
 
 			inlines = new List<Inline>();
-			foreach (Tuple<InlineColoringRule,Regex> item in items)
+			foreach ((InlineColoringRule InlineColoringRule, Regex Regex) item in items)
 			{
-				match = item.Item2.Match(Value);
+				match = item.Regex.Match(Value);
 				while (match.Success)
 				{
-					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.Item1.Foreground, Underline = item.Item1.Underline, Bold = item.Item1.Bold, Italic = item.Item1.Italic, Value = match.Value,DocumentType=item.Item1.DocumentType };
+					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.InlineColoringRule.Foreground, Underline = item.InlineColoringRule.Underline, Bold = item.InlineColoringRule.Bold, Italic = item.InlineColoringRule.Italic, Value = match.Value,DocumentType=item.InlineColoringRule.DocumentType };
 					existing = inlines.FirstOrDefault(i => i.Intersect(newInline));// in order to priorize matching rules
 					if (existing == null) inlines.Add(newInline);
 					/*else
