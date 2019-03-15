@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogInspect.BaseLib;
+using LogInspect.BaseLib.FileLoaders;
 using LogInspect.Models;
 using LogLib;
 
@@ -16,15 +18,12 @@ namespace LogInspect.Modules
 			get { return inlineColoringRuleDictionary; }
 		}
 
-		public InlineColoringRuleLibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator, InlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger,DirectoryEnumerator)
+		public InlineColoringRuleLibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator, IFileLoader<InlineColoringRuleLib> FileLoader, InlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger,DirectoryEnumerator,FileLoader)
 		{
 			AssertParameterNotNull(InlineColoringRuleDictionary,"InlineColoringRuleDictionary", out inlineColoringRuleDictionary);
 		}
 
-		protected override InlineColoringRuleLib OnLoadFile(string FileName)
-		{
-			return InlineColoringRuleLib.LoadFromFile(FileName);
-		}
+		
 		protected override void OnItemLoaded(InlineColoringRuleLib Item)
 		{
 			InlineColoringRuleDictionary.Add(Item.NameSpace, Item.Items);

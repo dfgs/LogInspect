@@ -51,7 +51,10 @@
   <ItemGroup>
     <Compile Include="LibraryModule.UnitTest.cs" />
     <Compile Include="ColorProviderModule.UnitTest.cs" />
+    <Compile Include="Mocks\InvalidDirectoryEnumerator.cs" />
     <Compile Include="Mocks\MockedDirectoryEnumerator.cs" />
+    <Compile Include="Mocks\InvalidFileLoader.cs" />
+    <Compile Include="Mocks\MockedFileLoader.cs" />
     <Compile Include="Mocks\MockedLibraryModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -66,6 +69,10 @@
     <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
       <Project>{F89B06C7-43CC-4589-9859-3A4656AAA4A6}</Project>
       <Name>ModuleLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogInspect.BaseLib\LogInspect.BaseLib.csproj">
+      <Project>{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}</Project>
+      <Name>LogInspect.BaseLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogInspect.Models\LogInspect.Models.csproj">
       <Project>{A5B0337B-AF35-43E5-AB56-AC72106B1B88}</Project>

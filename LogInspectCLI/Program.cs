@@ -1,4 +1,5 @@
 ﻿using LogInspect.BaseLib;
+using LogInspect.BaseLib.FileLoaders;
 using LogInspect.Models;
 using LogInspect.Modules;
 using LogLib;
@@ -27,9 +28,9 @@ namespace LogInspectCLI
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspectCLI.log");
 
-			patternLibraryModule = new PatternLibraryModule(logger, new DirectoryEnumerator(), new RegexBuilder());
-			inlineColoringRuleLibraryModule = new InlineColoringRuleLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleDictionary());
-			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), patternLibraryModule.RegexBuilder);
+			patternLibraryModule = new PatternLibraryModule(logger, new DirectoryEnumerator(), new PatternLibLoader(), new RegexBuilder());
+			inlineColoringRuleLibraryModule = new InlineColoringRuleLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleLibLoader(), new InlineColoringRuleDictionary());
+			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), new FormatHandlerLoader(), patternLibraryModule.RegexBuilder);
 
 			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternLibsFolder);
 			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineColoringRuleLibsFolder);

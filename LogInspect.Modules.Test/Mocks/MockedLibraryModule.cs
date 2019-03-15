@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogInspect.BaseLib;
+using LogInspect.BaseLib.FileLoaders;
 using LogLib;
 
 namespace LogInspect.Modules.Test.Mocks
@@ -11,7 +13,7 @@ namespace LogInspect.Modules.Test.Mocks
 	{
 		public List<string> Items;
 
-		public MockedLibraryModule() : base(NullLogger.Instance, new MockedDirectoryEnumerator(5))
+		public MockedLibraryModule(IDirectoryEnumerator DirectoryEnumerator,IFileLoader<string> FileLoader ) : base(NullLogger.Instance, DirectoryEnumerator,FileLoader)
 		{
 			Items = new List<string>();
 		}
@@ -21,10 +23,7 @@ namespace LogInspect.Modules.Test.Mocks
 			Items.Add(Item);
 		}
 
-		protected override string OnLoadFile(string FileName)
-		{
-			return FileName;
-		}
+		
 
 	}
 }

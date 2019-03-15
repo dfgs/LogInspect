@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectoryEnumerator.cs" />
+    <Compile Include="FileLoaders\PatternLibLoader.cs" />
+    <Compile Include="FileLoaders\InlineColoringRuleLibLoader.cs" />
+    <Compile Include="FileLoaders\FormatHandlerLoader.cs" />
+    <Compile Include="IDirectoryEnumerator.cs" />
+    <Compile Include="FileLoaders\IFileLoader.cs" />
     <Compile Include="IRegexBuilder.cs" />
     <Compile Include="IStringMatcher.cs" />
     <Compile Include="Parsers\IInlineParser.cs" />

@@ -1,4 +1,5 @@
 ﻿using LogInspect.BaseLib;
+using LogInspect.BaseLib.FileLoaders;
 using LogInspect.Models;
 using LogLib;
 using ModuleLib;
@@ -17,16 +18,13 @@ namespace LogInspect.Modules
 		private List<FormatHandler> items;
 		private IRegexBuilder regexBuilder;
 
-		public FormatHandlerLibraryModule(ILogger Logger,IDirectoryEnumerator DirectoryEnumerator, IRegexBuilder RegexBuilder) : base(Logger,DirectoryEnumerator)
+		public FormatHandlerLibraryModule(ILogger Logger,IDirectoryEnumerator DirectoryEnumerator, IFileLoader<FormatHandler> FileLoader, IRegexBuilder RegexBuilder) : base(Logger,DirectoryEnumerator,FileLoader)
 		{
 			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
 			items = new List<FormatHandler>();
 		}
 
-		protected override FormatHandler OnLoadFile(string FileName)
-		{
-			return FormatHandler.LoadFromFile(FileName);
-		}
+		
 		protected override void OnItemLoaded(FormatHandler Item)
 		{
 			items.Add(Item);

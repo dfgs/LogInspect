@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Modules
+namespace LogInspect.BaseLib
 {
 	public class DirectoryEnumerator : IDirectoryEnumerator
 	{

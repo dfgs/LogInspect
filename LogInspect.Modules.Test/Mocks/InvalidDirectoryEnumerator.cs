@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules.Test.Mocks
 {
-	public class MockedDirectoryEnumerator : IDirectoryEnumerator
+	public class InvalidDirectoryEnumerator : IDirectoryEnumerator
 	{
 		private int count;
 
-		public MockedDirectoryEnumerator(int Count)
+		public InvalidDirectoryEnumerator(int Count)
 		{
 			this.count = Count;
 		}
 
 		public IEnumerable<string> EnumerateFiles(string Path)
 		{
-			for (int t = 0; t < count; t++) yield return $"Path{t}";
+			for (int t = 0; t < count-1; t++) yield return $"Path{t}";
+			throw (new Exception("Failed to enumerate last item"));
 		}
 	}
 }
