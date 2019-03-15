@@ -12,7 +12,7 @@ namespace LogInspect.BaseLib.Parsers
 	{
 		private static Comparer<int> comparer=Comparer<int>.Default;
 
-		private List<(InlineColoringRule InlineColoringRule, Regex Regex)> items;
+		private List<(InlineFormat InlineColoringRule, Regex Regex)> items;
 		private IRegexBuilder regexBuilder;
 		
 		public InlineParser(IRegexBuilder RegexBuilder)
@@ -20,10 +20,10 @@ namespace LogInspect.BaseLib.Parsers
 			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
 
 			this.regexBuilder = RegexBuilder;
-			items = new List<(InlineColoringRule InlineColoringRule, Regex Regex)>();
+			items = new List<(InlineFormat InlineColoringRule, Regex Regex)>();
 		}
 
-		public void Add(string NameSpace,InlineColoringRule InlineColoringRule)
+		public void Add(string NameSpace,InlineFormat InlineColoringRule)
 		{
 			Regex regex;
 			if (NameSpace == null) throw new Exception( "Inline coloring rule must be defined in a valid namespace");
@@ -43,7 +43,7 @@ namespace LogInspect.BaseLib.Parsers
 			if (Value == null) yield break;
 
 			inlines = new List<Inline>();
-			foreach ((InlineColoringRule InlineColoringRule, Regex Regex) item in items)
+			foreach ((InlineFormat InlineColoringRule, Regex Regex) item in items)
 			{
 				match = item.Regex.Match(Value);
 				while (match.Success)

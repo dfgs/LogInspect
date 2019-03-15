@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace LogInspect.BaseLib.FileLoaders
 {
-	public class InlineColoringRuleLibLoader : IFileLoader<InlineColoringRuleLib>
+	public class InlineColoringRuleLibLoader : IFileLoader<InlineFormatCollection>
 	{
-		public InlineColoringRuleLib Load(string FileName)
+		public InlineFormatCollection Load(string FileName)
 		{
-			return InlineColoringRuleLib.LoadFromFile(FileName);
+			return InlineFormatCollection.LoadFromFile(FileName);
 		}
 	}
 }

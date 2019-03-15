@@ -35,11 +35,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser(Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name="Red", Pattern = "Red" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "White" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "Black" });
+			parser.Add("NS", new InlineFormat() { Name="Red", Pattern = "Red" });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "Green" });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "Blue" });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "White" });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "Black" });
 
 			inlines = parser.Parse("RedGreenBlueBlackWhite").ToArray();
 			Assert.AreEqual(5, inlines.Length);
@@ -64,11 +64,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "White" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "Black" });
+			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "Green" });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "Blue" });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "White" });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "Black" });
 
 			inlines = parser.Parse("RedGreenBlueBlackWhite").ToArray();
 			Assert.AreEqual(5, inlines.Length);
@@ -95,11 +95,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "White" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "Black" });
+			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "Green" });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "Blue" });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "White" });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "Black" });
 
 			 inlines = parser.Parse("Red_Green_Blue_Black_White").ToArray();
 			Assert.AreEqual(9, inlines.Length);
@@ -129,11 +129,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "White" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "Black" });
+			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "Green" });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "Blue" });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "White" });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "Black" });
 
 			inlines = parser.Parse("Red_Green_Blue_Black_White").ToArray();
 			Assert.AreEqual(9, inlines.Length);
@@ -164,11 +164,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "White" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "Black" });
+			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "Green" });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "Blue" });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "White" });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "Black" });
 
 			inlines = parser.Parse("__Red_Green_Blue_Black_White").ToArray();
 			Assert.AreEqual(10, inlines.Length);
@@ -200,11 +200,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "Red" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "Green" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "Blue" });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "White" });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "Black" });
+			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "Green" });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "Blue" });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "White" });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "Black" });
 
 			inlines = parser.Parse("Red_Green_Blue_Black_White__").ToArray();
 			Assert.AreEqual(10, inlines.Length);
@@ -237,11 +237,11 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "Red", Pattern = "red",IgnoreCase=true });
-			parser.Add("NS", new InlineColoringRule() { Name = "Green", Pattern = "grEen", IgnoreCase = true });
-			parser.Add("NS", new InlineColoringRule() { Name = "Blue", Pattern = "blUE", IgnoreCase = true });
-			parser.Add("NS", new InlineColoringRule() { Name = "White", Pattern = "wHitE", IgnoreCase = true });
-			parser.Add("NS", new InlineColoringRule() { Name = "Black", Pattern = "BLACK", IgnoreCase = true });
+			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "red",IgnoreCase=true });
+			parser.Add("NS", new InlineFormat() { Name = "Green", Pattern = "grEen", IgnoreCase = true });
+			parser.Add("NS", new InlineFormat() { Name = "Blue", Pattern = "blUE", IgnoreCase = true });
+			parser.Add("NS", new InlineFormat() { Name = "White", Pattern = "wHitE", IgnoreCase = true });
+			parser.Add("NS", new InlineFormat() { Name = "Black", Pattern = "BLACK", IgnoreCase = true });
 
 			inlines = parser.Parse("RedGreenBlueBlackWhite").ToArray();
 			Assert.AreEqual(5, inlines.Length);
@@ -265,8 +265,8 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
-			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "4567" });
+			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "4567" });
 
 			inlines = parser.Parse("01234567890").ToArray();
 			Assert.AreEqual(3, inlines.Length);
@@ -287,8 +287,8 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
-			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "1234" });
+			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "1234" });
 
 			inlines = parser.Parse("01234567890").ToArray();
 			Assert.AreEqual(3, inlines.Length);
@@ -309,8 +309,8 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
-			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "6789" });
+			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "6789" });
 
 			inlines = parser.Parse("01234567890").ToArray();
 			Assert.AreEqual(3, inlines.Length);
@@ -333,8 +333,8 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "4567" });
-			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "4567" });
+			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
 
 			inlines = parser.Parse("01234567890").ToArray();
 			Assert.AreEqual(3, inlines.Length);
@@ -355,8 +355,8 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("A");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "1234" });
-			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "1234" });
+			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
 
 			inlines = parser.Parse("01234567890").ToArray();
 			Assert.AreEqual(3, inlines.Length);
@@ -377,8 +377,8 @@ namespace LogInspect.BaseLib.Test
 			column.InlineColoringRules.Add("A");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
-			parser.Add("NS", new InlineColoringRule() { Name = "B", Pattern = "6789" });
-			parser.Add("NS", new InlineColoringRule() { Name = "A", Pattern = "2345678" });
+			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "6789" });
+			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
 
 			inlines = parser.Parse("01234567890").ToArray();
 			Assert.AreEqual(3, inlines.Length);

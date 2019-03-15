@@ -57,12 +57,10 @@
     <Compile Include="Filters\TimeStampConditions.cs" />
     <Compile Include="Filters\TimeStampFilter.cs" />
     <Compile Include="FormatHandler.cs" />
-    <Compile Include="IInlineColoringRuleDictionary.cs" />
     <Compile Include="INameSpaceDictionary.cs" />
     <Compile Include="Inline.cs" />
-    <Compile Include="InlineColoringRule.cs" />
-    <Compile Include="InlineColoringRuleDictionary.cs" />
-    <Compile Include="InlineColoringRuleLib.cs" />
+    <Compile Include="InlineFormat.cs" />
+    <Compile Include="InlineFormatCollection.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogFile.cs" />

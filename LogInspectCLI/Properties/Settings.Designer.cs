@@ -43,10 +43,10 @@ namespace LogInspectCLI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("InlineColoringRuleLibs")]
-        public string InlineColoringRuleLibsFolder {
+        [global::System.Configuration.DefaultSettingValueAttribute("InlineFormats")]
+        public string InlineFormatsFolder {
             get {
-                return ((string)(this["InlineColoringRuleLibsFolder"]));
+                return ((string)(this["InlineFormatsFolder"]));
             }
         }
     }

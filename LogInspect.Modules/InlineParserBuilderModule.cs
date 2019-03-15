@@ -14,26 +14,26 @@ namespace LogInspect.Modules
 	public class InlineParserBuilderModule : Module, IInlineParserBuilderModule
 	{
 		private IRegexBuilder regexBuilder;
-		private IInlineColoringRuleDictionary inlineColoringRuleDictionary;
+		private IInlineFormatLibraryModule inlineFormatLibraryModule;
 
-		public InlineParserBuilderModule(ILogger Logger, IRegexBuilder RegexBuilder, IInlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger)
+		public InlineParserBuilderModule(ILogger Logger, IRegexBuilder RegexBuilder, IInlineFormatLibraryModule InlineFormatLibraryModule) : base(Logger)
 		{
 			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder );
-			AssertParameterNotNull(InlineColoringRuleDictionary,"InlineColoringRuleDictionary", out inlineColoringRuleDictionary);
+			AssertParameterNotNull(InlineFormatLibraryModule, "InlineFormatLibraryModule", out inlineFormatLibraryModule);
 
 		}
 
 		public IInlineParser CreateParser(string NameSpace, Column Column)
 		{
 			InlineParser inlineParser;
-			InlineColoringRule inlineColoringRule;
+			InlineFormat inlineColoringRule;
 
 			inlineParser = new InlineParser(regexBuilder);
 			foreach (string ruleName in Column.InlineColoringRules)
 			{
 				try
 				{
-					inlineColoringRule = inlineColoringRuleDictionary.GetItem(NameSpace, ruleName);
+					inlineColoringRule = inlineFormatLibraryModule.GetItem(NameSpace, ruleName);
 				}
 				catch (Exception ex)
 				{

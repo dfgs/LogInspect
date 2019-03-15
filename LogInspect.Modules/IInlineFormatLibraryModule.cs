@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public interface IInlineColoringRuleLibraryModule : ILibraryModule<InlineColoringRule>
+	public interface IInlineFormatLibraryModule : ILibraryModule<InlineFormat>,INameSpaceDictionary<InlineFormat>
 	{
-		InlineColoringRuleDictionary InlineColoringRuleDictionary
-		{
-			get;
-		}
+		
 
 	}
 }

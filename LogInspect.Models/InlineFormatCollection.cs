@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace LogInspect.Models
 {
 	[Serializable]
-	public class InlineColoringRuleLib
+	public class InlineFormatCollection
 	{
 		[XmlAttribute]
 		public string NameSpace
@@ -19,15 +19,15 @@ namespace LogInspect.Models
 		}
 
 		[XmlArray]
-		public List<InlineColoringRule> Items
+		public List<InlineFormat> Items
 		{
 			get;
 			set;
 		}
 
-		public InlineColoringRuleLib()
+		public InlineFormatCollection()
 		{
-			Items = new List<InlineColoringRule>();
+			Items = new List<InlineFormat>();
 		}
 		public void SaveToFile(string FileName)
 		{
@@ -40,23 +40,23 @@ namespace LogInspect.Models
 		{
 			XmlSerializer serializer;
 
-			serializer = new XmlSerializer(typeof(InlineColoringRuleLib));
+			serializer = new XmlSerializer(typeof(InlineFormatCollection));
 			serializer.Serialize(Stream, this);
 		}
 
-		public static InlineColoringRuleLib LoadFromFile(string FileName)
+		public static InlineFormatCollection LoadFromFile(string FileName)
 		{
 			using (FileStream stream = new FileStream(FileName, FileMode.Open))
 			{
 				return LoadFromStream(stream);
 			}
 		}
-		public static InlineColoringRuleLib LoadFromStream(Stream Stream)
+		public static InlineFormatCollection LoadFromStream(Stream Stream)
 		{
 			XmlSerializer serializer;
 
-			serializer = new XmlSerializer(typeof(InlineColoringRuleLib));
-			return (InlineColoringRuleLib)serializer.Deserialize(Stream);
+			serializer = new XmlSerializer(typeof(InlineFormatCollection));
+			return (InlineFormatCollection)serializer.Deserialize(Stream);
 		}
 
 

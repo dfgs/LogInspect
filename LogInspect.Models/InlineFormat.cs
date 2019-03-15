@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace LogInspect.Models
 {
 	[Serializable]
-	public class InlineColoringRule	
+	public class InlineFormat	
 	{
 		[XmlAttribute]
 		public string Name
@@ -66,7 +66,7 @@ namespace LogInspect.Models
 			set;
 		}
 
-		public InlineColoringRule()
+		public InlineFormat()
 		{
 
 		}

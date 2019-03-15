@@ -246,22 +246,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InlineColoringRuleLibs\Generic.xml">
+    <None Include="InlineFormats\Generic.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InlineColoringRuleLibs\Nice.NIM.xml">
+    <None Include="InlineFormats\Nice.NIM.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InlineColoringRuleLibs\Nice.NTR.xml">
+    <None Include="InlineFormats\Nice.NTR.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="InlineColoringRuleLibs\readme.txt">
+    <Resource Include="InlineFormats\readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

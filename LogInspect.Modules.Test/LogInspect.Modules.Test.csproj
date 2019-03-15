@@ -49,11 +49,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InlineFormatLibraryModule.UnitTest.cs" />
+    <Compile Include="FormatHandlerLibraryModule.UnitTest.cs" />
     <Compile Include="LibraryModule.UnitTest.cs" />
     <Compile Include="ColorProviderModule.UnitTest.cs" />
     <Compile Include="Mocks\InvalidDirectoryEnumerator.cs" />
     <Compile Include="Mocks\MockedDirectoryEnumerator.cs" />
     <Compile Include="Mocks\InvalidFileLoader.cs" />
+    <Compile Include="Mocks\MockedInlineFormatCollectionLoader.cs" />
+    <Compile Include="Mocks\MockedFormatHandlerLoader.cs" />
     <Compile Include="Mocks\MockedFileLoader.cs" />
     <Compile Include="Mocks\MockedLibraryModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

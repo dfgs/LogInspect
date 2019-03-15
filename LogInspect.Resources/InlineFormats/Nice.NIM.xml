@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<InlineFormatCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NIM">
+  <Items>
+
+
+    <InlineFormat Name="Interaction" Pattern="(original)?interaction{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="InteractionID" Pattern="(?&lt;=Interaction{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Compound" Pattern="compound{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="CompoundID" Pattern="(?&lt;=compound{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="CLSCall" Pattern="clscall{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="CLSCallID" Pattern="(?&lt;=clscall{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="EndCallID" Pattern="(?&lt;=endcall{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+
+    <InlineFormat Name="Agent" Pattern="[^ ]*agent{ID}?(?={IDSeparator}\[?{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="AgentID" Pattern="(?&lt;=agent{ID}?{IDSeparator}?\[?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Extension" Pattern="ext(ension)?{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="ExtensionID" Pattern="(?&lt;=ext(ension)?{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Device" Pattern="[^ ]*device{ID}?(?={IDSeparator}\[?{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="DeviceID" Pattern="(?&lt;=device{ID}?{IDSeparator}?\[?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Station" Pattern="station{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="StationID" Pattern="(?&lt;=station{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+
+
+    <InlineFormat Name="Logger" Pattern="[^ ]*L(og)?ge?r\d?{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="LoggerID" Pattern="(?&lt;=L(og)?ge?r\d?{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="GoldenRod" Underline="false" Bold="false" Italic="false" />
+
+    <InlineFormat Name="Channel" Pattern="Ch(an)?(nel)?\d?{ID}?(?={IDSeparator}{Number})" Foreground="Black" IgnoreCase="false" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="ChannelID" Pattern="(?&lt;=Ch(an)?(nel)?\d?{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="GoldenRod" Underline="false" Bold="false" Italic="false" />
+
+    <InlineFormat Name="UDI" Pattern="UDI(?==)"  Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="UDIID" Pattern="(?&lt;=UDI=){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="DN" Pattern="DN(?==)"  Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="DNID" Pattern="(?&lt;=DN=&quot;?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="DEV" Pattern="DEV(?==)"  Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="DEVID" Pattern="(?&lt;=DEV=&quot;?){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+
+
+  </Items>
+</InlineFormatCollection>

@@ -58,7 +58,7 @@ namespace LogInspect.Modules
 			if (formatHandler == null)
 			{
 				Log(LogLevels.Warning, $"Format of log file {shortName} is unmanaged");
-				formatHandler = new FormatHandler();    // create a default handler
+				formatHandler = new FormatHandler() {Name="Default handler" };    // create a default handler
 			}
 			else
 			{

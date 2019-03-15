@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<InlineFormatCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
+  <Items>
+    <InlineFormat Name="CVSKey" Pattern="CVSKEY" Foreground="Black" Bold="true"/>
+    <InlineFormat Name="CVSKeyID" Pattern="(?&lt;=CVSKEY=){Number}" Foreground="Purple"/>
+    <InlineFormat Name="DRLinkTimeSlot" Pattern="DR_S{Number}_B{Number}_TS{Number}" Foreground="Olive" Underline="false" Bold="false" Italic="true" />
+
+    <InlineFormat Name="Target" Pattern=" target" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="TargetID" Pattern="(?&lt;=target:? *){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="TargetID2" Pattern="(?&lt;=\[){Number}(?=\])" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Device" Pattern=" device" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="DeviceID" Pattern="(?&lt;=device:? *){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Reference" Pattern="reference" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="ReferenceID" Pattern="(?&lt;=reference:? *){Number}" IgnoreCase="true" Foreground="CornflowerBlue" Underline="false" Bold="false" Italic="false" />
+
+    <InlineFormat Name="CallID" Pattern="CallId" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="CallIDValue" Pattern="(?&lt;=CallId: ){HexNumber}" Foreground="Purple" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="CallState" Pattern="CallState" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="CallStateValue" Pattern="(?&lt;=CallState: ){Word}" Foreground="GoldenRod" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="LocationState" Pattern="StateOfLocation" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="MediumState" Pattern="StateOfMedium" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="LocationStateOK" Pattern="(?&lt;=StateOfLocation : )Connected" Foreground="Green" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="LocationStateNOK" Pattern="(?&lt;=StateOfLocation : )[^ ]+" Foreground="Red" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="MediumStateOK" Pattern="(?&lt;=StateOfMedium : )CorrectMediumFound" Foreground="Green" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="MediumStateNOK" Pattern="(?&lt;=StateOfMedium : )[^ ]+" Foreground="Red" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="Generated" Pattern="Generated" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="Completed" Pattern="Completed" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+    <InlineFormat Name="GeneratedCount" Pattern="(?&lt;=Generated ){Number}" Foreground="SteelBlue" Underline="false" Bold="false" Italic="false" />
+    <InlineFormat Name="CompletedCount" Pattern="(?&lt;=Completed ){Number}" Foreground="SteelBlue" Underline="false" Bold="false" Italic="false" />
+	<InlineFormat Name="FPSMessage" Pattern="&lt;\?xml version=&quot;1\.0&quot;\?&gt;&lt;recorder[\s\S]*?&lt;\/recorder&gt;" Foreground="Blue" Underline="true" Bold="false" Italic="false" DocumentType="Xml" />
+
+  </Items>
+</InlineFormatCollection>

@@ -22,18 +22,18 @@ namespace LogInspectCLI
 
 			ILogger logger;
 			IPatternLibraryModule patternLibraryModule;
-			IInlineColoringRuleLibraryModule inlineColoringRuleLibraryModule;
+			IInlineFormatLibraryModule inlineColoringRuleLibraryModule;
 			IFormatHandlerLibraryModule formatHandlerLibraryModule;
 			LogFile logFile;
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspectCLI.log");
 
 			patternLibraryModule = new PatternLibraryModule(logger, new DirectoryEnumerator(), new PatternLibLoader(), new RegexBuilder());
-			inlineColoringRuleLibraryModule = new InlineColoringRuleLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleLibLoader(), new InlineColoringRuleDictionary());
+			inlineColoringRuleLibraryModule = new InlineFormatLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleLibLoader(), new InlineColoringRuleDictionary());
 			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), new FormatHandlerLoader(), patternLibraryModule.RegexBuilder);
 
 			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternLibsFolder);
-			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineColoringRuleLibsFolder);
+			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineFormatsFolder);
 			formatHandlerLibraryModule.LoadDirectory(Properties.Settings.Default.FormatHandlersFolder);
 
 
