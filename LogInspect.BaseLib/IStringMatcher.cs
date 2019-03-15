@@ -11,8 +11,6 @@ namespace LogInspect.BaseLib
 	{
 		bool Match(string Value);
 		Match GetMatch(string Value);
-		/*void Add( IEnumerable<Regex> Regexes);
-		void Add( Regex Regex);
-		void Add(string Pattern);*/
+		
 	}
 }

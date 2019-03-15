@@ -11,13 +11,13 @@ namespace LogInspect.Modules
 {
 	public class PatternLibraryModule : LibraryModule<PatternLib>, IPatternLibraryModule
 	{
-		private IRegexBuilder regexBuilder;
-		public IRegexBuilder RegexBuilder
+		private RegexBuilder regexBuilder;
+		public RegexBuilder RegexBuilder
 		{
 			get { return regexBuilder; }
 		}
 
-		public PatternLibraryModule(ILogger Logger,IRegexBuilder RegexBuilder) : base(Logger)
+		public PatternLibraryModule(ILogger Logger,RegexBuilder RegexBuilder) : base(Logger)
 		{
 			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
 		}

@@ -10,7 +10,7 @@ namespace LogInspect.Modules
 {
 	public interface IPatternLibraryModule:ILibraryModule<FormatHandler>
 	{
-		IRegexBuilder RegexBuilder
+		RegexBuilder RegexBuilder
 		{
 			get;
 		}
