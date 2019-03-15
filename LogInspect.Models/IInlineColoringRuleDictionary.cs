@@ -8,9 +8,7 @@ namespace LogInspect.Models
 {
 	public interface IInlineColoringRuleDictionary:INameSpaceDictionary<InlineColoringRule>
 	{
-		void Add(string NameSpace, InlineColoringRule InlineColoringRule);
-		void Add(string NameSpace, IEnumerable<InlineColoringRule> InlineColoringRules);
-
+		
 
 	}
 }

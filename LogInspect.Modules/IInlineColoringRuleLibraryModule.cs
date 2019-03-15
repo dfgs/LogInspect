@@ -9,7 +9,7 @@ namespace LogInspect.Modules
 {
 	public interface IInlineColoringRuleLibraryModule : ILibraryModule<InlineColoringRule>
 	{
-		IInlineColoringRuleDictionary InlineColoringRuleDictionary
+		InlineColoringRuleDictionary InlineColoringRuleDictionary
 		{
 			get;
 		}
