@@ -27,9 +27,9 @@ namespace LogInspectCLI
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspectCLI.log");
 
-			patternLibraryModule = new PatternLibraryModule(logger, new RegexBuilder());
-			inlineColoringRuleLibraryModule = new InlineColoringRuleLibraryModule(logger, new InlineColoringRuleDictionary());
-			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, patternLibraryModule.RegexBuilder);
+			patternLibraryModule = new PatternLibraryModule(logger, new DirectoryEnumerator(), new RegexBuilder());
+			inlineColoringRuleLibraryModule = new InlineColoringRuleLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleDictionary());
+			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), patternLibraryModule.RegexBuilder);
 
 			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternLibsFolder);
 			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineColoringRuleLibsFolder);

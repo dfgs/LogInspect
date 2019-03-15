@@ -24,6 +24,8 @@ namespace LogInspect.Modules
 		{
 			string value;
 
+			if (!AssertParameterNotNull(Event, "Event")) return "Transparent";
+
 			foreach (EventColoringRule coloringRule in coloringRules)
 			{
 				value = Event[coloringRule.Column];

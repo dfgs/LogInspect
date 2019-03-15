@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.BaseLib", "LogIn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.BaseLib.Test", "LogInspect.BaseLib.Test\LogInspect.BaseLib.Test.csproj", "{FF700F88-619E-4B53-9B6F-923A14DCC65A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Modules.Test", "LogInspect.Modules.Test\LogInspect.Modules.Test.csproj", "{20C94482-D992-44A1-A00B-41D9AB09EA45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C94482-D992-44A1-A00B-41D9AB09EA45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C94482-D992-44A1-A00B-41D9AB09EA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C94482-D992-44A1-A00B-41D9AB09EA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C94482-D992-44A1-A00B-41D9AB09EA45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{063E5123-8D90-4EA9-A045-77BE8FB9592E} = {CE824EE8-C387-4399-A304-66523A7932A1}
 		{FF700F88-619E-4B53-9B6F-923A14DCC65A} = {CE824EE8-C387-4399-A304-66523A7932A1}
+		{20C94482-D992-44A1-A00B-41D9AB09EA45} = {CE824EE8-C387-4399-A304-66523A7932A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87DE6CBF-2F2F-479F-8DCE-DA373A846145}

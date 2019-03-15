@@ -17,7 +17,7 @@ namespace LogInspect.Modules
 		private List<FormatHandler> items;
 		private IRegexBuilder regexBuilder;
 
-		public FormatHandlerLibraryModule(ILogger Logger,IRegexBuilder RegexBuilder) : base(Logger)
+		public FormatHandlerLibraryModule(ILogger Logger,IDirectoryEnumerator DirectoryEnumerator, IRegexBuilder RegexBuilder) : base(Logger,DirectoryEnumerator)
 		{
 			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
 			items = new List<FormatHandler>();

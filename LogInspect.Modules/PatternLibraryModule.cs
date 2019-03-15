@@ -17,7 +17,7 @@ namespace LogInspect.Modules
 			get { return regexBuilder; }
 		}
 
-		public PatternLibraryModule(ILogger Logger,RegexBuilder RegexBuilder) : base(Logger)
+		public PatternLibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator, RegexBuilder RegexBuilder) : base(Logger,DirectoryEnumerator)
 		{
 			AssertParameterNotNull(RegexBuilder,"RegexBuilder", out regexBuilder);
 		}

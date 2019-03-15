@@ -46,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorProviderModule.cs" />
+    <Compile Include="DirectoryEnumerator.cs" />
     <Compile Include="FormatHandlerLibraryModule.cs" />
     <Compile Include="IColorProviderModule.cs" />
+    <Compile Include="IDirectoryEnumerator.cs" />
     <Compile Include="IFormatHandlerLibraryModule.cs" />
     <Compile Include="IInlineColoringRuleLibraryModule.cs" />
     <Compile Include="IInlineParserBuilderModule.cs" />

@@ -12,6 +12,5 @@ namespace LogInspect.Modules
 	public interface IColorProviderModule:IModule
 	{
 		string GetBackground(Event Event);
-		//string GetBackground(EventViewModel Event);
 	}
 }

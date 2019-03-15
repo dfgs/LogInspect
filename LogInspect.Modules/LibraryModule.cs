@@ -11,8 +11,11 @@ namespace LogInspect.Modules
 {
 	public abstract class LibraryModule<T> : Module, ILibraryModule<T>
 	{
-		protected LibraryModule(ILogger Logger) : base(Logger)
+		private IDirectoryEnumerator directoryEnumerator;
+
+		protected LibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator) : base(Logger)
 		{
+			AssertParameterNotNull(DirectoryEnumerator, "DirectoryEnumerator",out directoryEnumerator);
 		}
 
 		protected abstract T OnLoadFile(string FileName);
@@ -22,10 +25,12 @@ namespace LogInspect.Modules
 		{
 			T item;
 
+			if (!AssertParameterNotNull(Path, "Path")) return;
+
 			Log(LogLevels.Information, $"Parsing directory {Path}");
 			try
 			{
-				foreach (string FileName in Directory.EnumerateFiles(Path, "*.xml").OrderBy((fileName) => fileName))
+				foreach (string FileName in directoryEnumerator.EnumerateFiles(Path))
 				{
 					Log(LogLevels.Information, $"Loading file {FileName}");
 					if (!Try(() => OnLoadFile(FileName)).OrAlert(out item, "Failed to load file")) continue;

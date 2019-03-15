@@ -16,7 +16,7 @@ namespace LogInspect.Modules
 			get { return inlineColoringRuleDictionary; }
 		}
 
-		public InlineColoringRuleLibraryModule(ILogger Logger, InlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger)
+		public InlineColoringRuleLibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator, InlineColoringRuleDictionary InlineColoringRuleDictionary) : base(Logger,DirectoryEnumerator)
 		{
 			AssertParameterNotNull(InlineColoringRuleDictionary,"InlineColoringRuleDictionary", out inlineColoringRuleDictionary);
 		}
