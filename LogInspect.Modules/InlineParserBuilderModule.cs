@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogInspect.BaseLib;
+using LogInspect.BaseLib.Parsers;
 using LogInspect.Models;
-using LogInspect.Modules.Parsers;
 using LogLib;
 using ModuleLib;
 
@@ -27,7 +28,7 @@ namespace LogInspect.Modules
 			InlineParser inlineParser;
 			InlineColoringRule inlineColoringRule;
 
-			inlineParser = new InlineParser(NullLogger.Instance, regexBuilder);
+			inlineParser = new InlineParser(regexBuilder);
 			foreach (string ruleName in Column.InlineColoringRules)
 			{
 				try

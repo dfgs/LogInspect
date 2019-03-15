@@ -8,7 +8,6 @@ namespace LogInspect.Models
 {
 	public interface INameSpaceDictionary<T>
 	{
-		void Add(string NameSpace, string Name, T Item);
 		T GetItem(string Name);
 		T GetItem(string DefaultNameSpace, string Name);
 	}

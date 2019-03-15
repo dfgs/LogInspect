@@ -193,6 +193,10 @@
       <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
       <Name>ModuleLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogInspect.BaseLib\LogInspect.BaseLib.csproj">
+      <Project>{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}</Project>
+      <Name>LogInspect.BaseLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogInspect.Models\LogInspect.Models.csproj">
       <Project>{a5b0337b-af35-43e5-ab56-ac72106b1b88}</Project>
       <Name>LogInspect.Models</Name>

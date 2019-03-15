@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E9A39DC9-804C-4273-8E29-3950F41F1579}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>LogInspectCLI</RootNamespace>
-    <AssemblyName>LogInspectCLI</AssemblyName>
+    <ProjectGuid>{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LogInspect.BaseLib</RootNamespace>
+    <AssemblyName>LogInspect.BaseLib</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,6 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,47 +44,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogFileLoaderModule.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="IRegexBuilder.cs" />
+    <Compile Include="IStringMatcher.cs" />
+    <Compile Include="Parsers\IInlineParser.cs" />
+    <Compile Include="Parsers\ILogParser.cs" />
+    <Compile Include="Parsers\InlineParser.cs" />
+    <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Parsers\LogParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
+    <Compile Include="Readers\ILineReader.cs" />
+    <Compile Include="Readers\ILogReader.cs" />
+    <Compile Include="Readers\IReader.cs" />
+    <Compile Include="Readers\LineReader.cs" />
+    <Compile Include="Readers\LogReader.cs" />
+    <Compile Include="Readers\Reader.cs" />
+    <Compile Include="RegexBuilder.cs" />
+    <Compile Include="StringMatcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj">
-      <Project>{ef4b0001-2859-4a09-8f95-3e5bef4a5272}</Project>
-      <Name>LogLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
-      <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
-      <Name>ModuleLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogInspect.BaseLib\LogInspect.BaseLib.csproj">
-      <Project>{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}</Project>
-      <Name>LogInspect.BaseLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogInspect.Models\LogInspect.Models.csproj">
       <Project>{a5b0337b-af35-43e5-ab56-ac72106b1b88}</Project>
       <Name>LogInspect.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogInspect.Modules\LogInspect.Modules.csproj">
-      <Project>{51bd23f5-c8dd-4ceb-a44c-f466759381a9}</Project>
-      <Name>LogInspect.Modules</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogInspect.Resources\LogInspect.Resources.csproj">
-      <Project>{dfb80d89-9ea4-4d6b-8e2b-2b8d7e405670}</Project>
-      <Name>LogInspect.Resources</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

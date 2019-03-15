@@ -9,7 +9,7 @@ using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Models;
 using LogLib;
-using LogInspect.Modules.Parsers;
+using LogInspect.BaseLib.Parsers;
 
 namespace LogInspect.ViewModels.Columns
 {

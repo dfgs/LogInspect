@@ -1,4 +1,5 @@
-﻿using LogInspect.Models;
+﻿using LogInspect.BaseLib;
+using LogInspect.Models;
 using LogInspect.Modules;
 using LogLib;
 using System;

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspectLibTest", "LogInspectLibTest\LogInspectLibTest.csproj", "{27817740-837A-4050-B824-1C00EB6F503F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogLib", "..\LogLib\LogLib\LogLib.csproj", "{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect", "LogInspect\LogInspect.csproj", "{B58C32E4-E142-43CB-8DC9-1908593B6AE7}"
@@ -23,16 +21,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspectCLI", "LogInspect
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Resources", "LogInspect.Resources\LogInspect.Resources.csproj", "{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.Models.Test", "LogInspect.Models.Test\LogInspect.Models.Test.csproj", "{063E5123-8D90-4EA9-A045-77BE8FB9592E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTesting", "UnitTesting", "{CE824EE8-C387-4399-A304-66523A7932A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.BaseLib", "LogInspect.BaseLib\LogInspect.BaseLib.csproj", "{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInspect.BaseLib.Test", "LogInspect.BaseLib.Test\LogInspect.BaseLib.Test.csproj", "{FF700F88-619E-4B53-9B6F-923A14DCC65A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{27817740-837A-4050-B824-1C00EB6F503F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27817740-837A-4050-B824-1C00EB6F503F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27817740-837A-4050-B824-1C00EB6F503F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27817740-837A-4050-B824-1C00EB6F503F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF4B0001-2859-4A09-8F95-3E5BEF4A5272}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,9 +71,25 @@ Global
 		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB80D89-9EA4-4D6B-8E2B-2B8D7E405670}.Release|Any CPU.Build.0 = Release|Any CPU
+		{063E5123-8D90-4EA9-A045-77BE8FB9592E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{063E5123-8D90-4EA9-A045-77BE8FB9592E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{063E5123-8D90-4EA9-A045-77BE8FB9592E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{063E5123-8D90-4EA9-A045-77BE8FB9592E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB4E8D6-C387-4FDA-988F-0E917A8690DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF700F88-619E-4B53-9B6F-923A14DCC65A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{063E5123-8D90-4EA9-A045-77BE8FB9592E} = {CE824EE8-C387-4399-A304-66523A7932A1}
+		{FF700F88-619E-4B53-9B6F-923A14DCC65A} = {CE824EE8-C387-4399-A304-66523A7932A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87DE6CBF-2F2F-479F-8DCE-DA373A846145}

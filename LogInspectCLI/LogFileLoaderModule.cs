@@ -1,6 +1,7 @@
-﻿using LogInspect.Models;
-using LogInspect.Modules.Parsers;
-using LogInspect.Modules.Readers;
+﻿using LogInspect.BaseLib;
+using LogInspect.BaseLib.Parsers;
+using LogInspect.BaseLib.Readers;
+using LogInspect.Models;
 using LogLib;
 using ModuleLib;
 using System;
@@ -23,9 +24,9 @@ namespace LogInspectCLI
 			this.regexBuilder = RegexBuilder;
 		}
 
-		private IStringMatcher CreateStringMatcher(IRegexBuilder RegexBuilder, string NameSpace, IEnumerable<string> Patterns)
+		private StringMatcher CreateStringMatcher(IRegexBuilder RegexBuilder, string NameSpace, IEnumerable<string> Patterns)
 		{
-			IStringMatcher matcher;
+			StringMatcher matcher;
 
 			matcher = new StringMatcher();
 			foreach (string pattern in Patterns)
@@ -52,7 +53,7 @@ namespace LogInspectCLI
 			appendLineToNextMatcher = CreateStringMatcher(regexBuilder, LogFile.FormatHandler.NameSpace, LogFile.FormatHandler.AppendLineToNextPatterns);
 
 
-			logParser = new LogParser(Logger, LogFile.FormatHandler.Columns.Select(item => item.Name));
+			logParser = new LogParser( LogFile.FormatHandler.Columns.Select(item => item.Name));
 			foreach (Rule rule in LogFile.FormatHandler.Rules)
 			{
 				logParser.Add(regexBuilder.Build(LogFile.FormatHandler.NameSpace, rule.GetPattern(), false), rule.Discard);
@@ -64,8 +65,8 @@ namespace LogInspectCLI
 
 			using (stream)
 			{
-				lineReader = new LineReader(Logger, stream, Encoding.Default, discardLineMatcher);
-				logReader = new LogReader(Logger, lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
+				lineReader = new LineReader( stream, Encoding.Default, discardLineMatcher);
+				logReader = new LogReader( lineReader, appendLineToPreviousMatcher, appendLineToNextMatcher);
 				while ( logReader.CanRead)
 				{
 					if (!Try(() => logReader.Read()).OrAlert(out log, "Error occured while reading log")) break;

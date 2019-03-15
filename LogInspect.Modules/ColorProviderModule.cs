@@ -30,47 +30,10 @@ namespace LogInspect.Modules
 				if (value == null) continue;
 
 				if (Regex.Match(value, coloringRule.Pattern).Success) return coloringRule.Background;
-				/*{
-					try
-					{
-						//Brush Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString());
-						//Background.Freeze();	// mandatory for UI binding and avoid thread synchronisation exceptions
-						return Background;
-					}
-					catch
-					{
-						Log(LogLevels.Error, $"Invalid background {coloringRule.Background}");
-					}
-
-				}*/
+				
 			}
 			return "Transparent";
 		}
-		/*public Brush GetBackground(EventViewModel Event)
-		{
-			string value;
-
-			foreach (EventColoringRule coloringRule in coloringRules)
-			{
-				value = Event[coloringRule.Column].Value?.ToString();
-				if (value == null) continue;
-
-				if (Regex.Match(value, coloringRule.Pattern).Success)
-				{
-					try
-					{
-						Brush Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(coloringRule.Background));
-						return Background;
-					}
-					catch
-					{
-						Log(LogLevels.Error, $"Invalid background {coloringRule.Background}");
-					}
-
-				}
-			}
-			return null;
-		}*/
 
 
 	}
