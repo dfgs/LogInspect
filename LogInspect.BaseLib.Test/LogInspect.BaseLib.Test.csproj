@@ -50,9 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Inline.UnitTest.cs" />
+    <Compile Include="Mocks\MockedLogParser.cs" />
+    <Compile Include="Mocks\MockedLogReader.cs" />
     <Compile Include="Parsers\InlineParserUnitTest.cs" />
     <Compile Include="Readers\LineReaderUnitTest.cs" />
     <Compile Include="Parsers\LogParserUnitTest.cs" />
+    <Compile Include="Readers\EventReaderUnitTest.cs" />
     <Compile Include="Readers\LogReaderUnitTest.cs" />
     <Compile Include="Mocks\MockedLineReader.cs" />
     <Compile Include="Mocks\MockedLineReaderWithAppend.cs" />

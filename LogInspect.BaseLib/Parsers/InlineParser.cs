@@ -12,7 +12,7 @@ namespace LogInspect.BaseLib.Parsers
 	{
 		private static Comparer<int> comparer=Comparer<int>.Default;
 
-		private List<(InlineFormat InlineColoringRule, Regex Regex)> items;
+		private List<(InlineFormat InlineFormat, Regex Regex)> items;
 		private IRegexBuilder regexBuilder;
 		
 		public InlineParser(IRegexBuilder RegexBuilder)
@@ -20,7 +20,7 @@ namespace LogInspect.BaseLib.Parsers
 			if (RegexBuilder == null) throw new ArgumentNullException("RegexBuilder");
 
 			this.regexBuilder = RegexBuilder;
-			items = new List<(InlineFormat InlineColoringRule, Regex Regex)>();
+			items = new List<(InlineFormat InlineFormat, Regex Regex)>();
 		}
 
 		public void Add(string NameSpace,InlineFormat InlineColoringRule)
@@ -43,12 +43,12 @@ namespace LogInspect.BaseLib.Parsers
 			if (Value == null) yield break;
 
 			inlines = new List<Inline>();
-			foreach ((InlineFormat InlineColoringRule, Regex Regex) item in items)
+			foreach ((InlineFormat inlineFormat, Regex Regex) item in items)
 			{
 				match = item.Regex.Match(Value);
 				while (match.Success)
 				{
-					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.InlineColoringRule.Foreground, Underline = item.InlineColoringRule.Underline, Bold = item.InlineColoringRule.Bold, Italic = item.InlineColoringRule.Italic, Value = match.Value,DocumentType=item.InlineColoringRule.DocumentType };
+					newInline=new Inline() { Index = match.Index, Length = match.Length, Foreground = item.inlineFormat.Foreground, Underline = item.inlineFormat.Underline, Bold = item.inlineFormat.Bold, Italic = item.inlineFormat.Italic, Value = match.Value,DocumentType=item.inlineFormat.DocumentType };
 					existing = inlines.FirstOrDefault(i => i.Intersect(newInline));// in order to priorize matching rules
 					if (existing == null) inlines.Add(newInline);
 					/*else
