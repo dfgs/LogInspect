@@ -15,6 +15,11 @@ namespace LogInspect.Modules
 	{
 		private RegexBuilder regexBuilder;
 		
+		public int Count
+		{
+			get { return regexBuilder.Count; }
+		}
+		
 
 		public PatternLibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator, IFileLoader<PatternCollection> FileLoader) : base(Logger,DirectoryEnumerator,FileLoader)
 		{

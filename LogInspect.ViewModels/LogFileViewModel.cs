@@ -73,7 +73,7 @@ namespace LogInspect.ViewModels
 
 		
 
-		public LogFileViewModel(ILogger Logger,LogFile LogFile, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule) :base(Logger)
+		public LogFileViewModel(ILogger Logger,LogFile LogFile, IInlineParserFactoryModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule) :base(Logger)
 		{
 			AssertParameterNotNull(LogFile,"LogFile");
 			AssertParameterNotNull(InlineParserBuilderModule,"InlineParserBuilderModule");

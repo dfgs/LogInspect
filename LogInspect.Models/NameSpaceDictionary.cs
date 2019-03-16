@@ -12,6 +12,10 @@ namespace LogInspect.Models
 		private Dictionary<string, T> items;
 		private Dictionary<string, T> fullNamedItems;
 
+		public int Count
+		{
+			get { return items.Count; }
+		}
 
 		public NameSpaceDictionary()
 		{

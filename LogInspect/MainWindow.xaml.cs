@@ -112,11 +112,11 @@ namespace LogInspect
 			ILogFileLoaderModule logFileLoaderModule;
 			LoadWindow loadWindow;
 			IColorProviderModule colorProviderModule;
-			IInlineParserBuilderModule inlineParserBuilderModule;
+			IInlineParserFactoryModule inlineParserBuilderModule;
 
 			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
 			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
-			inlineParserBuilderModule = new InlineParserBuilderModule(logger,patternLibraryModule,inlineColoringRuleLibraryModule);
+			inlineParserBuilderModule = new InlineParserFactoryModule(logger,patternLibraryModule,inlineColoringRuleLibraryModule);
 
 			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule);
 			//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);

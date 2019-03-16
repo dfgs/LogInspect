@@ -17,10 +17,10 @@ namespace LogInspect.ViewModels.Columns
 		private FormatHandler formatHandler;
 		private FilterItemSourcesViewModel filterItemSourcesViewModel;
 		private IColorProviderModule colorProviderModule;
-		private IInlineParserBuilderModule inlineParserBuilderModule;
+		private IInlineParserFactoryModule inlineParserBuilderModule;
 
 
-		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule) : base(Logger)
+		public ColumnsViewModel(ILogger Logger,FormatHandler FormatHandler, FilterItemSourcesViewModel FilterItemSourcesViewModel, IInlineParserFactoryModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule) : base(Logger)
 		{
 			AssertParameterNotNull(FormatHandler,"FormatHandler", out formatHandler);
 			AssertParameterNotNull(FilterItemSourcesViewModel,"FilterItemSourcesViewModel", out filterItemSourcesViewModel);

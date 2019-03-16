@@ -36,9 +36,22 @@ namespace LogInspect.Modules.Test
 			module = new InlineFormatLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedInlineFormatCollectionLoader());
 			module.LoadDirectory("Path");
 			Assert.IsNull(module.GetItem($"Path10", $"Format10"));
-
-
 		}
+
+		[TestMethod]
+		public void ShouldNotNotThrowWhenLoadingDuplicates()
+		{
+			InlineFormatLibraryModule module;
+
+			module = new InlineFormatLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedInlineFormatCollectionLoader());
+			module.LoadDirectory("Path");
+			Assert.AreEqual(3, module.Count);
+			module.LoadDirectory("Path");
+			Assert.AreEqual(3, module.Count);
+		}
+
+
+
 
 	}
 }

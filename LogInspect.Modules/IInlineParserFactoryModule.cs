@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public interface IInlineParserBuilderModule:IModule
+	public interface IInlineParserFactoryModule:IModule
 	{
-		IInlineParser CreateParser(string NameSpace,Column Column);
+		IInlineParser CreateParser(string DefaultNameSpace,Column Column);
 	}
 }

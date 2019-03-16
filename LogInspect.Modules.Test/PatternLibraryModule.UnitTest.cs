@@ -40,5 +40,19 @@ namespace LogInspect.Modules.Test
 
 		}
 
+		[TestMethod]
+		public void ShouldNotNotThrowWhenLoadingDuplicates()
+		{
+			PatternLibraryModule module;
+
+			module = new PatternLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedPatternCollectionLoader());
+			module.LoadDirectory("Path");
+			Assert.AreEqual(3, module.Count);
+			module.LoadDirectory("Path");
+			Assert.AreEqual(3, module.Count);
+		}
+
+
+
 	}
 }

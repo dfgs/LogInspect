@@ -50,12 +50,12 @@
     <Compile Include="IColorProviderModule.cs" />
     <Compile Include="IFormatHandlerLibraryModule.cs" />
     <Compile Include="IInlineFormatLibraryModule.cs" />
-    <Compile Include="IInlineParserBuilderModule.cs" />
+    <Compile Include="IInlineParserFactoryModule.cs" />
     <Compile Include="ILibraryModule.cs" />
     <Compile Include="ILogFileLoaderModule.cs" />
     <Compile Include="InfiniteLogFileLoader.cs" />
     <Compile Include="InlineFormatLibraryModule.cs" />
-    <Compile Include="InlineParserBuilderModule.cs" />
+    <Compile Include="InlineParserFactoryModule.cs" />
     <Compile Include="IPatternLibraryModule.cs" />
     <Compile Include="LibraryModule.cs" />
     <Compile Include="LogFileLoaderModule.cs" />

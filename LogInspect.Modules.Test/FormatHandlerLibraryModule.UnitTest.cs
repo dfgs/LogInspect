@@ -33,9 +33,20 @@ namespace LogInspect.Modules.Test
 			module = new FormatHandlerLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedFormatHandlerLoader(), new RegexBuilder());
 			module.LoadDirectory("Path");
 			Assert.AreEqual("Default handler", module.GetFormatHandler("Path5").Name);
-
-
 		}
+
+		[TestMethod]
+		public void ShouldNotThrowWhenPassingNullFileName()
+		{
+			FormatHandlerLibraryModule module;
+
+			module = new FormatHandlerLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedFormatHandlerLoader(), new RegexBuilder());
+			module.LoadDirectory("Path");
+			Assert.AreEqual("Default handler", module.GetFormatHandler(null).Name);
+		}
+
+
+
 
 	}
 }

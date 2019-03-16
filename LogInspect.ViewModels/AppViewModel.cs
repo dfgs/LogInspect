@@ -27,7 +27,7 @@ namespace LogInspect.ViewModels
 			throw new NotImplementedException();
 		}
 
-		public async Task Open(LogFile LogFile, IInlineParserBuilderModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule)
+		public async Task Open(LogFile LogFile, IInlineParserFactoryModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule)
 		{
 			LogFileViewModel logFileViewModel;
 

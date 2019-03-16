@@ -14,10 +14,13 @@ namespace LogInspect.Modules
 	{
 		private NameSpaceDictionary<InlineFormat> dictionary;
 		
+		public int Count
+		{
+			get { return dictionary.Count; }
+		}
 
 		public InlineFormatLibraryModule(ILogger Logger, IDirectoryEnumerator DirectoryEnumerator, IFileLoader<InlineFormatCollection> FileLoader) : base(Logger,DirectoryEnumerator,FileLoader)
 		{
-			//AssertParameterNotNull(InlineColoringRuleDictionary,"InlineColoringRuleDictionary", out inlineColoringRuleDictionary);
 			dictionary = new NameSpaceDictionary<InlineFormat>();
 		}
 
