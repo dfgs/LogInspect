@@ -8,16 +8,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace LogInspect.Modules.Test
 {
 	[TestClass]
-	public class InlineFormatLibraryModuleUnitTest
+	public class PatternLibraryModuleUnitTest
 	{
 		
 
 		[TestMethod]
-		public void ShouldFindInlineFormat()
+		public void ShouldFindPattern()
 		{
-			InlineFormatLibraryModule module;
+			PatternLibraryModule module;
 			
-			module = new InlineFormatLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5),new MockedInlineFormatCollectionLoader());
+			module = new PatternLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5),new MockedPatternCollectionLoader());
 			module.LoadDirectory("Path");
 			for (int t = 0; t < 5; t++)
 			{
@@ -29,11 +29,11 @@ namespace LogInspect.Modules.Test
 		}
 
 		[TestMethod]
-		public void ShouldNotFindInlineFormatButReturnNull()
+		public void ShouldNotFindPatternButReturnNull()
 		{
-			InlineFormatLibraryModule module;
+			PatternLibraryModule module;
 
-			module = new InlineFormatLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedInlineFormatCollectionLoader());
+			module = new PatternLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedPatternCollectionLoader());
 			module.LoadDirectory("Path");
 			Assert.IsNull(module.GetItem($"Path10", $"Format10"));
 

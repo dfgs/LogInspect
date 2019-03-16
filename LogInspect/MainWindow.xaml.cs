@@ -47,11 +47,11 @@ namespace LogInspect
 
 			appViewModel = new AppViewModel(logger);
 
-			patternLibraryModule = new PatternLibraryModule(logger,new DirectoryEnumerator(),new PatternLibLoader(), new RegexBuilder());
-			inlineColoringRuleLibraryModule = new InlineFormatLibraryModule(logger, new DirectoryEnumerator(),new InlineColoringRuleLibLoader(), new InlineColoringRuleDictionary());
-			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), new FormatHandlerLoader(), patternLibraryModule.RegexBuilder);
+			patternLibraryModule = new PatternLibraryModule(logger,new DirectoryEnumerator(),new PatternLibLoader());
+			inlineColoringRuleLibraryModule = new InlineFormatLibraryModule(logger, new DirectoryEnumerator(),new InlineColoringRuleLibLoader());
+			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), new FormatHandlerLoader(),patternLibraryModule);
 
-			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternLibsFolder);
+			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternsFolder);
 			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineFormatsFolder);
 			formatHandlerLibraryModule.LoadDirectory(Properties.Settings.Default.FormatHandlersFolder);
 			
@@ -116,9 +116,9 @@ namespace LogInspect
 
 			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
 			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
-			inlineParserBuilderModule = new InlineParserBuilderModule(logger,patternLibraryModule.RegexBuilder,inlineColoringRuleLibraryModule.InlineColoringRuleDictionary);
+			inlineParserBuilderModule = new InlineParserBuilderModule(logger,patternLibraryModule,inlineColoringRuleLibraryModule);
 
-			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule.RegexBuilder);
+			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule);
 			//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
 
 

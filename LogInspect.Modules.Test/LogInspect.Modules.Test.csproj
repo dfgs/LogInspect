@@ -49,6 +49,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\MockedPatternCollectionLoader.cs" />
+    <Compile Include="PatternLibraryModule.UnitTest.cs" />
     <Compile Include="InlineFormatLibraryModule.UnitTest.cs" />
     <Compile Include="FormatHandlerLibraryModule.UnitTest.cs" />
     <Compile Include="LibraryModule.UnitTest.cs" />

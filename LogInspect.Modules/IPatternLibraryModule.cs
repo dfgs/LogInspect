@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public interface IPatternLibraryModule:ILibraryModule<FormatHandler>
+	public interface IPatternLibraryModule:ILibraryModule<FormatHandler>,IRegexBuilder
 	{
-		RegexBuilder RegexBuilder
-		{
-			get;
-		}
+		
 
 	}
 }

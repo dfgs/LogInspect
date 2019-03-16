@@ -22,24 +22,24 @@ namespace LogInspectCLI
 
 			ILogger logger;
 			IPatternLibraryModule patternLibraryModule;
-			IInlineFormatLibraryModule inlineColoringRuleLibraryModule;
+			IInlineFormatLibraryModule inlineFormatLibraryModule;
 			IFormatHandlerLibraryModule formatHandlerLibraryModule;
 			LogFile logFile;
 
 			logger = new FileLogger(new DefaultLogFormatter(),"LogInspectCLI.log");
 
-			patternLibraryModule = new PatternLibraryModule(logger, new DirectoryEnumerator(), new PatternLibLoader(), new RegexBuilder());
-			inlineColoringRuleLibraryModule = new InlineFormatLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleLibLoader(), new InlineColoringRuleDictionary());
-			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), new FormatHandlerLoader(), patternLibraryModule.RegexBuilder);
+			patternLibraryModule = new PatternLibraryModule(logger, new DirectoryEnumerator(), new PatternLibLoader());
+			inlineFormatLibraryModule = new InlineFormatLibraryModule(logger, new DirectoryEnumerator(), new InlineColoringRuleLibLoader());
+			formatHandlerLibraryModule = new FormatHandlerLibraryModule(logger, new DirectoryEnumerator(), new FormatHandlerLoader(), patternLibraryModule);
 
-			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternLibsFolder);
-			inlineColoringRuleLibraryModule.LoadDirectory(Properties.Settings.Default.InlineFormatsFolder);
+			patternLibraryModule.LoadDirectory(Properties.Settings.Default.PatternsFolder);
+			inlineFormatLibraryModule.LoadDirectory(Properties.Settings.Default.InlineFormatsFolder);
 			formatHandlerLibraryModule.LoadDirectory(Properties.Settings.Default.FormatHandlersFolder);
 
 
 			logFile = new LogFile(args[0], formatHandlerLibraryModule.GetFormatHandler(args[0]));
 
-			LogFileLoaderModule loader = new LogFileLoaderModule(logger, patternLibraryModule.RegexBuilder);
+			LogFileLoaderModule loader = new LogFileLoaderModule(logger, patternLibraryModule);
 			loader.Load(logFile);
 
 			foreach(Event ev in logFile.Events.Take(100))

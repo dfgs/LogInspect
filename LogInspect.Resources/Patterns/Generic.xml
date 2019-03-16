@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<PatternLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Generic">
+<PatternCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Generic">
   <Items>
     <Pattern Name="Const" Value="\b[A-Z]+(_[A-Z]+)+\b"/>
     <Pattern Name="EmptyLine" Value="^$" />
@@ -13,6 +13,5 @@
     <Pattern Name="RestOfTheLine" Value=".*$" />
     <Pattern Name="Word" Value="\w+" />
     <Pattern Name="UNCPath" Value="([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+" />
-
   </Items>
-</PatternLib>
+</PatternCollection>

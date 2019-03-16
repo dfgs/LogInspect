@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace LogInspect.Models
 {
 	[Serializable]
-	public class PatternLib
+	public class PatternCollection
 	{
 		[XmlAttribute]
 		public string NameSpace
@@ -25,7 +25,7 @@ namespace LogInspect.Models
 			set;
 		}
 
-		public PatternLib()
+		public PatternCollection()
 		{
 			Items = new List<Pattern>();
 		}
@@ -40,23 +40,23 @@ namespace LogInspect.Models
 		{
 			XmlSerializer serializer;
 
-			serializer = new XmlSerializer(typeof(PatternLib));
+			serializer = new XmlSerializer(typeof(PatternCollection));
 			serializer.Serialize(Stream, this);
 		}
 
-		public static PatternLib LoadFromFile(string FileName)
+		public static PatternCollection LoadFromFile(string FileName)
 		{
 			using (FileStream stream = new FileStream(FileName, FileMode.Open))
 			{
 				return LoadFromStream(stream);
 			}
 		}
-		public static PatternLib LoadFromStream(Stream Stream)
+		public static PatternCollection LoadFromStream(Stream Stream)
 		{
 			XmlSerializer serializer;
 
-			serializer = new XmlSerializer(typeof(PatternLib));
-			return (PatternLib)serializer.Deserialize(Stream);
+			serializer = new XmlSerializer(typeof(PatternCollection));
+			return (PatternCollection)serializer.Deserialize(Stream);
 		}
 
 

@@ -34,10 +34,10 @@ namespace LogInspectCLI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PatternLibs")]
-        public string PatternLibsFolder {
+        [global::System.Configuration.DefaultSettingValueAttribute("Patterns")]
+        public string PatternsFolder {
             get {
-                return ((string)(this["PatternLibsFolder"]));
+                return ((string)(this["PatternsFolder"]));
             }
         }
         

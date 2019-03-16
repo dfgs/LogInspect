@@ -66,7 +66,7 @@
     <Compile Include="LogFile.cs" />
     <Compile Include="NameSpaceDictionary.cs" />
     <Compile Include="Pattern.cs" />
-    <Compile Include="PatternLib.cs" />
+    <Compile Include="PatternCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyCollection.cs" />
     <Compile Include="Rule.cs" />

@@ -266,22 +266,22 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PatternLibs\Generic.xml">
+    <None Include="Patterns\Generic.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PatternLibs\Nice.NIM.xml">
+    <None Include="Patterns\Nice.NIM.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PatternLibs\Nice.NTR.xml">
+    <None Include="Patterns\Nice.NTR.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="PatternLibs\readme.txt">
+    <Resource Include="Patterns\readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

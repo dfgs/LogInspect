@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace LogInspect.BaseLib.FileLoaders
 {
-	public class PatternLibLoader : IFileLoader<PatternLib>
+	public class PatternLibLoader : IFileLoader<PatternCollection>
 	{
-		public PatternLib Load(string FileName)
+		public PatternCollection Load(string FileName)
 		{
-			return PatternLib.LoadFromFile(FileName);
+			return PatternCollection.LoadFromFile(FileName);
 		}
 	}
 }

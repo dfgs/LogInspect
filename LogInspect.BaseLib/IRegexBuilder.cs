@@ -11,8 +11,6 @@ namespace LogInspect.BaseLib
 	public interface IRegexBuilder:INameSpaceDictionary<Pattern>
 	{
 
-		/*void Add(string NameSpace,Pattern Pattern);
-		void Add(string NameSpace, IEnumerable<Pattern> Patterns);*/
 
 		string BuildRegexPattern(string DefaultNameSpace, string Pattern);
 		Regex Build(string DefaultNameSpace,string Pattern,bool IgnoreCase);

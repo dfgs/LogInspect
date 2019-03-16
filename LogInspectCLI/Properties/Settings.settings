@@ -5,8 +5,8 @@
     <Setting Name="FormatHandlersFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">FormatHandlers</Value>
     </Setting>
-    <Setting Name="PatternLibsFolder" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">PatternLibs</Value>
+    <Setting Name="PatternsFolder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Patterns</Value>
     </Setting>
     <Setting Name="InlineFormatsFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">InlineFormats</Value>

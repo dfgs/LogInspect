@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<PatternLib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
+<PatternCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
   <Items>
     <Pattern Name="EOL" Value="\u0003"/>
     <Pattern Name="ShortDate" Value="\d\d/\d\d/\d\d" />
@@ -7,4 +7,4 @@
     <Pattern Name="ID" Value=" ?(id)?"/>
     <Pattern Name="IDSeparator" Value=" ?(:|=)? ?"/>
   </Items>
-</PatternLib>
+</PatternCollection>
