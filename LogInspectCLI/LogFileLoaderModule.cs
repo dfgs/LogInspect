@@ -53,7 +53,7 @@ namespace LogInspectCLI
 			appendLineToNextMatcher = CreateStringMatcher(regexBuilder, LogFile.FormatHandler.NameSpace, LogFile.FormatHandler.AppendLineToNextPatterns);
 
 
-			logParser = new LogParser( LogFile.FormatHandler.Columns.Select(item => item.Name));
+			logParser = new LogParser( LogFile.FormatHandler.Columns);
 			foreach (Rule rule in LogFile.FormatHandler.Rules)
 			{
 				logParser.Add(regexBuilder.Build(LogFile.FormatHandler.NameSpace, rule.GetPattern(), false), rule.Discard);

@@ -11,16 +11,16 @@
   </DiscardLinePatterns>
   <Columns>
     <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
     <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
     <Column Name="Channel" Width="100" Alignment="Center" IsFilterItemSource="true">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
   </Columns>
   <Rules>

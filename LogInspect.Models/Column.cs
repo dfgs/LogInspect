@@ -20,7 +20,7 @@ namespace LogInspect.Models
 		}
 
 		[XmlAttribute]
-		public string Type
+		public ColumnType Type
 		{
 			get;
 			set;
@@ -54,7 +54,7 @@ namespace LogInspect.Models
 		}
 
 		[XmlArray]
-		public List<string> InlineColoringRules
+		public List<string> InlineFormats
 		{
 			get;
 			set;
@@ -62,7 +62,7 @@ namespace LogInspect.Models
 
 		public Column()
 		{
-			InlineColoringRules = new List<string>();
+			InlineFormats = new List<string>();
 		}
 
 		

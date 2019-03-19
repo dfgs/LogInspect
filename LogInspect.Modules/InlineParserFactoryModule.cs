@@ -32,7 +32,7 @@ namespace LogInspect.Modules
 			if (!AssertParameterNotNull(Column, "Column")) return null;
 
 			inlineParser = new InlineParser(regexBuilder);
-			foreach (string ruleName in Column.InlineColoringRules)
+			foreach (string ruleName in Column.InlineFormats)
 			{
 				try
 				{

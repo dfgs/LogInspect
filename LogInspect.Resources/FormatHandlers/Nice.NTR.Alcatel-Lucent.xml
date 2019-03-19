@@ -10,16 +10,16 @@
   </DiscardLinePatterns>
   <Columns>
     <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
     <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
     <Column Name="Event" Width="150" IsFilterItemSource="true">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
     <Column Name="Message" Width="600" IsFilterItemSource="false">
-      <InlineColoringRules>
+      <InlineFormats>
         <string>Nice.NTR.DRLinkTimeSlot</string>
         <string>Nice.NTR.Target</string>
         <string>Nice.NTR.TargetID</string>
@@ -33,7 +33,7 @@
         <string>Nice.NTR.CallID</string>
         <string>Nice.NTR.CallIDValue</string>
         <string>Const</string>
-      </InlineColoringRules>
+      </InlineFormats>
     </Column>
   </Columns>
   <Rules>

@@ -9,7 +9,7 @@ namespace LogInspect.Models
 {
 	public class Event
 	{
-		public string this[string Name]
+		public object this[string Name]
 		{
 			get { return Properties[Name]; }
 			set { Properties[Name] = value; }
@@ -21,13 +21,8 @@ namespace LogInspect.Models
 			set;
 		}
 
-		/*public bool IsBookMarked
-		{
-			get;
-			set;
-		}*/
-
-		public PropertyCollection<string> Properties
+		
+		public PropertyCollection<object> Properties
 		{
 			get;
 			private set;
@@ -35,7 +30,7 @@ namespace LogInspect.Models
 
 		public Event()
 		{
-			this.Properties = new PropertyCollection<string>();
+			this.Properties = new PropertyCollection<object>();
 		}
 
 		

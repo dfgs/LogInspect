@@ -7,7 +7,7 @@
   <DiscardLinePatterns />
   <Columns>
     <Column Name="Message" Width="1000" Alignment="Left" IsFilterItemSource="false">
-      <InlineColoringRules />
+      <InlineFormats />
     </Column>
   </Columns>
   <Rules>

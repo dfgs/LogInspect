@@ -28,11 +28,11 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser(Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name="Red", Pattern = "Red" });
@@ -57,11 +57,11 @@ namespace LogInspect.BaseLib.Test
 			Inline[] inlines;
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
@@ -88,11 +88,11 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
@@ -122,11 +122,11 @@ namespace LogInspect.BaseLib.Test
 			Inline[] inlines;
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
@@ -157,11 +157,11 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
@@ -193,11 +193,11 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "Red" });
@@ -230,11 +230,11 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("Red");
-			column.InlineColoringRules.Add("Green");
-			column.InlineColoringRules.Add("Blue");
-			column.InlineColoringRules.Add("White");
-			column.InlineColoringRules.Add("Black");
+			column.InlineFormats.Add("Red");
+			column.InlineFormats.Add("Green");
+			column.InlineFormats.Add("Blue");
+			column.InlineFormats.Add("White");
+			column.InlineFormats.Add("Black");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "Red", Pattern = "red",IgnoreCase=true });
@@ -261,8 +261,8 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("A");
-			column.InlineColoringRules.Add("B");
+			column.InlineFormats.Add("A");
+			column.InlineFormats.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
@@ -283,8 +283,8 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("A");
-			column.InlineColoringRules.Add("B");
+			column.InlineFormats.Add("A");
+			column.InlineFormats.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
@@ -305,8 +305,8 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("A");
-			column.InlineColoringRules.Add("B");
+			column.InlineFormats.Add("A");
+			column.InlineFormats.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "A", Pattern = "2345678" });
@@ -329,8 +329,8 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("A");
-			column.InlineColoringRules.Add("B");
+			column.InlineFormats.Add("A");
+			column.InlineFormats.Add("B");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "4567" });
@@ -351,8 +351,8 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("B");
-			column.InlineColoringRules.Add("A");
+			column.InlineFormats.Add("B");
+			column.InlineFormats.Add("A");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "1234" });
@@ -373,8 +373,8 @@ namespace LogInspect.BaseLib.Test
 
 
 			column = new Column() { Name = "C1" };
-			column.InlineColoringRules.Add("B");
-			column.InlineColoringRules.Add("A");
+			column.InlineFormats.Add("B");
+			column.InlineFormats.Add("A");
 
 			parser = new InlineParser( Utils.EmptyRegexBuilder);
 			parser.Add("NS", new InlineFormat() { Name = "B", Pattern = "6789" });

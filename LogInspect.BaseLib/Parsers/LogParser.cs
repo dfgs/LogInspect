@@ -1,6 +1,7 @@
 ﻿using LogInspect.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -11,9 +12,9 @@ namespace LogInspect.BaseLib.Parsers
 	public class LogParser:ILogParser
 	{
 		private List<(Regex Regex,bool Discard)> items;
-		private IEnumerable<string> columns;
+		private IEnumerable<Column> columns;
 
-		public LogParser( IEnumerable<string> Columns)
+		public LogParser( IEnumerable<Column> Columns)
 		{
 			if (Columns == null) throw new ArgumentNullException("Columns");
 			this.items = new List<(Regex Regex, bool Discard)>();
@@ -32,6 +33,20 @@ namespace LogInspect.BaseLib.Parsers
 			items.Add((regex,Discard));
 		}
 		
+		protected object OnConvertValue(Column Column,string Value)
+		{
+			DateTime result;
+
+			switch(Column.Type)
+			{
+				case ColumnType.String:return Value;
+				case ColumnType.DateTime:
+					if (!DateTime.TryParseExact(Value, Column.Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result)) return Value;
+					return result;
+				default:
+					throw new InvalidCastException($"Invalid column type {Column.Type} for column {Column.Name}");
+			}
+		}
 
 		public Event Parse(Log Log)
 		{
@@ -51,9 +66,9 @@ namespace LogInspect.BaseLib.Parsers
 
 				ev = new Event();
 				ev.LineIndex = Log.LineIndex;
-				foreach (string column in columns)
+				foreach (Column column in columns)
 				{
-					ev[column] = match.Groups[column].Value.Trim();
+					ev[column.Name] = OnConvertValue(column, match.Groups[column.Name].Value.Trim());
 				}
 				return ev;
 			}

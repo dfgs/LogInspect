@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Column.cs" />
+    <Compile Include="ColumnType.cs" />
     <Compile Include="DocumentTypes.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventColoringRule.cs" />
