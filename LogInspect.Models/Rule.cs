@@ -35,10 +35,7 @@ namespace LogInspect.Models
 			Tokens = new List<Token>();
 		}
 
-		/*public IEnumerable<string> GetColumns()
-		{
-			return Tokens.Where(item => item.Name != null).Select(item => item.Name);
-		}*/
+		
 
 		public string GetPattern()
 		{

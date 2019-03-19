@@ -18,7 +18,6 @@ namespace LogInspect.ViewModels
 	public class EventViewModel : ViewModel
 	{
 
-		//private readonly Event ev;
 
 		private PropertyCollection<PropertyViewModel> properties;
 		public IEnumerable<PropertyViewModel> Properties

@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			return new SeverityPropertyViewModel(Logger, Name,  Event[Name] as string, colorProviderModule.GetBackground(Event));
+			return new SeverityPropertyViewModel(Logger, Name,  Event[Name] , colorProviderModule.GetBackground(Event));
 		}
 
 

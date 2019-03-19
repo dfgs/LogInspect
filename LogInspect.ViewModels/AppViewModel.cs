@@ -27,17 +27,17 @@ namespace LogInspect.ViewModels
 			throw new NotImplementedException();
 		}
 
-		public async Task Open(LogFile LogFile, IInlineParserFactoryModule InlineParserBuilderModule, IColorProviderModule ColorProviderModule)
+		public async Task Open(LogFile LogFile, IInlineParserFactoryModule InlineParserFactoryModule, IColorProviderModule ColorProviderModule)
 		{
 			LogFileViewModel logFileViewModel;
 
 			AssertParameterNotNull(LogFile,"LogFile");
-			AssertParameterNotNull(InlineParserBuilderModule,"InlineParserBuilderModule");
+			AssertParameterNotNull(InlineParserFactoryModule, "InlineParserFactoryModule");
 			AssertParameterNotNull(ColorProviderModule,"ColorProviderModule");
 
 			try
 			{
-				logFileViewModel = new LogFileViewModel(Logger,LogFile,InlineParserBuilderModule,ColorProviderModule);
+				logFileViewModel = new LogFileViewModel(Logger,LogFile,InlineParserFactoryModule,ColorProviderModule);
 				Add(logFileViewModel);
 				SelectedItem = logFileViewModel;
 				//await Task.Delay(5000);

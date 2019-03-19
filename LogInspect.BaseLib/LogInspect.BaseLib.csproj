@@ -44,6 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\IBuilder.cs" />
+    <Compile Include="Builders\ILineBuilder.cs" />
+    <Compile Include="Builders\ILogBuilder.cs" />
+    <Compile Include="Builders\LineBuilder.cs" />
+    <Compile Include="Builders\LogBuilder.cs" />
     <Compile Include="DirectoryEnumerator.cs" />
     <Compile Include="FileLoaders\PatternLibLoader.cs" />
     <Compile Include="FileLoaders\InlineColoringRuleLibLoader.cs" />
@@ -58,14 +63,6 @@
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\LogParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Readers\EventReader.cs" />
-    <Compile Include="Readers\IEventReader.cs" />
-    <Compile Include="Readers\ILineReader.cs" />
-    <Compile Include="Readers\ILogReader.cs" />
-    <Compile Include="Readers\IReader.cs" />
-    <Compile Include="Readers\LineReader.cs" />
-    <Compile Include="Readers\LogReader.cs" />
-    <Compile Include="Readers\Reader.cs" />
     <Compile Include="RegexBuilder.cs" />
     <Compile Include="StringMatcher.cs" />
   </ItemGroup>

@@ -11,29 +11,29 @@ namespace LogInspect.BaseLib.Parsers
 {
 	public class LogParser:ILogParser
 	{
-		private List<(Regex Regex,bool Discard)> items;
+		private List<Regex> items;
 		private IEnumerable<Column> columns;
 
 		public LogParser( IEnumerable<Column> Columns)
 		{
 			if (Columns == null) throw new ArgumentNullException("Columns");
-			this.items = new List<(Regex Regex, bool Discard)>();
+			this.items = new List<Regex>();
 			this.columns = Columns; 
 		}
 
-		public void Add(Regex Regex,bool Discard)
+		public void Add(Regex Regex)
 		{
-			items.Add((Regex,Discard));
+			items.Add(Regex);
 		}
-		public void Add(string Pattern,bool Discard)
+		public void Add(string Pattern)
 		{
 			Regex regex;
 
 			regex = new Regex(Pattern, RegexOptions.Compiled);
-			items.Add((regex,Discard));
+			items.Add(regex);
 		}
 		
-		protected object OnConvertValue(Column Column,string Value)
+		/*protected object OnConvertValue(Column Column,string Value)
 		{
 			DateTime result;
 
@@ -46,7 +46,7 @@ namespace LogInspect.BaseLib.Parsers
 				default:
 					throw new InvalidCastException($"Invalid column type {Column.Type} for column {Column.Name}");
 			}
-		}
+		}*/
 
 		public Event Parse(Log Log)
 		{
@@ -58,17 +58,16 @@ namespace LogInspect.BaseLib.Parsers
 
 			logLine = Log.ToSingleLine();
 
-			foreach ((Regex Regex, bool Discard) tuple in items)
+			foreach (Regex Regex in items)
 			{
-				match = tuple.Regex.Match(logLine);
+				match = Regex.Match(logLine);
 				if (!match.Success) continue;
-				if (tuple.Discard) return null; // discard
-
+		
 				ev = new Event();
 				ev.LineIndex = Log.LineIndex;
 				foreach (Column column in columns)
 				{
-					ev[column.Name] = OnConvertValue(column, match.Groups[column.Name].Value.Trim());
+					ev[column.Name] =  match.Groups[column.Name].Value.Trim();
 				}
 				return ev;
 			}

@@ -27,9 +27,9 @@ namespace LogInspect.ViewModels.Filters
 		{
 			List<FilterItemViewModel> items;
 			items = new List<FilterItemViewModel>();
-			foreach(string value in ItemsSource)
+			foreach(object value in ItemsSource)
 			{
-				items.Add(new FilterItemViewModel() { Description=value,IsChecked=!(Model?.FilteredItems.Contains(value)??false) });
+				items.Add(new FilterItemViewModel() { Description=value.ToString(),IsChecked=!(Model?.FilteredItems.Contains(value)??false) });
 			}
 			this.ItemsSource = items;
 		}

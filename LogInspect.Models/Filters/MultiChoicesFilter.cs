@@ -13,7 +13,7 @@ namespace LogInspect.Models.Filters
 		
 
 		// must not be enumerable to avoid dispatcher issues
-		public string[] FilteredItems
+		public object[] FilteredItems
 		{
 			get;
 			set;
@@ -26,8 +26,7 @@ namespace LogInspect.Models.Filters
 
 		public override bool MustDiscard(object Value)
 		{
-			if (!(Value is string value)) return false;
-			return FilteredItems.Contains( value );
+			return FilteredItems.Contains( Value );
 		}
 
 	}

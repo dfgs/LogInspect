@@ -32,14 +32,13 @@ namespace LogInspect.ViewModels.Columns
 
 		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			DateTime value;
-			if (!DateTime.TryParseExact(Event[Name] as string, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out value))
-			{
-				return new InvalidTimeStampPropertyViewModel(Logger, Name, Event[Name] as string);
-			}
-			else
+			/*if (Event[Name] is DateTime value)
 			{
 				return new TimeStampPropertyViewModel(Logger, Name, value);
+			}
+			else*/
+			{
+				return new InvalidTimeStampPropertyViewModel(Logger, Name, Event[Name]);
 			}
 		}
 

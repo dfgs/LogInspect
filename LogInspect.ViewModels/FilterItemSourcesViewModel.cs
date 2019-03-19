@@ -20,9 +20,9 @@ namespace LogInspect.ViewModels
 	public class FilterItemSourcesViewModel:ViewModel
 	{
 		private string[] columns;
-		private PropertyCollection<List<string>> items;
+		private PropertyCollection<List<object>> items;
 	
-		public IEnumerable<string> this[string Column]
+		public IEnumerable<object> this[string Column]
 		{
 			get { return items[Column]; }
 		}
@@ -31,11 +31,11 @@ namespace LogInspect.ViewModels
 		{
 			AssertParameterNotNull(Columns,"Columns");
 
-			items = new PropertyCollection<List<string>>();
+			items = new PropertyCollection<List<object>>();
 			columns = Columns.Where(item => item.IsFilterItemSource).Select(item => item.Name).ToArray();
 			foreach (string column in columns)
 			{
-				items[column]= new List<string>();
+				items[column]= new List<object>();
 			}
 					   	
 		}
@@ -44,8 +44,8 @@ namespace LogInspect.ViewModels
 
 		public async Task Load(IEnumerable<Event> Items)
 		{
-			List<string> values;
-			string value;
+			List<object> values;
+			object value;
 
 			await Task.Run(() =>
 			{
@@ -54,7 +54,7 @@ namespace LogInspect.ViewModels
 					foreach (string property in columns)
 					{
 						values = items[property];
-						value = ev[property] as string;//.GetEventValue(property);
+						value = ev[property];
 						if (!values.Contains(value)) values.Add(value);
 					}
 				}

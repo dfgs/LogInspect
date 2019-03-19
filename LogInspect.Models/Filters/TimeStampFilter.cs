@@ -39,8 +39,7 @@ namespace LogInspect.Models.Filters
 		public override bool MustDiscard(object Value)
 		{
 
-			if (Value is string) return false; // invalid date time
-			if (!(Value is DateTime date)) return true;
+			if (!(Value is DateTime date)) return false;	// invalid datetime
 						
 			switch(Condition)
 			{

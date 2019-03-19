@@ -28,7 +28,7 @@ namespace LogInspect.Modules
 
 			foreach (EventColoringRule coloringRule in coloringRules)
 			{
-				value = Event[coloringRule.Column] as string;
+				value = Event[coloringRule.Column] ;
 				if (value == null) continue;
 
 				if (Regex.Match(value, coloringRule.Pattern).Success) return coloringRule.Background;

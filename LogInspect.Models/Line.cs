@@ -9,11 +9,11 @@ namespace LogInspect.Models
 	public class Line
 	{
 		
-		public long Position
+		/*public long Position
 		{
 			get;
 			set;
-		}
+		}*/
 
 		public int Index
 		{
