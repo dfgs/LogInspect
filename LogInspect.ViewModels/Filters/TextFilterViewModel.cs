@@ -1,5 +1,4 @@
-﻿using LogInspect.Models.Filters;
-using LogLib;
+﻿using LogLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,12 +18,12 @@ namespace LogInspect.ViewModels.Filters
 			private set;
 		}
 
-		public TextFilterViewModel(ILogger Logger, string PropertyName, TextFilter Model):base(Logger,PropertyName)
+		public TextFilterViewModel(ILogger Logger, string PropertyName, TextFilterViewModel Model):base(Logger,PropertyName)
 		{
 			ItemsSource = new ObservableCollection<TextFilterItem>();
 			if (Model != null)
 			{
-				foreach (TextFilterItem item in Model.Items)
+				foreach (TextFilterItem item in Model.ItemsSource)
 				{
 					ItemsSource.Add(new TextFilterItem() {  Condition=item.Condition, Value=item.Value });
 				}
@@ -35,9 +34,18 @@ namespace LogInspect.ViewModels.Filters
 			}
 		}
 
-		public override Filter CreateFilter()
+		
+		public override bool MustDiscard(EventViewModel Event)
 		{
-			return new TextFilter(PropertyName) { Items=ItemsSource.ToArray() };
+			string value = Event[PropertyName].ToString();
+
+			foreach (TextFilterItem item in ItemsSource)
+			{
+				if (item.Match(value)) return false;
+			}
+
+			return true;
+
 		}
 
 

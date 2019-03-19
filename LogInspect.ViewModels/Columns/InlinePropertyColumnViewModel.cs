@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Models;
@@ -40,7 +39,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			return new TextFilterViewModel(Logger,Name,(TextFilter)Filter);
+			return new InlineFilterViewModel(Logger,Name,Filter as InlineFilterViewModel);
 		}
 
 	}

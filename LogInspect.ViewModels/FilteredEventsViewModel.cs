@@ -1,5 +1,4 @@
 ﻿using LogInspect.Models;
-using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Columns;
 using LogLib;
 using System;
@@ -17,7 +16,7 @@ namespace LogInspect.ViewModels
 	public class FilteredEventsViewModel:CollectionViewModel<EventViewModel,EventViewModel>
 	{
 
-		public Filter[] Filters
+		public FilterViewModel[] Filters
 		{
 			get;
 			set;
@@ -32,9 +31,9 @@ namespace LogInspect.ViewModels
 		private bool MustDiscard(EventViewModel Event)
 		{
 			if (Filters == null) return false;
-			foreach(Filter filter in Filters)
+			foreach(FilterViewModel filter in Filters)
 			{
-				if (filter.MustDiscard(Event[filter.Column].Value)) return true;
+				if (filter.MustDiscard(Event)) return true;
 			}
 			return false;
 		}

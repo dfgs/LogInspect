@@ -1,5 +1,4 @@
-﻿using LogInspect.Models.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace LogInspect.ViewModels.Filters
 {
 	public class TimeStampFilterViewModel:FilterViewModel
 	{
-		
+		public static Array Conditions = Enum.GetValues(typeof(TimeStampConditions));
 
 		public DateTime StartDate
 		{
@@ -50,14 +49,14 @@ namespace LogInspect.ViewModels.Filters
 
 
 
-		public TimeStampFilterViewModel(ILogger Logger,string PropertyName,TimeStampFilter Model) : base(Logger,PropertyName)
+		public TimeStampFilterViewModel(ILogger Logger,string PropertyName,TimeStampFilterViewModel Model) : base(Logger,PropertyName)
 		{
 			if (Model!=null)
 			{
-				this.StartDate = Model.StartDate.Date;
-				this.StartTime = Model.StartDate.TimeOfDay;
-				this.EndDate = Model.EndDate.Date;
-				this.EndTime = Model.EndDate.TimeOfDay;
+				this.StartDate = Model.StartDate;
+				this.StartTime = Model.StartTime;
+				this.EndDate = Model.EndDate;
+				this.EndTime = Model.EndTime;
 				this.Condition = Model.Condition;
 			}
 			else
@@ -69,10 +68,23 @@ namespace LogInspect.ViewModels.Filters
 			}
 		}
 
-		public override Filter CreateFilter()
+		public override bool MustDiscard(EventViewModel Event)
+		{
+			if (!(Event[PropertyName].Value is DateTime date) ) return false;
+			switch (Condition)
+			{
+				case TimeStampConditions.After:return date < StartDate + StartTime;
+				case TimeStampConditions.Before:return date > StartDate + StartTime;
+				case TimeStampConditions.On: return date.Date == StartDate;
+				case TimeStampConditions.Between: return (date < StartDate + StartTime) || (date > EndDate + EndTime);
+				default:return false;
+			}
+		}
+
+		/*public override Filter CreateFilter()
 		{
 			return new TimeStampFilter(PropertyName) { StartDate = StartDate+StartTime, EndDate = EndDate + EndTime, Condition = Condition };
-		}
+		}*/
 
 	}
 }

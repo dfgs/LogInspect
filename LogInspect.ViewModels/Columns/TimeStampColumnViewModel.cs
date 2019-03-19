@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.Models;
-using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogLib;
@@ -32,11 +31,13 @@ namespace LogInspect.ViewModels.Columns
 
 		public override PropertyViewModel CreatePropertyViewModel(Event Event)
 		{
-			/*if (Event[Name] is DateTime value)
+			DateTime result;
+
+			if (DateTime.TryParseExact(Event[Name], Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
 			{
-				return new TimeStampPropertyViewModel(Logger, Name, value);
+				return new TimeStampPropertyViewModel(Logger, Name, result);
 			}
-			else*/
+			else
 			{
 				return new InvalidTimeStampPropertyViewModel(Logger, Name, Event[Name]);
 			}
@@ -44,7 +45,7 @@ namespace LogInspect.ViewModels.Columns
 
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			return new TimeStampFilterViewModel(Logger,Name,(TimeStampFilter)Filter);
+			return new TimeStampFilterViewModel(Logger,Name,Filter as TimeStampFilterViewModel);
 		}
 
 

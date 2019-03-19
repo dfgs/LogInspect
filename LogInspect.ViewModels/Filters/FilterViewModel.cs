@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogInspect.Models.Filters;
 using LogLib;
 
 namespace LogInspect.ViewModels.Filters
@@ -21,7 +20,9 @@ namespace LogInspect.ViewModels.Filters
 			this.PropertyName = PropertyName;
 		}
 
-		public abstract Filter CreateFilter();
-		
+		//public abstract FilterViewModel CreateFilter();
+
+		public abstract bool MustDiscard(EventViewModel Event);
+
 	}
 }

@@ -1,5 +1,4 @@
-﻿using LogInspect.Models.Filters;
-using LogInspect.ViewModels.Filters;
+﻿using LogInspect.ViewModels.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

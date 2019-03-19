@@ -20,11 +20,11 @@ namespace LogInspect.ViewModels.Filters
 			set { isChecked = value;OnPropertyChanged(); }
 		}
 
-		private string description;
-		public string Description
+		private object value;
+		public object Value
 		{
-			get { return description; }
-			set { description = value;OnPropertyChanged(); }
+			get { return value; }
+			set { this.value = value;OnPropertyChanged(); }
 		}
 
 		protected virtual void OnPropertyChanged([CallerMemberName]string PropertyName=null)

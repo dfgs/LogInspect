@@ -50,13 +50,6 @@
     <Compile Include="DocumentTypes.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventColoringRule.cs" />
-    <Compile Include="Filters\Filter.cs" />
-    <Compile Include="Filters\MultiChoicesFilter.cs" />
-    <Compile Include="Filters\TextCondition.cs" />
-    <Compile Include="Filters\TextFilter.cs" />
-    <Compile Include="Filters\TextFilterItem.cs" />
-    <Compile Include="Filters\TimeStampConditions.cs" />
-    <Compile Include="Filters\TimeStampFilter.cs" />
     <Compile Include="FormatHandler.cs" />
     <Compile Include="INameSpaceDictionary.cs" />
     <Compile Include="Inline.cs" />

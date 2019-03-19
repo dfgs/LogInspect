@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
- 			 xmlns:filters="clr-namespace:LogInspect.Models.Filters;assembly=LogInspect.Models"
-            xmlns:local="clr-namespace:LogInspect.Views.Filters"
+ 			 xmlns:filters="clr-namespace:LogInspect.ViewModels.Filters;assembly=LogInspect.ViewModels"
              mc:Ignorable="d" >
 	<UserControl.Resources>
 		<DataTemplate x:Key="textFilterItemTemplate" DataType="{x:Type filters:TextFilterItem}">

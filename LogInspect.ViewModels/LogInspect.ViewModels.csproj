@@ -60,7 +60,11 @@
     <Compile Include="Filters\FilterItemViewModel.cs" />
     <Compile Include="Filters\FilterViewModel.cs" />
     <Compile Include="Filters\MultiChoicesFilterViewModel.cs" />
+    <Compile Include="Filters\TextCondition.cs" />
+    <Compile Include="Filters\TextFilterItem.cs" />
+    <Compile Include="Filters\InlineFilterViewModel.cs" />
     <Compile Include="Filters\TextFilterViewModel.cs" />
+    <Compile Include="Filters\TimeStampConditions.cs" />
     <Compile Include="Filters\TimeStampFilterViewModel.cs" />
     <Compile Include="FindOptions.cs" />
     <Compile Include="IViewModel.cs" />

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Models.Filters
+namespace LogInspect.ViewModels.Filters
 {
 	public enum TimeStampConditions { Between,After,Before,On }
 }

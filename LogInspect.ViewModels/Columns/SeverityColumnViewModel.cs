@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using LogInspect.Models;
-using LogInspect.Models.Filters;
 using LogInspect.Modules;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;

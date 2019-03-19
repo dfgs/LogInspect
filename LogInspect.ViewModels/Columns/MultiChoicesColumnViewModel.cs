@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Models;
@@ -36,7 +35,7 @@ namespace LogInspect.ViewModels.Columns
 		}
 		public override FilterViewModel CreateFilterViewModel()
 		{
-			return new MultiChoicesFilterViewModel(Logger,Name, filterItemSourcesViewModel.GetFilterChoices(Name),(MultiChoicesFilter)Filter);
+			return new MultiChoicesFilterViewModel(Logger,Name, filterItemSourcesViewModel.GetFilterChoices(Name),Filter as MultiChoicesFilterViewModel);
 		}
 
 	}

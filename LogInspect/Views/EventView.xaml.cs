@@ -64,7 +64,7 @@ namespace LogInspect.Views
 
 			if (!(window.RemoveFilter || result)) return;
 
-			if (result == true) column.Filter = window.Filter.CreateFilter();
+			if (result == true) column.Filter = window.Filter;
 			else column.Filter = null;
 
 			await logFile.Refresh();

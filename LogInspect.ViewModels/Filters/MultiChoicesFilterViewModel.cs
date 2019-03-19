@@ -1,5 +1,4 @@
-﻿using LogInspect.Models.Filters;
-using LogLib;
+﻿using LogLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,22 +22,36 @@ namespace LogInspect.ViewModels.Filters
 
 
 
-		public MultiChoicesFilterViewModel(ILogger Logger,string PropertyName, IEnumerable<object> ItemsSource, MultiChoicesFilter Model):base(Logger,PropertyName)
+		public MultiChoicesFilterViewModel(ILogger Logger,string PropertyName, IEnumerable<object> ItemsSource, MultiChoicesFilterViewModel Model):base(Logger,PropertyName)
 		{
 			List<FilterItemViewModel> items;
 			items = new List<FilterItemViewModel>();
-			foreach(object value in ItemsSource)
+			if (Model == null)
 			{
-				items.Add(new FilterItemViewModel() { Description=value.ToString(),IsChecked=!(Model?.FilteredItems.Contains(value)??false) });
+				foreach (object value in ItemsSource)
+				{
+					items.Add(new FilterItemViewModel() { Value = value.ToString(), IsChecked = true });
+				}
+			}
+			else
+			{
+				foreach(FilterItemViewModel item in Model.ItemsSource)
+				{
+					items.Add(new FilterItemViewModel() { Value =item.Value, IsChecked = item.IsChecked});
+				}
 			}
 			this.ItemsSource = items;
 		}
 
-		public override Filter CreateFilter()
-		{
-			return new MultiChoicesFilter(PropertyName) { FilteredItems = ItemsSource.Where(item => !item.IsChecked).Select(item=>item.Description).ToArray()  };
-		}
+		
 
+		public override bool MustDiscard(EventViewModel Event)
+		{
+			FilterItemViewModel item;
+
+			item = ItemsSource.FirstOrDefault(item2 =>ValueType.Equals( item2.Value , Event[PropertyName].Value));
+			return !item?.IsChecked ?? false;
+		}
 
 
 	}

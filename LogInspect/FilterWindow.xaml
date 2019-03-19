@@ -10,6 +10,9 @@
         Title="Set filter" MinHeight="100" Width="480" SizeToContent="Height" WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Icon="Images/page_white_magnify.png">
 
 	<Window.Resources>
+		<DataTemplate DataType="{x:Type filters:InlineFilterViewModel}">
+			<filtersView:TextFilterView/>
+		</DataTemplate>
 		<DataTemplate DataType="{x:Type filters:TextFilterViewModel}">
 			<filtersView:TextFilterView/>
 		</DataTemplate>

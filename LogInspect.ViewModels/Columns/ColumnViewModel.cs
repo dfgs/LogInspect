@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using LogInspect.Models.Filters;
 using LogInspect.ViewModels.Filters;
 using LogInspect.ViewModels.Properties;
 using LogInspect.Models;
@@ -57,8 +56,8 @@ namespace LogInspect.ViewModels.Columns
 			get;
 		}
 
-		private Filter filter;
-		public Filter Filter
+		private FilterViewModel filter;
+		public FilterViewModel Filter
 		{
 			get { return filter; }
 			set
