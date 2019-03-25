@@ -53,14 +53,15 @@
     <Compile Include="IInlineParserFactoryModule.cs" />
     <Compile Include="ILibraryModule.cs" />
     <Compile Include="ILogFileLoaderModule.cs" />
-    <Compile Include="InfiniteLogFileLoader.cs" />
     <Compile Include="InlineFormatLibraryModule.cs" />
     <Compile Include="InlineParserFactoryModule.cs" />
     <Compile Include="IPatternLibraryModule.cs" />
+    <Compile Include="IStringMatcherFactoryModule.cs" />
     <Compile Include="LibraryModule.cs" />
     <Compile Include="LogFileLoaderModule.cs" />
     <Compile Include="PatternLibraryModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringMatcherFactoryModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj">

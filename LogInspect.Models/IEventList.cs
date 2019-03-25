@@ -1,15 +1,14 @@
-﻿using ModuleLib;
+﻿using LogInspect.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.Modules
+namespace LogInspect.Models
 {
-	public interface ILogFileLoaderModule:IModule
+	public interface IEventList
 	{
-		void Load();
-
+		void Add(Event Event);
 	}
 }

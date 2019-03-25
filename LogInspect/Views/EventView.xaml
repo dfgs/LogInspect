@@ -84,12 +84,6 @@
 			<!-- -->
 
 
-			<DataTemplate DataType="{x:Type pages:PropertiesPageViewModel}">
-				<views:EventDetailsView DataContext="{Binding Properties}"/>
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type pages:XmlPageViewModel}">
-				<views:XmlViewer XmlDocument="{Binding Document}"/>
-			</DataTemplate>
 		</ResourceDictionary>
 
 	</UserControl.Resources>
@@ -182,7 +176,18 @@
 		
 		
 		<GridSplitter  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
 		<TabControl Grid.Row="3" ItemsSource="{Binding FilteredEvents.SelectedItem.Pages}" SelectedItem="{Binding FilteredEvents.SelectedItem.Pages.SelectedItem}" >
+			<TabControl.Resources>
+				<DataTemplate DataType="{x:Type pages:PropertiesPageViewModel}">
+					<views:EventDetailsView DataContext="{Binding Properties}"/>
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type pages:XmlPageViewModel}">
+					<views:XmlViewer XmlDocument="{Binding Document}"/>
+				</DataTemplate>
+			</TabControl.Resources>
+			
+			
 			<TabControl.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
@@ -191,8 +196,7 @@
 					</StackPanel>
 				</DataTemplate>
 			</TabControl.ItemTemplate>
-			
-			
 		</TabControl>
+
 	</Grid>
 </UserControl>

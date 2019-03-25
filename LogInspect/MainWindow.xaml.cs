@@ -118,15 +118,14 @@ namespace LogInspect
 			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
 			inlineParserBuilderModule = new InlineParserFactoryModule(logger,patternLibraryModule,inlineColoringRuleLibraryModule);
 
-			logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule);
-			//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
+			/*logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule,logFile.Events);
 
 
 			loadWindow = new LoadWindow(logFileLoaderModule);loadWindow.Owner = this;
 			if (loadWindow.Load() ?? false)
 			{
 				await appViewModel.Open(logFile,inlineParserBuilderModule,colorProviderModule);
-			}
+			}*/
 		}
 
 		#region Filter events

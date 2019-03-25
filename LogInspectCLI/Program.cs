@@ -1,4 +1,5 @@
 ﻿using LogInspect.BaseLib;
+using LogInspect.BaseLib.Builders;
 using LogInspect.BaseLib.FileLoaders;
 using LogInspect.BaseLib.Parsers;
 using LogInspect.Models;
@@ -6,6 +7,7 @@ using LogInspect.Modules;
 using LogLib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +23,15 @@ namespace LogInspectCLI
 			IPatternLibraryModule patternLibraryModule;
 			IInlineFormatLibraryModule inlineFormatLibraryModule;
 			IFormatHandlerLibraryModule formatHandlerLibraryModule;
-			LogDumperModule dumper;
+			IStringMatcherFactoryModule stringMatcherFactoryModule;
+			LogFileLoaderModule dumper;
+			ILineReader lineReader;
+			ILineBuilder lineBuilder;
+			ILogBuilder logBuilder;
+			ILogParser logParser;
+			IEventList eventList;
+
+			FormatHandler formatHandler;
 
 			if (args.Length == 0) return;
 
@@ -35,9 +45,25 @@ namespace LogInspectCLI
 			inlineFormatLibraryModule.LoadDirectory(Properties.Settings.Default.InlineFormatsFolder);
 			formatHandlerLibraryModule.LoadDirectory(Properties.Settings.Default.FormatHandlersFolder);
 
+			stringMatcherFactoryModule = new StringMatcherFactoryModule(logger,patternLibraryModule);
+			eventList = new ConsoleEventList();
+			formatHandler = formatHandlerLibraryModule.GetFormatHandler(args[0]);
 
-			dumper = new LogDumperModule(logger, args[0],formatHandlerLibraryModule.GetFormatHandler(args[0]),patternLibraryModule);
-			dumper.Dump(100);
+
+			lineBuilder = new LineBuilder(stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.DiscardLinePatterns));
+			logBuilder = new LogBuilder(
+				stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.Rules.Where(item => item.Discard).Select(item => item.GetPattern())),
+				stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.AppendLineToPreviousPatterns),
+				stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.AppendLineToNextPatterns)
+				);
+			logParser = new LogParser(formatHandler.Columns);
+
+			using (FileStream stream = new FileStream(args[0], FileMode.Open))
+			{
+				lineReader = new FileLineReader(stream);
+				dumper = new LogFileLoaderModule(logger,lineReader,lineBuilder,logBuilder,logParser,eventList);
+				dumper.Load();
+			}
 
 			Console.ReadLine();
 

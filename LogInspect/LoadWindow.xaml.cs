@@ -69,13 +69,13 @@ namespace LogInspect
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			e.Cancel = logFileLoaderModule.State == ModuleStates.Started;
+			//e.Cancel = logFileLoaderModule.State == ModuleStates.Started;
 		}
 
 
 		private void Timer_Tick(object sender, EventArgs e)
 		{
-			if (logFileLoaderModule.State != ModuleStates.Started)
+			/*if (logFileLoaderModule.State != ModuleStates.Started)
 			{
 				timer.Stop();
 				DialogResult = dialogResult;
@@ -83,12 +83,12 @@ namespace LogInspect
 
 			Length = logFileLoaderModule.Length;
 			Position = logFileLoaderModule.Position;
-			Count = logFileLoaderModule.Count;
+			Count = logFileLoaderModule.Count;*/
 		}
 
 		public bool? Load()
 		{
-			logFileLoaderModule.Start();
+			//logFileLoaderModule.Start();
 			timer.Start();
 			return this.ShowDialog();
 		}
@@ -97,13 +97,13 @@ namespace LogInspect
 		private void ButtonStop_Click(object sender, RoutedEventArgs e)
 		{
 			dialogResult = true;
-			logFileLoaderModule.Stop();
+			//logFileLoaderModule.Stop();
 		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
 			dialogResult = false;
-			logFileLoaderModule.Stop();
+			//logFileLoaderModule.Stop();
 		}
 
 	}

@@ -49,12 +49,15 @@
     <Compile Include="Builders\ILogBuilder.cs" />
     <Compile Include="Builders\LineBuilder.cs" />
     <Compile Include="Builders\LogBuilder.cs" />
+    <Compile Include="ConsoleEventList.cs" />
     <Compile Include="DirectoryEnumerator.cs" />
+    <Compile Include="FileLineReader.cs" />
     <Compile Include="FileLoaders\PatternLibLoader.cs" />
     <Compile Include="FileLoaders\InlineColoringRuleLibLoader.cs" />
     <Compile Include="FileLoaders\FormatHandlerLoader.cs" />
     <Compile Include="IDirectoryEnumerator.cs" />
     <Compile Include="FileLoaders\IFileLoader.cs" />
+    <Compile Include="ILineReader.cs" />
     <Compile Include="IRegexBuilder.cs" />
     <Compile Include="IStringMatcher.cs" />
     <Compile Include="Parsers\IInlineParser.cs" />

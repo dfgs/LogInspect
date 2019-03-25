@@ -14,32 +14,24 @@ using System.Threading.Tasks;
 
 namespace LogInspect.Modules
 {
-	public class LogFileLoaderModule : ThreadModule, ILogFileLoaderModule
+	public class LogFileLoaderModule : Module, ILogFileLoaderModule
 	{
-		private IRegexBuilder regexBuilder;
-		private LogFile logFile;
+		private ILineReader lineReader;
+		private ILineBuilder lineBuilder;
+		private ILogBuilder logBuilder;
+		private ILogParser logParser;
+		private IEventList eventList;
 
-		public long Position
-		{
-			get;
-			private set;
-		}
-		public long Length
-		{
-			get;
-			private set;
-		}
+		
+		
 
-		public int Count
+		public LogFileLoaderModule(ILogger Logger, ILineReader LineReader, ILineBuilder LineBuilder, ILogBuilder LogBuilder, ILogParser LogParser,IEventList EventList) : base(Logger)
 		{
-			get;
-			private set;
-		}
-
-		public LogFileLoaderModule(ILogger Logger,LogFile LogFile, IRegexBuilder RegexBuilder) : base(Logger)
-		{
-			AssertParameterNotNull(LogFile, "LogFile", out logFile);
-			AssertParameterNotNull(RegexBuilder, "RegexBuilder", out regexBuilder);
+			AssertParameterNotNull(LineReader, "LineReader", out lineReader);
+			AssertParameterNotNull(LineBuilder, "LineBuilder", out lineBuilder);
+			AssertParameterNotNull(LogBuilder, "LogBuilder", out logBuilder);
+			AssertParameterNotNull(LogParser, "LogParser", out logParser);
+			AssertParameterNotNull(EventList, "EventList", out eventList);
 		}
 
 
@@ -55,69 +47,38 @@ namespace LogInspect.Modules
 			return matcher;
 		}
 
-		protected override void ThreadLoop()
+		public void Load()
 		{
-			FileStream stream;
-			StreamReader reader;
-
-			IStringMatcher discardLineMatcher;
-			IStringMatcher discardLogMatcher;
-			IStringMatcher appendLineToPreviousMatcher;
-			IStringMatcher appendLineToNextMatcher;
-
-			ILineBuilder lineBuilder;
-			ILogBuilder logBuilder;
-
-			LogParser logParser;
-
+			string l;
 			Line line;
 			Log log;
 			Event ev;
 
 
-			discardLineMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.DiscardLinePatterns);
-			discardLogMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Where(item => item.Discard).Select(item => item.GetPattern()));
-			appendLineToPreviousMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToPreviousPatterns);
-			appendLineToNextMatcher = CreateStringMatcher(regexBuilder, logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToNextPatterns);
-
-			lineBuilder = new LineBuilder(discardLineMatcher);
-			logBuilder = new LogBuilder(discardLogMatcher, appendLineToPreviousMatcher, appendLineToNextMatcher);
-
-			logParser = new LogParser(logFile.FormatHandler.Columns);
-			foreach (Rule rule in logFile.FormatHandler.Rules.Where(item => !item.Discard))
-			{
-				logParser.Add(regexBuilder.Build(logFile.FormatHandler.NameSpace, rule.GetPattern(), false));
-			}
-
-
-
-			Log(LogLevels.Information, $"Open file name {logFile.FileName}");
-			if (!Try(() => new FileStream(logFile.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).OrAlert(out stream, "Failed to open file")) return;
-
-			using (stream)
-			{
-				reader = new StreamReader(stream);
-				while ((stream.Position < stream.Length) )
+			while (!lineReader.EOF)
+			{ 
+				try
 				{
-					try
-					{
-						if (!lineBuilder.Push(reader.ReadLine(), out line)) continue;
-						if (!logBuilder.Push(line, out log)) continue;
-					}
-					catch (Exception ex)
-					{
-						this.Log(ex);
-						break;
-					}
-					if (!Try(() => logParser.Parse(log)).OrAlert(out ev, $"Failed to parse log at line {log.LineIndex}")) continue;
-
-					logFile.Events.Add(ev);
-
+					l = lineReader.Read();
+					if (!lineBuilder.Push(l, out line)) continue;
+					if (!logBuilder.Push(line, out log)) continue;
 				}
+				catch (Exception ex)
+				{
+					this.Log(ex);
+					break;
+				}
+				if (!Try(() => logParser.Parse(log)).OrAlert(out ev, $"Failed to parse log at line {log.LineIndex}")) continue;
+
+				//Console.WriteLine(string.Join("	", ev.Properties));
+				if (!Try(()=>eventList.Add(ev)).OrAlert("Failed to add event")) continue;
 			}
-
-
 
 		}
+
+
+
+
+
 	}
 }

@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StringMatcherFactoryModule.UnitTest.cs" />
     <Compile Include="InlineParserFactoryModule.UnitTest.cs" />
     <Compile Include="Mocks\MockedPatternCollectionLoader.cs" />
     <Compile Include="PatternLibraryModule.UnitTest.cs" />

@@ -20,7 +20,7 @@ namespace LogInspect.Models
 			get;
 			private set;
 		}
-		public List<Event> Events
+		public EventList Events
 		{
 			get;
 			private set;
@@ -36,7 +36,7 @@ namespace LogInspect.Models
 			this.FileName = FileName;
 			this.FormatHandler = FormatHandler;
 
-			this.Events = new List<Event>();
+			this.Events = new EventList();
 		}
 
 		
