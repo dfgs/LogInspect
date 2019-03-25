@@ -49,6 +49,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogFileLoaderModule.UnitTest.cs" />
+    <Compile Include="Mocks\MockedLineBuilder.cs" />
+    <Compile Include="Mocks\MockedLineReader.cs" />
+    <Compile Include="Mocks\MockedLogBuilder.cs" />
+    <Compile Include="Mocks\MockedLogParser.cs" />
     <Compile Include="StringMatcherFactoryModule.UnitTest.cs" />
     <Compile Include="InlineParserFactoryModule.UnitTest.cs" />
     <Compile Include="Mocks\MockedPatternCollectionLoader.cs" />
