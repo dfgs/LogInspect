@@ -1,4 +1,5 @@
-﻿using LogInspect.Models;
+﻿using LogInspect.BaseLib;
+using LogInspect.Models;
 using LogInspect.Modules;
 using ModuleLib;
 using System;
@@ -26,6 +27,7 @@ namespace LogInspect
 	public partial class LoadWindow : Window
 	{
 		private ILogFileLoaderModule logFileLoaderModule;
+		private IProgressReporter progressReporter;
 		private LogFile logFile;
 		private BackgroundWorker worker;
 		private bool terminated;
@@ -56,12 +58,16 @@ namespace LogInspect
 		}
 
 
-		public LoadWindow(ILogFileLoaderModule LogFileLoaderModule,LogFile LogFile)
+		public LoadWindow(ILogFileLoaderModule LogFileLoaderModule, IProgressReporter ProgressReporter,  LogFile LogFile)
 		{
 			InitializeComponent();
 			if (LogFileLoaderModule == null) throw new ArgumentNullException("LogFileLoaderModule");
+			if (ProgressReporter == null) throw new ArgumentNullException("ProgressReporter");
 			if (LogFile == null) throw new ArgumentNullException("LogFile");
+
+
 			this.logFileLoaderModule = LogFileLoaderModule;
+			this.progressReporter = ProgressReporter;
 			this.logFile = LogFile;
 
 			terminated = false;
@@ -91,6 +97,8 @@ namespace LogInspect
 		private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			this.Count = logFile.Events.Count;
+			this.Length = progressReporter.Length;
+			this.Position = progressReporter.Position;
 		}
 
 		private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -108,7 +116,7 @@ namespace LogInspect
 				if ((time-startTime).TotalMilliseconds>=500)
 				{
 					startTime = time;
-					worker.ReportProgress(10);
+					worker.ReportProgress(100);
 				}
 			}
 

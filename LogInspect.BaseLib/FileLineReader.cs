@@ -12,6 +12,15 @@ namespace LogInspect.BaseLib
 		private StreamReader reader;
 		public bool EOF => reader.BaseStream.Position==reader.BaseStream.Length-1;
 
+		/*public long Length
+		{
+			get => reader.BaseStream.Length;
+		}
+		public long Position
+		{
+			get => reader.BaseStream.Position;
+		}*/
+
 		public FileLineReader(Stream Stream)
 		{
 			if (Stream == null) throw new ArgumentNullException("Stream");

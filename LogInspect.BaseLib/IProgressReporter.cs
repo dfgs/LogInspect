@@ -6,20 +6,15 @@ using System.Threading.Tasks;
 
 namespace LogInspect.BaseLib
 {
-	public interface ILineReader
+	public interface IProgressReporter
 	{
-		/*long Position
+		long Position
 		{
 			get;
 		}
 		long Length
 		{
 			get;
-		}*/
-		bool EOF
-		{
-			get;
 		}
-		string Read();
 	}
 }

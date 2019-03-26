@@ -120,6 +120,8 @@ namespace LogInspect
 			ILogBuilder logBuilder;
 			LogParser logParser;
 			IStringMatcherFactoryModule stringMatcherFactoryModule;
+			FileStream stream;
+			IProgressReporter progressReporter;
 
 			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
 			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
@@ -136,17 +138,34 @@ namespace LogInspect
 			logParser = new LogParser(logFile.FormatHandler.Columns);
 			logParser.Add(patternLibraryModule.Build(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Select(item=>item.GetPattern()), true));
 			
-
-			using (FileStream stream = new FileStream(FileName, FileMode.Open))
+			try
 			{
+				stream = new FileStream(FileName, FileMode.Open);
+			}
+			catch(Exception ex)
+			{
+				ShowError(ex);
+				return;
+			}
+
+			using (stream)
+			{
+				progressReporter = new StreamProgressReporter(stream);
 				lineReader = new FileLineReader(stream);
 				logFileLoaderModule = new LogFileLoaderModule(logger, lineReader, lineBuilder, logBuilder, logParser);
 				//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
 
-				loadWindow = new LoadWindow(logFileLoaderModule, logFile); loadWindow.Owner = this;
+				loadWindow = new LoadWindow(logFileLoaderModule,progressReporter, logFile); loadWindow.Owner = this;
 				if (loadWindow.Load() ?? false)
 				{
-					await appViewModel.Open(logFile, inlineParserBuilderModule, colorProviderModule);
+					try
+					{
+						await appViewModel.Open(logFile, inlineParserBuilderModule, colorProviderModule);
+					}
+					catch(Exception ex)
+					{
+						ShowError(ex);
+					}
 				}
 			}
 
