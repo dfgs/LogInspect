@@ -24,6 +24,19 @@ namespace LogInspect.BaseLib.Test
 			regex = rb.BuildRegexPattern("NA","abc");
 			Assert.AreEqual("abc", regex);
 		}
+		[TestMethod]
+		public void ShouldMatchBasicRegexes()
+		{
+			RegexBuilder rb;
+			List<Regex> regexes;
+
+			regexes = new List<Regex>();
+			rb = new RegexBuilder();
+			regexes.AddRange( rb.Build("NA", new string[] { "abc", "def" },true) );
+			Assert.AreEqual(2, regexes.Count);
+			Assert.IsTrue(regexes[0].Match("abc").Success);
+			Assert.IsTrue(regexes[1].Match("def").Success);
+		}
 
 		[TestMethod]
 		public void ShouldMatchBasicPattern()

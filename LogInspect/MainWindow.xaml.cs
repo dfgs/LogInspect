@@ -1,5 +1,7 @@
 ﻿using LogInspect.BaseLib;
+using LogInspect.BaseLib.Builders;
 using LogInspect.BaseLib.FileLoaders;
+using LogInspect.BaseLib.Parsers;
 using LogInspect.Models;
 using LogInspect.Modules;
 using LogInspect.ViewModels;
@@ -113,19 +115,41 @@ namespace LogInspect
 			LoadWindow loadWindow;
 			IColorProviderModule colorProviderModule;
 			IInlineParserFactoryModule inlineParserBuilderModule;
+			ILineReader lineReader;
+			ILineBuilder lineBuilder;
+			ILogBuilder logBuilder;
+			LogParser logParser;
+			IStringMatcherFactoryModule stringMatcherFactoryModule;
 
 			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
 			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
 			inlineParserBuilderModule = new InlineParserFactoryModule(logger,patternLibraryModule,inlineColoringRuleLibraryModule);
 
-			/*logFileLoaderModule = new LogFileLoaderModule(logger, logFile,patternLibraryModule,logFile.Events);
+			stringMatcherFactoryModule = new StringMatcherFactoryModule(logger, patternLibraryModule);
 
+			lineBuilder = new LineBuilder(stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.DiscardLinePatterns));
+			logBuilder = new LogBuilder(
+				stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Where(item => item.Discard).Select(item => item.GetPattern())),
+				stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToPreviousPatterns),
+				stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToNextPatterns)
+				);
+			logParser = new LogParser(logFile.FormatHandler.Columns);
+			logParser.Add(patternLibraryModule.Build(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Select(item=>item.GetPattern()), true));
+			
 
-			loadWindow = new LoadWindow(logFileLoaderModule);loadWindow.Owner = this;
-			if (loadWindow.Load() ?? false)
+			using (FileStream stream = new FileStream(FileName, FileMode.Open))
 			{
-				await appViewModel.Open(logFile,inlineParserBuilderModule,colorProviderModule);
-			}*/
+				lineReader = new FileLineReader(stream);
+				logFileLoaderModule = new LogFileLoaderModule(logger, lineReader, lineBuilder, logBuilder, logParser);
+				//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
+
+				loadWindow = new LoadWindow(logFileLoaderModule, logFile); loadWindow.Owner = this;
+				if (loadWindow.Load() ?? false)
+				{
+					await appViewModel.Open(logFile, inlineParserBuilderModule, colorProviderModule);
+				}
+			}
+
 		}
 
 		#region Filter events

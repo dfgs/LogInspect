@@ -1,4 +1,5 @@
-﻿using ModuleLib;
+﻿using LogInspect.Models;
+using ModuleLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace LogInspect.Modules
 {
 	public interface ILogFileLoaderModule:IModule
 	{
-		void Load();
+		IEnumerable<Event> Load();
 
 	}
 }

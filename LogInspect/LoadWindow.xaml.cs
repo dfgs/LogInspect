@@ -25,9 +25,11 @@ namespace LogInspect
 	/// </summary>
 	public partial class LoadWindow : Window
 	{
-		private DispatcherTimer timer;
 		private ILogFileLoaderModule logFileLoaderModule;
-		private bool dialogResult;
+		private LogFile logFile;
+		private BackgroundWorker worker;
+		private bool terminated;
+		private bool returnResults;
 
 
 		public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(long), typeof(LoadWindow), new PropertyMetadata(0L));
@@ -54,56 +56,76 @@ namespace LogInspect
 		}
 
 
-		public LoadWindow(ILogFileLoaderModule LogFileLoaderModule)
+		public LoadWindow(ILogFileLoaderModule LogFileLoaderModule,LogFile LogFile)
 		{
 			InitializeComponent();
 			if (LogFileLoaderModule == null) throw new ArgumentNullException("LogFileLoaderModule");
+			if (LogFile == null) throw new ArgumentNullException("LogFile");
 			this.logFileLoaderModule = LogFileLoaderModule;
+			this.logFile = LogFile;
 
-			dialogResult = true;
+			terminated = false;
 
-			timer = new DispatcherTimer();
-			timer.Interval = TimeSpan.FromMilliseconds(500);
-			timer.Tick += Timer_Tick;
+			worker = new BackgroundWorker();
+			worker.WorkerReportsProgress = true;
+			worker.WorkerSupportsCancellation = true;
+			worker.DoWork += Worker_DoWork;
+			worker.ProgressChanged += Worker_ProgressChanged;
 		}
 
+		
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			//e.Cancel = logFileLoaderModule.State == ModuleStates.Started;
+			e.Cancel = !terminated;
 		}
 
 
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			/*if (logFileLoaderModule.State != ModuleStates.Started)
-			{
-				timer.Stop();
-				DialogResult = dialogResult;
-			}
-
-			Length = logFileLoaderModule.Length;
-			Position = logFileLoaderModule.Position;
-			Count = logFileLoaderModule.Count;*/
-		}
+		
 
 		public bool? Load()
 		{
-			//logFileLoaderModule.Start();
-			timer.Start();
+			worker.RunWorkerAsync();
 			return this.ShowDialog();
 		}
-				
+
+		private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			this.Count = logFile.Events.Count;
+		}
+
+		private void Worker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			DateTime startTime,time;
+
+			returnResults = true;
+			startTime = DateTime.Now;
+			
+			foreach (Event ev in logFileLoaderModule.Load())
+			{
+				if (worker.CancellationPending) break;
+				logFile.Events.Add(ev);
+				time = DateTime.Now;
+				if ((time-startTime).TotalMilliseconds>=500)
+				{
+					startTime = time;
+					worker.ReportProgress(10);
+				}
+			}
+
+			terminated = true;
+			Dispatcher.Invoke(() => DialogResult = returnResults);
+		}
 
 		private void ButtonStop_Click(object sender, RoutedEventArgs e)
 		{
-			dialogResult = true;
-			//logFileLoaderModule.Stop();
+			returnResults = true;
+			worker.CancelAsync();
 		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
-			dialogResult = false;
-			//logFileLoaderModule.Stop();
+			returnResults = false;
+			worker.CancelAsync();
 		}
 
 	}

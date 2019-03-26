@@ -40,7 +40,16 @@ namespace LogInspect.Modules
 			if (!Try(() => regexBuilder.Build(DefaultNameSpace, Pattern, IgnoreCase)).OrAlert(out regex, (ex) => ex.Message)) return null;
 			return regex;
 		}
+		public IEnumerable<Regex> Build(string DefaultNameSpace, IEnumerable<string> Patterns, bool IgnoreCase)
+		{
+			Regex regex;
 
+			foreach (string pattern in Patterns)
+			{
+				if (!Try(() => regexBuilder.Build(DefaultNameSpace, pattern, IgnoreCase)).OrAlert(out regex, (ex) => ex.Message)) continue;
+				yield return regex;
+			}
+		}
 		public string BuildRegexPattern(string DefaultNameSpace, string Pattern)
 		{
 			string regex;
@@ -62,10 +71,6 @@ namespace LogInspect.Modules
 			return pattern;
 		}
 
-	
-
-
-
-
+		
 	}
 }

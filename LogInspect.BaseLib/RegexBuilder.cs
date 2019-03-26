@@ -70,7 +70,11 @@ namespace LogInspect.BaseLib
 			else return new Regex(BuildRegexPattern(DefaultNameSpace, Pattern), RegexOptions.Compiled , TimeSpan.FromSeconds(2));
 		}
 
-		
+		public IEnumerable<Regex> Build(string DefaultNameSpace, IEnumerable<string> Patterns, bool IgnoreCase)
+		{
+			foreach (string pattern in Patterns) yield return Build(DefaultNameSpace, pattern, IgnoreCase);
+		}
+
 
 	}
 }

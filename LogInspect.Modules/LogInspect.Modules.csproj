@@ -53,6 +53,7 @@
     <Compile Include="IInlineParserFactoryModule.cs" />
     <Compile Include="ILibraryModule.cs" />
     <Compile Include="ILogFileLoaderModule.cs" />
+    <Compile Include="InfiniteLogFileLoaderModule.cs" />
     <Compile Include="InlineFormatLibraryModule.cs" />
     <Compile Include="InlineParserFactoryModule.cs" />
     <Compile Include="IPatternLibraryModule.cs" />

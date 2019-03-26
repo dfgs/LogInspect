@@ -49,7 +49,6 @@
     <Compile Include="Builders\ILogBuilder.cs" />
     <Compile Include="Builders\LineBuilder.cs" />
     <Compile Include="Builders\LogBuilder.cs" />
-    <Compile Include="ConsoleEventList.cs" />
     <Compile Include="DirectoryEnumerator.cs" />
     <Compile Include="FileLineReader.cs" />
     <Compile Include="FileLoaders\PatternLibLoader.cs" />

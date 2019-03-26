@@ -11,7 +11,7 @@ namespace LogInspect.Modules.Test.Mocks
 	{
 		private int index;
 
-		public bool EOF => index<count;
+		public bool EOF => index>=count;
 
 		public int count;
 

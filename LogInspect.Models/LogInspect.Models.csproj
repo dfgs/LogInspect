@@ -50,9 +50,7 @@
     <Compile Include="DocumentTypes.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventColoringRule.cs" />
-    <Compile Include="EventList.cs" />
     <Compile Include="FormatHandler.cs" />
-    <Compile Include="IEventList.cs" />
     <Compile Include="INameSpaceDictionary.cs" />
     <Compile Include="Inline.cs" />
     <Compile Include="InlineFormat.cs" />

@@ -29,7 +29,6 @@ namespace LogInspectCLI
 			ILineBuilder lineBuilder;
 			ILogBuilder logBuilder;
 			LogParser logParser;
-			IEventList eventList;
 
 			FormatHandler formatHandler;
 
@@ -46,7 +45,6 @@ namespace LogInspectCLI
 			formatHandlerLibraryModule.LoadDirectory(Properties.Settings.Default.FormatHandlersFolder);
 
 			stringMatcherFactoryModule = new StringMatcherFactoryModule(logger,patternLibraryModule);
-			eventList = new ConsoleEventList();
 			formatHandler = formatHandlerLibraryModule.GetFormatHandler(args[0]);
 
 
@@ -57,16 +55,17 @@ namespace LogInspectCLI
 				stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.AppendLineToNextPatterns)
 				);
 			logParser = new LogParser(formatHandler.Columns);
-			foreach (Rule rule in formatHandler.Rules)
-			{
-				logParser.Add(patternLibraryModule.Build(formatHandler.NameSpace, rule.GetPattern(),true));
-			}
+			logParser.Add(patternLibraryModule.Build(formatHandler.NameSpace, formatHandler.Rules.Select(item => item.GetPattern()), true));
+
 
 			using (FileStream stream = new FileStream(args[0], FileMode.Open))
 			{
 				lineReader = new FileLineReader(stream);
-				dumper = new LogFileLoaderModule(logger,lineReader,lineBuilder,logBuilder,logParser,eventList);
-				dumper.Load();
+				dumper = new LogFileLoaderModule(logger,lineReader,lineBuilder,logBuilder,logParser);
+				foreach(Event ev in dumper.Load())
+				{
+					Console.WriteLine(string.Join("	", ev.Properties));
+				}
 			}
 
 			Console.ReadLine();

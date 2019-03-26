@@ -13,7 +13,8 @@ namespace LogInspect.BaseLib
 
 
 		string BuildRegexPattern(string DefaultNameSpace, string Pattern);
-		Regex Build(string DefaultNameSpace,string Pattern,bool IgnoreCase);
+		Regex Build(string DefaultNameSpace, string Pattern, bool IgnoreCase);
+		IEnumerable<Regex> Build(string DefaultNameSpace, IEnumerable<string> Patterns, bool IgnoreCase);
 
 
 	}

@@ -25,6 +25,10 @@ namespace LogInspect.BaseLib.Parsers
 		{
 			items.Add(Regex);
 		}
+		public void Add(IEnumerable<Regex> Regexes)
+		{
+			items.AddRange(Regexes);
+		}
 		public void Add(string Pattern)
 		{
 			Regex regex;
