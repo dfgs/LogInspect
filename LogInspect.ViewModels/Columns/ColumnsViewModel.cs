@@ -30,22 +30,25 @@ namespace LogInspect.ViewModels.Columns
 		
 		}
 
-		protected override IEnumerable<ColumnViewModel> GenerateItems(IEnumerable<Column> Items)
+		protected override ColumnViewModel[] GenerateItems(IEnumerable<Column> Items)
 		{
+			List<ColumnViewModel> items;
 
-			yield return new BookMarkColumnViewModel(Logger, "BookMarked") { Width = 30 };
-			yield return new LineColumnViewModel(Logger, "Line number") { Width = 50 };
+			items = new List<ColumnViewModel>();
+
+			items.Add(new BookMarkColumnViewModel(Logger, "BookMarked") { Width = 30 });
+			items.Add(new LineColumnViewModel(Logger, "Line number") { Width = 50 });
 
 			foreach (Column column in Items)
 			{
 
-				if (column.Name == formatHandler.TimeStampColumn) yield return new TimeStampColumnViewModel(Logger, column.Name, column.Alignment, column.Format) { Width = column.Width };
-				else if (column.Name == formatHandler.SeverityColumn) yield return new SeverityColumnViewModel(Logger, column.Name, column.Alignment,  filterItemSourcesViewModel,colorProviderModule) { Width = column.Width };
-				else if (column.IsFilterItemSource) yield return new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment, filterItemSourcesViewModel) { Width = column.Width };
-				else yield return new InlinePropertyColumnViewModel(Logger, column.Name, column.Alignment, inlineParserBuilderModule.CreateParser(formatHandler.NameSpace, column) ) { Width = column.Width };
+				if (column.Name == formatHandler.TimeStampColumn) items.Add(new TimeStampColumnViewModel(Logger, column.Name, column.Alignment, column.Format) { Width = column.Width });
+				else if (column.Name == formatHandler.SeverityColumn) items.Add(new SeverityColumnViewModel(Logger, column.Name, column.Alignment,  filterItemSourcesViewModel,colorProviderModule) { Width = column.Width });
+				else if (column.IsFilterItemSource) items.Add(new MultiChoicesColumnViewModel(Logger, column.Name, column.Alignment, filterItemSourcesViewModel) { Width = column.Width });
+				else items.Add(new InlinePropertyColumnViewModel(Logger, column.Name, column.Alignment, inlineParserBuilderModule.CreateParser(formatHandler.NameSpace, column) ) { Width = column.Width });
 			}
 
-
+			return items.ToArray();
 		}
 
 

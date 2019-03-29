@@ -21,9 +21,9 @@ namespace LogInspect.ViewModels
 		}
 		
 
-		protected override IEnumerable<EventViewModel> GenerateItems(IEnumerable<Event> Items)
+		protected override EventViewModel[] GenerateItems(IEnumerable<Event> Items)
 		{
-			return Items.Select((item) => new EventViewModel(Logger, colorProviderModule.GetBackground(item), columns.Select((column)=> column.CreatePropertyViewModel(item) )));
+			return Items.Select((item) => new EventViewModel(Logger, colorProviderModule.GetBackground(item), columns.Select((column)=> column.CreatePropertyViewModel(item) ))).ToArray();
 		}
 
 

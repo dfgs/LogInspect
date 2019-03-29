@@ -24,7 +24,7 @@ namespace LogInspect.ViewModels
 
 		}
 
-		protected override IEnumerable<MarkerViewModel> GenerateItems(IEnumerable<EventViewModel> Items)
+		protected override MarkerViewModel[] GenerateItems(IEnumerable<EventViewModel> Items)
 		{
 			object severity;
 			MarkerViewModel marker = null;
@@ -50,7 +50,7 @@ namespace LogInspect.ViewModels
 				index++;
 			}
 
-			return items;
+			return items.ToArray();
 		}
 		
 		

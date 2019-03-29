@@ -117,7 +117,9 @@ namespace LogInspect.ViewModels
 			OnPropertyChanged("Count");
 			SelectedItem = items.FirstOrDefault();
 		}
-		protected abstract IEnumerable<T> GenerateItems(IEnumerable<TModel> Items);
+
+		// must not be IEnumerable in order to keep function async
+		protected abstract T[] GenerateItems(IEnumerable<TModel> Items);
 
 		public async Task LoadModels(IEnumerable<TModel> Items)
 		{

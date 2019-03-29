@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace LogInspect.ViewModels
 {
-	public enum Statuses {Idle,Searching};
+	public enum Statuses {Idle,Loading,Filtering, Searching};
 }

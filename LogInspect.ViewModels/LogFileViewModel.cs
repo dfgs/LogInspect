@@ -36,10 +36,11 @@ namespace LogInspect.ViewModels
 			set;
 		}
 
+		private Statuses status;
 		public Statuses Status
 		{
-			get;
-			set;
+			get { return status; }
+			set { status = value;OnPropertyChanged(); }
 		}
 
 		public ColumnsViewModel Columns
@@ -105,6 +106,7 @@ namespace LogInspect.ViewModels
 		#region filter events
 		public async Task Load()
 		{
+			Status = Statuses.Loading;
 			await filterItemSourcesViewModel.Load(logFile.Events);
 			await Columns.LoadModels(logFile.FormatHandler.Columns);
 			await events.LoadModels(logFile.Events);
@@ -114,6 +116,7 @@ namespace LogInspect.ViewModels
 
 		public async Task ReloadEvents()
 		{
+			Status = Statuses.Loading;
 			await events.LoadModels(logFile.Events);
 
 			await Refresh();
@@ -122,10 +125,12 @@ namespace LogInspect.ViewModels
 
 		public async Task Refresh()
 		{
+			Status = Statuses.Filtering;
 			FilteredEvents.Filters= Columns.Where(item => item.Filter != null).Select(item => item.Filter).ToArray();
 			await FilteredEvents.LoadModels(events);
 			await Severities.LoadModels(FilteredEvents);
 			await Markers.LoadModels(FilteredEvents);
+			Status = Statuses.Idle;
 		}
 
 		#endregion

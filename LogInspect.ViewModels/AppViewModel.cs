@@ -22,7 +22,7 @@ namespace LogInspect.ViewModels
 		{
 		}
 
-		protected override IEnumerable<LogFileViewModel> GenerateItems(IEnumerable<LogFile> Items)
+		protected override LogFileViewModel[] GenerateItems(IEnumerable<LogFile> Items)
 		{
 			throw new NotImplementedException();
 		}
@@ -40,7 +40,7 @@ namespace LogInspect.ViewModels
 				logFileViewModel = new LogFileViewModel(Logger,LogFile,InlineParserFactoryModule,ColorProviderModule);
 				Add(logFileViewModel);
 				SelectedItem = logFileViewModel;
-				//await Task.Delay(5000);
+				//await Task.Delay(1);
 				await logFileViewModel.Load();
 			}
 			catch (Exception ex)

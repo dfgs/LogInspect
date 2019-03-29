@@ -3,9 +3,11 @@
   <Items>
 
 
-    <InlineFormat Name="Interaction" Pattern="(original)?interaction{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
-    <InlineFormat Name="InteractionID" Pattern="(?&lt;=Interaction{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
-    <InlineFormat Name="Compound" Pattern="compound{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+		<InlineFormat Name="Interaction" Pattern="(original)?interaction{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+		<InlineFormat Name="InteractionID" Pattern="(?&lt;=Interaction{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+		<InlineFormat Name="Recording" Pattern="(original)?recording{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
+		<InlineFormat Name="RecordingID" Pattern="(?&lt;=recording{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
+		<InlineFormat Name="Compound" Pattern="compound{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
     <InlineFormat Name="CompoundID" Pattern="(?&lt;=compound{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />
     <InlineFormat Name="CLSCall" Pattern="clscall{ID}?(?={IDSeparator}{Number})" IgnoreCase="true" Foreground="Black" Underline="false" Bold="true" Italic="false" />
     <InlineFormat Name="CLSCallID" Pattern="(?&lt;=clscall{ID}?{IDSeparator}?){Number}" IgnoreCase="true" Foreground="BlueViolet" Underline="false" Bold="false" Italic="false" />

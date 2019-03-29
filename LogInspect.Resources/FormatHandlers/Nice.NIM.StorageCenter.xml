@@ -26,23 +26,10 @@
       <InlineFormats>
         <string>Const</string>
         <string>Interaction</string>
-        <string>InteractionID</string>
-        <string>Compound</string>
-        <string>CompoundID</string>
-        <string>CLSCall</string>
-        <string>CLSCallID</string>
-        <string>EndCallID</string>
-
-        <string>Extension</string>
-        <string>ExtensionID</string>
-        <string>Agent</string>
-        <string>AgentID</string>
-        <string>Station</string>
-        <string>StationID</string>
-        <string>Device</string>
-        <string>DeviceID</string>
-
-        <string>Logger</string>
+				<string>InteractionID</string>
+				<string>Recording</string>
+				<string>RecordingID</string>
+				<string>Logger</string>
         <string>LoggerID</string>
         <string>Channel</string>
         <string>ChannelID</string>

@@ -19,9 +19,9 @@ namespace LogInspect.ViewModels
 		{
 			AssertParameterNotNull(SeverityColumn,"SeverityColumn", out severityColumn);
 		}
-		protected override IEnumerable<string> GenerateItems(IEnumerable<EventViewModel> Items)
+		protected override string[] GenerateItems(IEnumerable<EventViewModel> Items)
 		{
-			return Items.Select((item) => item[severityColumn].Value.ToString()).Distinct();
+			return Items.Select((item) => item[severityColumn].Value.ToString()).Distinct().ToArray();
 		}
 	
 

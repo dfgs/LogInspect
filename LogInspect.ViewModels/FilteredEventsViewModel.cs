@@ -38,9 +38,9 @@ namespace LogInspect.ViewModels
 			return false;
 		}
 
-		protected override IEnumerable<EventViewModel> GenerateItems(IEnumerable<EventViewModel> Items)
+		protected override EventViewModel[] GenerateItems(IEnumerable<EventViewModel> Items)
 		{
-			return Items.Where((item) => !MustDiscard(item));
+			return Items.Where((item) => !MustDiscard(item)).ToArray();
 		}
 		
 

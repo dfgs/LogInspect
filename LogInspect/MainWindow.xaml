@@ -92,7 +92,7 @@
 		<StatusBar DockPanel.Dock="Bottom">
 			
 			<TextBlock Text="Status:"/>
-			<TextBlock Text="{Binding SelectedItem.Status,FallbackValue=Idle}"/>
+			<TextBlock Text="{Binding SelectedItem.Status,FallbackValue=NA}"/>
 			<ProgressBar VerticalAlignment="Center" Height="8" Width="100" IsIndeterminate="True" >
 				<ProgressBar.Style>
 					<Style TargetType="{x:Type ProgressBar}">

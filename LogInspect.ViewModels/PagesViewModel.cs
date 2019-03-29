@@ -14,7 +14,7 @@ namespace LogInspect.ViewModels
 		{
 		}
 
-		protected override IEnumerable<PageViewModel> GenerateItems(IEnumerable<int> Items)
+		protected override PageViewModel[] GenerateItems(IEnumerable<int> Items)
 		{
 			throw new NotImplementedException();
 		}
