@@ -21,6 +21,7 @@ namespace LogInspect.Modules
 		private ILogBuilder logBuilder;
 		private ILogParser logParser;
 		
+		
 
 		public LogFileLoaderModule(ILogger Logger, ILineReader LineReader, ILineBuilder LineBuilder, ILogBuilder LogBuilder, ILogParser LogParser) : base(Logger)
 		{
@@ -32,7 +33,6 @@ namespace LogInspect.Modules
 
 		
 
-		
 
 		public IEnumerable<Event> Load()
 		{
@@ -42,13 +42,27 @@ namespace LogInspect.Modules
 			Event ev;
 
 
-			while (!lineReader.EOF)
+			while (true)
 			{ 
 				try
 				{
-					l = lineReader.Read();
-					if (!lineBuilder.Push(l, out line)) continue;
-					if (!logBuilder.Push(line, out log)) continue;
+					if (!lineReader.EOF)
+					{
+						l = lineReader.Read();
+						if (!lineBuilder.Push(l, out line)) continue;
+						if (!logBuilder.Push(line, out log)) continue;
+					}
+					else if (lineBuilder.CanFlush)
+					{
+						line = lineBuilder.Flush();
+						if (!logBuilder.Push(line, out log)) continue;
+					}
+					else if (logBuilder.CanFlush)
+					{
+						log = logBuilder.Flush();
+					}
+					else yield break;
+
 				}
 				catch (Exception ex)
 				{
@@ -61,6 +75,7 @@ namespace LogInspect.Modules
 				yield return ev;
 			}
 
+			
 		}
 
 

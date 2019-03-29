@@ -50,8 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogFileLoaderModule.UnitTest.cs" />
+    <Compile Include="Mocks\MockedLineBuilderWithFlush.cs" />
     <Compile Include="Mocks\MockedLineBuilder.cs" />
     <Compile Include="Mocks\MockedLineReader.cs" />
+    <Compile Include="Mocks\MockedLogBuilderWithFlush.cs" />
     <Compile Include="Mocks\MockedLogBuilder.cs" />
     <Compile Include="Mocks\MockedLogParser.cs" />
     <Compile Include="StringMatcherFactoryModule.UnitTest.cs" />

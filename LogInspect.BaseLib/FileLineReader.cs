@@ -10,7 +10,7 @@ namespace LogInspect.BaseLib
 	public class FileLineReader : ILineReader
 	{
 		private StreamReader reader;
-		public bool EOF => reader.BaseStream.Position==reader.BaseStream.Length-1;
+		public bool EOF => reader.BaseStream.Position==reader.BaseStream.Length;
 
 		/*public long Length
 		{

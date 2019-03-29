@@ -10,7 +10,7 @@ namespace LogInspect.Modules
 {
 	public interface ILogFileLoaderModule:IModule
 	{
+		
 		IEnumerable<Event> Load();
-
 	}
 }

@@ -117,9 +117,10 @@ namespace LogInspect.BaseLib.Test.Builders
 			{
 				Assert.IsFalse(Builder.Push(new Line() { Index = t, Value = $"{t}" }, out log));
 			}
+			Assert.IsFalse(Builder.Push(new Line() { Index = 5, Value = $"End" }, out log));
 			Assert.IsTrue(Builder.Push(new Line() { Index = 5, Value = $"End" }, out log));
 			Assert.AreEqual(0, log.LineIndex);
-			Assert.AreEqual("01234", log.ToSingleLine());
+			Assert.AreEqual("01234End", log.ToSingleLine());
 
 
 			Assert.IsTrue(Builder.CanFlush);

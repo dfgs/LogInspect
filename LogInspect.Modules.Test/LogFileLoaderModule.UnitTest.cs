@@ -31,7 +31,27 @@ namespace LogInspect.Modules.Test
 			items.AddRange(module.Load());
 			Assert.AreEqual(5, items.Count);
 		}
+		[TestMethod]
+		public void ShouldLoadAndFlush()
+		{
+			LogFileLoaderModule module;
+			List<Event> items;
 
+			items = new List<Event>();
+			module = new LogFileLoaderModule(NullLogger.Instance, new MockedLineReader(5), new MockedLineBuilder(), new MockedLogBuilderWithFlush(), new MockedLogParser());
+			items.AddRange(module.Load());
+			Assert.AreEqual(5, items.Count);
+
+			items = new List<Event>();
+			module = new LogFileLoaderModule(NullLogger.Instance, new MockedLineReader(5), new MockedLineBuilderWithFlush(), new MockedLogBuilder(), new MockedLogParser());
+			items.AddRange(module.Load());
+			Assert.AreEqual(5, items.Count);
+
+			items = new List<Event>();
+			module = new LogFileLoaderModule(NullLogger.Instance, new MockedLineReader(5), new MockedLineBuilderWithFlush(), new MockedLogBuilderWithFlush(), new MockedLogParser());
+			items.AddRange(module.Load());
+			Assert.AreEqual(5, items.Count);
+		}
 
 
 	}

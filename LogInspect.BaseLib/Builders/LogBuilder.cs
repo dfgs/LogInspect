@@ -32,35 +32,36 @@ namespace LogInspect.BaseLib.Builders
 
 		public bool Push(Line Input, out Log Output)
 		{
+			bool previousLineMustAppendToNext;
 
 			Output = null;
 			if (discardMatcher.Match(Input.Value)) return false;
 
-			if (appendLineToNextMatcher.Match(Input.Value))
+			
+			if (buffer.Count>0)	previousLineMustAppendToNext = appendLineToNextMatcher.Match(buffer[buffer.Count - 1].Value);
+			else previousLineMustAppendToNext = false;
+
+			if (appendLineToPreviousMatcher.Match(Input.Value) || previousLineMustAppendToNext)
 			{
 				buffer.Add(Input);
 				return false;
 			}
 
-			if (appendLineToPreviousMatcher.Match(Input.Value))
+			if (buffer.Count > 0)
 			{
+				Output = new Log();
+				Output.Lines.AddRange(buffer);
+
+				buffer.Clear();
 				buffer.Add(Input);
-				return false;
+
+				return true;
 			}
 
-			if (buffer.Count==0)	// it is first item in buffer, we don't know if next line will append to previous
-			{
-				buffer.Add(Input);
-				return false;
-			}
-
-			Output = new Log();
-			Output.Lines.AddRange(buffer);
-
-			buffer.Clear();
 			buffer.Add(Input);
+			return false;
 
-			return true;
+
 		}
 
 		public Log Flush()
