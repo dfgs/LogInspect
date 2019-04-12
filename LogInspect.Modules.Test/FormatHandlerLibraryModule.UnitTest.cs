@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using LogInspect.BaseLib;
 using LogInspect.Models;
 using LogInspect.Modules.Test.Mocks;
@@ -45,7 +46,34 @@ namespace LogInspect.Modules.Test
 			Assert.AreEqual("Default handler", module.GetFormatHandler(null).Name);
 		}
 
+		[TestMethod]
+		public void ShouldFindFormatHandlers()
+		{
+			FormatHandlerLibraryModule module;
+			FormatHandler[] items;
 
+			module = new FormatHandlerLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedFormatHandlerLoader(), new RegexBuilder());
+			module.LoadDirectory("Path");
+
+			items = module.GetFormatHandlers("Path1").ToArray();
+			Assert.AreEqual(1, items.Length);
+			Assert.AreEqual("Path1", items[0].Name);
+		}
+
+		[TestMethod]
+		public void ShouldNotFindFormatHandlers()
+		{
+			FormatHandlerLibraryModule module;
+			FormatHandler[] items;
+
+			module = new FormatHandlerLibraryModule(NullLogger.Instance, new MockedDirectoryEnumerator(5), new MockedFormatHandlerLoader(), new RegexBuilder());
+			module.LoadDirectory("Path");
+
+			items = module.GetFormatHandlers("Default handler").ToArray();
+			Assert.AreEqual(0, items.Length);
+			items = module.GetFormatHandlers(null).ToArray();
+			Assert.AreEqual(0, items.Length);
+		}
 
 
 	}

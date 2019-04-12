@@ -68,7 +68,14 @@ namespace LogInspect.Modules
 			return formatHandler;
 		}
 
+		public IEnumerable<FormatHandler> GetFormatHandlers(string FileName)
+		{
+			string shortName;
 
+			shortName = Path.GetFileName(FileName);
+			Log(LogLevels.Information, $"Try to find format handlers for file {shortName}");
+			return items.Where(item => MatchFileName(shortName, item.FileNamePattern, item.NameSpace));
+		}
 
 	}
 }

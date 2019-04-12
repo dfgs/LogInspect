@@ -1,0 +1,22 @@
+﻿<Window x:Class="LogInspect.FormatHandlerSelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LogInspect"
+        mc:Ignorable="d" x:Name="root"
+        Title="Select format handler" Height="480" Width="320" WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Icon="Images/page_white_magnify.png">
+	<DockPanel>
+		<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+			<Button Content="OK" Width="75" Margin="4" Click="ButtonOK_Click"/>
+			<Button Content="Cancel" Width="75" Margin="4" Click="ButtonCancel_Click"/>
+		</StackPanel>
+		<ListBox ItemsSource="{Binding ElementName=root,Path=FormatHandlers}" SelectedItem="{Binding ElementName=root,Path=SelectedFormatHandler}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</DockPanel>
+</Window>

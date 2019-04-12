@@ -20,8 +20,8 @@ namespace LogInspect.ViewModels
 
 		public MarkersViewModel(ILogger Logger ,string SeverityColumn) : base(Logger)
 		{
-			AssertParameterNotNull(SeverityColumn,"SeverityColumn",out severityColumn);
-
+			//AssertParameterNotNull(SeverityColumn,"SeverityColumn",out severityColumn);
+			this.severityColumn = SeverityColumn;
 		}
 
 		protected override MarkerViewModel[] GenerateItems(IEnumerable<EventViewModel> Items)
@@ -30,6 +30,8 @@ namespace LogInspect.ViewModels
 			MarkerViewModel marker = null;
 			int index = 0;
 			List<MarkerViewModel> items;
+
+			if (severityColumn == null) return new MarkerViewModel[] { };
 
 			items = new List<MarkerViewModel>();
 			foreach (EventViewModel item in Items)

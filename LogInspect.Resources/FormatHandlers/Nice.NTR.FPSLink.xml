@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.NTR.FPSLink" FileNamePattern="^LinkController\.FPSLink\.WindowsService-{Date}(\.{Number})?\.log$" 
+               Name="Nice.NTR.FPSLink" FileNamePattern="^FPSLinkControllerInstance{Number}-{Date}\.log$" 
                NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns>
     <string>^[^\[]</string>
-  </AppendLineToPreviousPatterns>
+	</AppendLineToPreviousPatterns>
   <AppendLineToNextPatterns />
   <DiscardLinePatterns>
     <string>{EmptyLine}</string>

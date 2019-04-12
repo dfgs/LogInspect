@@ -44,8 +44,8 @@ namespace LogInspect
 		public MainWindow()
 		{
 
-			//logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
-			logger = new ConsoleLogger(new DefaultLogFormatter());
+			logger = new FileLogger(new DefaultLogFormatter(),"LogInspect.log");
+			//logger = new ConsoleLogger(new DefaultLogFormatter());
 
 			appViewModel = new AppViewModel(logger);
 
@@ -110,6 +110,8 @@ namespace LogInspect
 
 		private async Task Open(string FileName)
 		{
+			FormatHandlerSelectionWindow window;
+
 			LogFile logFile;
 			ILogFileLoaderModule logFileLoaderModule;
 			LoadWindow loadWindow;
@@ -122,8 +124,28 @@ namespace LogInspect
 			IStringMatcherFactoryModule stringMatcherFactoryModule;
 			FileStream stream;
 			IProgressReporter progressReporter;
+			FormatHandler[] formatHandlers;
+			FormatHandler formatHandler;
 
-			logFile = new LogFile(FileName, formatHandlerLibraryModule.GetFormatHandler(FileName));
+			formatHandlers = formatHandlerLibraryModule.GetFormatHandlers(FileName).ToArray();
+
+			if (formatHandlers.Length==0)
+			{
+				ShowError("Cannot find any format handler");
+				return;
+			} else if (formatHandlers.Length<3)
+			{
+				formatHandler = formatHandlers[0];
+			}
+			else
+			{
+				window = new FormatHandlerSelectionWindow() { Owner=this,FormatHandlers=formatHandlers.Take(formatHandlers.Length-1)};
+				if (!window.ShowDialog() ?? false) return;
+				if (window.SelectedFormatHandler == null) return;
+				formatHandler = window.SelectedFormatHandler;
+			}
+
+			logFile = new LogFile(FileName, formatHandler) ;
 			colorProviderModule = new ColorProviderModule(logger,logFile.FormatHandler.EventColoringRules);
 			inlineParserBuilderModule = new InlineParserFactoryModule(logger,patternLibraryModule,inlineColoringRuleLibraryModule);
 
@@ -140,7 +162,7 @@ namespace LogInspect
 			
 			try
 			{
-				stream = new FileStream(FileName, FileMode.Open);
+				stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
 			}
 			catch(Exception ex)
 			{

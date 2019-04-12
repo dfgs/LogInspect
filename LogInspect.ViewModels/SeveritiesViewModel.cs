@@ -17,10 +17,12 @@ namespace LogInspect.ViewModels
 
 		public SeveritiesViewModel(ILogger Logger,  string SeverityColumn) : base(Logger)
 		{
-			AssertParameterNotNull(SeverityColumn,"SeverityColumn", out severityColumn);
+			//AssertParameterNotNull(SeverityColumn,"SeverityColumn", out severityColumn);
+			this.severityColumn = SeverityColumn;
 		}
 		protected override string[] GenerateItems(IEnumerable<EventViewModel> Items)
 		{
+			if (severityColumn == null) return new string[] { };
 			return Items.Select((item) => item[severityColumn].Value.ToString()).Distinct().ToArray();
 		}
 	

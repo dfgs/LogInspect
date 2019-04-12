@@ -10,6 +10,7 @@ namespace LogInspect.Modules
 	public interface IFormatHandlerLibraryModule:ILibraryModule<FormatHandler>
 	{
 		FormatHandler GetFormatHandler(string FileName);
+		IEnumerable<FormatHandler> GetFormatHandlers(string FileName);
 
 	}
 }
