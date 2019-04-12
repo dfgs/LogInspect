@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.Engage.CallServer" FileNamePattern="^Call_Server\.log(\.\d+)?$"
+               Name="Nice.Engage.CallServer" FileNamePattern="^Call_Server\.log(\.{Number})?$"
                NameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns>

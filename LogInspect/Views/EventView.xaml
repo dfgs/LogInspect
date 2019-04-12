@@ -71,7 +71,7 @@
 			<DataTemplate DataType="{x:Type propertyVM:SeverityPropertyViewModel}">
 				<DockPanel ToolTip="{Binding}" >
 					<Border Width="4" DockPanel.Dock="Left" Margin="0,0,4,0" Background="{Binding Background}" VerticalAlignment="Stretch"/>
-					<TextBlock  Text="{Binding Value}"  TextTrimming="CharacterEllipsis"/>
+					<TextBlock  Text="{Binding Value}" Foreground="Black" TextTrimming="CharacterEllipsis"/>
 				</DockPanel>
 			</DataTemplate>
 

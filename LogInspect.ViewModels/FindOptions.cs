@@ -1,4 +1,5 @@
 ﻿using LogInspect.ViewModels.Columns;
+using LogLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,13 @@ using System.Windows;
 
 namespace LogInspect.ViewModels
 {
-    public class FindOptions
+	public class FindOptions : ViewModel
     {
+		private bool isVisible;
 		public bool IsVisible
 		{
-			get;
-			set;
+			get { return isVisible; }
+			set { isVisible = value;OnPropertyChanged(); }
 		}
 
 		public string Text
@@ -43,7 +45,9 @@ namespace LogInspect.ViewModels
 			get;
 			set;
 		}
-
+		public FindOptions(ILogger Logger) : base(Logger)
+		{
+		}
 
 		public bool Match(EventViewModel Event)
 		{

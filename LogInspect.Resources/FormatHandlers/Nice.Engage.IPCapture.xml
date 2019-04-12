@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-               Name="Nice.Engage.IPCapture" FileNamePattern="^IPCapture{Number}?\.txt(\.\d+)?$"
+               Name="Nice.Engage.IPCapture" FileNamePattern="^IPCapture\.log(\.{Number})?$"
                NameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
   <AppendLineToPreviousPatterns />
   <AppendLineToNextPatterns>
@@ -25,22 +25,7 @@
     <Column Name="Message" Width="600" IsFilterItemSource="false">
       <InlineFormats>
         <string>Const</string>
-        <string>Interaction</string>
-        <string>InteractionID</string>
-        <string>Compound</string>
-        <string>CompoundID</string>
-        <string>CLSCall</string>
-        <string>CLSCallID</string>
-        <string>EndCallID</string>
-
-        <string>Extension</string>
-        <string>ExtensionID</string>
-        <string>Agent</string>
-        <string>AgentID</string>
-        <string>Station</string>
-        <string>StationID</string>
-        <string>Device</string>
-        <string>DeviceID</string>
+        
 
         <string>Logger</string>
         <string>LoggerID</string>

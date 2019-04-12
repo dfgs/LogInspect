@@ -84,7 +84,7 @@ namespace LogInspect.ViewModels
 			
 
 			this.Name = Path.GetFileName(LogFile.FileName);
-			FindOptions = new FindOptions();
+			FindOptions = new FindOptions(Logger);
 			FindOptions.Column = LogFile.FormatHandler.DefaultColumn;
 			FormatHandlerName = LogFile.FormatHandler.Name;
 
