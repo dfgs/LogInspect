@@ -37,20 +37,7 @@ namespace LogInspect.BaseLib.Parsers
 			items.Add(regex);
 		}
 		
-		/*protected object OnConvertValue(Column Column,string Value)
-		{
-			DateTime result;
-
-			switch(Column.Type)
-			{
-				case ColumnType.String:return Value;
-				case ColumnType.DateTime:
-					if (!DateTime.TryParseExact(Value, Column.Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result)) return Value;
-					return result;
-				default:
-					throw new InvalidCastException($"Invalid column type {Column.Type} for column {Column.Name}");
-			}
-		}*/
+	
 
 		public Event Parse(Log Log)
 		{

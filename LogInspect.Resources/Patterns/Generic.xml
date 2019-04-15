@@ -5,13 +5,16 @@
     <Pattern Name="EmptyLine" Value="^$" />
     <Pattern Name="Comment" Value="^//.*$" />
     <Pattern Name="WholeLine" Value="^.*$" />
-    <Pattern Name="Spaces" Value=" +" />
+    <Pattern Name="Spaces" Value="( |\t)+" />
     <Pattern Name="Date" Value="\d\d\d\d-\d\d-\d\d" />
     <Pattern Name="Time" Value="\d\d?:\d\d:\d\d((\.|,)\d+)?( (A|P)?M)?"  />
     <Pattern Name="Number" Value="\d+" />
     <Pattern Name="HexNumber" Value="[\d,A-F]+" />
     <Pattern Name="RestOfTheLine" Value=".*$" />
     <Pattern Name="Word" Value="\w+" />
-    <Pattern Name="UNCPath" Value="([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+" />
-  </Items>
+		<Pattern Name="UNCPath" Value="([a-zA-Z]:\\|\\\\)[a-zA-Z0-9\.\-_]{1,}(\\[a-zA-Z0-9\-_()]{1,}){1,}[\$]{0,1}\.[\w]+" />
+		<Pattern Name="URI" Value="\w+:\/\/[\.\w\d-]+(\/[\.\w\d-]+)*\/?"/>
+		<Pattern Name="OID" Value="\b\d+(\.\d+)+\b" />
+		<Pattern Name="IPAddress" Value="\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b" />
+	</Items>
 </PatternCollection>

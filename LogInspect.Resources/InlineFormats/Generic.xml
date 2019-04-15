@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <InlineFormatCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" NameSpace="Nice.NTR">
   <Items>
-    <InlineFormat Name="Const" Pattern="{Const}" Foreground="Brown" Bold="true"  />
-    <InlineFormat Name="UNCPath" Pattern="{UNCPath}" Foreground="Blue" Underline="true" Bold="false" Italic="false" />
-    <InlineFormat Name="QuotedString" Pattern="'[^']+'" Foreground="Black" Underline="false" Bold="false" Italic="true" />
+		<InlineFormat Name="Const" Pattern="{Const}" Foreground="Brown" Bold="true"  />
+		<InlineFormat Name="OID" Pattern="{OID}" Foreground="Black" Bold="true"  />
+		<InlineFormat Name="IPAddress" Pattern="{IPAddress}" Foreground="Black" Bold="true"  />
+		<InlineFormat Name="URI" Pattern="{URI}" Foreground="Blue" Underline="true" Bold="false" Italic="false" />
+		<InlineFormat Name="UNCPath" Pattern="{UNCPath}" Foreground="Blue" Underline="true" Bold="false" Italic="false" />
+		<InlineFormat Name="QuotedString" Pattern="'[^']+'" Foreground="Black" Underline="false" Bold="false" Italic="true" />
   </Items>
 </InlineFormatCollection>
