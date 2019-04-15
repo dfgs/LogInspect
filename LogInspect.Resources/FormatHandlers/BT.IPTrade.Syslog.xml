@@ -52,7 +52,7 @@
         <Token Pattern="{Spaces}" />
 				<Token Pattern="{Word}" Name="Hostname" />
 				<Token Pattern="{Spaces}" />
-				<Token Pattern="\({Number}\)({Spaces}\({Number}\))*" Name="Thread" />
+				<Token Pattern="\({Number}?\)({Spaces}\({Number}\))*" Name="Thread" />
 				<Token Pattern="{Spaces}" />
 				<Token Pattern="{Word}(\.{Word})*" Name="Module" />
 				<Token Pattern="{Spaces}" />
@@ -60,7 +60,7 @@
 				<Token Pattern="{Spaces}" />
 				<Token Pattern="{Word}" />
 				<Token Pattern="{Spaces}" />
-				<Token Pattern="\([^)]+\)" Name="MessageID"/>
+				<Token Pattern="\([^)]*\)" Name="MessageID"/>
 				<Token Pattern="{Spaces}" />
 				<Token Pattern=".+" Name="Message" />
       </Tokens>
