@@ -32,7 +32,7 @@ namespace LogInspect.Models
 			set;
 		}
 
-		[XmlArray]
+		/*[XmlArray]
 		public List<string> AppendLineToPreviousPatterns
 		{
 			get;
@@ -45,7 +45,7 @@ namespace LogInspect.Models
 		{
 			get;
 			set;
-		}
+		}*/
 
 		[XmlArray]
 		public List<string> DiscardLinePatterns
@@ -53,7 +53,13 @@ namespace LogInspect.Models
 			get;
 			set;
 		}
-
+		[XmlArray]
+		public List<string> LogPrefixPatterns
+		{
+			get;
+			set;
+		}
+		
 		[XmlArray]
 		public List<Column> Columns
 		{
@@ -100,8 +106,9 @@ namespace LogInspect.Models
 
 		public FormatHandler()
 		{
-			AppendLineToNextPatterns = new List<string>();
-			AppendLineToPreviousPatterns = new List<string>();
+			//AppendLineToNextPatterns = new List<string>();
+			//AppendLineToPreviousPatterns = new List<string>();
+			LogPrefixPatterns = new List<string>();
 			DiscardLinePatterns = new List<string>();
 			Rules = new List<Rule>();
 			Columns = new List<Column>();

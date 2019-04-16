@@ -2,11 +2,10 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Nice.NTR.NRLogfileManager" FileNamePattern="^NRLogfileManger\.Service-{Date}(_{Number}hr)?\.log$"
                NameSpace="Nice.NTR" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns>
-    <string>^[^\[]</string>
-  </AppendLineToPreviousPatterns>
-  <AppendLineToNextPatterns />
-  <DiscardLinePatterns>
+	<LogPrefixPatterns>
+		<string>^\[</string>
+	</LogPrefixPatterns>
+	<DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>

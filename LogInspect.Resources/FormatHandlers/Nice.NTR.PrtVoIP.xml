@@ -2,10 +2,10 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Nice.NTR.PrtVoIP" FileNamePattern="^PrtVoIP{Number}_{Number}.txt$"
                NameSpace="Nice.NTR" TimeStampColumn="Date" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns>
-  </AppendLineToPreviousPatterns>
-  <AppendLineToNextPatterns />
-  <DiscardLinePatterns>
+	<LogPrefixPatterns>
+		<string>^{Number}[</string>
+	</LogPrefixPatterns>
+	<DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>

@@ -44,19 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\IBuilder.cs" />
-    <Compile Include="Builders\ILineBuilder.cs" />
-    <Compile Include="Builders\ILogBuilder.cs" />
-    <Compile Include="Builders\LineBuilder.cs" />
-    <Compile Include="Builders\LogBuilder.cs" />
     <Compile Include="DirectoryEnumerator.cs" />
-    <Compile Include="FileLineReader.cs" />
     <Compile Include="FileLoaders\PatternLibLoader.cs" />
     <Compile Include="FileLoaders\InlineColoringRuleLibLoader.cs" />
     <Compile Include="FileLoaders\FormatHandlerLoader.cs" />
     <Compile Include="IDirectoryEnumerator.cs" />
     <Compile Include="FileLoaders\IFileLoader.cs" />
-    <Compile Include="ILineReader.cs" />
     <Compile Include="IProgressReporter.cs" />
     <Compile Include="IRegexBuilder.cs" />
     <Compile Include="IStringMatcher.cs" />
@@ -66,6 +59,12 @@
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\LogParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\ILogReader.cs" />
+    <Compile Include="Readers\LogReader.cs" />
+    <Compile Include="Readers\StringReader.cs" />
+    <Compile Include="Readers\ILineReader.cs" />
+    <Compile Include="Readers\IStringReader.cs" />
+    <Compile Include="Readers\LineReader.cs" />
     <Compile Include="RegexBuilder.cs" />
     <Compile Include="StreamProgressReporter.cs" />
     <Compile Include="StringMatcher.cs" />

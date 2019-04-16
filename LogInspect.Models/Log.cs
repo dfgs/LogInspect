@@ -13,10 +13,7 @@ namespace LogInspect.Models
             private set;
         }
 		
-		/*public long Position
-		{
-			get { return Lines.FirstOrDefault()?.Position??-1; }
-		}*/
+		
 
 		public int LineIndex
 		{

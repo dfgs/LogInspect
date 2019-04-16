@@ -2,8 +2,9 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Generic format handler" FileNamePattern="{WholeLine}"
                NameSpace="Generic" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns />
-  <AppendLineToNextPatterns />
+  <LogPrefixPatterns>
+		<string>^.</string>
+	</LogPrefixPatterns>
   <DiscardLinePatterns />
   <Columns>
     <Column Name="Message" Width="1000" Alignment="Left" IsFilterItemSource="false">

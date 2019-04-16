@@ -1,7 +1,7 @@
 ﻿using LogInspect.BaseLib;
-using LogInspect.BaseLib.Builders;
 using LogInspect.BaseLib.FileLoaders;
 using LogInspect.BaseLib.Parsers;
+using LogInspect.BaseLib.Readers;
 using LogInspect.Models;
 using LogInspect.Modules;
 using LogInspect.ViewModels;
@@ -117,9 +117,9 @@ namespace LogInspect
 			LoadWindow loadWindow;
 			IColorProviderModule colorProviderModule;
 			IInlineParserFactoryModule inlineParserBuilderModule;
+			IStringReader stringReader;
 			ILineReader lineReader;
-			ILineBuilder lineBuilder;
-			ILogBuilder logBuilder;
+			ILogReader logReader;
 			LogParser logParser;
 			IStringMatcherFactoryModule stringMatcherFactoryModule;
 			FileStream stream;
@@ -151,14 +151,6 @@ namespace LogInspect
 
 			stringMatcherFactoryModule = new StringMatcherFactoryModule(logger, patternLibraryModule);
 
-			lineBuilder = new LineBuilder(stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.DiscardLinePatterns));
-			logBuilder = new LogBuilder(
-				stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Where(item => item.Discard).Select(item => item.GetPattern())),
-				stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToPreviousPatterns),
-				stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.AppendLineToNextPatterns)
-				);
-			logParser = new LogParser(logFile.FormatHandler.Columns);
-			logParser.Add(patternLibraryModule.Build(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Select(item=>item.GetPattern()), true));
 			
 			try
 			{
@@ -172,9 +164,19 @@ namespace LogInspect
 
 			using (stream)
 			{
+
+
 				progressReporter = new StreamProgressReporter(stream);
-				lineReader = new FileLineReader(stream);
-				logFileLoaderModule = new LogFileLoaderModule(logger, lineReader, lineBuilder, logBuilder, logParser);
+				stringReader = new LogInspect.BaseLib.Readers.StringReader(new StreamReader(stream));
+				lineReader = new LineReader(stringReader, stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.DiscardLinePatterns));
+				logReader = new LogReader(lineReader, 
+					stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.LogPrefixPatterns),
+					stringMatcherFactoryModule.CreateStringMatcher(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Where(item=>item.Discard).Select(item => item.GetPattern()))
+					);
+				logParser = new LogParser(logFile.FormatHandler.Columns);
+				logParser.Add(patternLibraryModule.Build(logFile.FormatHandler.NameSpace, logFile.FormatHandler.Rules.Where(item => !item.Discard).Select(item => item.GetPattern()), true));
+
+				logFileLoaderModule = new LogFileLoaderModule(logger,logReader,logParser);
 				//logFileLoaderModule = new InfiniteLogFileLoaderModule(logger);
 
 				loadWindow = new LoadWindow(logFileLoaderModule,progressReporter, logFile); loadWindow.Owner = this;

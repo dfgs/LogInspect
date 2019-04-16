@@ -49,15 +49,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\LineBuilder.UnitTest.cs" />
-    <Compile Include="Builders\LogBuilder.UnitTest.cs" />
     <Compile Include="Inline.UnitTest.cs" />
     <Compile Include="Mocks\MockedLogParser.cs" />
+    <Compile Include="Mocks\MockedLineReader.cs" />
+    <Compile Include="Mocks\MockedStringReader.cs" />
     <Compile Include="Parsers\InlineParserUnitTest.cs" />
     <Compile Include="Parsers\LogParserUnitTest.cs" />
     <Compile Include="Mocks\Utils.cs" />
     <Compile Include="NameSpaceDictionaryUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\LogReader.UnitTest.cs" />
+    <Compile Include="Readers\LineReader.UnitTest.cs" />
     <Compile Include="RegexBuilder.UnitTest.cs" />
     <Compile Include="StreamProgressReporter.UnitTest.cs" />
     <Compile Include="StringMatcher.UnitTest.cs" />

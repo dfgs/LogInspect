@@ -1,5 +1,5 @@
 ﻿using LogInspect.BaseLib;
-using LogInspect.BaseLib.Builders;
+
 using LogInspect.BaseLib.FileLoaders;
 using LogInspect.BaseLib.Parsers;
 using LogInspect.Models;
@@ -25,9 +25,9 @@ namespace LogInspectCLI
 			IFormatHandlerLibraryModule formatHandlerLibraryModule;
 			IStringMatcherFactoryModule stringMatcherFactoryModule;
 			LogFileLoaderModule dumper;
-			ILineReader lineReader;
+			/*ILineReader lineReader;
 			ILineBuilder lineBuilder;
-			ILogBuilder logBuilder;
+			ILogBuilder logBuilder;*/
 			LogParser logParser;
 
 			FormatHandler formatHandler;
@@ -48,7 +48,7 @@ namespace LogInspectCLI
 			formatHandler = formatHandlerLibraryModule.GetFormatHandler(args[0]);
 
 
-			lineBuilder = new LineBuilder(stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.DiscardLinePatterns));
+			/*lineBuilder = new LineBuilder(stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.DiscardLinePatterns));
 			logBuilder = new LogBuilder(
 				stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.Rules.Where(item => item.Discard).Select(item => item.GetPattern())),
 				stringMatcherFactoryModule.CreateStringMatcher(formatHandler.NameSpace, formatHandler.AppendLineToPreviousPatterns),
@@ -66,7 +66,7 @@ namespace LogInspectCLI
 				{
 					Console.WriteLine(string.Join("	", ev.Properties));
 				}
-			}
+			}*/
 
 			Console.ReadLine();
 

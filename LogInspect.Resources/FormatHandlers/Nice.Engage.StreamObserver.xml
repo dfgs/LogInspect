@@ -2,11 +2,11 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Nice.Engage.StreamObserver" FileNamePattern="^StreamObserver\.log(\.{Number})?$"
                NameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns />
-  <AppendLineToNextPatterns>
-    <string>[^{EOL}]$</string>
-  </AppendLineToNextPatterns>
-  <DiscardLinePatterns>
+	<LogPrefixPatterns>
+		<string>^{Date}</string>
+		<string>^//</string>
+	</LogPrefixPatterns>
+	<DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>

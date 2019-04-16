@@ -2,15 +2,15 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Nice.NIM.ConnectionManager" FileNamePattern="^ConnectionManager[^\.]*\.log$"
                NameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns />
-  <AppendLineToNextPatterns>
-    <string>[^{EOL}]$</string>
-  </AppendLineToNextPatterns>
-  <DiscardLinePatterns>
+	<LogPrefixPatterns>
+		<string>^{Date}</string>
+		<string>^//</string>
+	</LogPrefixPatterns>
+	<DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>
-    <Column Name="Date" Type="DateTime" Format="dd/MM/yy HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
+    <Column Name="Date" Type="DateTime" Format="yyyy-MM-dd HH:mm:ss.fff" Width="200" Alignment="Center" IsFilterItemSource="false">
       <InlineFormats />
     </Column>
     <Column Name="Severity" Width="100" Alignment="Center" IsFilterItemSource="true">
@@ -37,7 +37,7 @@
   <Rules>
     <Rule Name="Event" Discard="false">
       <Tokens>
-        <Token Pattern="^{ShortDate} {Time}" Name="Date" />
+        <Token Pattern="^{Date} {Time}" Name="Date" />
         <Token Pattern="{Pipe}" />
         <Token Pattern="{Word}" Name="Severity" />
         <Token Pattern="{Pipe}" />

@@ -2,11 +2,10 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="Nice.NTR.DatabaseInterfaceClient" FileNamePattern="^DatabaseInterfaceClient-{Date}(_{Number}hr)?\.log$"
                NameSpace="Nice.NTR" TimeStampColumn="Date" DefaultColumn="Message">
-  <AppendLineToPreviousPatterns>
-    <string>^[^\d]</string>
-  </AppendLineToPreviousPatterns>
-  <AppendLineToNextPatterns />
-  <DiscardLinePatterns>
+	<LogPrefixPatterns>
+		<string>^{Time}</string>
+	</LogPrefixPatterns>
+	<DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
   <Columns>

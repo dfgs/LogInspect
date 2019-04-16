@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogInspect.BaseLib.Builders
+namespace LogInspect.BaseLib.Readers
 {
-	public interface ILineBuilder:IBuilder<string,Line>
+	public interface ILogReader
 	{
+		Log Read();
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using LogInspect.BaseLib;
-using LogInspect.BaseLib.Builders;
 using LogInspect.BaseLib.Parsers;
+using LogInspect.BaseLib.Readers;
 using LogInspect.Models;
 using LogLib;
 using ModuleLib;
@@ -16,18 +16,14 @@ namespace LogInspect.Modules
 {
 	public class LogFileLoaderModule : Module, ILogFileLoaderModule
 	{
-		private ILineReader lineReader;
-		private ILineBuilder lineBuilder;
-		private ILogBuilder logBuilder;
+		private ILogReader logReader;
 		private ILogParser logParser;
 		
 		
 
-		public LogFileLoaderModule(ILogger Logger, ILineReader LineReader, ILineBuilder LineBuilder, ILogBuilder LogBuilder, ILogParser LogParser) : base(Logger)
+		public LogFileLoaderModule(ILogger Logger, ILogReader LogReader, ILogParser LogParser) : base(Logger)
 		{
-			AssertParameterNotNull(LineReader, "LineReader", out lineReader);
-			AssertParameterNotNull(LineBuilder, "LineBuilder", out lineBuilder);
-			AssertParameterNotNull(LogBuilder, "LogBuilder", out logBuilder);
+			AssertParameterNotNull(LogReader, "LogReader", out logReader);
 			AssertParameterNotNull(LogParser, "LogParser", out logParser);
 		}
 
@@ -36,8 +32,6 @@ namespace LogInspect.Modules
 
 		public IEnumerable<Event> Load()
 		{
-			string l;
-			Line line;
 			Log log;
 			Event ev;
 
@@ -46,32 +40,16 @@ namespace LogInspect.Modules
 			{ 
 				try
 				{
-					if (!lineReader.EOF)
-					{
-						l = lineReader.Read();
-						if (!lineBuilder.Push(l, out line)) continue;
-						if (!logBuilder.Push(line, out log)) continue;
-					}
-					else if (lineBuilder.CanFlush)
-					{
-						line = lineBuilder.Flush();
-						if (!logBuilder.Push(line, out log)) continue;
-					}
-					else if (logBuilder.CanFlush)
-					{
-						log = logBuilder.Flush();
-					}
-					else yield break;
-
+					log = logReader.Read();
 				}
 				catch (Exception ex)
 				{
 					this.Log(ex);
 					break;
 				}
+				if (log == null) yield break;
 				if (!Try(() => logParser.Parse(log)).OrAlert(out ev, $"Failed to parse log at line {log.LineIndex}")) continue;
 				if (ev == null) continue;
-
 				yield return ev;
 			}
 

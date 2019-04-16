@@ -2,10 +2,10 @@
 <FormatHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
                Name="BT.IPTrade.Syslog" FileNamePattern="^Syslog.[^.]+\.log$"
                NameSpace="BT.IPTrade" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
-	<AppendLineToPreviousPatterns>
-		<string>^[^\d]</string>
-	</AppendLineToPreviousPatterns>
-	<AppendLineToNextPatterns />
+	<LogPrefixPatterns>
+		<string>^{Date}</string>
+	</LogPrefixPatterns>
+
 	<DiscardLinePatterns>
     <string>{EmptyLine}</string>
   </DiscardLinePatterns>
