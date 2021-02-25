@@ -79,7 +79,36 @@ namespace LogInspect.BaseLib.Test.Readers
 		}
 
 
+		[TestMethod]
+		public void ShouldReadAfterDiscardLogs() // ex: used when a log file starts with comment
+		{
+			LogReader reader;
+			Log log;
+			StringMatcher stringMatcher;
+			StringMatcher discardMatcher;
 
+			stringMatcher = new StringMatcher();
+			stringMatcher.Add("Line");
+
+			discardMatcher = new StringMatcher();
+			discardMatcher.Add("Line 0");
+			discardMatcher.Add("Line 1");
+			discardMatcher.Add("Line 2");
+			discardMatcher.Add("Line 3");
+
+
+			reader = new LogReader(new MockedLineReader(10), stringMatcher, discardMatcher);
+
+			for (int t = 0; t < 6; t++)
+			{
+				log = reader.Read();
+				Assert.AreEqual(t +4, log.LineIndex);
+				Assert.AreEqual($"Line {t+4}", log.ToSingleLine());
+			}
+			log = reader.Read();
+			Assert.IsNull(log);
+
+		}
 
 
 

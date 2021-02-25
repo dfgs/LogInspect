@@ -39,7 +39,7 @@
     </Win32Resource>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icons8-entrée-80.ico</ApplicationIcon>
+    <ApplicationIcon>Search.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -344,6 +344,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons8-entrée-80.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Search.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -44,7 +44,8 @@ namespace LogInspect.BaseLib.Readers
 					log.Lines.Add(previousLine);
 				}
 
-				if (discardLogMatcher.Match(log.ToSingleLine())) log = null;
+				if (discardLogMatcher.Match(log.ToSingleLine()))
+					log=null;	// me must restart loading of a new log
 			} while ((previousLine!=null) && (log==null));
 
 			return log;

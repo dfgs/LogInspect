@@ -3,7 +3,7 @@
                Name="Nice.NIM.ConnectionManager" FileNamePattern="^ConnectionManager[^\.]*\.log$"
                NameSpace="Nice.NIM" SeverityColumn="Severity" TimeStampColumn="Date" DefaultColumn="Message">
 	<LogPrefixPatterns>
-		<string>^{Date}</string>
+		<string>^{ShortDate}</string>
 		<string>^//</string>
 	</LogPrefixPatterns>
 	<DiscardLinePatterns>
@@ -37,7 +37,7 @@
   <Rules>
     <Rule Name="Event" Discard="false">
       <Tokens>
-        <Token Pattern="^{Date} {Time}" Name="Date" />
+        <Token Pattern="^{ShortDate} {Time}" Name="Date" />
         <Token Pattern="{Pipe}" />
         <Token Pattern="{Word}" Name="Severity" />
         <Token Pattern="{Pipe}" />
